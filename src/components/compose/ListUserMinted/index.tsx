@@ -1,0 +1,46 @@
+import { useStyletron } from 'baseui'
+import {useState, useContext, useEffect, useRef} from 'react'
+import CardBadge from '../../base/CardBadge'
+import solas, { Profile, Badge } from '../../../service/solas'
+import { onReachBottom } from '../../../utils/scroll'
+import ListWrapper from '../../base/ListWrapper'
+import Empty from '../../base/Empty'
+import LangContext from '../../provider/LangProvider/LangContext'
+import useScrollToLoad from "../../../hooks/scrollToLoad";
+
+interface ListUserMintedProps {
+    profile: Profile
+}
+
+function ListUserMinted (props: ListUserMintedProps) {
+    const { lang } = useContext(LangContext)
+    const getBadge = async (page: number) => {
+        return await solas.queryBadge({
+            sender_id: props.profile.id,
+            page
+        })
+
+    }
+
+    const { isEmpty, list, ref, refresh } = useScrollToLoad ({ queryFunction: getBadge })
+
+    useEffect(() => {
+        refresh()
+    }, [props.profile])
+
+    return (
+        <ListWrapper>
+            { isEmpty ?
+                <Empty text={ lang['Empty_No_Badge'] } />
+                : false
+            }
+            {
+                list.map((item, index) => {
+                    return <CardBadge badge={ item } key={ index.toString() }/>
+                })
+            }
+            <div ref={ref}></div>
+        </ListWrapper>)
+}
+
+export default ListUserMinted

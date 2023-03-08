@@ -1,0 +1,56 @@
+@import './poppins.css';
+@import './iconfont/style.css';
+
+:root {
+  --width-page-max: 450px;
+  --width-page-edge: 20px;
+  --height-nav: 48px;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+  color: #3c3e3d;
+  box-sizing: border-box;
+  background: #f8f8f8;
+}
+
+@keyframes Spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: 0;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  background: #dedede;
+}
+
+@media (max-width: 360px) {
+  *::-webkit-scrollbar {
+    width: 6px;
+    height: 0;
+  }
+}
+
+div[data-baseweb="tooltip"] {
+  z-index: 9999;
+}
+
+.swiper-pagination-bullet-active {
+  background: #9efedd!important;
+}
