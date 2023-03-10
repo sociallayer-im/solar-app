@@ -102,7 +102,11 @@ function DetailBadgelet(props: DetailBadgeletProps ) {
         <DetailWrapper>
             <DetailHeader
                 slotLeft={ badgelet.hide && <DetailBadgeletPrivateMark /> }
-                slotRight={ isBadgeletOwner && <DetailBadgeletMenu badgelet={ badgelet }/>  }
+                slotRight={
+                    badgelet.status !== 'pending' &&
+                    isBadgeletOwner &&
+                    <DetailBadgeletMenu badgelet={ badgelet }/>
+                }
                 onClose={ props.handleClose }/>
 
             <DetailCover src={ badgelet.badge.image_url }></DetailCover>
