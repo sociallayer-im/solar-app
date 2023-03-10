@@ -342,6 +342,48 @@ export async function acceptPresend (props: AcceptPresendProps) {
     return res.data
 }
 
+export type SetBadgeletStatusType = 'untop' | 'top' | 'hide' | 'unhide'
+export interface SetBadgeletStatusProps {
+    type: SetBadgeletStatusType,
+    id: number,
+    auth_token: string
+}
+
+export async function setBadgeletStatus (props: SetBadgeletStatusProps) {
+    const res = await fetch.post({
+        url: `${api}/badge/${props.type}`,
+        data: {
+            badgelet_id: props.id,
+            auth_token: props.auth_token,
+        }
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+
+    return res.data
+}
+
+export interface QueryBadgeletDetailProps {
+    id: number
+}
+
+export async function queryBadgeletDetail (props: QueryBadgeletDetailProps): Promise<Badgelet> {
+    const res = await fetch.get({
+        url: `${api}/badgelet/get`,
+        data: {
+            id: props.id,
+        }
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+
+    return res.data.badgelet
+}
+
 export default {
     login,
     getProfile,
@@ -356,5 +398,7 @@ export default {
     rejectBadgelet,
     acceptPresend,
     queryPresendDetail,
-    queryBadgeDetail
+    queryBadgeDetail,
+    setBadgeletStatus,
+    queryBadgeletDetail
 }

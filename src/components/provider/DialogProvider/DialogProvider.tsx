@@ -18,7 +18,9 @@ function DialogProvider (props: DialogProviderProps) {
     const [dialogsGroup, setDialogsGroup] = useState<{dialogs: ((index: number)=>ReactNode)[]}>({ dialogs: [] })
 
     useEffect(() => {
-        console.log(dialogsGroup.dialogs)
+        dialogsGroup.dialogs.map(item => {
+            console.log(item)
+        })
         console.log(dialogsGroup.dialogs.length)
         document.body.style.overflow = dialogsGroup.dialogs[0] ? 'hidden' : 'auto'
 
@@ -77,7 +79,7 @@ function DialogProvider (props: DialogProviderProps) {
         setDialogsGroup({...dialogsGroup})
     }
 
-    const showLoading = (duration?: number) => {
+    const showLoading = () => {
         let id = -1
         dialogsGroup.dialogs.push((index) => {
             id = index
@@ -97,21 +99,15 @@ function DialogProvider (props: DialogProviderProps) {
 
 
         setDialogsGroup({...dialogsGroup})
-        if (duration) {
-            try {
-                setTimeout(() => {
-                    closeDialogByID(id)
-                }, duration)
-            } catch (e) { }
-        }
-
         return () => { closeDialogByID(id) }
     }
 
     const showToast = (text: string, duration?: number) => {
         let closeToast = () => {}
+        let timeOut: any = null
         dialogsGroup.dialogs.push((index) => {
             const close = () => {
+                timeOut && clearTimeout(timeOut)
                 closeDialogByID(index)
             }
 
@@ -136,7 +132,7 @@ function DialogProvider (props: DialogProviderProps) {
         setDialogsGroup({...dialogsGroup})
         duration = duration || 3000
             try {
-                setTimeout(() => {
+                timeOut = setTimeout(() => {
                     closeToast()
                 }, duration)
             } catch (e) { }

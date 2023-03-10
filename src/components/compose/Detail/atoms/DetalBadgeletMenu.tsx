@@ -1,32 +1,62 @@
-import { useNavigate } from 'react-router-dom'
-import { useStyletron } from 'baseui'
 import { StatefulPopover, PLACEMENT } from 'baseui/popover'
 import { Overflow } from 'baseui/icon'
 import { useState, useContext } from 'react'
-import { Badgelet } from '../../../../service/solas'
+import { Badgelet, setBadgeletStatus, SetBadgeletStatusType } from '../../../../service/solas'
 import MenuItem from '../../../base/MenuItem'
 import LangContext from '../../../provider/LangProvider/LangContext'
+import UserContext from '../../../provider/UserProvider/UserContext'
+import DialogsContext from '../../../provider/DialogProvider/DialogsContext'
+import useEvent, { EVENT } from '../../../../hooks/globalEvent'
 
 export interface DetalBadgeletMenuProps {
     badgelet: Badgelet
 }
 
 function DetailBadgeletMenu (props: DetalBadgeletMenuProps) {
-    const [css] = useStyletron()
-    const navigate = useNavigate()
-    const [a, seta] = useState('')
     const { lang } = useContext(LangContext)
+    const { user } = useContext(UserContext)
+    const { showLoading, showToast } = useContext(DialogsContext)
+    const [_1, emitListUpdate] = useEvent(EVENT.badgeletListUpdate)
+    const [_2, emitDetailUpdate] = useEvent(EVENT.badgeletDetailUpdate)
 
-    const MenuContent = () => <>
+    const setStatus = async (type: SetBadgeletStatusType, handleClose: () => any) => {
+        handleClose()
+        const unload = showLoading()
+        try {
+            const res = await setBadgeletStatus({
+                auth_token: user.authToken || '',
+                id: props.badgelet.id,
+                type
+            })
+            unload()
+            showToast('Operation succeeded')
+            emitListUpdate(res)
+            emitDetailUpdate(res)
+        } catch (e: any) {
+            console.log('[setStatus]:', e)
+            unload()
+            showToast(e.message || 'Operation failed')
+        }
+    }
+
+    const MenuContent = (handleClose: () => any) => <>
         {
             props.badgelet.hide
-                ? <MenuItem onClick={ () => {  } }>{ lang['BadgeDialog_Label_action_public'] }</MenuItem>
-                : <MenuItem onClick={ () => {  } }>{ lang['BadgeDialog_Label_action_hide'] }</MenuItem>
+                ? <MenuItem onClick={ () => { setStatus('unhide', handleClose) } }>
+                    { lang['BadgeDialog_Label_action_public'] }
+                  </MenuItem>
+                : <MenuItem onClick={ () => { setStatus('hide', handleClose) } }>
+                    { lang['BadgeDialog_Label_action_hide'] }
+                  </MenuItem>
         }
         {
             props.badgelet.top
-                ? <MenuItem onClick={ () => {  } }>{ lang['BadgeDialog_Label_action_untop'] }</MenuItem>
-                : <MenuItem onClick={ () => {  } }>{ lang['BadgeDialog_Label_action_top'] }</MenuItem>
+                ? <MenuItem onClick={ () => { setStatus('untop', handleClose) } }>
+                    { lang['BadgeDialog_Label_action_untop'] }
+                  </MenuItem>
+                : <MenuItem onClick={ () => { setStatus('top', handleClose) } }>
+                    { lang['BadgeDialog_Label_action_top'] }
+                  </MenuItem>
         }
     </>
 
@@ -40,7 +70,7 @@ function DetailBadgeletMenu (props: DetalBadgeletMenuProps) {
         },
         Inner: {
             style: {
-                background: 'red'
+                background: '#fff'
             }
         }
     }
@@ -49,7 +79,7 @@ function DetailBadgeletMenu (props: DetalBadgeletMenuProps) {
         <StatefulPopover
             overrides={ overridesStyle }
             placement={ PLACEMENT.bottomRight }
-            content={ ({close}) => MenuContent() }
+            content={ ({close}) => MenuContent(close) }
             returnFocus
         >
             <Overflow style={ { cursor: 'pointer', display: 'block' } } size={ 24 } />

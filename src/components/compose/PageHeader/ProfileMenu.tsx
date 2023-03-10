@@ -6,7 +6,6 @@ import { StatefulPopover, PLACEMENT } from 'baseui/popover'
 import { useStyletron } from 'baseui'
 import LangContext from '../../provider/LangProvider/LangContext'
 import usePicture from '../../../hooks/pictrue'
-import {ellipsisText} from "baseui/styles/util";
 
 function ProfileMenu () {
     const { user, logOut } = useContext(UserContext)
@@ -60,7 +59,7 @@ function ProfileMenu () {
         <StatefulPopover
             overrides={ overridesStyle }
             placement={ PLACEMENT.bottomRight }
-            returnFocus
+            returnFocus = { false }
             content={ ({close}) => menuContent(close) }
             autoFocus>
             <div className={ css(style.wrapper) }>

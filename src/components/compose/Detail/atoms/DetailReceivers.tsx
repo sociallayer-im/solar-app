@@ -81,7 +81,7 @@ export default function DetailReceivers (props: DetailReceiversProps) {
                         : <Avatar key={ index.toString() } src='/images/presend_default_avatar.png' />
               })
             }
-            { props.receivers.length >= 20
+            { receivers.length >= 20
                 && <Overflow  size={ 20 } style={ { marginBottom: '12px', marginLeft: '5px' } }/>
             }
         </List>

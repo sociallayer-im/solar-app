@@ -43,7 +43,7 @@ function ProfilePage () {
     return <Layout>
         {profile &&
             <div className='profile-page'>
-            <div className='up'>
+            <div className='up-side'>
                 <div className='center'>
                     <PageBack />
                     <div className='slot_1'><ProfilePanel {...profile!} /></div>
@@ -52,7 +52,7 @@ function ProfilePage () {
                     </div>
                 </div>
             </div>
-            <div className='down'>
+            <div className='down-side'>
                 <AppTabs initialState={ { activeKey: selectedTab } }>
                     <Tab key='Minted' title={ lang['Profile_Tab_Minted'] }>
                         <AppSubTabs>

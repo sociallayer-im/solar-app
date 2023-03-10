@@ -1,4 +1,4 @@
-import {useContext, useEffect} from 'react'
+import {useContext, useEffect, useState} from 'react'
 import CardBadgelet from '../../base/CardBadgelet'
 import solas, { Profile, Badgelet } from '../../../service/solas'
 import ListWrapper from '../../base/ListWrapper'
@@ -7,6 +7,7 @@ import LangContext from '../../provider/LangProvider/LangContext'
 import useScrollToLoad from '../../../hooks/scrollToLoad'
 import useEvent, { EVENT } from '../../../hooks/globalEvent'
 import UserContext from '../../provider/UserProvider/UserContext'
+import {sortBy} from "lodash";
 
 interface ListUserBadgeletProps {
     profile: Profile
@@ -15,8 +16,9 @@ interface ListUserBadgeletProps {
 function ListUserBadgelet (props: ListUserBadgeletProps) {
     const { lang } = useContext(LangContext)
     const { user } = useContext(UserContext)
+    const [badgelets, setBadgelets] = useState<Badgelet[]>([])
     const getBadgelet = async (page: number) => {
-        return  await solas.queryBadgelet({
+        return await solas.queryBadgelet({
             show_hidden: user.id === props.profile.id,
             receiver_id: props.profile.id,
             page })
@@ -33,14 +35,28 @@ function ListUserBadgelet (props: ListUserBadgeletProps) {
         refresh()
     }, [props.profile])
 
+    useEffect(() => {
+        if (list.length) {
+            let sortByTop:Badgelet[] = []
+            list.forEach(item => {
+                if (item.top) {
+                    sortByTop = [item, ...sortByTop]
+                } else {
+                    sortByTop = [...sortByTop, item]
+                }
+            })
+            setBadgelets(sortByTop)
+        }
+    }, [list])
+
     return (
         <ListWrapper>
             {   isEmpty ?
                 <Empty text={ lang['Empty_No_Badge'] } />
                 : false
             }
-            {   list.length ?
-                list.map((item, index) => {
+            {   badgelets.length ?
+                badgelets.map((item, index) => {
                     return <CardBadgelet badgelet={ item } key={ index.toString() }/>
                 })
                 : false
