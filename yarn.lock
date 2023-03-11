@@ -2553,6 +2553,11 @@ credit-card-type@^8.0.0:
   resolved "https://registry.npmmirror.com/credit-card-type/-/credit-card-type-8.3.0.tgz#f93c187c9362411544158c91d552efcc443aa87a"
   integrity sha512-czfZUpQ7W9CDxZL4yFLb1kFtM/q2lTOY975hL2aO+DC8+GRNDVSXVCHXhVFZPxiUKmQCZbFP8vIhxx5TBQaThw==
 
+cropperjs@^1.5.13:
+  version "1.5.13"
+  resolved "https://registry.npmmirror.com/cropperjs/-/cropperjs-1.5.13.tgz#eb1682f01d17c70ed5244317091d745c9a249ef8"
+  integrity sha512-by7jKAo73y5/Do0K6sxdTKHgndY0NMjG2bEdgeJxycbcmHuCiMXqw8sxy5C5Y5WTOTcDGmbT7Sr5CgKOXR06OA==
+
 cross-fetch@^3.1.4, cross-fetch@^3.1.5:
   version "3.1.5"
   resolved "https://registry.npmmirror.com/cross-fetch/-/cross-fetch-3.1.5.tgz#e1389f44d9e7ba767907f7af8454787952ab534f"
@@ -4715,6 +4720,13 @@ react-clientside-effect@^1.2.6:
   integrity sha512-XGGGRQAKY+q25Lz9a/4EPqom7WRjz3z9R2k4jhVKA/puQFH/5Nt27vFZYql4m4NVNdUvX8PS3O7r/Zzm7cjUlg==
   dependencies:
     "@babel/runtime" "^7.12.13"
+
+react-cropper@^2.3.1:
+  version "2.3.1"
+  resolved "https://registry.npmmirror.com/react-cropper/-/react-cropper-2.3.1.tgz#91f59062b1e95d7910a93a629f218a1238c3305a"
+  integrity sha512-PZU/4QGN80PTjFTaOOPh2/RXTHBiRpha3vOu0ViGRbSNJ//6YlTU3KCpA87lfrKDkQjQY18Ssw10VKPeDOPbKQ==
+  dependencies:
+    cropperjs "^1.5.13"
 
 react-dom@^18.2.0:
   version "18.2.0"

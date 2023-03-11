@@ -12,7 +12,8 @@ interface AppButtonProps {
     onClick?: (...rest: any[]) => any
     disabled?: boolean
     isLoading?: boolean,
-    size?: keyof typeof SIZE
+    size?: keyof typeof SIZE,
+    style?: any
 }
 
 export default function AppButton (props: AppButtonProps) {
@@ -24,7 +25,7 @@ export default function AppButton (props: AppButtonProps) {
             $theme: { colors, typography },
         } = rootProps
 
-        const style: any = {
+        let style: any = {
             color: colors.primaryA,
             display: 'flex',
             'flex-direction': 'row',
@@ -37,6 +38,10 @@ export default function AppButton (props: AppButtonProps) {
         if ($size === SIZE.compact) {
             style.paddingTop = '12px'
             style.paddingBottom = '12px'
+        }
+
+        if (props.style) {
+            style = {...style, ...props.style}
         }
 
         return style

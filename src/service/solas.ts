@@ -384,6 +384,50 @@ export async function queryBadgeletDetail (props: QueryBadgeletDetailProps): Pro
     return res.data.badgelet
 }
 
+export interface UploadImageProps {
+    uploader: string,
+    file: any,
+    auth_token: string
+}
+
+export async function uploadImage (props: UploadImageProps): Promise<string> {
+    const randomName = Math.random().toString(36).slice(-8)
+    const formData = new FormData()
+    formData.append('data', props.file)
+    formData.append('auth_token', props.auth_token)
+    formData.append('uploader', props.uploader)
+    formData.append('resource', randomName)
+    const res = await fetch.post({
+        url: `${api}/upload/image`,
+        data: formData,
+        header: { 'Content-Type': 'multipart/form-data' }
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+
+    return res.data.result.thumbnailUrl
+}
+
+export interface SetAvatarProps {
+    image_url: string,
+    auth_token: string
+}
+
+export async function setAvatar (props: SetAvatarProps): Promise<Profile> {
+    const res = await fetch.post({
+        url: `${api}/profile/update`,
+        data: props
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+
+   return res.data.profile
+}
+
 export default {
     login,
     getProfile,
@@ -400,5 +444,7 @@ export default {
     queryPresendDetail,
     queryBadgeDetail,
     setBadgeletStatus,
-    queryBadgeletDetail
+    queryBadgeletDetail,
+    uploadImage,
+    setAvatar
 }

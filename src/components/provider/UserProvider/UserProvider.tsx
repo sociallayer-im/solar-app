@@ -1,11 +1,11 @@
-import {ReactNode, useState, useEffect, useContext} from 'react'
-import { useAccount, useDisconnect, useSigner } from 'wagmi'
+import {ReactNode, useContext, useEffect, useState} from 'react'
+import {useAccount, useDisconnect, useSigner} from 'wagmi'
 import UserContext from './UserContext'
 import DialogsContext from '../DialogProvider/DialogsContext'
 import * as AuthStorage from '../../../utils/authStorage'
 import solas from '../../../service/solas'
 import { useNavigate } from 'react-router-dom'
-import {getEmailAuth} from "../../../utils/authStorage";
+import useEvent, {EVENT} from '../../../hooks/globalEvent'
 
 export interface User {
     id: number | null,
@@ -46,6 +46,7 @@ function UserProvider (props: UserProviderProps) {
     const { data } = useSigner()
     const { showToast } = useContext(DialogsContext)
     const navigate = useNavigate()
+    const [newProfile, _] = useEvent(EVENT.profileUpdate)
 
     const setUser = (data: Partial<Record<keyof User, any>>) => {
         const copyUserInfo = { ...userInfo , ...data }
@@ -131,7 +132,6 @@ function UserProvider (props: UserProviderProps) {
 
         console.log('Login ...')
         console.log('Login type: ', loginType)
-
         console.log('Login wallet: ', address)
 
         let authToken = AuthStorage.getAuth(address)
@@ -160,6 +160,15 @@ function UserProvider (props: UserProviderProps) {
     useEffect(() => {
         walletLogin()
     }, [data, address])
+
+    // update avatar
+    useEffect(() => {
+        if (newProfile && newProfile.id === userInfo.id) {
+            setUser({
+                avatar: newProfile.image_url,
+            })
+        }
+    }, [newProfile])
 
     return (
         <UserContext.Provider value={{ user: userInfo, setUser, logOut, emailLogin, walletLogin}}>

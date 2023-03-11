@@ -4,6 +4,7 @@ export interface FetchOptions {
     url: string,
     data?: Record<string, string | number | any>
     authToken?: string
+    header?: {}
 }
 
 async function get (options: FetchOptions) {
@@ -22,7 +23,7 @@ async function post (options: FetchOptions) {
     }
 
     return await axios.post(options.url, options.data, {
-        headers: {
+        headers: options.header || {
             'Content-Type': 'application/json'
         }}
     )

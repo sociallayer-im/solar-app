@@ -9,6 +9,8 @@ export interface DialogsContextType {
     showBadgelet: (...rest: any[]) => any,
     showPresend: (...rest: any[]) => any,
     showBadge: (...rest: any[]) => any
+    showAvatar: (...rest: any[]) => any
+    showCropper: (...rest: any[]) => any
 }
 
 const DialogsContext  = createContext<DialogsContextType>({
@@ -19,7 +21,9 @@ const DialogsContext  = createContext<DialogsContextType>({
     openDialog: () => {},
     showBadgelet: () => {},
     showPresend: () => {},
-    showBadge: () => {}
+    showBadge: () => {},
+    showAvatar: () => {},
+    showCropper: () => {}
 })
 
 export default DialogsContext

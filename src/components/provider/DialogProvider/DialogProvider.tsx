@@ -1,14 +1,16 @@
-import {ReactNode, useEffect, useState} from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import Dialog from '../../base/Dialog/Dialog'
 import Toast from '../../base/Toast'
 import DialogConnectWallet from '../../base/DialogConnectWallet/DialogConnectWallet'
 import ToastLoading from '../../base/ToastLoading'
 import DialogConfirm, { DialogConfirmProps } from '../../base/DialogConfirm/DialogConfirm'
 import DialogsContext, { DialogsContextType } from './DialogsContext'
-import {Badge, Badgelet, Presend} from '../../../service/solas'
+import { Badge, Badgelet, Presend, Profile } from '../../../service/solas'
 import DetailBadgelet from '../../compose/Detail/DetailBadgelet'
 import DetailPresend from '../../compose/Detail/DetailPresend'
 import DetailBadge from '../../compose/Detail/DetailBadge'
+import DialogAvatar from '../../base/DialogAvatar'
+import DialogCropper from '../../base/DialogCropper'
 
 export interface DialogProviderProps {
     children: ReactNode
@@ -18,10 +20,6 @@ function DialogProvider (props: DialogProviderProps) {
     const [dialogsGroup, setDialogsGroup] = useState<{dialogs: ((index: number)=>ReactNode)[]}>({ dialogs: [] })
 
     useEffect(() => {
-        dialogsGroup.dialogs.map(item => {
-            console.log(item)
-        })
-        console.log(dialogsGroup.dialogs.length)
         document.body.style.overflow = dialogsGroup.dialogs[0] ? 'hidden' : 'auto'
 
         return () => { document.body.style.overflow = 'auto' }
@@ -236,6 +234,48 @@ function DialogProvider (props: DialogProviderProps) {
         setDialogsGroup({ ...dialogsGroup })
     }
 
+    const showAvatar = (props: Profile) => {
+        dialogsGroup.dialogs.push((index) => {
+            const close = () => {
+                closeDialogByID(index)
+            }
+
+            const dialogProps = {
+                dialogID: index,
+                key: index.toString(),
+                size: [316, 316],
+            }
+
+            return (
+                <Dialog { ...dialogProps } >
+                    <DialogAvatar profile={ props } handleClose={ close } />
+                </Dialog>
+            )
+        })
+        setDialogsGroup({ ...dialogsGroup })
+    }
+
+    const showCropper = (props: { imgURL: string, onConfirm: (data:Blob, close: () => any) => {} } ) => {
+        dialogsGroup.dialogs.push((index) => {
+            const close = () => {
+                closeDialogByID(index)
+            }
+
+            const dialogProps = {
+                dialogID: index,
+                key: index.toString(),
+                size: ['100%', '100%'],
+            }
+
+            return (
+                <Dialog { ...dialogProps } >
+                    <DialogCropper imgURL={ props.imgURL } handleClose={ close } handleConfirm={props.onConfirm} />
+                </Dialog>
+            )
+        })
+        setDialogsGroup({ ...dialogsGroup })
+    }
+
     const contextValue: DialogsContextType = {
         openConnectWalletDialog,
         showLoading,
@@ -244,7 +284,9 @@ function DialogProvider (props: DialogProviderProps) {
         openDialog,
         showBadgelet,
         showPresend,
-        showBadge
+        showBadge,
+        showAvatar,
+        showCropper
     }
 
     return (
