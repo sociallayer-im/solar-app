@@ -50,7 +50,8 @@ interface AppInputProps  {
     clearable?: boolean
     readOnly?: boolean
     endEnhancer?: () => ReactNode
-    startEnhancer?: () => ReactNode
+    startEnhancer?: () => ReactNode,
+    maxLength?: number
 }
 
 /**
@@ -87,6 +88,7 @@ export default function AppInput(props: AppInputProps) {
         <>
             <Input
                 value={ props.value }
+                maxLength={ props.maxLength }
                 readOnly={ props.readOnly || false }
                 clearable={ props.clearable }
                 error={ props.error || !!props.errorMsg }
