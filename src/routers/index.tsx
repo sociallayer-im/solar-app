@@ -6,6 +6,7 @@ const Profile = lazy(() => import('../pages/Profile/Profile'))
 const Login = lazy(() => import('../pages/Login'))
 const Regist = lazy(() => import('../pages/Regist'))
 const CreateBadge = lazy(() => import('../pages/CreateBadge'))
+const Issue = lazy(() => import('../pages/Issue'))
 const Error = lazy(() => import('../pages/Error'))
 
 function AppRouter () {
@@ -17,6 +18,7 @@ function AppRouter () {
                 <Route path="/login" element={<Login />}></Route>
                 <Route path="/regist" element={<Regist />}></Route>
                 <Route path="/badge/create" element={<CreateBadge />}></Route>
+                <Route path="/issue/:badgeId" element={<Issue />}></Route>
                 <Route path="*" element={<Error />}></Route>
             </Routes>
         </Suspense>

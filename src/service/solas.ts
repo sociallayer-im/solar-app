@@ -428,6 +428,30 @@ export async function setAvatar (props: SetAvatarProps): Promise<Profile> {
    return res.data.profile
 }
 
+export interface CreateBadgeProps {
+    name: string,
+    title: string,
+    domain: string,
+    image_url: string,
+    auth_token: string,
+    content?: string,
+    group_id?: number,
+
+}
+
+export async function createBadge (props: CreateBadgeProps): Promise<Badge> {
+    const res = await fetch.post({
+        url: `${api}/badge/create`,
+        data: props
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+
+    return res.data.badge as Badge
+}
+
 export default {
     login,
     getProfile,
@@ -446,5 +470,6 @@ export default {
     setBadgeletStatus,
     queryBadgeletDetail,
     uploadImage,
-    setAvatar
+    setAvatar,
+    createBadge
 }

@@ -1,11 +1,12 @@
 import { useNavigate } from 'react-router-dom'
 import { styled, useStyletron } from 'baseui'
 import { useState, useContext, useEffect } from 'react'
-import LangContext from '../provider/LangProvider/LangContext'
-import chooseFile from '../../utils/chooseFile'
-import solas from '../../service/solas'
-import UserContext from '../provider/UserProvider/UserContext'
-import DialogsContext from '../provider/DialogProvider/DialogsContext'
+import LangContext from '../../provider/LangProvider/LangContext'
+import chooseFile from '../../../utils/chooseFile'
+import solas from '../../../service/solas'
+import UserContext from '../../provider/UserProvider/UserContext'
+import DialogsContext from '../../provider/DialogProvider/DialogsContext'
+import BadgeSamples from "../../base/BadgeSamples";
 
 const Wrapper = styled('div', () => {
     return {
@@ -23,7 +24,8 @@ const Pic = styled('img', () => {
         borderRadius: '50%',
         boxShadow: '0 1.64557px 9.87342px rgb(0 0 0 / 10%)',
         display: 'block',
-        cursor: 'pointer'
+        cursor: 'pointer',
+        marginTop: '25px'
     }
 })
 
@@ -38,14 +40,15 @@ const Des = styled('div', () => {
 
 export interface UploadImageProps {
     confirm: (url: string) => any
+    imageSelect?: string
 }
 
 function UploadImage (props: UploadImageProps) {
+    const defaultImg = '/images/upload_default.svg'
     const [css] = useStyletron()
     const navigate = useNavigate()
-    const [preview, setPreview] = useState('')
+    const [imageSelect, setImageSelect] = useState(props.imageSelect)
     const { lang } = useContext(LangContext)
-    const defaultImg = '/images/upload_default.svg'
     const { user } = useContext(UserContext)
     const { showToast, showLoading, showCropper } = useContext(DialogsContext)
 
@@ -85,12 +88,12 @@ function UploadImage (props: UploadImageProps) {
                         const unload = showLoading()
                         try {
                             const newImage = await solas.uploadImage({
-                                file: res,
+                                file: await compress(res),
                                 uploader: user.wallet || user.email || '',
                                 auth_token: user.authToken || ''
                             })
                             unload()
-                            setPreview(newImage)
+                            setImageSelect(newImage)
                             props.confirm(newImage)
                         } catch (e: any) {
                             console.log('[selectFile]: ', e)
@@ -107,7 +110,8 @@ function UploadImage (props: UploadImageProps) {
     }
 
     return (<Wrapper>
-        <Pic onClick={ () => { selectFile() } } src={ preview || defaultImg } alt=""/>
+        <BadgeSamples onConfirm={ (coverUrl) => { setImageSelect(coverUrl); props.confirm(coverUrl) } }/>
+        <Pic onClick={ () => { selectFile() } } src={ imageSelect || defaultImg } alt=""/>
         <Des>{ lang['MintBadge_UploadTip'](['800K']) }</Des>
     </Wrapper>)
 }

@@ -7,7 +7,10 @@ function useVerify () {
     const domainInputMaxLength = 16
     const domainInputMinLength = 6
 
-    const verifyDomain =  (domain: string) => {
+    const verifyDomain =  (domain: string, limitLength=[domainInputMinLength, domainInputMaxLength]) => {
+        const minLength = limitLength[0] || domainInputMinLength
+        const maxLength = limitLength[1] || domainInputMaxLength
+
         if (!domain) {
             return lang['Regist_Input_Empty']
         }
@@ -34,18 +37,18 @@ function useVerify () {
             return lang['Regist_Input_Validate_3']
         }
 
-        if (domain.length < domainInputMinLength) {
-            return lang['Regist_Input_Validate_2']([domainInputMinLength.toString()])
+        if (domain.length < minLength) {
+            return lang['Regist_Input_Validate_2']([minLength.toString()])
         }
 
-        if (domain.length > domainInputMaxLength) {
-            return lang['Regist_Input_Validate']([domainInputMaxLength.toString()])
+        if (domain.length > maxLength) {
+            return lang['Regist_Input_Validate']([maxLength.toString()])
         }
 
         return null
     }
 
-    return {verifyDomain}
+    return { verifyDomain }
 }
 
 export default useVerify
