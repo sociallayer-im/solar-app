@@ -99,11 +99,12 @@ const langEN = {
   IssueBadge_Eventbtn: 'Event',
   IssueBadge_Address_List_Title: 'Select receivers',
   IssueBadge_Input_Error: 'Invalid domain, wallet address or username.',
+  IssueBadge_Input_Des: 'Input the domain/wallet/email address of the badge that issuee can receive the badge.',
 
   IssueFinish_Title: 'Issued Successfully',
   PresendFinish_Title: 'Send Successfully',
-  IssueFinish_IssuedToOne: slotLang('You\'ve issued badges to <span class="text-primary"><img src="{avatar}">{domain}</span>'),
-  IssueFinish_IssuedToMany: slotLang('You\'ve issued badges to <span class="text-primary"><img src="{avatar}">{domain}</span> and <span class="text-primary">{total}</span> other issuees!'),
+  IssueFinish_IssuedToOne: slotLang('You\'ve issued badges to <br/> <b>{1}</b>'),
+  IssueFinish_IssuedToMany: slotLang('You\'ve issued badges to <br/>  <b>{1}</b> <br/> and other <b>{2}</b> issuees!'),
   IssueFinish_GoAndInform: 'Go and inform',
   IssueFinish_CopyLink: 'Copy link',
   IssueFinish_BackToProfile: 'Back to Profile',
@@ -157,8 +158,7 @@ const langEN = {
   Quantity_input_label: 'Quantity',
   Quantity_Unlimited: 'Unlimited',
 
-  Presend_step_1: 'Fill in the quantity of badges',
-  Presend_step_2: 'The badges will be sent to the issuees as a link',
+  Presend_step: 'Fill in the quantity of badges, the badges will be sent to the issuees as a link.',
 
   presend_share_link: '#1 has issued you an NFT badge: #2. Go and get it! \n #3 \n It is recommended to use metamask or imToken browser to access the website.',
 
@@ -212,7 +212,7 @@ const langEN = {
 
   New_Year_1: 'Cast your New Year wishes into a digital badge.',
   New_Year_2: 'Reason for issuing :',
-  New_Year_3: 'Send you a limited badges,<br> scan the code to get',
+  New_Year_3: 'Send you a badge, scan <br> the code to get',
   Save_Card: 'Save to album',
 
   Group_invite_title: 'Invite new members',

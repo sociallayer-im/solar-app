@@ -84,3 +84,10 @@
 .icon-email:before {
   content: "\e912";
 }
+.icon-hash:before {
+  content: "\e914";
+}
+.icon-link:before {
+  content: "\e913";
+}
+

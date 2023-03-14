@@ -3,10 +3,10 @@
   border-radius: 12px;
   padding: 10px;
   position: relative;
-  height: 220px;
+  height: 160px;
 
   .editor {
-    height: 180px;
+    height: 120px;
     border: #f8f9f8;
     outline: none;
     box-sizing: border-box;
@@ -34,6 +34,7 @@
   }
 
   .textarea {
+    resize:none;
     position: absolute;
     top: 10px;
     z-index: 2;
@@ -62,7 +63,6 @@
     width:69px;
     height: 24px;
     text-align: center;
-    line-height: 24px;
     margin-right: 8px;
     display: flex;
     flex-flow: row nowrap;
@@ -72,5 +72,10 @@
     font-size: 14px;
     color: #3c3e3d;
     cursor: pointer;
+    flex-flow: row nowrap;
+
+    i {
+      margin-right: 6px;
+    }
   }
 }

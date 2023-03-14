@@ -4,4 +4,5 @@ export default function copy (text: string) {
     document.body.appendChild(oInput)
     oInput.select()
     document.execCommand('Copy')
+    oInput.remove()
 }

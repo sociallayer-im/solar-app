@@ -99,11 +99,12 @@ const langCN: LangConfig = {
   IssueBadge_Eventbtn: '事件',
   IssueBadge_Address_List_Title: '选择接收者',
   IssueBadge_Input_Error: '无效的域名，地址或者用户名',
+  IssueBadge_Input_Des: '输入域名/钱包/电子邮件地址，颁发人可以接收徽章。',
 
   IssueFinish_Title: '颁发成功',
   PresendFinish_Title: '预发送成功',
-  IssueFinish_IssuedToOne: slotLang('徽章已经颁发给<span class="text-primary"><img src="{avatar}">{domain}</span>'),
-  IssueFinish_IssuedToMany: slotLang('徽章已经颁发给<span class="text-primary"><img src="{avatar}">{domain}</span>和其他 <span class="text-primary">{total}</span> 位接收者!'),
+  IssueFinish_IssuedToOne: slotLang('徽章已经颁发给 <br/> <b>{1}</b> !'),
+  IssueFinish_IssuedToMany: slotLang('徽章已经颁发给 <br/> <b>{1}</b> <br/>和其他 <b>{2}</b> 位接收者!'),
   IssueFinish_GoAndInform: '去通知 TA',
   IssueFinish_CopyLink: '复制链接',
   IssueFinish_BackToProfile: '回到主页',
@@ -157,8 +158,7 @@ const langCN: LangConfig = {
   Quantity_input_label: '数量',
   Quantity_Unlimited: '无限制',
 
-  Presend_step_1: '输入徽章数量',
-  Presend_step_2: '徽章将作为链接发送',
+  Presend_step: '输入徽章数量，徽章将作为链接发送。',
 
   presend_share_link: '#1 给你发送了NFT徽章：#2。 赶紧去获取吧！\n #3 \n 推荐使用MetaMask或者imToken的浏览器打开。',
 
@@ -212,7 +212,7 @@ const langCN: LangConfig = {
 
   New_Year_1: '将你的新年祝福铸造成数字徽章',
   New_Year_2: '颁发理由 :',
-  New_Year_3: '送你一枚限量徽章 扫码领取',
+  New_Year_3: '送你一枚徽章 扫码领取',
   Save_Card: '保存到相册',
 
   Group_invite_title: '邀请新成员',

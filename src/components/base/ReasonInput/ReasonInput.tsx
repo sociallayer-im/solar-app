@@ -16,6 +16,7 @@ function ReasonInput(props: ReasonInputProps) {
     const mapInput = (value: string) => {
         const newString = value.substr(0, 200)
         setValue(newString)
+        props.onChange(newString)
     }
 
     const addTag = () => {
@@ -46,8 +47,14 @@ function ReasonInput(props: ReasonInputProps) {
 
        <div className='action-bar'>
            <div className='btns'>
-               <div className='btn' onClick={() => { addLink() }}> { lang['IssueBadge_linkbtn'] } </div>
-               <div className='btn' onClick={() => { addTag() }}> { lang['IssueBadge_Eventbtn'] }  </div>
+               <div className='btn' onClick={() => { addTag() }}>
+                   <i className='icon icon-hash'></i>
+                   { lang['IssueBadge_Eventbtn'] }
+               </div>
+               <div className='btn' onClick={() => { addLink() }}>
+                   <i className='icon icon-link'></i>
+                   { lang['IssueBadge_linkbtn'] }
+               </div>
            </div>
            <div>{value.length}/200</div>
        </div>

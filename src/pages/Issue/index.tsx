@@ -6,24 +6,24 @@ import './Issue.less'
 import LangContext from '../../components/provider/LangProvider/LangContext'
 import AppInput from '../../components/base/AppInput'
 import AppButton, { BTN_KIND } from '../../components/base/AppButton'
-import useVerify from '../../hooks/verify'
-import solas, { Badge } from '../../service/solas'
+import solas, {Badge, issueBatch} from '../../service/solas'
 import DialogsContext from '../../components/provider/DialogProvider/DialogsContext'
 import UserContext from '../../components/provider/UserProvider/UserContext'
 import ReasonInput from '../../components/base/ReasonInput/ReasonInput'
+import IssueTypeTabs from '../../components/base/IssueTypeTabs'
+import { Tab } from 'baseui/tabs'
+import AmountInput from '../../components/base/AmountInput/AmountInput'
+import IssuesInput from '../../components/base/IssuesInput/IssuesInput'
 
 function Issue() {
-    const navigate = useNavigate()
     const [reason, setReason,] = useState('')
-    const [domainError, setDomainError,] = useState('')
-    const [badgeName, setBadgeName] = useState('')
-    const [badgeNameError, setBadgeNameError] = useState('')
-    const enhancer = import.meta.env.VITE_SOLAS_DOMAIN
     const { user } = useContext(UserContext)
-    const { showLoading, showToast } = useContext(DialogsContext)
-    const { verifyDomain } = useVerify()
+    const { showToast, showLoading } = useContext(DialogsContext)
     const [badge, setBadge] = useState<Badge | null>(null)
     const params = useParams()
+    const [presendAmount, setPresendAmount] = useState<number | string>(0)
+    const [issueType, setIssueType] = useState('domain')
+    const [issues, setIssues] = useState<string[]>([''])
 
     const { lang } = useContext(LangContext)
 
@@ -38,8 +38,69 @@ function Issue() {
         }
     }, [params])
 
-    const handleCreate = async () => {}
+    const handleCreatePresend = async () => {
+        if (!presendAmount) {
+            showToast('Please type in quantity')
+            return
+        }
+        if (!reason) {
+            showToast('Please type in reason')
+            return
+        }
 
+        const unload = showLoading()
+        try {
+            const presend = await solas.createPresend({
+                badge_id: badge?.id!,
+                message: reason,
+                counter: presendAmount,
+                auth_token: user.authToken || ''
+            })
+            unload()
+        } catch (e: any) {
+            console.log('[handleCreatePresend]: ', e)
+            unload()
+            showToast(e.message || 'Create presend fail')
+        }
+    }
+
+    const handleCreateIssue = async () => {
+        if (!reason) {
+            showToast('Please type in reason')
+            return
+        }
+
+        const checkedIssues = issues.filter(item => !!item)
+        if (!checkedIssues.length) {
+            showToast('Please type in issues')
+            return
+        }
+
+        console.log('checkedIssues', checkedIssues)
+
+        const unload = showLoading()
+        try {
+            const issue = await solas.issueBatch({
+                badgeId: badge?.id!,
+                reason: reason,
+                issues: checkedIssues,
+                auth_token: user.authToken || ''
+            })
+            unload()
+        } catch (e: any) {
+            console.log('[handleCreateIssue]: ', e)
+            unload()
+            showToast(e.message || 'Issue fail')
+        }
+    }
+
+    const handleCreate = async () => {
+        if (issueType === 'presend') {
+            handleCreatePresend()
+        } else {
+            handleCreateIssue()
+        }
+    }
 
     return (
         <Layout>
@@ -59,7 +120,29 @@ function Issue() {
 
                     <div className='input-area'>
                         <div className='input-area-title'>{ lang['IssueBadge_Reason'] }</div>
-                        <ReasonInput value={reason} onChange={ (value) => { setReason(value) }} />
+                        <ReasonInput value={reason}  onChange={ (value) => { setReason(value) }} />
+                    </div>
+
+                    <div className='input-area'>
+                        <div className='input-area-title'>{ lang['IssueBadge_Issuees'] }</div>
+
+                        <IssueTypeTabs initialState={ { activeKey: issueType } }
+                                       onChange={ (key) => { setIssueType(key.activeKey.toString()) } }>
+                            <Tab key='presend' title={ lang['IssueBadge_Sendwithlink'] }>
+                                <div className='issues-des'>
+                                    { lang['Presend_step'] }
+                                </div>
+                                <AmountInput value={ presendAmount }
+                                    onChange={ (newValue) => { setPresendAmount(newValue) } }/>
+                            </Tab>
+                            <Tab key='domain' title={ lang['IssueBadge_Sendwithdomain'] }>
+                                <div className='issues-des'>
+                                    { lang['IssueBadge_Input_Des'] }
+                                </div>
+                                <IssuesInput value={ issues }
+                                    onChange={ (newIssues) => { setIssues(newIssues) } } />
+                            </Tab>
+                        </IssueTypeTabs>
                     </div>
 
                     <AppButton kind={ BTN_KIND.primary }

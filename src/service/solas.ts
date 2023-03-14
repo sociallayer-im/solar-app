@@ -32,6 +32,7 @@ interface GetProfileProps {
     address?: string
     email?: string
     id?: number,
+    domain?: string
     username?: string
 }
 
@@ -286,7 +287,6 @@ export async function queryUserGroup (props: QueryUserGroupProps): Promise<Group
         groupsDuplicateObj[item.id] = item
     })
 
-    console.log('groups', groupsDuplicateObj)
     return Object.values(groupsDuplicateObj) as Group[]
 }
 
@@ -452,6 +452,169 @@ export async function createBadge (props: CreateBadgeProps): Promise<Badge> {
     return res.data.badge as Badge
 }
 
+export interface CreatePresendProps {
+    badge_id: number,
+    message: string,
+    counter: number | string,
+    auth_token: string
+}
+
+export async function createPresend (props: CreatePresendProps) {
+    props.counter = props.counter === 'Unlimited' ? 65535 : props.counter
+    const res = await fetch.post({
+        url: `${api}/presend/create`,
+        data: props
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+
+    return res.data.presend
+}
+
+export interface GetGroupMembersProps {
+    group_id: number
+}
+export async function getGroupMembers (props: GetGroupMembersProps): Promise<Profile[]> {
+    const res = await fetch.get({
+        url: `${api}/group/members`,
+        data: props
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+
+    return res.data.members
+}
+
+export async function getFollowers (userId: number): Promise<Profile[]> {
+    const res = await fetch.get({
+        url: `${api}/profile/followers`,
+        data: {
+            id: userId
+        }
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+
+    return res.data.followers
+}
+
+export async function getFollowings (userId: number): Promise<Profile[]>{
+    const res = await fetch.get({
+        url: `${api}/profile/followings`,
+        data: {
+            id: userId
+        }
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+
+    return res.data.followings
+}
+
+export interface IssueBatchProps {
+    issues: string[],
+    auth_token: string,
+    reason: string,
+    badgeId: number
+}
+
+export async function issueBatch (props: IssueBatchProps): Promise<Badgelet[]> {
+    const walletAddress: string[] = []
+    const socialLayerUsers: string[] = []
+    const domains: string[] = []
+    const emails: string[] = []
+    const socialLayerDomain = import.meta.env.VITE_SOLAS_DOMAIN
+
+    props.issues.forEach(item => {
+        if (item.endsWith('.eth') || item.endsWith('.dot')) {
+            domains.push(item)
+        } else if (item.startsWith('0x')) {
+            walletAddress.push(item)
+        } else if (item.endsWith(socialLayerDomain)) {
+            socialLayerUsers.push(item)
+        } else if (item.match(/^\w+@\w+\.\w+$/i)) {
+            emails.push(item)
+        } else {
+            socialLayerUsers.push(item + socialLayerDomain)
+        }
+    })
+
+    console.log('walletAddress', walletAddress)
+    console.log('socialLayerUsers', socialLayerUsers)
+    console.log('domains', domains)
+    const domainToWalletAddress: any = []
+    domains.map((item) => {
+        return domainToWalletAddress.push(DDNSServer(item))
+    })
+
+    const domainOwnerAddress = await Promise.all(domainToWalletAddress)
+    domainOwnerAddress.forEach((item, index) => {
+        if (!item) throw new Error(`Domain ${domains[index]} is not exist`)
+    })
+
+    const task: any = []
+    walletAddress.forEach((item) => {
+        task.push(getProfile({ address: item } ))
+    })
+    socialLayerUsers.map((item) => {
+        task.push(getProfile({ domain: item } ))
+    })
+    domainOwnerAddress.map((item) => {
+        task.push(getProfile({ domain: item } ))
+    })
+    emails.map((item) => {
+        task.push(getProfile({ email: item } ))
+    })
+
+    const profiles = await Promise.all(task)
+    profiles.forEach((item, index) => {
+        if (!item) throw new Error(`Invalid Account ${domains[index]}`)
+    })
+
+    const subjectUrls = props.reason.match(/@[^\s]*/g)
+    let subjectUrl = ''
+    if (subjectUrls) {
+        subjectUrl = subjectUrls[0].replace('@', '')
+    }
+
+    const res = await fetch.post({
+        url: `${api}/badge/send`,
+        data: {
+            badge_id: props.badgeId,
+            receivers: [...walletAddress, ...socialLayerUsers, ...domainOwnerAddress, ...emails],
+            content: props.reason,
+            subject_url: subjectUrl,
+            auth_token: props.auth_token
+        }
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+
+    return res.data.badgelets
+}
+
+export async function DDNSServer (domain: string): Promise<string | null> {
+    const res = await fetch.get({
+        url: `https://api.ddns.so/name/${domain.toLowerCase()}`
+    })
+
+    if (res.data.result !== 'ok') {
+        throw new Error(`[ddns]: get address fail: ${domain}`)
+    }
+
+    return res.data.data ? (res.data.data.owner || null) : null
+}
+
 export default {
     login,
     getProfile,
@@ -471,5 +634,10 @@ export default {
     queryBadgeletDetail,
     uploadImage,
     setAvatar,
-    createBadge
+    createBadge,
+    createPresend,
+    getGroupMembers,
+    getFollowers,
+    getFollowings,
+    issueBatch
 }

@@ -32,7 +32,8 @@ const Title = styled('div', ({$theme}) => ({
 interface PageBackProp {
     to?: string
     title?: string,
-    menu?: string
+    menu?: string,
+    onClose?: () => any
 }
 
 function PageBack (props: PageBackProp) {
@@ -43,6 +44,8 @@ function PageBack (props: PageBackProp) {
     const handleBack = () => {
         if (props.to) {
             navigate(props.to)
+        } else if (props.onClose) {
+            props.onClose()
         } else {
             window.history.back()
         }

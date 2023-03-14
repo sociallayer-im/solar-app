@@ -66,7 +66,10 @@ export default function AppInput(props: AppInputProps) {
         paddingBottom: '12px',
         paddingLeft: '10px',
         paddingRight: '10px',
-        fontSize: '14px'
+        fontSize: '14px',
+        '::placeholder' : {
+            color: '#919191'
+        }
     }
 
     const errorStyle = {

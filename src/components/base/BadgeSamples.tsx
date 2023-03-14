@@ -5,7 +5,6 @@ import langContext from '../provider/LangProvider/LangContext'
 
 //Swiper deps
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Pagination } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/pagination'
 
