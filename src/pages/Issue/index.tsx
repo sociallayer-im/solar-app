@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useState, useContext, useEffect } from 'react'
 import Layout from '../../components/Layout/Layout'
 import PageBack from '../../components/base/PageBack'
@@ -21,9 +21,11 @@ function Issue() {
     const { showToast, showLoading } = useContext(DialogsContext)
     const [badge, setBadge] = useState<Badge | null>(null)
     const params = useParams()
+    const [SearchParams, _] = useSearchParams()
     const [presendAmount, setPresendAmount] = useState<number | string>(0)
-    const [issueType, setIssueType] = useState('domain')
+    const [issueType, setIssueType] = useState('presend')
     const [issues, setIssues] = useState<string[]>([''])
+    const navigate = useNavigate()
 
     const { lang } = useContext(LangContext)
 
@@ -37,6 +39,14 @@ function Issue() {
             getBadgeInfo()
         }
     }, [params])
+
+    useEffect(() => {
+        const presetAcceptor = SearchParams.get('to')
+        if (presetAcceptor) {
+            setIssues([presetAcceptor, ''])
+            setIssueType('domain')
+        }
+    }, [])
 
     const handleCreatePresend = async () => {
         if (!presendAmount) {
@@ -57,6 +67,7 @@ function Issue() {
                 auth_token: user.authToken || ''
             })
             unload()
+            navigate(`/issue-success?presend=${presend.id}`)
         } catch (e: any) {
             console.log('[handleCreatePresend]: ', e)
             unload()
@@ -80,13 +91,14 @@ function Issue() {
 
         const unload = showLoading()
         try {
-            const issue = await solas.issueBatch({
+            const badgelets = await solas.issueBatch({
                 badgeId: badge?.id!,
                 reason: reason,
                 issues: checkedIssues,
                 auth_token: user.authToken || ''
             })
             unload()
+            navigate(`/issue-success?badgelet=${badgelets[0].id}&amount=${badgelets.length}`)
         } catch (e: any) {
             console.log('[handleCreateIssue]: ', e)
             unload()
@@ -126,7 +138,7 @@ function Issue() {
                     <div className='input-area'>
                         <div className='input-area-title'>{ lang['IssueBadge_Issuees'] }</div>
 
-                        <IssueTypeTabs initialState={ { activeKey: issueType } }
+                        <IssueTypeTabs activeKey={issueType}
                                        onChange={ (key) => { setIssueType(key.activeKey.toString()) } }>
                             <Tab key='presend' title={ lang['IssueBadge_Sendwithlink'] }>
                                 <div className='issues-des'>

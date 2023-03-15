@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useState, useContext, useEffect } from 'react'
 import Layout from '../../components/Layout/Layout'
 import PageBack from '../../components/base/PageBack'
@@ -23,6 +23,7 @@ function CreateBadge() {
     const { user } = useContext(UserContext)
     const { showLoading, showToast } = useContext(DialogsContext)
     const { verifyDomain } = useVerify()
+    const [searchParams, _] = useSearchParams()
 
     const { lang } = useContext(LangContext)
 
@@ -66,7 +67,8 @@ function CreateBadge() {
                 content: '',
             })
             unload()
-            navigate(`/issue/${newBadge.id}`)
+            const presetAcceptor = searchParams.get('to')
+            navigate(presetAcceptor ? `/issue/${newBadge.id}?to=${presetAcceptor}` : `/issue/${newBadge.id}?to=${presetAcceptor}`)
         } catch (e: any) {
             unload()
             console.log('[handleCreate]: ', e)

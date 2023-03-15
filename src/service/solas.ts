@@ -3,6 +3,13 @@ import fetch from '../utils/fetch'
 
 const api = import.meta.env.VITE_SOLAS_API
 
+interface AuthProp { auth_token: string }
+function checkAuth <K extends AuthProp> (props: K) {
+    if (!props.auth_token) {
+        throw new Error('Please login to continue')
+    }
+}
+
 export async function login (signer: any) {
     return await signInWithEthereum(signer)
 }
@@ -80,12 +87,12 @@ interface SolasRegistProps {
     domain: string
     email?: string
     address?: string
-    auth_token?: string
+    auth_token: string
     username: string
 }
 
 export async function regist (props: SolasRegistProps ): Promise<Profile> {
-
+    checkAuth(props)
     const res = await fetch.post({
         url: `${api}/profile/create`,
         data: props
@@ -296,6 +303,7 @@ export interface AcceptBadgeletProp {
 }
 
 export async function acceptBadgelet (props: AcceptBadgeletProp): Promise<void> {
+    checkAuth(props)
     const res = await fetch.post({
         url: `${api}/badge/accept`,
         data: props
@@ -312,7 +320,7 @@ export interface RejectBadgeletProp {
 }
 
 export async function rejectBadgelet (props: RejectBadgeletProp): Promise<void> {
-
+    checkAuth(props)
     const res = await fetch.post({
         url: `${api}/badge/reject`,
         data: props
@@ -330,6 +338,7 @@ export interface AcceptPresendProps {
 }
 
 export async function acceptPresend (props: AcceptPresendProps) {
+    checkAuth(props)
     const res = await fetch.post({
         url: `${api}/presend/use`,
         data: props
@@ -350,6 +359,7 @@ export interface SetBadgeletStatusProps {
 }
 
 export async function setBadgeletStatus (props: SetBadgeletStatusProps) {
+    checkAuth(props)
     const res = await fetch.post({
         url: `${api}/badge/${props.type}`,
         data: {
@@ -391,6 +401,7 @@ export interface UploadImageProps {
 }
 
 export async function uploadImage (props: UploadImageProps): Promise<string> {
+    checkAuth(props)
     const randomName = Math.random().toString(36).slice(-8)
     const formData = new FormData()
     formData.append('data', props.file)
@@ -416,6 +427,7 @@ export interface SetAvatarProps {
 }
 
 export async function setAvatar (props: SetAvatarProps): Promise<Profile> {
+    checkAuth(props)
     const res = await fetch.post({
         url: `${api}/profile/update`,
         data: props
@@ -440,6 +452,7 @@ export interface CreateBadgeProps {
 }
 
 export async function createBadge (props: CreateBadgeProps): Promise<Badge> {
+    checkAuth(props)
     const res = await fetch.post({
         url: `${api}/badge/create`,
         data: props
@@ -460,6 +473,7 @@ export interface CreatePresendProps {
 }
 
 export async function createPresend (props: CreatePresendProps) {
+    checkAuth(props)
     props.counter = props.counter === 'Unlimited' ? 65535 : props.counter
     const res = await fetch.post({
         url: `${api}/presend/create`,
@@ -476,6 +490,7 @@ export async function createPresend (props: CreatePresendProps) {
 export interface GetGroupMembersProps {
     group_id: number
 }
+
 export async function getGroupMembers (props: GetGroupMembersProps): Promise<Profile[]> {
     const res = await fetch.get({
         url: `${api}/group/members`,
@@ -527,6 +542,7 @@ export interface IssueBatchProps {
 }
 
 export async function issueBatch (props: IssueBatchProps): Promise<Badgelet[]> {
+    checkAuth(props)
     const walletAddress: string[] = []
     const socialLayerUsers: string[] = []
     const domains: string[] = []
@@ -560,23 +576,30 @@ export async function issueBatch (props: IssueBatchProps): Promise<Badgelet[]> {
         if (!item) throw new Error(`Domain ${domains[index]} is not exist`)
     })
 
+
+    const handleError = (account: string) => {
+        throw new Error(`Invalid Account ${account}`)
+    }
+
     const task: any = []
     walletAddress.forEach((item) => {
-        task.push(getProfile({ address: item } ))
+        task.push(getProfile({ address: item } ).catch(e => { handleError(item) }))
     })
     socialLayerUsers.map((item) => {
-        task.push(getProfile({ domain: item } ))
+        task.push(getProfile({ domain: item } ).catch(e => { handleError(item) }))
     })
     domainOwnerAddress.map((item) => {
-        task.push(getProfile({ domain: item } ))
+        task.push(getProfile({ address: item } ).catch(e => { handleError(item) }))
     })
     emails.map((item) => {
-        task.push(getProfile({ email: item } ))
+        task.push(getProfile({ email: item } ).catch(e => { handleError(item) }))
     })
 
     const profiles = await Promise.all(task)
     profiles.forEach((item, index) => {
-        if (!item) throw new Error(`Invalid Account ${domains[index]}`)
+        if (!item)  {
+            handleError(domains[index])
+        }
     })
 
     const subjectUrls = props.reason.match(/@[^\s]*/g)

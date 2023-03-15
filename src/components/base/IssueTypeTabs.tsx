@@ -1,6 +1,6 @@
-import { StatefulTabs, StatefulTabsProps } from 'baseui/tabs'
+import { StatefulTabs, TabsProps, Tabs } from 'baseui/tabs'
 
-function AppTabs (props: Partial<StatefulTabsProps>) {
+function AppTabs (props: Partial<TabsProps>) {
     const { children, ...rest }  = props
 
     const tabStyle = ({$active, $disabled, $theme}: any) => ({
@@ -17,7 +17,7 @@ function AppTabs (props: Partial<StatefulTabsProps>) {
     })
 
     return (
-        <StatefulTabs
+        <Tabs
             { ...rest }
             overrides={{
                 TabBar: {
@@ -35,7 +35,7 @@ function AppTabs (props: Partial<StatefulTabsProps>) {
 
             }}>
             { children }
-        </StatefulTabs>
+        </Tabs>
     )
 }
 

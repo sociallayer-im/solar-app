@@ -98,7 +98,7 @@ function UploadImage (props: UploadImageProps) {
                         } catch (e: any) {
                             console.log('[selectFile]: ', e)
                             unload()
-                            showToast('Upload fail')
+                            showToast(e.message|| 'Upload fail')
                         }
                     }
                 })

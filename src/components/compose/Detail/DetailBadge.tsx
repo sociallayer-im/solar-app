@@ -1,6 +1,6 @@
 import LangContext from '../../provider/LangProvider/LangContext'
 import UserContext from '../../provider/UserProvider/UserContext'
-import {useContext, useEffect, useRef, useState} from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import DetailWrapper from './atoms/DetailWrapper'
 import usePicture from '../../../hooks/pictrue'
 import DetailHeader from './atoms/DetailHeader'
@@ -13,6 +13,7 @@ import BtnGroup from '../../base/BtnGroup/BtnGroup'
 import DetailReceivers from './atoms/DetailReceivers'
 import DetailScrollBox from './atoms/DetailScrollBox'
 import DetailBadgelet from './DetailBadgelet'
+import { useNavigate } from 'react-router-dom'
 
 //Swiper deps
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -29,6 +30,7 @@ function DetailBadge (props: DetailBadgeProps ) {
     const { lang } = useContext(LangContext)
     const { user } = useContext(UserContext)
     const { defaultAvatar } = usePicture()
+    const navigate = useNavigate()
     const [receivers, setReceivers] = useState<ProfileSimple[]>([])
     const [badgelets, setBadgelets] = useState<Badgelet[]>([])
     const swiper = useRef<any>(null)
@@ -59,7 +61,8 @@ function DetailBadge (props: DetailBadgeProps ) {
     }, [])
 
     const handleIssue= async () => {
-
+        navigate(`/issue/${props.badge.id}`)
+        props.handleClose()
     }
 
     const loginUserIsSender = user.id === props.badge.sender.id

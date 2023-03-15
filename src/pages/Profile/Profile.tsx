@@ -2,7 +2,7 @@ import Layout from '../../components/Layout/Layout'
 import { useParams } from 'react-router-dom'
 import PageBack from '../../components/base/PageBack'
 import './Profile.less'
-import {useContext, useEffect, useState} from 'react'
+import { useContext, useEffect, useState } from 'react'
 import solas, { Profile } from '../../service/solas'
 import DialogsContext from '../../components/provider/DialogProvider/DialogsContext'
 import ProfilePanel from '../../components/base/ProfilePanel/ProfilePanel'
@@ -15,6 +15,8 @@ import ListUserMinted from '../../components/compose/ListUserMinted'
 import ListUserPresend from '../../components/compose/ListUserPresend'
 import ListUserBadgelet from '../../components/compose/ListUserBadgelet'
 import ListUserGroup from '../../components/compose/ListUserGroup'
+import UserContext from '../../components/provider/UserProvider/UserContext'
+import { useNavigate } from 'react-router-dom'
 
 
 function ProfilePage () {
@@ -22,7 +24,9 @@ function ProfilePage () {
     const [profile, setProfile] = useState<Profile | null>(null)
     const { showLoading } = useContext(DialogsContext)
     const { lang } = useContext(LangContext)
+    const { user } = useContext(UserContext)
     const [selectedTab, setSelectedTab] = useState('Minted')
+    const navigate = useNavigate()
 
     useEffect(() => {
         const getProfile  =  async function () {
@@ -40,15 +44,26 @@ function ProfilePage () {
         getProfile()
     },[username])
 
+    const handleMintOrIssue = () => {
+        navigate(user.userName === profile?.username ? '/badge-create' : `/badge-create?to=${profile?.domain}`)
+    }
+
     return <Layout>
         {profile &&
             <div className='profile-page'>
             <div className='up-side'>
                 <div className='center'>
                     <PageBack />
-                    <div className='slot_1'><ProfilePanel {...profile!} /></div>
+                    <div className='slot_1'>
+                        <ProfilePanel {...profile!} />
+                    </div>
                     <div className='slot_2'>
-                        <AppButton size={ BTN_SIZE.compact }> { lang['Profile_User_MindBadge'] }</AppButton>
+                        <AppButton size={ BTN_SIZE.compact } onClick={ handleMintOrIssue }>
+                            { user.userName === profile.username
+                                ? lang['Profile_User_MindBadge']
+                                : lang['Profile_User_IssueBadge']
+                            }
+                        </AppButton>
                     </div>
                 </div>
             </div>

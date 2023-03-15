@@ -9,6 +9,7 @@ import PageBack from '../../components/base/PageBack'
 import QRcode from '../../components/base/QRcode'
 import AppButton, { BTN_KIND } from '../../components/base/AppButton'
 import html2canvas from 'html2canvas'
+import copy from '../../utils/copy'
 
 //Swiper deps
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -50,6 +51,7 @@ function PresendSuccess(props: PresendSuccessProps) {
     const { user } = useContext(UserContext)
     const { defaultAvatar } = usePicture()
     const [sender, setSender] = useState<Profile | null >(null)
+    const presendLink = `https://${window.location.host}/presend/${props.presend.id}_${props.presend.code}`
 
     useEffect(() => {
         async function getOwner () {
@@ -58,6 +60,7 @@ function PresendSuccess(props: PresendSuccessProps) {
         }
         getOwner()
     }, [])
+
 
     const saveCard = () => {
         const target = document.querySelector(`#card_${selectTheme}`) as HTMLDivElement
@@ -81,12 +84,20 @@ function PresendSuccess(props: PresendSuccessProps) {
             })
     }
 
-    const presendLink = `https://${window.location.host}/presend/${props.presend.id}_${props.presend.code}`
+    const handleCopy = () => {
+        copy(lang['presend_share_link']
+            .replace('#1', sender?.username!)
+            .replace('#2', props.presend.badge.title || '')
+            .replace('#3', presendLink))
+    }
+
+
 
     return (<div className='presned-success' style={{background: themes[selectTheme].bg}}>
         <div className='center'>
             <PageBack
                 title={lang['PresendFinish_Title']}
+                to={`/profile/${user.userName}`}
             />
         </div>
         <Swiper
@@ -128,9 +139,10 @@ function PresendSuccess(props: PresendSuccessProps) {
                 <i className='icon-download'></i>
                 { lang['Save_Card'] }
             </AppButton>
-            {!!props.presend.code && <AppButton>
-                { lang['IssueFinish_CopyLink'] }
-            </AppButton>}
+            {!!props.presend.code &&
+                <AppButton onClick={ handleCopy }>
+                    { lang['IssueFinish_CopyLink'] }
+                </AppButton>}
         </div>
     </div>)
 }
