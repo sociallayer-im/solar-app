@@ -16,8 +16,17 @@ export interface DialogProviderProps {
     children: ReactNode
 }
 
+interface Dialog {
+    id: number,
+    content: () => ReactNode
+}
+
+function genID () {
+    return parseInt((Math.random()*(99999 - 10000 + 1) + 10000).toString())
+}
+
 function DialogProvider (props: DialogProviderProps) {
-    const [dialogsGroup, setDialogsGroup] = useState<{dialogs: ((index: number)=>ReactNode)[]}>({ dialogs: [] })
+    const [dialogsGroup, setDialogsGroup] = useState<{dialogs: Dialog[]}>({ dialogs: [] })
 
     useEffect(() => {
         document.body.style.overflow = dialogsGroup.dialogs[0] ? 'hidden' : 'auto'
@@ -27,103 +36,121 @@ function DialogProvider (props: DialogProviderProps) {
 
     const closeDialogByID = (dialogID: number) => {
         if (dialogsGroup.dialogs.length) {
-             dialogsGroup.dialogs.pop()
-            setDialogsGroup({...dialogsGroup})
+            let targetIndex: null | number = null
+            dialogsGroup.dialogs.forEach((item, index) => {
+                if (item.id === dialogID) {
+                    targetIndex = index
+                }
+            })
+
+            if ( targetIndex === null ) return
+            const copy = { ...dialogsGroup}
+            copy.dialogs.splice(targetIndex, 1)
+            setDialogsGroup(copy)
         }
     }
 
     const openDialog = (openDialogProps: { content: (close: any) => ReactNode, size?: number[] } ) => {
-        dialogsGroup.dialogs.push((index: number) => {
-            const close = () => {
-                closeDialogByID(index)
-            }
+        const id = genID()
+        dialogsGroup.dialogs.push({
+            id: id,
+            content: () => {
+                const close = () => {
+                    closeDialogByID(id)
+                }
 
-            const props = {
-                dialogID: index,
-                key: index.toString(),
-                size: openDialogProps.size || [320, 450],
-                handleClose: close
-            }
+                const props = {
+                    key: id.toString(),
+                    size: openDialogProps.size || [320, 450],
+                    handleClose: close
+                }
 
-            return (
-                <Dialog {...props} >
-                    { openDialogProps.content(close) }
-                </Dialog>
-            )
+                return (
+                    <Dialog {...props} >
+                        { openDialogProps.content(close) }
+                    </Dialog>
+                )
+            }
         })
         setDialogsGroup({...dialogsGroup})
     }
 
     const openConnectWalletDialog = () => {
-        dialogsGroup.dialogs.push((index: number) => {
-            const close = () => {
-                closeDialogByID(index)
-            }
+        const id = genID()
+        dialogsGroup.dialogs.push({
+            id,
+            content: () => {
+                const close = () => {
+                    closeDialogByID(id)
+                }
 
-            const props = {
-                dialogID: index,
-                key: index.toString(),
-                size: [320, 450],
-                handleClose: close
-            }
+                const props = {
+                    key: id.toString(),
+                    size: [320, 450],
+                    handleClose: close
+                }
 
-            return (
-                <Dialog {...props} >
-                    <DialogConnectWallet  handleClose={close} />
-                </Dialog>
-            )
+                return (
+                    <Dialog {...props} >
+                        <DialogConnectWallet  handleClose={close} />
+                    </Dialog>
+                )
+            }
         })
 
         setDialogsGroup({...dialogsGroup})
     }
 
     const showLoading = () => {
-        let id = -1
-        dialogsGroup.dialogs.push((index) => {
-            id = index
-            const props = {
-                dialogID: index,
-                key: index.toString(),
-                size: [76, 76],
-                noShell: true
+        const id = genID()
+        dialogsGroup.dialogs.push({
+            id,
+            content: () => {
+                const props = {
+                    key: id.toString(),
+                    size: [76, 76],
+                    noShell: true
+                }
+
+                return (
+                    <Dialog {...props} >
+                        <ToastLoading />
+                    </Dialog>
+                )
             }
-
-            return (
-                <Dialog {...props} >
-                    <ToastLoading />
-                </Dialog>
-            )
         })
-
 
         setDialogsGroup({...dialogsGroup})
         return () => { closeDialogByID(id) }
     }
 
     const showToast = (text: string, duration?: number) => {
+        const id = genID()
         let closeToast = () => {}
         let timeOut: any = null
-        dialogsGroup.dialogs.push((index) => {
-            const close = () => {
-                timeOut && clearTimeout(timeOut)
-                closeDialogByID(index)
+        dialogsGroup.dialogs.push({
+            id,
+            content: () => {
+                const close = () => {
+                    !!timeOut && clearTimeout(timeOut)
+                    closeDialogByID(id)
+                }
+
+                closeToast = close
+
+                const props = {
+                    key: id.toString(),
+                    maxSize: ['300px', 'auto'],
+                    noShell: true,
+                    handleClose: close
+                }
+
+                return (
+                    <Dialog { ...props } >
+                        <Toast text={ text }></Toast>
+                    </Dialog>
+                )
             }
-
-            closeToast = close
-
-            const props = {
-                dialogID: index,
-                key: index.toString(),
-                maxSize: ['300px', 'auto'],
-                noShell: true,
-                handleClose: close
-            }
-
-            return (
-                <Dialog { ...props } >
-                    <Toast text={ text }></Toast>
-                </Dialog>
-            )
         })
 
 
@@ -137,141 +164,159 @@ function DialogProvider (props: DialogProviderProps) {
     }
 
     const openConfirmDialog = (props: DialogConfirmProps) => {
-        dialogsGroup.dialogs.push((index) => {
-            const close = () => {
-                closeDialogByID(index)
-            }
-
-            if (props.onCancel) {
-                const propsClose = props.onCancel
-                props.onCancel = () => {
-                    propsClose()
-                    close()
+        const id = genID()
+        dialogsGroup.dialogs.push({
+            id,
+            content: () => {
+                const close = () => {
+                    closeDialogByID(id)
                 }
-            } else {
-                props.onCancel = close
-            }
 
-            const dialogProps = {
-                dialogID: index,
-                key: index.toString(),
-                size: [340, 'auto'],
-                handleClose: close
-            }
+                if (props.onCancel) {
+                    const propsClose = props.onCancel
+                    props.onCancel = () => {
+                        propsClose()
+                        close()
+                    }
+                } else {
+                    props.onCancel = close
+                }
 
-            return (
-                <Dialog { ...dialogProps } >
-                    <DialogConfirm { ...props } />
-                </Dialog>
-            )
+                const dialogProps = {
+                    key: id.toString(),
+                    size: [340, 'auto'],
+                    handleClose: close
+                }
+
+                return (
+                    <Dialog { ...dialogProps } >
+                        <DialogConfirm { ...props } />
+                    </Dialog>
+                )
+            }
         })
         setDialogsGroup({ ...dialogsGroup })
     }
 
     const showBadgelet = (props: Badgelet) => {
-        dialogsGroup.dialogs.push((index) => {
-            const close = () => {
-                closeDialogByID(index)
-            }
+        const id = genID()
+        dialogsGroup.dialogs.push({
+            id,
+            content: () => {
+                const close = () => {
+                    closeDialogByID(id)
+                }
 
-            const dialogProps = {
-                dialogID: index,
-                key: index.toString(),
-                size: [340, 'auto'],
-                handleClose: close
-            }
+                const dialogProps = {
+                    key: id.toString(),
+                    size: [340, 'auto'],
+                    handleClose: close
+                }
 
-            return (
-                <Dialog { ...dialogProps } >
-                    <DetailBadgelet badgelet={ props } handleClose={ close } />
-                </Dialog>
-            )
+                return (
+                    <Dialog { ...dialogProps } >
+                        <DetailBadgelet badgelet={ props } handleClose={ close } />
+                    </Dialog>
+                )
+            }
         })
         setDialogsGroup({ ...dialogsGroup })
     }
 
     const showPresend = (props: Presend) => {
-        dialogsGroup.dialogs.push((index) => {
-            const close = () => {
-                closeDialogByID(index)
-            }
+        const id = genID()
+        dialogsGroup.dialogs.push({
+            id,
+            content: () => {
+                const close = () => {
+                    closeDialogByID(id)
+                }
 
-            const dialogProps = {
-                dialogID: index,
-                key: index.toString(),
-                size: [340, 'auto'],
-                handleClose: close
-            }
+                const dialogProps = {
+                    key: id.toString(),
+                    size: [340, 'auto'],
+                    handleClose: close
+                }
 
-            return (
-                <Dialog { ...dialogProps } >
-                    <DetailPresend presend={ props } handleClose={ close } />
-                </Dialog>
-            )
+                return (
+                    <Dialog { ...dialogProps } >
+                        <DetailPresend presend={ props } handleClose={ close } />
+                    </Dialog>
+                )
+            }
         })
         setDialogsGroup({ ...dialogsGroup })
     }
 
     const showBadge = (props: Badge) => {
-        dialogsGroup.dialogs.push((index) => {
-            const close = () => {
-                closeDialogByID(index)
-            }
+        const id = genID()
+        dialogsGroup.dialogs.push({
+            id,
+            content: () => {
+                const close = () => {
+                    closeDialogByID(id)
+                }
 
-            const dialogProps = {
-                dialogID: index,
-                key: index.toString(),
-                size: ['100%', 'auto'],
-                handleClose: close
-            }
+                const dialogProps = {
+                    key: id.toString(),
+                    size: ['100%', 'auto'],
+                    handleClose: close
+                }
 
-            return (
-                <Dialog { ...dialogProps } >
-                    <DetailBadge badge={ props } handleClose={ close } />
-                </Dialog>
-            )
+                return (
+                    <Dialog { ...dialogProps } >
+                        <DetailBadge badge={ props } handleClose={ close } />
+                    </Dialog>
+                )
+            }
         })
         setDialogsGroup({ ...dialogsGroup })
     }
 
     const showAvatar = (props: Profile) => {
-        dialogsGroup.dialogs.push((index) => {
-            const close = () => {
-                closeDialogByID(index)
-            }
+        const id = genID()
+        dialogsGroup.dialogs.push({
+            id,
+            content: () => {
+                const close = () => {
+                    closeDialogByID(id)
+                }
 
-            const dialogProps = {
-                dialogID: index,
-                key: index.toString(),
-                size: [316, 316],
-            }
+                const dialogProps = {
+                    key: id.toString(),
+                    size: [316, 316],
+                }
 
-            return (
-                <Dialog { ...dialogProps } >
-                    <DialogAvatar profile={ props } handleClose={ close } />
-                </Dialog>
-            )
+                return (
+                    <Dialog { ...dialogProps } >
+                        <DialogAvatar profile={ props } handleClose={ close } />
+                    </Dialog>
+                )
+            }
         })
         setDialogsGroup({ ...dialogsGroup })
     }
 
     const showCropper = (props: { imgURL: string, onConfirm: (data:Blob, close: () => any) => {} } ) => {
-        dialogsGroup.dialogs.push((index) => {
-            const close = () => {
-                closeDialogByID(index)
-            }
+        const id = genID()
+        dialogsGroup.dialogs.push({
+            id,
+            content: () => {
+                const close = () => {
+                    closeDialogByID(id)
+                }
 
-            const dialogProps = {
-                dialogID: index,
-                key: index.toString(),
-                size: ['100%', '100%'],
-            }
+                const dialogProps = {
+                    key: id.toString(),
+                    size: ['100%', '100%'],
+                }
 
-            return (
-                <Dialog { ...dialogProps } >
-                    <DialogCropper imgURL={ props.imgURL } handleClose={ close } handleConfirm={props.onConfirm} />
-                </Dialog>
-            )
+                return (
+                    <Dialog { ...dialogProps } >
+                        <DialogCropper imgURL={ props.imgURL } handleClose={ close } handleConfirm={props.onConfirm} />
+                    </Dialog>
+                )
+            }
         })
         setDialogsGroup({ ...dialogsGroup })
     }
@@ -293,7 +338,7 @@ function DialogProvider (props: DialogProviderProps) {
         <DialogsContext.Provider value={ contextValue }>
             { props.children }
             { dialogsGroup.dialogs.map((item: any, index) => {
-                return item(index)
+                return item.content()
             }) }
         </DialogsContext.Provider>
     )

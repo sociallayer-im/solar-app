@@ -8,7 +8,6 @@ export interface DialogProps {
     minSize?: string[]
     noShell?: boolean
     handleClose?: (...rest: any[]) => any
-    dialogID?: number
 }
 
 
@@ -34,7 +33,7 @@ function Dialog (props: DialogProps) {
 
     const close = () => {
         if (props.handleClose) {
-            props.handleClose(props.dialogID)
+            props.handleClose()
         }
     }
 

@@ -49,13 +49,13 @@ function ProfilePage () {
     }
 
     return <Layout>
-        {profile &&
+        { !!profile &&
             <div className='profile-page'>
             <div className='up-side'>
                 <div className='center'>
                     <PageBack />
                     <div className='slot_1'>
-                        <ProfilePanel {...profile!} />
+                        <ProfilePanel profile={ profile } />
                     </div>
                     <div className='slot_2'>
                         <AppButton size={ BTN_SIZE.compact } onClick={ handleMintOrIssue }>

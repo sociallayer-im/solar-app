@@ -53,8 +53,8 @@ function DetailBadgelet(props: DetailBadgeletProps ) {
 
             unload()
             emitUpdate(badgelet)
-            showToast('Accept success')
             props.handleClose()
+            showToast('Accept success')
         } catch (e: any) {
             unload()
             console.log('[handleAccept]: ', e)
@@ -72,8 +72,8 @@ function DetailBadgelet(props: DetailBadgeletProps ) {
 
             unload()
             emitUpdate(badgelet)
-            showToast('Reject success')
             props.handleClose()
+            showToast('Reject success')
         } catch (e: any) {
             unload()
             console.log('[handleAccept]: ', e)
@@ -135,7 +135,7 @@ function DetailBadgelet(props: DetailBadgeletProps ) {
             <BtnGroup>
                 { !user.id && LoginBtn }
 
-                { user.id
+                { !!user.id
                     && user.id === badgelet.receiver.id
                     && badgelet.status === 'pending'
                     && ActionBtns }

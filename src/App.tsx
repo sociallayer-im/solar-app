@@ -11,6 +11,7 @@ import { Client as Styletron } from 'styletron-engine-atomic'
 import { Provider as StyletronProvider } from 'styletron-react'
 import { BaseProvider } from 'baseui'
 import theme from './theme'
+import Subscriber from './components/base/Subscriber'
 
 const engine = new Styletron();
 
@@ -46,6 +47,7 @@ function App() {
                           <UserProvider>
                               <LangProvider>
                                   <DialogProvider>
+                                      <Subscriber />
                                       <AppRouter />
                                   </DialogProvider>
                               </LangProvider>

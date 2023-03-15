@@ -44,7 +44,7 @@ function UserProvider (props: UserProviderProps) {
     const { address, isConnecting, isDisconnected } = useAccount()
     const { disconnect } = useDisconnect()
     const { data } = useSigner()
-    const { showToast } = useContext(DialogsContext)
+    const { showToast, showBadgelet } = useContext(DialogsContext)
     const navigate = useNavigate()
     const [newProfile, _] = useEvent(EVENT.profileUpdate)
 

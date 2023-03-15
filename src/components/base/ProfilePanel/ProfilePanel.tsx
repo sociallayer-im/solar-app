@@ -1,5 +1,4 @@
-import { useNavigate } from 'react-router-dom'
-import { useStyletron, styled } from 'baseui'
+import { styled } from 'baseui'
 import { useState, useContext, useEffect } from 'react'
 import { Profile }  from '../../../service/solas'
 import './ProfilePanel.less'
@@ -9,9 +8,14 @@ import UserContext from '../../provider/UserProvider/UserContext'
 import DialogsContext from '../../provider/DialogProvider/DialogsContext'
 import DialogProfileQRcode from '../DialogProfileQRcode/DialogProfileQRcode'
 import useEvent, { EVENT } from '../../../hooks/globalEvent'
+import DialogFollowInfo from '../DialogFollowInfo/DialogFollowInfo'
 
-function ProfilePanel(props: Profile) {
-    const [profile, setProfile] = useState(props)
+interface ProfilePanelProps {
+    profile: Profile
+}
+
+function ProfilePanel(props: ProfilePanelProps) {
+    const [profile, setProfile] = useState(props.profile)
     const { defaultAvatar } = usePicture()
     const { lang } = useContext(LangContext)
     const { user } = useContext(UserContext)
@@ -23,6 +27,10 @@ function ProfilePanel(props: Profile) {
             setProfile({...profile, ...newProfile})
         }
     }, [newProfile])
+
+    useEffect(() => {
+        setProfile(props.profile)
+    }, [props.profile])
 
     const DialogContent= styled('div', () => {
         return {
@@ -68,6 +76,13 @@ function ProfilePanel(props: Profile) {
         showAvatar(profile)
     }
 
+    const showFollowInfo = () => {
+        openDialog({
+            size:['100%', '100%'],
+            content: (close: any) => <DialogFollowInfo profile={profile} handleClose={close} />
+        })
+    }
+
     return (
         <div className='profile-panel'>
             <div className='left-size'>
@@ -90,7 +105,7 @@ function ProfilePanel(props: Profile) {
                         </div>
                     }
                 </div>
-                <div className='follow'>
+                <div className='follow' onClick={ showFollowInfo }>
                     <div>{ lang['Follow_detail_followed'] } { profile.followers }</div>
                     <div>{ lang['Follow_detail_following'] } { profile.following }</div>
                 </div>
