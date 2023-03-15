@@ -209,6 +209,7 @@ export async function queryPresendDetail (props: QueryPresendDetailProps): Promi
 }
 
 export interface QueryBadgeletProps {
+    id?: number,
     receiver_id?: number,
     page: number,
     show_hidden?: boolean
