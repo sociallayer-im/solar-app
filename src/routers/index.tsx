@@ -21,6 +21,8 @@ function AppRouter () {
                 <Route path="/badge-create" element={<CreateBadge />}></Route>
                 <Route path="/issue/:badgeId" element={<Issue />}></Route>
                 <Route path="/issue-success" element={<IssueSuccess />}></Route>
+                <Route path="/badgelet/:badgeletId" element={<Home />}></Route>
+                <Route path="/presend/:presendId" element={<Home />}></Route>
                 <Route path="*" element={<Error />}></Route>
             </Routes>
         </Suspense>

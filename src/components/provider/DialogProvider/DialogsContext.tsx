@@ -11,6 +11,7 @@ export interface DialogsContextType {
     showBadge: (...rest: any[]) => any
     showAvatar: (...rest: any[]) => any
     showCropper: (...rest: any[]) => any
+    clean: (msg?: string) => any
 }
 
 const DialogsContext  = createContext<DialogsContextType>({
@@ -23,7 +24,8 @@ const DialogsContext  = createContext<DialogsContextType>({
     showPresend: () => {},
     showBadge: () => {},
     showAvatar: () => {},
-    showCropper: () => {}
+    showCropper: () => {},
+    clean: (msg?: string) => {}
 })
 
 export default DialogsContext

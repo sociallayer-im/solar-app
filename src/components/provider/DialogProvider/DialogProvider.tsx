@@ -50,6 +50,13 @@ function DialogProvider (props: DialogProviderProps) {
         }
     }
 
+    const clean = (message?: string) => {
+        console.log('clean:', message)
+        const copy = { ...dialogsGroup}
+        copy.dialogs = []
+        setDialogsGroup(copy)
+    }
+
     const openDialog = (openDialogProps: { content: (close: any) => ReactNode, size?: number[] } ) => {
         const id = genID()
         dialogsGroup.dialogs.push({
@@ -331,7 +338,8 @@ function DialogProvider (props: DialogProviderProps) {
         showPresend,
         showBadge,
         showAvatar,
-        showCropper
+        showCropper,
+        clean
     }
 
     return (

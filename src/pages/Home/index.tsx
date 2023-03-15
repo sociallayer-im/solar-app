@@ -1,41 +1,74 @@
 import Layout from '../../components/Layout/Layout'
+import './Home.less'
+import AppButton, { BTN_KIND } from "../../components/base/AppButton";
 import { useConnect, useAccount } from 'wagmi'
 import useLang , { LangType } from '../../hooks/lang/lang'
 import { useContext, useEffect, useState} from 'react'
 import UserContext from '../../components/provider/UserProvider/UserContext'
 import DialogsContext from '../../components/provider/DialogProvider/DialogsContext'
+import solas from '../../service/solas'
+import { useNavigate, useParams } from 'react-router-dom'
 
 function Home () {
-    const { address, isConnected } = useAccount()
-    const { connect, connectors, error, isLoading, pendingConnector } =
-        useConnect()
+    const { user } = useContext( UserContext )
+    const { showBadgelet, showPresend, clean, openConnectWalletDialog } = useContext( DialogsContext )
+    const navigate = useNavigate()
+    const { badgeletId, presendId } = useParams()
 
-    const { lang, switchLang, langType } = useLang()
-    const { user, setUser } = useContext(UserContext)
-    const { openConnectWalletDialog, showLoading, showToast } = useContext(DialogsContext)
+    useEffect(() => {
+        async function showBadgeletDetail () {
+           const newBadgelet = await solas.queryBadgeletDetail({ id: Number(badgeletId) })
+           showBadgelet(newBadgelet)
+        }
 
-    const handleLangChange = () => {
-        switchLang(langType === 'cn' ? LangType.en : LangType.cn)
-    }
+        async function showPresendDetail () {
+            const newBadgelet = await solas.queryPresendDetail({ id: Number(presendId) })
+            showPresend(newBadgelet)
+        }
 
-    const [email, setEmail] = useState('')
-    const handleEmailChange = (e: any) => {
-        setEmail(e.target.value)
+        if (badgeletId) {
+            clean('show badgelet detail')
+            setTimeout(() => {
+                showBadgeletDetail()
+            }, 500)
+        }
+
+        if (presendId) {
+            clean('show presend detail')
+            setTimeout(() => {
+                showPresendDetail()
+            }, 500)
+        }
+    },[])
+
+    const start = () => {
+        if (user.userName) {
+            navigate(`/profile/${user.userName}`)
+        } else {
+            openConnectWalletDialog()
+        }
     }
 
     useEffect(() => {
-
-    })
+        if (user.userName) {
+            navigate(`/profile/${user.userName}`)
+        }
+    },[user.userName])
 
     return <Layout>
-        <div>
-            <button onClick={() => { showLoading(3000)} }>show loading</button>
-            <button onClick={() => { showToast('show toastshow toastshow toastshow toast',100000)} }>show toast</button>
-            <div onClick={handleLangChange}>{lang['Wallet_Intro_MetaMask']}</div>
-            <div >langType: { langType }</div>
-            {error && <div>{ error.message }</div>}
-
-            <div >user Info:  { JSON.stringify(user) }</div>
+        <div className='home-page'>
+            <div className='circle-1'></div>
+            <div className='circle-2'></div>
+            <div className='circle-3'></div>
+            <div className='wrapper'>
+                <img className='cover' src="/images/home/home_1.png" alt=""/>
+                <div className='text'>
+                    <h1>Create a badge </h1>
+                    <p>Join now to start creating badges, describing your achievements, and awarding them to deserving individuals.</p>
+                    <AppButton onClick={ start }
+                        kind={ BTN_KIND.primary }>Create your badge</AppButton>
+                </div>
+            </div>
         </div>
     </Layout>
 }

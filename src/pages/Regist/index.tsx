@@ -5,15 +5,17 @@ import Layout from '../../components/Layout/Layout'
 import './Regist.less'
 import langContext from '../../components/provider/LangProvider/LangContext'
 import RegistForm from '../../components/compose/FormRegist'
+import DialogsContext from '../../components/provider/DialogProvider/DialogsContext'
 
 function ComponentName () {
     const [css] = useStyletron()
     const navigate = useNavigate()
     const [a, seta] = useState('')
     const { lang } = useContext(langContext)
+    const { clean } = useContext(DialogsContext)
 
     useEffect(() => {
-
+        clean('regist')
     }, [])
 
     return (

@@ -9,7 +9,8 @@ import useVerify from '../../../hooks/verify'
 import DialogsContext from '../../provider/DialogProvider/DialogsContext'
 import UserContext from '../../provider/UserProvider/UserContext'
 import './RegistForm.less'
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom'
+import useEvent, { EVENT } from '../../../hooks/globalEvent'
 
 export interface RegistFormProps {
     onConfirm: (domain: string) => any
@@ -26,6 +27,7 @@ function RegistForm (props: RegistFormProps) {
     const { openConfirmDialog, showLoading, showToast } = useContext(DialogsContext)
     const { user } = useContext(UserContext)
     const navigate = useNavigate()
+    const [_, emitUpdate] = useEvent(EVENT.profileUpdate)
 
     const showConfirm = () => {
         const props = {
@@ -51,13 +53,23 @@ function RegistForm (props: RegistFormProps) {
                 address: user.wallet || undefined,
                 auth_token: user.authToken
             })
+
             unload()
+            emitUpdate(newProfile)
             setLoading(false)
             showToast('Create Success')
-            navigate(`/profile/${domain}`)
+
+            const fallBack = window.localStorage.getItem('fallback')
+
+            if (fallBack) {
+                window.localStorage.removeItem('fallback')
+                window.location.href = fallBack
+            } else {
+                navigate(fallBack || `/profile/${domain}`)
+            }
         } catch (e: any) {
-            console.log('[createProfile]: ', e)
             unload()
+            console.log('[createProfile]: ', e)
             setLoading(false)
             showToast(e.message || 'Create profile fail')
         }

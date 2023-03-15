@@ -44,7 +44,7 @@ function UserProvider (props: UserProviderProps) {
     const { address, isConnecting, isDisconnected } = useAccount()
     const { disconnect } = useDisconnect()
     const { data } = useSigner()
-    const { showToast, showBadgelet } = useContext(DialogsContext)
+    const { showToast, clean } = useContext(DialogsContext)
     const navigate = useNavigate()
     const [newProfile, _] = useEvent(EVENT.profileUpdate)
 
@@ -70,6 +70,7 @@ function UserProvider (props: UserProviderProps) {
             })
 
             if (!profileInfo || !profileInfo.domain) {
+                window.localStorage.setItem('fallback', window.location.href)
                 navigate('/regist')
                 return
             }
@@ -164,9 +165,7 @@ function UserProvider (props: UserProviderProps) {
     // update avatar
     useEffect(() => {
         if (newProfile && newProfile.id === userInfo.id) {
-            setUser({
-                avatar: newProfile.image_url,
-            })
+            setUser(newProfile)
         }
     }, [newProfile])
 
