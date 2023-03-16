@@ -229,6 +229,7 @@ const langEN = {
   Group_regist_confirm: 'Create a group',
   Group_regist_owner: 'Group owner',
   Group_regist_des: 'Badges are issued to members\nin the name of the organization',
+  Group_regist_title: 'Set a unique Social Layer domain for your group!',
 
   Group_dissolve_des: 'Are you sure to dissolve group:',
 

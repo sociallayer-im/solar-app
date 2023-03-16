@@ -4,11 +4,11 @@ import AppInput from '../../base/AppInput'
 import AppButton from '../../base/AppButton'
 import { KIND } from 'baseui/button'
 import { useStyletron } from 'baseui'
-import solas from '../../../service/solas'
+import solas, {createGroup} from '../../../service/solas'
 import useVerify from '../../../hooks/verify'
 import DialogsContext from '../../provider/DialogProvider/DialogsContext'
 import UserContext from '../../provider/UserProvider/UserContext'
-import './RegistForm.less'
+import './FormRegistGroup.less'
 import { useNavigate } from 'react-router-dom'
 import useEvent, { EVENT } from '../../../hooks/globalEvent'
 
@@ -27,51 +27,39 @@ function RegistForm (props: RegistFormProps) {
     const { openConfirmDialog, showLoading, showToast } = useContext(DialogsContext)
     const { user } = useContext(UserContext)
     const navigate = useNavigate()
-    const [_, emitUpdate] = useEvent(EVENT.profileUpdate)
 
     const showConfirm = () => {
         const props = {
             title: lang['Regist_Dialog_Title'],
             confirmLabel: lang['Regist_Dialog_Create'],
             cancelLabel: lang['Regist_Dialog_ModifyIt'],
-            onConfirm: (close: any) => { close(); createProfile() },
+            onConfirm: (close: any) => { close(); createGroup() },
             content: () => <div className='confirm-domain'><span>{domain}{domainEndEnhancer}</span></div>
         }
 
         openConfirmDialog(props)
     }
 
-    const createProfile = async () => {
+    const createGroup = async () => {
         if (!user.authToken) return
         const unload = showLoading()
         setLoading(true)
         try {
-            const newProfile = await solas.regist({
-                domain: domain + domainEndEnhancer,
+            const newGroup = await solas.createGroup({
                 username: domain,
-                email: user.email || undefined,
-                address: user.wallet || undefined,
                 auth_token: user.authToken
             })
 
             unload()
-            emitUpdate(newProfile)
             setLoading(false)
             showToast('Create Success')
 
-            const fallBack = window.localStorage.getItem('fallback')
-
-            if (fallBack) {
-                window.localStorage.removeItem('fallback')
-                window.location.href = fallBack
-            } else {
-                navigate(fallBack || `/profile/${domain}`)
-            }
+            navigate( `/group/${newGroup.username}`)
         } catch (e: any) {
             unload()
-            console.log('[createProfile]: ', e)
+            console.log('[createGroup]: ', e)
             setLoading(false)
-            showToast(e.message || 'Create profile fail')
+            showToast(e.message || 'Create group fail')
         }
     }
 

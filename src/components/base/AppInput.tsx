@@ -51,7 +51,8 @@ interface AppInputProps  {
     readOnly?: boolean
     endEnhancer?: () => ReactNode
     startEnhancer?: () => ReactNode,
-    maxLength?: number
+    maxLength?: number,
+    style?: any
 }
 
 /**
@@ -83,7 +84,7 @@ export default function AppInput(props: AppInputProps) {
 
     const overrides = {
         Root: { component: RootWithStyle },
-        Input: { style: inputStyle },
+        Input: { style: {...inputStyle} },
         ClearIcon: { style: clearBtnStyle, props: { size: 26 } },
     }
 

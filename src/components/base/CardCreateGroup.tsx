@@ -67,7 +67,7 @@ function CardCreateGroup () {
     const { lang } = useContext(LangContext)
 
     return (
-        <div className={ css(style.wrapper) } >
+        <div className={ css(style.wrapper) } onClick={() => { navigate('/create-group')}}>
             <div className={ css(style.img) }><Plus size={28}/></div>
             <div className={ css(style.name) }>{ lang['Group_regist_confirm'] }</div>
             <div className={ css(style.des) }>{ lang['Group_regist_des'] }</div>

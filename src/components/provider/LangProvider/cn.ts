@@ -229,6 +229,7 @@ const langCN: LangConfig = {
   Group_regist_confirm: '创建组织',
   Group_regist_owner: '组织拥有者',
   Group_regist_des: '徽章以组织的名义颁发给成员',
+  Group_regist_title: '为你的组织设定一个独一无二的 Social layer 域名身份吧！',
 
   Group_dissolve_des: '确定解散组织：',
 

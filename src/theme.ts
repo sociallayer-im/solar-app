@@ -11,7 +11,7 @@ const primitives: Partial<Primitives> = {
 
 const overrides = {
     colors: {
-        "inputFill": '#f8f9f8',
+        "inputFill": '#f6f6f6',
         "buttonPrimaryFill": '#9efedd',
         "buttonPrimaryHover": '#c3ffe4',
         "buttonPrimaryActive": "#93eacb"

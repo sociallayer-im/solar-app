@@ -707,6 +707,25 @@ export async function queryGroupInvites (props: QueryGroupInvitesProps): Promise
     return res.data.group_invites as Invite[]
 }
 
+export interface CreateGroupProps {
+    username: string,
+    auth_token: string
+}
+
+export async function createGroup (props: CreateGroupProps): Promise<Group> {
+    checkAuth(props)
+    const res = await fetch.post({
+        url: `${api}/group/create`,
+        data:  props
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+
+    return res.data.group
+}
+
 export default {
     login,
     getProfile,
@@ -735,5 +754,6 @@ export default {
     follow,
     unfollow,
     queryGroupInvites,
-    queryGroupDetail
+    queryGroupDetail,
+    createGroup
 }
