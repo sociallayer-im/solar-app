@@ -24,7 +24,6 @@ function GroupPanel(props: GroupPanelProps) {
     const { openConfirmDialog, openDialog, showAvatar, showLoading, showToast } = useContext(DialogsContext)
     const [newProfile, _] = useEvent(EVENT.profileUpdate)
     const [group, setGroup] = useState(props.group)
-    const [showFollowBtn, setShowFollowBtn] = useState(false)
     const [showUnFollowBtn, setShowUnFollowBtn] = useState(false)
 
     useEffect(() => {
@@ -39,7 +38,6 @@ function GroupPanel(props: GroupPanelProps) {
 
     useEffect(() => {
         if (!user.id) {
-            setShowFollowBtn(false)
             setShowUnFollowBtn(false)
             return
         }
@@ -50,7 +48,6 @@ function GroupPanel(props: GroupPanelProps) {
                 return item.id === user.id
             })
 
-            setShowFollowBtn(!isFollower && user.id !== props.group.id)
             setShowUnFollowBtn(!!isFollower)
             return !!isFollower
         }
@@ -132,22 +129,13 @@ function GroupPanel(props: GroupPanelProps) {
                     <StatefulPopover
                         placement={ PLACEMENT.bottomRight }
                         popoverMargin={ 0 }
-                        content={ ({ close }) => <MenuItem onClick={ () => { handleUnFollow() } }>{ lang['Relation_Ship_Action_Unfollow'] }</MenuItem> }>
+                        content={ ({ close }) => <MenuItem onClick={ () => { handleUnFollow() } }>{ lang['Relation_Ship_Action_Leave'] }</MenuItem> }>
                         <div>
                             <AppButton size={ BTN_SIZE.compact }>
-                                { lang['Relation_Ship_Action_Followed'] }
+                                { lang['Relation_Ship_Action_Joined'] }
                             </AppButton>
                         </div>
                     </StatefulPopover>
-                }
-
-                {
-                    showFollowBtn &&
-                    <AppButton
-                        onClick={ () => { handleFollow() } }
-                        kind={ BTN_KIND.primary } size={ BTN_SIZE.compact }>
-                        { lang['Relation_Ship_Action_Follow'] }
-                    </AppButton>
                 }
             </div>
         </div>
