@@ -156,9 +156,10 @@ export async function queryBadgeDetail (props: QueryBadgeDetailProps): Promise<B
 }
 
 interface QueryPresendProps {
-    sender_id: number,
+    sender_id?: number,
     page: number,
-    auth_token?: string
+    auth_token?: string,
+    group_id?: number
 }
 
 export interface Presend {
@@ -248,10 +249,6 @@ export async function queryBadgelet (props: QueryBadgeletProps): Promise<Badgele
     })
 }
 
-export interface QueryUserGroupProps {
-    profile_id: number,
-}
-
 export interface Group {
     id: number,
     group_owner_id: number
@@ -264,6 +261,11 @@ export interface Group {
     username: string
     domain: string
 }
+
+export interface QueryUserGroupProps {
+    profile_id: number,
+}
+
 
 export async function queryUserGroup (props: QueryUserGroupProps): Promise<Group[]> {
 
@@ -296,6 +298,15 @@ export async function queryUserGroup (props: QueryUserGroupProps): Promise<Group
     })
 
     return Object.values(groupsDuplicateObj) as Group[]
+}
+
+export async function queryGroupDetail (groupId: number): Promise<Group> {
+    const res = await fetch.get({
+        url: `${api}/group/get`,
+        data: {id: groupId}
+    })
+
+    return res.data.group
 }
 
 export interface AcceptBadgeletProp {
@@ -668,6 +679,34 @@ export async function unfollow (props: FollowProps) {
     }
 }
 
+export interface Invite {
+    id: number,
+    message: string,
+    receiver_id: number
+    sender_id: number,
+    status: 'accepted' | 'cancelled' | 'new'
+    expires_at: string
+    group_id: number
+}
+
+export interface QueryGroupInvitesProps {
+    group_id: number,
+    page: number
+}
+
+export async function queryGroupInvites (props: QueryGroupInvitesProps): Promise<Invite[]> {
+    const res = await fetch.get({
+        url: `${api}/group/group-invites`,
+        data: props
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+
+    return res.data.group_invites as Invite[]
+}
+
 export default {
     login,
     getProfile,
@@ -694,5 +733,7 @@ export default {
     getFollowings,
     issueBatch,
     follow,
-    unfollow
+    unfollow,
+    queryGroupInvites,
+    queryGroupDetail
 }

@@ -5,12 +5,13 @@ import DialogConnectWallet from '../../base/DialogConnectWallet/DialogConnectWal
 import ToastLoading from '../../base/ToastLoading'
 import DialogConfirm, { DialogConfirmProps } from '../../base/DialogConfirm/DialogConfirm'
 import DialogsContext, { DialogsContextType } from './DialogsContext'
-import { Badge, Badgelet, Presend, Profile } from '../../../service/solas'
+import {Badge, Badgelet, Invite, Presend, Profile} from '../../../service/solas'
 import DetailBadgelet from '../../compose/Detail/DetailBadgelet'
 import DetailPresend from '../../compose/Detail/DetailPresend'
 import DetailBadge from '../../compose/Detail/DetailBadge'
 import DialogAvatar from '../../base/DialogAvatar'
 import DialogCropper from '../../base/DialogCropper'
+import DetailInvite from '../../compose/Detail/DetailInvite'
 
 export interface DialogProviderProps {
     children: ReactNode
@@ -230,6 +231,31 @@ function DialogProvider (props: DialogProviderProps) {
         setDialogsGroup({ ...dialogsGroup })
     }
 
+    const showInvite = (props: Invite) => {
+        const id = genID()
+        dialogsGroup.dialogs.push({
+            id,
+            content: () => {
+                const close = () => {
+                    closeDialogByID(id)
+                }
+
+                const dialogProps = {
+                    key: id.toString(),
+                    size: [340, 'auto'],
+                    handleClose: close
+                }
+
+                return (
+                    <Dialog { ...dialogProps } >
+                        <DetailInvite invite={ props } handleClose={ close } />
+                    </Dialog>
+                )
+            }
+        })
+        setDialogsGroup({ ...dialogsGroup })
+    }
+
     const showPresend = (props: Presend) => {
         const id = genID()
         dialogsGroup.dialogs.push({
@@ -339,7 +365,8 @@ function DialogProvider (props: DialogProviderProps) {
         showBadge,
         showAvatar,
         showCropper,
-        clean
+        clean,
+        showInvite
     }
 
     return (

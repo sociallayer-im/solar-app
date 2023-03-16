@@ -5,7 +5,7 @@ import langContext from '../../provider/LangProvider/LangContext'
 import AppTabs from "../AppTabs"
 import { Tab } from 'baseui/tabs'
 import UserContext from '../../provider/UserProvider/UserContext'
-import solas, { Profile } from '../../../service/solas'
+import solas, { Profile, Group } from '../../../service/solas'
 import AddressList from '../AddressList/AddressList'
 import Empty from '../Empty'
 import { useNavigate } from 'react-router-dom'
@@ -35,7 +35,7 @@ const overrides = {
 
 export interface DialogFollowInfoProps {
     handleClose: () => any,
-    profile: Profile
+    profile: Profile | Group
 }
 
 function DialogFollowInfo(props: DialogFollowInfoProps) {

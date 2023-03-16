@@ -10,15 +10,17 @@ import useScrollToLoad from "../../../hooks/scrollToLoad";
 
 interface ListUserMintedProps {
     profile: Profile
+    userType?: 'group' | 'user'
 }
 
-function ListUserMinted (props: ListUserMintedProps) {
+function ListUserMinted ({ userType = 'user',  ...props }: ListUserMintedProps) {
     const { lang } = useContext(LangContext)
     const getBadge = async (page: number) => {
-        return await solas.queryBadge({
-            sender_id: props.profile.id,
-            page
-        })
+        const queryProps = userType === 'user'
+            ? { sender_id: props.profile.id, page }
+            : { group_id: props.profile.id, page }
+
+        return await solas.queryBadge(queryProps)
 
     }
 

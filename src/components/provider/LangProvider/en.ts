@@ -256,9 +256,10 @@ const langEN = {
   Relation_Ship_Action_Unfollow: 'Cancel Follow',
 
   Empty_Text: 'No Data yet~',
-  Empty_No_Badge: 'No Badge yet~',
-  Empty_No_Present: 'No Presned yet~',
-  Empty_No_Group: 'No Group yet~'
+  Empty_No_Badge: 'No badge yet~',
+  Empty_No_Present: 'No presned yet~',
+  Empty_No_Group: 'No group yet~',
+  Empty_No_Invite: 'No invite yet~'
 }
 
 export type LangConfig = typeof langEN

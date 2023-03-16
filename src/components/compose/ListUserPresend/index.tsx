@@ -8,16 +8,19 @@ import useScrollToLoad from '../../../hooks/scrollToLoad'
 import UserContext from '../../provider/UserProvider/UserContext'
 
 interface ListUserPresendProps {
-    profile: Profile
+    profile: Profile,
+    userType?: 'group' | 'user'
 }
 
-function ListUserPresend (props: ListUserPresendProps) {
+function ListUserPresend ({ userType = 'user',  ...props }: ListUserPresendProps) {
     const { lang } = useContext(LangContext)
     const { user } = useContext(UserContext)
     const getPresend = async (page: number) => {
-        return await solas.queryPresend({ page,
-            sender_id: props.profile.id,
-            auth_token: user.authToken || undefined })
+        const queryProps = userType === 'user'
+            ? { sender_id: props.profile.id, page, auth_token: user.authToken || undefined }
+            : { group_id: props.profile.id, page, auth_token: user.authToken || undefined }
+
+        return await solas.queryPresend(queryProps)
     }
 
     const { isEmpty, list, ref, refresh } = useScrollToLoad ({ queryFunction: getPresend })

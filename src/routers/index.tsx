@@ -3,6 +3,7 @@ import { Suspense, lazy } from 'react'
 
 const Home = lazy(() => import('../pages/Home'))
 const Profile = lazy(() => import('../pages/Profile/Profile'))
+const Group = lazy(() => import('../pages/Group/Group'))
 const Login = lazy(() => import('../pages/Login'))
 const Regist = lazy(() => import('../pages/Regist'))
 const CreateBadge = lazy(() => import('../pages/CreateBadge'))
@@ -16,6 +17,7 @@ function AppRouter () {
             <Routes>
                 <Route path="/" element={<Home />}></Route>
                 <Route path="/profile/:username" element={<Profile />}></Route>
+                <Route path="/group/:groupname" element={<Group />}></Route>
                 <Route path="/login" element={<Login />}></Route>
                 <Route path="/regist" element={<Regist />}></Route>
                 <Route path="/badge-create" element={<CreateBadge />}></Route>

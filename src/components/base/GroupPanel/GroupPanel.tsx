@@ -1,7 +1,7 @@
 import { styled } from 'baseui'
 import { useState, useContext, useEffect } from 'react'
 import solas, { Profile }  from '../../../service/solas'
-import './ProfilePanel.less'
+import './GroupPanel.less'
 import usePicture from '../../../hooks/pictrue'
 import LangContext from '../../provider/LangProvider/LangContext'
 import UserContext from '../../provider/UserProvider/UserContext'
@@ -13,29 +13,29 @@ import { StatefulPopover, PLACEMENT } from 'baseui/popover'
 import AppButton, { BTN_KIND, BTN_SIZE } from '../AppButton'
 import MenuItem from '../MenuItem'
 
-interface ProfilePanelProps {
-    profile: Profile
+interface GroupPanelProps {
+    group: Profile
 }
 
-function ProfilePanel(props: ProfilePanelProps) {
+function GroupPanel(props: GroupPanelProps) {
     const { defaultAvatar } = usePicture()
     const { lang } = useContext(LangContext)
     const { user } = useContext(UserContext)
     const { openConfirmDialog, openDialog, showAvatar, showLoading, showToast } = useContext(DialogsContext)
     const [newProfile, _] = useEvent(EVENT.profileUpdate)
-    const [profile, setProfile] = useState(props.profile)
+    const [group, setGroup] = useState(props.group)
     const [showFollowBtn, setShowFollowBtn] = useState(false)
     const [showUnFollowBtn, setShowUnFollowBtn] = useState(false)
 
     useEffect(() => {
-        if (newProfile && newProfile.id === profile.id) {
-            setProfile({...profile, ...newProfile})
+        if (newProfile && newProfile.id === group.id) {
+            setGroup({...group, ...newProfile})
         }
     }, [newProfile])
 
     useEffect(() => {
-        setProfile(props.profile)
-    }, [props.profile])
+        setGroup(props.group)
+    }, [props.group])
 
     useEffect(() => {
         if (!user.id) {
@@ -45,12 +45,12 @@ function ProfilePanel(props: ProfilePanelProps) {
         }
 
         async function checkFollow () {
-            const follower = await solas.getFollowers(props.profile.id)
+            const follower = await solas.getFollowers(props.group.id)
             const isFollower = follower.find(item => {
                 return item.id === user.id
             })
 
-            setShowFollowBtn(!isFollower && user.id !== props.profile.id)
+            setShowFollowBtn(!isFollower && user.id !== props.group.id)
             setShowUnFollowBtn(!!isFollower)
             return !!isFollower
         }
@@ -66,46 +66,14 @@ function ProfilePanel(props: ProfilePanelProps) {
         }
     })
 
-    const showWallet = () => {
-        openConfirmDialog({
-            title: lang['Profile_Show_Wallet'],
-            confirmLabel: lang['Profile_Show_Copy'],
-            cancelLabel: lang['Profile_Show_Close'],
-            onConfirm: (close: any) => { close(); },
-            content: () => <DialogContent>{ profile.address }</DialogContent>
-        })
-    }
-
-    const showEmail = () => {
-        openConfirmDialog({
-            title: lang['Profile_Show_Email'],
-            confirmLabel: lang['Profile_Show_Copy'],
-            cancelLabel: lang['Profile_Show_Close'],
-            onConfirm: (close: any) => { close(); },
-            content: () => <DialogContent>{ profile.email }</DialogContent>
-        })
-    }
-
-    const showProfileQRcode = () => {
-        openDialog({
-            size:[316, 486],
-            content: (close: any) => <DialogProfileQRcode profile={profile} />
-        })
-    }
-
     const isProfileOwner = () => {
-        return user.id === profile.id
-    }
-
-    const editAvatar = () => {
-        if (!isProfileOwner) return
-        showAvatar(profile)
+        return user.id === group.id
     }
 
     const showFollowInfo = () => {
         openDialog({
             size:['100%', '100%'],
-            content: (close: any) => <DialogFollowInfo profile={profile} handleClose={close} />
+            content: (close: any) => <DialogFollowInfo profile={ group } handleClose={close} />
         })
     }
 
@@ -113,7 +81,7 @@ function ProfilePanel(props: ProfilePanelProps) {
         const unload = showLoading()
         try {
             const res = await solas.follow({
-                target_id: props.profile.id,
+                target_id: props.group.id,
                 auth_token: user.authToken || ''
             })
             unload()
@@ -130,7 +98,7 @@ function ProfilePanel(props: ProfilePanelProps) {
         const unload = showLoading()
         try {
             const res = await solas.unfollow({
-                target_id: props.profile.id,
+                target_id: props.group.id,
                 auth_token: user.authToken || ''
             })
             unload()
@@ -148,27 +116,14 @@ function ProfilePanel(props: ProfilePanelProps) {
         <div className='profile-panel'>
             <div className='left-size'>
                 <div className='avatar'>
-                    <img onClick={() => { editAvatar() } } src={ profile.image_url || defaultAvatar(profile.id) } alt=""/>
-                    <div className='qrcode-btn' onClick={showProfileQRcode}>
-                        <i className='icon icon-qrcode'></i>
-                    </div>
+                    <img src={ group.image_url || defaultAvatar(group.id) } alt=""/>
                 </div>
                 <div className='domain-bar'>
-                    <div className='domain'>{ profile.domain }</div>
-                    { profile.address &&
-                        <div className='show-wallet' onClick={ () => { showWallet() } }>
-                            <i className='icon icon-wallet'></i>
-                        </div>
-                    }
-                    { profile.email && isProfileOwner() &&
-                        <div className='show-email' onClick={ () => { showEmail() } }>
-                            <i className='icon icon-email'></i>
-                        </div>
-                    }
+                    <div className='domain'>{ group.domain }</div>
                 </div>
                 <div className='follow' onClick={ showFollowInfo }>
-                    <div><b>{ profile.followers }</b> { lang['Follow_detail_followed'] } </div>
-                    <div><b>{ profile.following }</b> { lang['Follow_detail_following'] } </div>
+                    <div><b>{ group.followers }</b> { lang['Follow_detail_followed'] } </div>
+                    <div><b>{ group.following }</b> { lang['Follow_detail_following'] } </div>
                 </div>
             </div>
             <div className='right-size'>
@@ -199,4 +154,4 @@ function ProfilePanel(props: ProfilePanelProps) {
     )
 }
 
-export default ProfilePanel
+export default GroupPanel

@@ -258,7 +258,8 @@ const langCN: LangConfig = {
   Empty_Text: '没有数据~',
   Empty_No_Badge: '没有徽章~',
   Empty_No_Present: '没有预发送~',
-  Empty_No_Group: '没有组织~'
+  Empty_No_Group: '没有组织~',
+  Empty_No_Invite: '没有邀请~'
 }
 
 export default langCN
