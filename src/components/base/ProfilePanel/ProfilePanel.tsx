@@ -1,6 +1,6 @@
 import { styled } from 'baseui'
 import { useState, useContext, useEffect } from 'react'
-import { Profile }  from '../../../service/solas'
+import solas, { Profile }  from '../../../service/solas'
 import './ProfilePanel.less'
 import usePicture from '../../../hooks/pictrue'
 import LangContext from '../../provider/LangProvider/LangContext'
@@ -9,18 +9,23 @@ import DialogsContext from '../../provider/DialogProvider/DialogsContext'
 import DialogProfileQRcode from '../DialogProfileQRcode/DialogProfileQRcode'
 import useEvent, { EVENT } from '../../../hooks/globalEvent'
 import DialogFollowInfo from '../DialogFollowInfo/DialogFollowInfo'
+import { StatefulPopover, PLACEMENT } from 'baseui/popover'
+import AppButton, { BTN_KIND, BTN_SIZE } from '../AppButton'
+import MenuItem from '../MenuItem'
 
 interface ProfilePanelProps {
     profile: Profile
 }
 
 function ProfilePanel(props: ProfilePanelProps) {
-    const [profile, setProfile] = useState(props.profile)
     const { defaultAvatar } = usePicture()
     const { lang } = useContext(LangContext)
     const { user } = useContext(UserContext)
-    const { openConfirmDialog, openDialog, showAvatar } = useContext(DialogsContext)
+    const { openConfirmDialog, openDialog, showAvatar, showLoading, showToast } = useContext(DialogsContext)
     const [newProfile, _] = useEvent(EVENT.profileUpdate)
+    const [profile, setProfile] = useState(props.profile)
+    const [showFollowBtn, setShowFollowBtn] = useState(false)
+    const [showUnFollowBtn, setShowUnFollowBtn] = useState(false)
 
     useEffect(() => {
         if (newProfile && newProfile.id === profile.id) {
@@ -31,6 +36,27 @@ function ProfilePanel(props: ProfilePanelProps) {
     useEffect(() => {
         setProfile(props.profile)
     }, [props.profile])
+
+    useEffect(() => {
+        if (!user.id) {
+            setShowFollowBtn(false)
+            setShowUnFollowBtn(false)
+            return
+        }
+
+        async function checkFollow () {
+            const follower = await solas.getFollowers(props.profile.id)
+            const isFollower = follower.find(item => {
+                return item.id === user.id
+            })
+
+            setShowFollowBtn(!isFollower && user.id !== props.profile.id)
+            setShowUnFollowBtn(!!isFollower)
+            return !!isFollower
+        }
+
+        checkFollow()
+    }, [user.id])
 
     const DialogContent= styled('div', () => {
         return {
@@ -83,6 +109,41 @@ function ProfilePanel(props: ProfilePanelProps) {
         })
     }
 
+    const handleFollow = async () => {
+        const unload = showLoading()
+        try {
+            const res = await solas.follow({
+                target_id: props.profile.id,
+                auth_token: user.authToken || ''
+            })
+            unload()
+            setShowUnFollowBtn(true)
+            setShowFollowBtn(false)
+        } catch (e: any) {
+            unload()
+            console.log('[handleFollow]: ', e)
+            showToast(e.message || 'Follow fail')
+        }
+    }
+
+    const handleUnFollow = async () => {
+        const unload = showLoading()
+        try {
+            const res = await solas.unfollow({
+                target_id: props.profile.id,
+                auth_token: user.authToken || ''
+            })
+            unload()
+            setShowUnFollowBtn(false)
+            setShowFollowBtn(true)
+        } catch (e: any) {
+            unload()
+            console.log('[handleUnFollow]: ', e)
+            showToast(e.message || 'Unfollow fail')
+        }
+    }
+
+
     return (
         <div className='profile-panel'>
             <div className='left-size'>
@@ -110,7 +171,30 @@ function ProfilePanel(props: ProfilePanelProps) {
                     <div>{ lang['Follow_detail_following'] } { profile.following }</div>
                 </div>
             </div>
-            <div className='right-size'></div>
+            <div className='right-size'>
+                {
+                    showUnFollowBtn &&
+                    <StatefulPopover
+                        placement={ PLACEMENT.bottomRight }
+                        popoverMargin={ 0 }
+                        content={ ({ close }) => <MenuItem onClick={ () => { handleUnFollow() } }>{ lang['Relation_Ship_Action_Unfollow'] }</MenuItem> }>
+                        <div>
+                            <AppButton size={ BTN_SIZE.compact }>
+                                { lang['Relation_Ship_Action_Followed'] }
+                            </AppButton>
+                        </div>
+                    </StatefulPopover>
+                }
+
+                {
+                    showFollowBtn &&
+                    <AppButton
+                        onClick={ () => { handleFollow() } }
+                        kind={ BTN_KIND.primary } size={ BTN_SIZE.compact }>
+                        { lang['Relation_Ship_Action_Follow'] }
+                    </AppButton>
+                }
+            </div>
         </div>
     )
 }

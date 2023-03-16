@@ -639,6 +639,35 @@ export async function DDNSServer (domain: string): Promise<string | null> {
     return res.data.data ? (res.data.data.owner || null) : null
 }
 
+interface FollowProps {
+    target_id: number,
+    auth_token: string
+}
+
+export async function follow (props: FollowProps) {
+    checkAuth(props)
+    const res = await fetch.post({
+        url: `${api}/profile/follow`,
+        data: props
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+}
+
+export async function unfollow (props: FollowProps) {
+    checkAuth(props)
+    const res = await fetch.post({
+        url: `${api}/profile/unfollow`,
+        data: props
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+}
+
 export default {
     login,
     getProfile,
@@ -663,5 +692,7 @@ export default {
     getGroupMembers,
     getFollowers,
     getFollowings,
-    issueBatch
+    issueBatch,
+    follow,
+    unfollow
 }

@@ -8,6 +8,8 @@ const MenuItemNormal = styled('div', ({ $theme }) => ({
     fontSize: '14px',
     minWidth: '100px',
     lineHeight: '42px',
+    paddingLeft: '12px',
+    paddingRight: '12px',
     'text-align': 'center',
     ':hover': {
         background: '#f8f9f8',
