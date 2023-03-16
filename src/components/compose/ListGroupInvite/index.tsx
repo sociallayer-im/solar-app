@@ -5,9 +5,7 @@ import ListWrapper from '../../base/ListWrapper'
 import Empty from '../../base/Empty'
 import LangContext from '../../provider/LangProvider/LangContext'
 import useScrollToLoad from '../../../hooks/scrollToLoad'
-import useEvent, { EVENT } from '../../../hooks/globalEvent'
 import UserContext from '../../provider/UserProvider/UserContext'
-import {sortBy} from "lodash";
 
 interface ListUserBadgeletProps {
     group: Profile
@@ -15,7 +13,6 @@ interface ListUserBadgeletProps {
 
 function ListGroupInvite (props: ListUserBadgeletProps) {
     const { lang } = useContext(LangContext)
-    const { user } = useContext(UserContext)
     const getInvite = async (page: number) => {
         return await solas.queryGroupInvites({
             group_id: props.group.id,

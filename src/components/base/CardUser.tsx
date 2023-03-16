@@ -2,6 +2,7 @@ import { useStyletron } from 'baseui'
 import { Profile } from '../../service/solas'
 import { useNavigate } from 'react-router-dom'
 import usePicture from '../../hooks/pictrue'
+import { ReactDOM, ReactNode } from 'react'
 
 const style = {
     wrapper: {
@@ -16,7 +17,8 @@ const style = {
         alignItems: 'center',
         marginBottom: '10px',
         boxSizing: 'border-box' as const,
-        width: '100%'
+        width: '100%',
+        justifyContent: 'space-between'
     },
     img:  {
         width: '28px',
@@ -28,11 +30,20 @@ const style = {
         fontWeight: 400,
         color: '#272928',
         fontSize: '14px'
+    },
+    leftSide: {
+        display: 'flex',
+        flexDirection: 'row' as const,
+        alignItems: 'center',
     }
 }
 
 export interface CardBadgeletProps {
-    profile: Profile
+    profile?: Profile,
+    endEnhancer? : () =>  string | ReactNode
+    content?: () =>  string | ReactNode
+    img?: () =>  string | ReactNode
+    onClick?: () => any
 }
 
 function CardUser (props: CardBadgeletProps) {
@@ -40,9 +51,16 @@ function CardUser (props: CardBadgeletProps) {
     const navigate = useNavigate()
     const { defaultAvatar } = usePicture()
 
-    return (<div className={ css(style.wrapper) } onClick={ () => { navigate(`/profile/${props.profile.username}`) }}>
-                <img className={ css(style.img) } src={ props.profile.image_url || defaultAvatar(props.profile.id)} alt=""/>
-                <div className={ css(style.name) }>{ props.profile.domain }</div>
+    return (<div className={ css(style.wrapper) } onClick={ () => { props.onClick ? props.onClick() : navigate(`/profile/${props.profile?.username}`) }}>
+                <div className={css(style.leftSide)}>
+                    { props.img
+                        ? props.img()
+                        : <img className={ css(style.img) } src={ props.profile?.image_url || defaultAvatar(props.profile?.id)} alt=""/>
+                    }
+
+                    <div className={ css(style.name) }>{ props.content ? props.content() : props.profile?.domain }</div>
+                </div>
+                <div>{ !!props.endEnhancer && props.endEnhancer() }</div>
             </div>)
 }
 
