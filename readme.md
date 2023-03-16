@@ -13,7 +13,7 @@
   4. [X] received 列表
   5. [X] 头像上传
   6. [X] 钱包/邮箱地址弹窗
-  7. [ ] follow功能
+  7. [x] follow功能
   8. [X] 颁发徽章按钮功能
   9. [x] follower/following 展示
 - Badge
