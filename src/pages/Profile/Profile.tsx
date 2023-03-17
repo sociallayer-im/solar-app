@@ -74,9 +74,12 @@ function ProfilePage () {
                             <Tab key='Minted' title={ lang['Profile_Tab_Minted'] }>
                                 <ListUserMinted profile={ profile! } />
                             </Tab>
-                            <Tab key='Presend' title={ lang['Profile_Tab_Presend'] }>
-                                <ListUserPresend profile={ profile! } />
-                            </Tab>
+                            { user.id === profile.id
+                                ? <Tab key='Presend' title={ lang['Profile_Tab_Presend'] }>
+                                    <ListUserPresend profile={ profile! } />
+                                 </Tab>
+                                : <></>
+                            }
                         </AppSubTabs>
                     </Tab>
                     <Tab key='Received' title={ lang['Profile_Tab_Received'] }>

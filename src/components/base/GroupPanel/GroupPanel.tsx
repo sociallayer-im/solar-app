@@ -21,8 +21,8 @@ function GroupPanel(props: GroupPanelProps) {
     const { defaultAvatar } = usePicture()
     const { lang } = useContext(LangContext)
     const { user } = useContext(UserContext)
-    const { openConfirmDialog, openDialog, showAvatar, showLoading, showToast } = useContext(DialogsContext)
-    const [newProfile, _] = useEvent(EVENT.profileUpdate)
+    const { openDialog, showAvatar, showLoading, showToast } = useContext(DialogsContext)
+    const [newProfile, _] = useEvent(EVENT.groupUpdate)
     const [group, setGroup] = useState(props.group)
     const [showUnFollowBtn, setShowUnFollowBtn] = useState(false)
 
@@ -55,14 +55,6 @@ function GroupPanel(props: GroupPanelProps) {
         checkFollow()
     }, [user.id])
 
-    const DialogContent= styled('div', () => {
-        return {
-            textAlign: 'center',
-            fontSize: '16px',
-            wordBreak: 'break-all'
-        }
-    })
-
     const isProfileOwner = () => {
         return user.id === group.id
     }
@@ -70,25 +62,8 @@ function GroupPanel(props: GroupPanelProps) {
     const showFollowInfo = () => {
         openDialog({
             size:['100%', '100%'],
-            content: (close: any) => <DialogFollowInfo profile={ group } handleClose={close} />
+            content: (close: any) => <DialogFollowInfo title={props.group.domain!} profile={ group } handleClose={close} />
         })
-    }
-
-    const handleFollow = async () => {
-        const unload = showLoading()
-        try {
-            const res = await solas.follow({
-                target_id: props.group.id,
-                auth_token: user.authToken || ''
-            })
-            unload()
-            setShowUnFollowBtn(true)
-            setShowFollowBtn(false)
-        } catch (e: any) {
-            unload()
-            console.log('[handleFollow]: ', e)
-            showToast(e.message || 'Follow fail')
-        }
     }
 
     const handleUnFollow = async () => {
@@ -100,7 +75,6 @@ function GroupPanel(props: GroupPanelProps) {
             })
             unload()
             setShowUnFollowBtn(false)
-            setShowFollowBtn(true)
         } catch (e: any) {
             unload()
             console.log('[handleUnFollow]: ', e)
@@ -108,11 +82,17 @@ function GroupPanel(props: GroupPanelProps) {
         }
     }
 
+    const showAvatarDialog = () => {
+        if (props.group.group_owner_id === user.id) {
+            showAvatar(group)
+        }
+    }
+
 
     return (
         <div className='profile-panel'>
             <div className='left-size'>
-                <div className='avatar'>
+                <div className='avatar' onClick={ showAvatarDialog }>
                     <img src={ group.image_url || defaultAvatar(group.id) } alt=""/>
                 </div>
                 <div className='domain-bar'>

@@ -6,6 +6,7 @@ export enum EVENT {
     presendListUpdate = 'presendListUpdate',
     groupListUpdate = 'groupListUpdate',
     profileUpdate = 'profileUpdate',
+    groupUpdate = 'groupUpdate',
 
     badgeletDetailUpdate = 'badgeletDetailUpdate',
 }

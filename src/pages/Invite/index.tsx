@@ -32,7 +32,9 @@ function Invite() {
     useEffect(() => {
         async function getGroupDetail () {
             const group = await solas.queryGroupDetail(Number(params.groupId))
-            setReason(lang['Group_invite_default_reason']([group.username]))
+            const prefill = lang['Group_invite_default_reason']([group.username])
+            alert(prefill)
+            setReason(prefill)
             setGroup(group)
         }
 

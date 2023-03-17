@@ -9,7 +9,7 @@ import AppInput from '../../components/base/AppInput'
 import UserContext from '../../components/provider/UserProvider/UserContext'
 import AppButton, { BTN_KIND } from '../../components/base/AppButton'
 import useVerify from '../../hooks/verify'
-import solas from '../../service/solas'
+import solas, { Group } from '../../service/solas'
 import DialogsContext from '../../components/provider/DialogProvider/DialogsContext'
 
 function CreateBadge() {
@@ -18,6 +18,7 @@ function CreateBadge() {
     const [domain, setDomain,] = useState('')
     const [domainError, setDomainError,] = useState('')
     const [badgeName, setBadgeName] = useState('')
+    const [group, setGroup] = useState<Group | null>(null)
     const [badgeNameError, setBadgeNameError] = useState('')
     const enhancer = import.meta.env.VITE_SOLAS_DOMAIN
     const { user } = useContext(UserContext)
@@ -26,6 +27,17 @@ function CreateBadge() {
     const [searchParams, _] = useSearchParams()
 
     const { lang } = useContext(LangContext)
+
+    useEffect(() => {
+       async function getGroup () {
+           const groupId = searchParams.get('group')
+           if (groupId) {
+               const group = await solas.queryGroupDetail(Number(groupId))
+               setGroup(group)
+           }
+       }
+        getGroup()
+    },[])
 
     useEffect(() => {
         if (!domain.length) {
@@ -65,10 +77,11 @@ function CreateBadge() {
                 image_url: cover,
                 auth_token: user.authToken || '',
                 content: '',
+                group_id: searchParams.get('group') ? Number(searchParams.get('group') ) : undefined
             })
             unload()
             const presetAcceptor = searchParams.get('to')
-            navigate(presetAcceptor ? `/issue/${newBadge.id}?to=${presetAcceptor}` : `/issue/${newBadge.id}?to=${presetAcceptor}`)
+            navigate(presetAcceptor ? `/issue/${newBadge.id}?to=${presetAcceptor}` : `/issue/${newBadge.id}`)
         } catch (e: any) {
             unload()
             console.log('[handleCreate]: ', e)
@@ -120,7 +133,7 @@ function CreateBadge() {
                         <AppInput
                             clearable
                             readOnly
-                            value={ user.domain || '' } />
+                            value={ group?.domain || user.domain || '' } />
                     </div>
 
                     <AppButton kind={ BTN_KIND.primary }

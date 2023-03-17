@@ -25,6 +25,7 @@ export interface Profile {
     username: string | null,
     followers: number
     following: number
+    is_group: boolean
 }
 
 export interface ProfileSimple {
@@ -230,6 +231,7 @@ export interface Badgelet {
     token_id: string | null,
     badge: Badge,
     chain_info: string | null
+    group: Group | null
 }
 
 export async function queryBadgelet (props: QueryBadgeletProps): Promise<Badgelet[]> {
@@ -811,6 +813,26 @@ export async function queryPendingInvite (receiverId: number):Promise<Invite[]> 
     return res.data.group_invites
 }
 
+export  interface UpdateGroupProps {
+    id: number,
+    image_url: string
+    auth_token: string
+}
+
+export async function updateGroup (props: UpdateGroupProps) {
+    checkAuth(props)
+    const res = await fetch.post({
+        url: `${api}/group/update`,
+        data:  props
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+
+    return res.data.group
+}
+
 export default {
     login,
     getProfile,
@@ -845,5 +867,6 @@ export default {
     queryInviteDetail,
     acceptInvite,
     cancelInvite,
-    queryPendingInvite
+    queryPendingInvite,
+    updateGroup
 }

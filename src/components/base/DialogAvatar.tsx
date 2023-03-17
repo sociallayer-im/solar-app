@@ -1,6 +1,6 @@
 import {useStyletron} from 'baseui'
-import {useContext} from 'react'
-import solas, {Profile} from '../../service/solas'
+import {useContext, useState} from 'react'
+import solas, {Profile, updateGroup} from '../../service/solas'
 import usePicture from '../../hooks/pictrue'
 import {Delete} from 'baseui/icon'
 import langContext from '../provider/LangProvider/LangContext'
@@ -66,7 +66,9 @@ function DialogAvatar (props: DialogAvatarProps) {
     const { lang } = useContext(langContext)
     const { user } = useContext(UserContext)
     const { showCropper, showLoading, showToast } = useContext(DialogsContext)
-    const [_, emitUpdate] = useEvent(EVENT.profileUpdate)
+    const [_1, emitProfileUpdate] = useEvent(EVENT.profileUpdate)
+    const [_2, emitGroupUpdate] = useEvent(EVENT.groupUpdate)
+    const [currProfile, setCurrProfile] = useState(props.profile)
 
     const selectFile = async () => {
         const img = await chooseFile({
@@ -91,11 +93,23 @@ function DialogAvatar (props: DialogAvatarProps) {
                             uploader: user.wallet || user.email || '',
                             auth_token: user.authToken || ''
                         })
-                        const newProfile = await solas.setAvatar({
-                            image_url: newImage,
-                            auth_token: user.authToken || ''
-                        })
-                        emitUpdate(newProfile)
+
+                        let newProfile: Profile
+                        if (props.profile.is_group) {
+                            newProfile = await solas.updateGroup({
+                                id: props.profile.id,
+                                image_url: newImage,
+                                auth_token: user.authToken || ''
+                            })
+                            emitGroupUpdate(newProfile)
+                        } else {
+                            newProfile = await solas.setAvatar({
+                                image_url: newImage,
+                                auth_token: user.authToken || ''
+                            })
+                            emitProfileUpdate(newProfile)
+                        }
+                        setCurrProfile(newProfile)
                         unload()
                         close()
                     } catch (e: any) {
@@ -112,7 +126,7 @@ function DialogAvatar (props: DialogAvatarProps) {
 
     return (<div className={css(style.wrapper)}>
         <img className={css(style.img)}
-            src={ props.profile.image_url || defaultAvatar(props.profile.id)} alt=""/>
+            src={ currProfile.image_url || defaultAvatar(props.profile.id)} alt=""/>
         <div className={css(style.close)} onClick={ () => { props.handleClose() } }><Delete size={25}/></div>
         <div className={css(style.showUpload)} onClick={ () => { selectFile() } }>
             { lang['Avatar_Upload_Button'] }

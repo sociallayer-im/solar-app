@@ -36,6 +36,7 @@ const overrides = {
 export interface DialogFollowInfoProps {
     handleClose: () => any,
     profile: Profile | Group
+    title?: string
 }
 
 function DialogFollowInfo(props: DialogFollowInfoProps) {
@@ -71,7 +72,7 @@ function DialogFollowInfo(props: DialogFollowInfoProps) {
        <div className='top-side'>
            <div className='list-header'>
                <div className='center'>
-                   <PageBack onClose={ () => { props.handleClose() } } title={lang['IssueBadge_Address_List_Title']}/>
+                   <PageBack onClose={ () => { props.handleClose() } } title={props.title || lang['IssueBadge_Address_List_Title']}/>
                </div>
            </div>
            <AppTabs styleOverrides={ overrides } initialState={ { activeKey: "follower" } }>

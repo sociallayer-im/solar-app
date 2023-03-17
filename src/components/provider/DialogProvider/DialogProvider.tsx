@@ -346,7 +346,10 @@ function DialogProvider (props: DialogProviderProps) {
 
                 return (
                     <Dialog { ...dialogProps } >
-                        <DialogCropper imgURL={ props.imgURL } handleClose={ close } handleConfirm={props.onConfirm} />
+                        <DialogCropper
+                            imgURL={ props.imgURL }
+                            handleClose={ close }
+                            handleConfirm={props.onConfirm} />
                     </Dialog>
                 )
             }

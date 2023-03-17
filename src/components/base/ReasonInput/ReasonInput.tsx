@@ -1,4 +1,4 @@
-import {useState, useContext, useRef} from 'react'
+import {useState, useContext, useRef, useEffect} from 'react'
 import LangContext from '../../provider/LangProvider/LangContext'
 import './ReasonInput.less'
 import ReasonText from '../ReasonText/ReasonText'
@@ -18,6 +18,10 @@ function ReasonInput(props: ReasonInputProps) {
         setValue(newString)
         props.onChange(newString)
     }
+
+    useEffect(() => {
+        setValue(props.value)
+    }, [props.value])
 
     const addTag = () => {
         const tags = value.match(/#[^\s]*/g)

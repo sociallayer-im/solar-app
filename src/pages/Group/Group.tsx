@@ -46,7 +46,9 @@ function GroupPage () {
     },[groupname])
 
     const handleMintOrIssue = () => {
-        navigate(user.userName === profile?.username ? '/badge-create' : `/badge-create?to=${profile?.domain}`)
+        navigate(user.id === profile?.group_owner_id
+            ? `/badge-create?group=${profile.id}`
+            : `/badge-create?to=${profile?.domain}`)
     }
 
     return <Layout>
@@ -60,8 +62,8 @@ function GroupPage () {
                     </div>
                     <div className='slot_2'>
                         <AppButton size={ BTN_SIZE.compact } onClick={ handleMintOrIssue }>
-                            { user.userName === profile.username
-                                ? lang['Profile_User_MindBadge']
+                            { user.id === profile.group_owner_id
+                                ? lang['Follow_detail_btn_mint']
                                 : lang['Profile_User_IssueBadge']
                             }
                         </AppButton>
@@ -78,9 +80,11 @@ function GroupPage () {
                             <Tab key='Invite' title={ lang['Group_detail_tabs_Invite'] }>
                                 <ListGroupInvitep group={ profile! } />
                             </Tab>
-                            <Tab key='Presend' title={ lang['Profile_Tab_Presend'] }>
-                                <ListUserPresend userType='group' profile={ profile! } />
-                            </Tab>
+                            { user.id === profile.id ?
+                                <Tab key='Presend' title={ lang['Profile_Tab_Presend'] }>
+                                    <ListUserPresend userType='group' profile={ profile! } />
+                                </Tab> : <></>
+                             }
                         </AppSubTabs>
                     </Tab>
                     <Tab key='Received' title={ lang['Profile_Tab_Received'] }>

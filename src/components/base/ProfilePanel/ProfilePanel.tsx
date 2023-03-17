@@ -105,7 +105,7 @@ function ProfilePanel(props: ProfilePanelProps) {
     const showFollowInfo = () => {
         openDialog({
             size:['100%', '100%'],
-            content: (close: any) => <DialogFollowInfo profile={profile} handleClose={close} />
+            content: (close: any) => <DialogFollowInfo title={ profile.domain! } profile={profile} handleClose={close} />
         })
     }
 
