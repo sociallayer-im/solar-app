@@ -15,7 +15,7 @@ const langEN = {
   Nav_Wallet_Disconnect: 'Sign Out',
 
   Wallet_Title_MetaMask: 'Meta Mask',
-  Wallet_Intro_MetaMask: 'Connect to your MetaMask Wallet',
+  Wallet_Intro_MetaMask: 'Connect to your MetaMask Wallet Or injected explorer wallet',
 
   Wallet_Title_WalletConnect: 'WalletConnect',
   Wallet_Intro_WalletConnect: 'Connect to your WalletConnect Wallet',
