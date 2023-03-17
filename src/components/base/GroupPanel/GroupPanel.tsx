@@ -1,4 +1,3 @@
-import { styled } from 'baseui'
 import { useState, useContext, useEffect } from 'react'
 import solas, { Profile }  from '../../../service/solas'
 import './GroupPanel.less'
@@ -6,7 +5,6 @@ import usePicture from '../../../hooks/pictrue'
 import LangContext from '../../provider/LangProvider/LangContext'
 import UserContext from '../../provider/UserProvider/UserContext'
 import DialogsContext from '../../provider/DialogProvider/DialogsContext'
-import DialogProfileQRcode from '../DialogProfileQRcode/DialogProfileQRcode'
 import useEvent, { EVENT } from '../../../hooks/globalEvent'
 import DialogFollowInfo from '../DialogFollowInfo/DialogFollowInfo'
 import { StatefulPopover, PLACEMENT } from 'baseui/popover'
@@ -55,9 +53,6 @@ function GroupPanel(props: GroupPanelProps) {
         checkFollow()
     }, [user.id])
 
-    const isProfileOwner = () => {
-        return user.id === group.id
-    }
 
     const showFollowInfo = () => {
         openDialog({
