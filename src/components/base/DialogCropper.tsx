@@ -82,7 +82,7 @@ function DialogCropper(props: DialogCropperProps) {
             width: '100%',
             height: '10px',
             display: 'flex',
-            bottom: (window.innerHeight - cropBoxInitWidth)  / 2 - 26 + 'px'
+            bottom: (window.innerHeight - cropBoxInitWidth)  / 2 - 10 + 'px'
         },
         btn: {
             marginLeft: '10px',
