@@ -62,7 +62,20 @@ const style = {
         borderRadius: '28px',
         top: '5px',
         left: '5px'
+    },
+    hideMark: {
+        width: '90px',
+        height: '90px',
+        borderRadius: '50%',
+        position: 'absolute' as const,
+        background: 'rgba(0,0,0,0.3)',
+        top: '18px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: '24px'
     }
+
 }
 
 export interface CardBadgeletProps {
@@ -78,6 +91,7 @@ function CardBadgelet (props: CardBadgeletProps) {
 
     return (<div className={ css(style.wrapper) } onClick={ () => { showBadgelet(props.badgelet) }}>
                 <img className={ css(style.img) } src={ props.badgelet.badge.image_url } alt=""/>
+                { props.badgelet.hide && <div className={css(style.hideMark)}><i className='icon-lock'></i></div> }
                 <div className={ css(style.name) }>{ props.badgelet.badge.name }</div>
                 { isOwner && props.badgelet.status === 'pending' && <div className={ css(style.pendingMark) }>Pending</div> }
             </div>)

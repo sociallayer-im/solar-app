@@ -90,4 +90,9 @@
 .icon-link:before {
   content: "\e913";
 }
+.icon-lock:before {
+   content: "\e915";
+   color: #fff;
+ }
+
 
