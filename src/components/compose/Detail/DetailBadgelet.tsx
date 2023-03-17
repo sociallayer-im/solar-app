@@ -13,8 +13,9 @@ import DetailDes from './atoms/DetailDes'
 import DetailArea from './atoms/DetailArea'
 import AppButton, { BTN_KIND } from '../../base/AppButton'
 import BtnGroup from '../../base/BtnGroup/BtnGroup'
-import solas, {Badgelet, queryBadgeletDetail} from '../../../service/solas'
+import solas, { Badgelet } from '../../../service/solas'
 import useEvent, { EVENT } from '../../../hooks/globalEvent'
+import ReasonText from '../../base/ReasonText/ReasonText'
 
 
 export interface DetailBadgeletProps {
@@ -111,7 +112,8 @@ function DetailBadgelet(props: DetailBadgeletProps ) {
 
             <DetailCover src={ badgelet.badge.image_url }></DetailCover>
             <DetailName> { badgelet.badge.name } </DetailName>
-            <DetailDes> { badgelet.content } </DetailDes>
+            <DetailDes> <ReasonText text={badgelet.content}></ReasonText> </DetailDes>
+
 
             <DetailArea
                 onClose={ props.handleClose }

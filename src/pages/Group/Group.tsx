@@ -80,7 +80,7 @@ function GroupPage () {
                             <Tab key='Invite' title={ lang['Group_detail_tabs_Invite'] }>
                                 <ListGroupInvitep group={ profile! } />
                             </Tab>
-                            { user.id === profile.id ?
+                            { user.id === profile.group_owner_id ?
                                 <Tab key='Presend' title={ lang['Profile_Tab_Presend'] }>
                                     <ListUserPresend userType='group' profile={ profile! } />
                                 </Tab> : <></>

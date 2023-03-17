@@ -1,6 +1,7 @@
 import {useNavigate} from 'react-router-dom'
 import {useStyletron} from 'baseui'
 import React, { useState, useContext, useEffect } from 'react'
+import './ReasonText.less'
 
 
 export interface ReasonTextProps extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {

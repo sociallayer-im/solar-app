@@ -13,6 +13,7 @@ import AppButton, { BTN_KIND } from '../../base/AppButton'
 import BtnGroup from '../../base/BtnGroup/BtnGroup'
 import solas, {Group, Invite, Profile } from '../../../service/solas'
 import useEvent, { EVENT } from '../../../hooks/globalEvent'
+import ReasonText from '../../base/ReasonText/ReasonText'
 
 
 export interface DetailInviteProps {
@@ -101,7 +102,7 @@ function DetailInvite(props: DetailInviteProps ) {
 
             <DetailCover src={ group?.image_url || defaultAvatar(props.invite.group_id)}></DetailCover>
             <DetailName> { group?.username } </DetailName>
-            <DetailDes> { props.invite.message } </DetailDes>
+            <DetailDes> <ReasonText text={props.invite.message} /></DetailDes>
 
             <DetailArea
                 onClose={ props.handleClose }

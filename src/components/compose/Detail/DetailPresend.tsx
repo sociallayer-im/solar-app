@@ -1,9 +1,8 @@
-import { useStyletron } from 'baseui'
 import LangContext from '../../provider/LangProvider/LangContext'
 import UserContext from '../../provider/UserProvider/UserContext'
 import DialogsContext from '../../provider/DialogProvider/DialogsContext'
 import { useContext, useEffect, useState } from 'react'
-import {acceptPresend, Presend, ProfileSimple, queryPresendDetail} from '../../../service/solas'
+import { Presend, ProfileSimple } from '../../../service/solas'
 import DetailWrapper from './atoms/DetailWrapper'
 import usePicture from '../../../hooks/pictrue'
 import DetailHeader from './atoms/DetailHeader'
@@ -18,6 +17,7 @@ import useEvent, { EVENT } from '../../../hooks/globalEvent'
 import copy from '../../../utils/copy'
 import DetailReceivers from './atoms/DetailReceivers'
 import DetailScrollBox from './atoms/DetailScrollBox'
+import ReasonText from '../../base/ReasonText/ReasonText'
 
 
 export interface DetailPresendProps {
@@ -110,7 +110,7 @@ function DetailPresend (props: DetailPresendProps ) {
 
             <DetailCover src={ props.presend.badge.image_url }></DetailCover>
             <DetailName> { props.presend.badge.name } </DetailName>
-            <DetailDes> { props.presend.message } </DetailDes>
+            <DetailDes> <ReasonText text={ props.presend.message } /> </DetailDes>
 
             <DetailScrollBox>
                 { sender && <DetailArea
