@@ -214,7 +214,7 @@ export interface QueryBadgeletProps {
     id?: number,
     receiver_id?: number,
     page: number,
-    show_hidden?: boolean
+    show_hidden?: number
 }
 
 export interface Badgelet {

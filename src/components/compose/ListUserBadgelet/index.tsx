@@ -19,7 +19,7 @@ function ListUserBadgelet (props: ListUserBadgeletProps) {
     const [badgelets, setBadgelets] = useState<Badgelet[]>([])
     const getBadgelet = async (page: number) => {
         return await solas.queryBadgelet({
-            show_hidden: user.id === props.profile.id,
+            show_hidden: user.id === props.profile.id ? 1: 0,
             receiver_id: props.profile.id,
             page })
     }
