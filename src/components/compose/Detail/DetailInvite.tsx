@@ -45,8 +45,8 @@ function DetailInvite(props: DetailInviteProps ) {
     const handleAccept = async () => {
         const unload = showLoading()
         try {
-            const accept = await solas.acceptBadgelet({
-                badgelet_id: invite.id,
+            const accept = await solas.acceptInvite({
+                group_invite_id: invite.id,
                 auth_token: user.authToken || ''
             })
 
@@ -63,8 +63,8 @@ function DetailInvite(props: DetailInviteProps ) {
     const handleReject = async () => {
         const unload = showLoading()
         try {
-            const reject = await solas.rejectBadgelet({
-                badgelet_id: invite.id,
+            const reject = await solas.cancelInvite({
+                group_invite_id: invite.id,
                 auth_token: user.authToken || ''
             })
 
@@ -73,7 +73,7 @@ function DetailInvite(props: DetailInviteProps ) {
             showToast('Reject success')
         } catch (e: any) {
             unload()
-            console.log('[handleAccept]: ', e)
+            console.log('[handleReject]: ', e)
             showToast(e.message || 'Reject fail')
         }
     }

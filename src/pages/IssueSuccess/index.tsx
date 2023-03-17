@@ -1,51 +1,100 @@
 import { useNavigate,  useSearchParams } from 'react-router-dom'
 import { useState, useContext, useEffect } from 'react'
-import solas, {Badgelet, Presend, PresendWithBadgelets} from '../../service/solas'
+import solas, { Badgelet, PresendWithBadgelets, Invite, Group } from '../../service/solas'
 import Layout from '../../components/Layout/Layout'
 import LangContext from '../../components/provider/LangProvider/LangContext'
 import './IssueSuccess.less'
-import AppButton, { BTN_KIND } from '../../components/base/AppButton'
 import UserContext from '../../components/provider/UserProvider/UserContext'
 import copy from '../../utils/copy'
 import PresendSussess from './PresendSuccess'
+import IssueSuccess from './IssueSuccess'
+import InviteSuccess from './InviteSuccess'
 
-function IssueSuccess () {
+function IssueSuccessPage () {
     const navigate = useNavigate()
     const [searchParams, _] = useSearchParams()
     const [badgelet, setBadgelet] = useState<Badgelet | null>(null)
     const [presend, setpresend] = useState<PresendWithBadgelets | null>(null)
+    const [invite, setInvite] = useState<Invite | null>(null)
+    const [inviteGroup, setInviteGroup] = useState<Group | null>(null)
     const [desText, setDesText] = useState('')
     const { lang } =  useContext(LangContext)
     const { user } =  useContext(UserContext)
 
     const presendId = searchParams.get('presend')
+
     const badgeletId = searchParams.get('badgelet')
     const acceptAmount = searchParams.get('amount')
+
+    const inviteId = searchParams.get('invite')
+    const groupId = searchParams.get('group')
+
 
     useEffect(() => {
         async function fetchInfo () {
             if (badgeletId) {
                 const badgeletDetail = await solas.queryBadgeletDetail({ id: Number(badgeletId) })
-                setBadgelet(badgeletDetail)
                 if (Number(acceptAmount) > 1) {
                     setDesText(lang['IssueFinish_IssuedToMany']([badgeletDetail.receiver.domain, Number(acceptAmount) - 1]))
                 } else {
                     setDesText(lang['IssueFinish_IssuedToOne']([badgeletDetail.receiver.domain]))
                 }
+
+                setBadgelet(badgeletDetail)
             }
+
             if (presendId) {
                 const presendDetail = await solas.queryPresendDetail({ id: Number(presendId), auth_token: user.authToken || '' })
                 setpresend(presendDetail)
             }
+
+            if (inviteId && groupId) {
+                const inviteDetail = await solas.queryInviteDetail({ invite_id: Number(inviteId), group_id: Number(groupId)})
+                if (!inviteDetail) return
+
+                const receiver = await solas.getProfile({id: inviteDetail?.receiver_id})
+                if (!receiver) return
+
+                const group = await solas.queryGroupDetail(Number(groupId))
+                if (!group) return
+
+                if (Number(acceptAmount) > 1) {
+                    setDesText(lang['IssueFinish_IssuedToMany']([receiver.domain, Number(acceptAmount) - 1]))
+                } else {
+                    setDesText(lang['IssueFinish_IssuedToOne']([receiver.domain]))
+                }
+
+                setInviteGroup(group)
+                setInvite(inviteDetail)
+            }
         }
         fetchInfo()
-    }, [user.domain])
+    }, [user.authToken])
+
+    const genShareLink = () => {
+        const base = `${window.location.protocol}//${window.location.host}`
+        let path = ''
+
+        if (badgeletId) {
+            path = `${base}/badgelet/${badgeletId}`
+        }
+
+        if (presendId) {
+            path = `${base}/presend/${presendId}`
+        }
+
+        if (inviteId) {
+            path = `${base}/invite/${inviteId}`
+        }
+
+        return path
+    }
 
     const whatsAppShare = () => {
         const text = lang['WhatsApp_Share']([
             user.domain,
             badgelet?.badge.title,
-            `${window.location.protocol}//${window.location.host}/badgelet/${badgelet?.id}`
+            genShareLink()
         ])
         const decodeText = encodeURIComponent(text)
         window.open(`https://wa.me/?text=${decodeText}`)
@@ -53,7 +102,7 @@ function IssueSuccess () {
 
     const systemShare = () => {
         if (navigator.share) {
-            const shareUrl = `${window.location.protocol}//${window.location.host}/badgelet/${badgelet?.id}`
+            const shareUrl = genShareLink()
             const text = lang['WhatsApp_Share']([
                 user.domain,
                 badgelet?.badge.title,
@@ -68,7 +117,7 @@ function IssueSuccess () {
     }
 
     const handleCopy = () => {
-        const shareUrl = `${window.location.protocol}//${window.location.host}/badgelet/${badgelet?.id}`
+        const shareUrl = genShareLink()
         const link = lang['IssueFinish_share']
             .replace('#1',  user.domain!)
             .replace('#2', badgelet?.badge.title || '')
@@ -80,34 +129,21 @@ function IssueSuccess () {
     return (
         <Layout>
                 <div className='issue-success'>
+                    { !!badgelet && <IssueSuccess
+                        desText={desText}
+                        systemShare={ () => { systemShare() }}
+                        whatsAppShare={ () => { whatsAppShare() }}
+                        handleCopy={ () => { handleCopy() }}
+                        badgelet={ badgelet }
+                    ></IssueSuccess> }
 
-                    { !!badgelet && <div>
-                        <div className='bg-box'></div>
-                        <div className='inner'>
-                            <div className='title'>{ lang['PresendFinish_Title'] }</div>
-                            <img className='cover' src={badgelet.badge.image_url} />
-                            <div className='badgelet-name'>{badgelet.badge.title}</div>
-                            <div className='des' dangerouslySetInnerHTML={{__html: desText}} />
-                            <div className='share'>
-                                <div className="share-split"><span>{lang['IssueFinish_GoAndInform']}</span></div>
-                                <div className='actions'>
-                                    <AppButton style={{ width: '36px'}} onClick={ whatsAppShare }>
-                                        <i className='icon icon-whatsapp'></i>
-                                    </AppButton>
-                                    <AppButton style={{ width: '36px'}} onClick={ systemShare }>
-                                        <span className="icon-more"></span>
-                                    </AppButton>
-                                    <AppButton style={{ width: '110px'}} onClick={ handleCopy }>
-                                        <span className='icon-copy'></span>
-                                        { lang['IssueFinish_CopyLink'] }
-                                    </AppButton>
-                                </div>
-                            </div>
-                            <AppButton kind={BTN_KIND.primary} onClick={ () => { navigate(`/profile/${user.userName}`) } }>
-                                {lang['IssueFinish_BackToProfile']}
-                            </AppButton>
-                        </div>
-                    </div> }
+                    { !!invite && <InviteSuccess
+                        desText={desText}
+                        systemShare={ () => { systemShare() }}
+                        whatsAppShare={ () => { whatsAppShare() }}
+                        handleCopy={ () => { handleCopy() }}
+                        group={ inviteGroup! }
+                    ></InviteSuccess> }
 
                     { !!presend && <PresendSussess presend={ presend }></PresendSussess> }
                 </div>
@@ -116,4 +152,4 @@ function IssueSuccess () {
     )
 }
 
-export default IssueSuccess
+export default IssueSuccessPage

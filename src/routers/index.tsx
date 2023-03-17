@@ -9,6 +9,7 @@ const Regist = lazy(() => import('../pages/Regist'))
 const RegistGroup = lazy(() => import('../pages/RegistGroup'))
 const CreateBadge = lazy(() => import('../pages/CreateBadge'))
 const Issue = lazy(() => import('../pages/Issue'))
+const Invite = lazy(() => import('../pages/Invite'))
 const IssueSuccess = lazy(() => import('../pages/IssueSuccess'))
 const Error = lazy(() => import('../pages/Error'))
 
@@ -24,6 +25,7 @@ function AppRouter () {
                 <Route path="/create-group" element={<RegistGroup />}></Route>
                 <Route path="/badge-create" element={<CreateBadge />}></Route>
                 <Route path="/issue/:badgeId" element={<Issue />}></Route>
+                <Route path="/invite/:groupId" element={<Invite />}></Route>
                 <Route path="/issue-success" element={<IssueSuccess />}></Route>
                 <Route path="/badgelet/:badgeletId" element={<Home />}></Route>
                 <Route path="/presend/:presendId" element={<Home />}></Route>

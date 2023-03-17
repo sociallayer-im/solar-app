@@ -62,8 +62,12 @@ function CardGroup (props: CardGroupProps) {
     const { defaultAvatar } = usePicture()
     const { lang } = useContext(LangContext)
 
+    const toGroupDetail = () => {
+        navigate(`/group/${props.group.username}`)
+    }
+
     return (
-        <div className={ css(style.wrapper) } >
+        <div className={ css(style.wrapper) } onClick={ toGroupDetail }>
                 <img className={ css(style.img) } src={ props.group.image_url || defaultAvatar(props.group.id) } alt=""/>
                 <div className={ css(style.name) }>{ props.group.username }</div>
                 <div className={ css(style.des) }>{ props.group.group_owner_id === props.profile.id

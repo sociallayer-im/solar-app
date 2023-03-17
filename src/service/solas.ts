@@ -704,7 +704,10 @@ export async function queryGroupInvites (props: QueryGroupInvitesProps): Promise
         throw new Error(res.data.message)
     }
 
-    return res.data.group_invites as Invite[]
+    return res.data.group_invites.filter((item:Invite) => {
+        const now = Date.parse(new Date().toString())
+        return Date.parse(new Date(item.expires_at).toString()) - now >= 0
+    })
 }
 
 export interface CreateGroupProps {
@@ -724,6 +727,88 @@ export async function createGroup (props: CreateGroupProps): Promise<Group> {
     }
 
     return res.data.group
+}
+
+export interface SendInviteProps {
+    group_id: number,
+    receivers: string[],
+    message: string,
+    auth_token: string
+}
+export async function sendInvite (props: SendInviteProps): Promise<Invite[]> {
+    checkAuth(props)
+    const res = await fetch.post({
+        url: `${api}/group/send-invite`,
+        data:  props
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+
+    return res.data.group_invites
+}
+
+export interface QueryInviteDetailProps {
+    group_id: number
+    invite_id: number
+}
+
+export async function queryInviteDetail (props: QueryInviteDetailProps): Promise<Invite | null> {
+    const res = await fetch.get({
+        url: `${api}/group/group-invites`,
+        data:  { group_id: props.group_id }
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+
+    return res.data.group_invites.find((item: Invite) => {
+        return item.id === props.invite_id
+    }) || null
+}
+
+export interface AcceptInviteProps {
+    group_invite_id: number,
+    auth_token: string
+}
+
+export async function acceptInvite (props: AcceptInviteProps) {
+    checkAuth(props)
+    const res = await fetch.post({
+        url: `${api}/group/accept-invite`,
+        data:  props
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+}
+
+export async function cancelInvite (props: AcceptInviteProps) {
+    checkAuth(props)
+    const res = await fetch.post({
+        url: `${api}/group/cancel-invite`,
+        data:  props
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+}
+
+export async function queryPendingInvite (receiverId: number):Promise<Invite[]> {
+    const res = await fetch.get({
+        url: `${api}/group/group-invites`,
+        data:  { receiver_id: receiverId, status: 'new' }
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+
+    return res.data.group_invites
 }
 
 export default {
@@ -755,5 +840,10 @@ export default {
     unfollow,
     queryGroupInvites,
     queryGroupDetail,
-    createGroup
+    createGroup,
+    sendInvite,
+    queryInviteDetail,
+    acceptInvite,
+    cancelInvite,
+    queryPendingInvite
 }

@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef } from 'react'
 import UserContext from '../provider/UserProvider/UserContext'
 import DialogsContext from '../provider/DialogProvider/DialogsContext'
-import solas from '../../service/solas'
+import solas, {queryPendingInvite} from '../../service/solas'
 
 const Pusher = (window as any).Pusher
 let pusher: any = null
@@ -12,7 +12,7 @@ if (Pusher) {
 
 function Subscriber () {
     const { user } = useContext(UserContext)
-    const { showBadgelet } = useContext(DialogsContext)
+    const { showBadgelet, showInvite } = useContext(DialogsContext)
     const SubscriptionDomain = useRef('')
 
     // 实时接受badgelet
@@ -46,6 +46,15 @@ function Subscriber () {
             })
         }
         showPendingBadgelets()
+
+
+        async function showPendingInvite () {
+            const invites = await solas.queryPendingInvite(user.id!)
+            invites.forEach((item) => {
+                showInvite(item)
+            })
+        }
+        showPendingInvite()
     }, [ user.id ])
 
     return (<></>)

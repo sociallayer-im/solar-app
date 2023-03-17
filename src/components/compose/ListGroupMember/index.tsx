@@ -6,6 +6,7 @@ import LangContext from '../../provider/LangProvider/LangContext'
 import UserContext from '../../provider/UserProvider/UserContext'
 import { styled } from 'baseui'
 import { Plus } from 'baseui/icon'
+import { useNavigate } from 'react-router-dom'
 
 
 interface ListGroupMemberProps {
@@ -15,6 +16,7 @@ interface ListGroupMemberProps {
 function ListGroupMember (props: ListGroupMemberProps) {
     const { lang } = useContext(LangContext)
     const { user } = useContext(UserContext)
+    const navigate = useNavigate()
     const [members, setMembers] = useState<Profile[]>([])
     const [owner, setOwner] = useState<Profile | null>(null)
 
@@ -55,6 +57,7 @@ function ListGroupMember (props: ListGroupMemberProps) {
 
     const InviteBtn = () => {
         return <CardUser
+            onClick={ () => { navigate(`/invite/${props.group.id}`) } }
             img={() => <PlusIcon><Plus /></PlusIcon>}
             content={() => <b>Invite new members</b>}
         />
