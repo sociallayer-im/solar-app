@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from 'react'
-import solas, { Profile }  from '../../../service/solas'
+import solas, {leaveGroup, Profile} from '../../../service/solas'
 import './GroupPanel.less'
 import usePicture from '../../../hooks/pictrue'
 import LangContext from '../../provider/LangProvider/LangContext'
@@ -24,6 +24,16 @@ function GroupPanel(props: GroupPanelProps) {
     const [group, setGroup] = useState(props.group)
     const [showUnFollowBtn, setShowUnFollowBtn] = useState(false)
 
+    const checkFollow  = async () => {
+        const follower = await solas.getFollowers(props.group.id)
+        const isFollower = follower.find(item => {
+            return item.id === user.id
+        })
+
+        setShowUnFollowBtn(!!isFollower)
+        return !!isFollower
+    }
+
     useEffect(() => {
         if (newProfile && newProfile.id === group.id) {
             setGroup({...group, ...newProfile})
@@ -39,17 +49,6 @@ function GroupPanel(props: GroupPanelProps) {
             setShowUnFollowBtn(false)
             return
         }
-
-        async function checkFollow () {
-            const follower = await solas.getFollowers(props.group.id)
-            const isFollower = follower.find(item => {
-                return item.id === user.id
-            })
-
-            setShowUnFollowBtn(!!isFollower)
-            return !!isFollower
-        }
-
         checkFollow()
     }, [user.id])
 
@@ -61,19 +60,20 @@ function GroupPanel(props: GroupPanelProps) {
         })
     }
 
-    const handleUnFollow = async () => {
+    const handleUnJoin = async () => {
         const unload = showLoading()
         try {
-            const res = await solas.unfollow({
-                target_id: props.group.id,
-                auth_token: user.authToken || ''
+            const res = await solas.leaveGroup({
+                group_id: props.group.id,
+                auth_token: user.authToken || '',
+                profile_id: user.id!
             })
             unload()
             setShowUnFollowBtn(false)
         } catch (e: any) {
             unload()
-            console.log('[handleUnFollow]: ', e)
-            showToast(e.message || 'Unfollow fail')
+            console.log('[handleUnJoin]: ', e)
+            showToast(e.message || 'Unjoin fail')
         }
     }
 
@@ -104,7 +104,7 @@ function GroupPanel(props: GroupPanelProps) {
                     <StatefulPopover
                         placement={ PLACEMENT.bottomRight }
                         popoverMargin={ 0 }
-                        content={ ({ close }) => <MenuItem onClick={ () => { handleUnFollow() } }>{ lang['Relation_Ship_Action_Leave'] }</MenuItem> }>
+                        content={ ({ close }) => <MenuItem onClick={ () => { handleUnJoin() } }>{ lang['Relation_Ship_Action_Leave'] }</MenuItem> }>
                         <div>
                             <AppButton size={ BTN_SIZE.compact }>
                                 { lang['Relation_Ship_Action_Joined'] }

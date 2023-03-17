@@ -833,6 +833,24 @@ export async function updateGroup (props: UpdateGroupProps) {
     return res.data.group
 }
 
+export interface LeaveGroupProps {
+    group_id: number,
+    profile_id: number,
+    auth_token: string
+}
+
+export async function leaveGroup (props: LeaveGroupProps) {
+    checkAuth(props)
+    const res = await fetch.post({
+        url: `${api}/group/remove-member`,
+        data:  props
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+}
+
 export default {
     login,
     getProfile,
@@ -868,5 +886,6 @@ export default {
     acceptInvite,
     cancelInvite,
     queryPendingInvite,
-    updateGroup
+    updateGroup,
+    leaveGroup
 }

@@ -98,7 +98,7 @@ function ProfilePanel(props: ProfilePanelProps) {
     }
 
     const editAvatar = () => {
-        if (!isProfileOwner) return
+        if (!isProfileOwner()) return
         showAvatar(profile)
     }
 
