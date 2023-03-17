@@ -165,7 +165,7 @@ function UserProvider (props: UserProviderProps) {
     // update avatar
     useEffect(() => {
         if (newProfile && newProfile.id === userInfo.id) {
-            setUser(newProfile)
+            setUser({...userInfo, avatar: newProfile.image_url })
         }
     }, [newProfile])
 
