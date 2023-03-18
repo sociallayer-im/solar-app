@@ -6,8 +6,8 @@ import { styled } from 'baseui'
         width: 'calc(100% + 6px)',
         paddingRight: '3px',
         flexDirection: 'column',
-        // maxHeight: '270px',
-        // overflowY: 'auto',
+         maxHeight: 'initial',
+        overflowY: 'auto',
         marginBottom: '12px'
     }
 })

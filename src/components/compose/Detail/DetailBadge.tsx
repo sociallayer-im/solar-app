@@ -93,7 +93,7 @@ function DetailBadge (props: DetailBadgeProps ) {
                     <DetailCover src={ props.badge.image_url }></DetailCover>
                     <DetailName> { props.badge.name } </DetailName>
 
-                    <DetailScrollBox>
+                    <DetailScrollBox style={{ maxHeight: loginUserIsSender ? '270px' : 'initial' } }>
                         <DetailArea
                             onClose={ props.handleClose }
                             title={ lang['BadgeDialog_Label_Creator'] }
@@ -124,7 +124,7 @@ function DetailBadge (props: DetailBadgeProps ) {
                 badgelets.map((item, index) => {
                     return (
                         <SwiperSlide style={ slideSize } key={ index.toString() }>
-                            <DetailBadgelet sender={ props.badge.sender } badgelet={item} handleClose={props.handleClose} />
+                            <DetailBadgelet badgelet={item} handleClose={props.handleClose} />
                         </SwiperSlide>
                     )
                 })
