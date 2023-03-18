@@ -57,7 +57,7 @@ function ListGroupMember (props: ListGroupMemberProps) {
 
     const InviteBtn = () => {
         return <CardUser
-            onClick={ () => { navigate(`/invite/${props.group.id}`) } }
+            onClick={ () => { navigate(`/invite-create/${props.group.id}`) } }
             img={() => <PlusIcon><Plus /></PlusIcon>}
             content={() => <b>Invite new members</b>}
         />

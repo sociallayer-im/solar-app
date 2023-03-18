@@ -83,8 +83,8 @@ function IssueSuccessPage () {
             path = `${base}/presend/${presendId}`
         }
 
-        if (inviteId) {
-            path = `${base}/invite/${inviteId}`
+        if (inviteId && inviteGroup) {
+            path = `${base}/invite/${inviteGroup.id}/${inviteId}`
         }
 
         return path

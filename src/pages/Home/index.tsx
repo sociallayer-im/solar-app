@@ -11,9 +11,9 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 function Home () {
     const { user } = useContext( UserContext )
-    const { showBadgelet, showPresend, clean, openConnectWalletDialog } = useContext( DialogsContext )
+    const { showBadgelet, showPresend, clean, openConnectWalletDialog, showInvite } = useContext( DialogsContext )
     const navigate = useNavigate()
-    const { badgeletId, presendId } = useParams()
+    const { badgeletId, presendId, groupId, inviteId } = useParams()
 
     useEffect(() => {
         async function showBadgeletDetail () {
@@ -24,6 +24,11 @@ function Home () {
         async function showPresendDetail () {
             const newBadgelet = await solas.queryPresendDetail({ id: Number(presendId) })
             showPresend(newBadgelet)
+        }
+
+        async function showInviteDetail () {
+            const inviteDetail = await solas.queryInviteDetail({ group_id: Number(groupId), invite_id: Number(inviteId) })
+            showInvite(inviteDetail)
         }
 
         if (badgeletId) {
@@ -37,6 +42,13 @@ function Home () {
             clean('show presend detail')
             setTimeout(() => {
                 showPresendDetail()
+            }, 500)
+        }
+
+        if (groupId && inviteId) {
+            clean('show invite detail')
+            setTimeout(() => {
+                showInviteDetail()
             }, 500)
         }
     },[])

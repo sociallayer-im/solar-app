@@ -25,10 +25,11 @@ function AppRouter () {
                 <Route path="/create-group" element={<RegistGroup />}></Route>
                 <Route path="/badge-create" element={<CreateBadge />}></Route>
                 <Route path="/issue/:badgeId" element={<Issue />}></Route>
-                <Route path="/invite/:groupId" element={<Invite />}></Route>
+                <Route path="/invite-create/:groupId" element={<Invite />}></Route>
                 <Route path="/issue-success" element={<IssueSuccess />}></Route>
                 <Route path="/badgelet/:badgeletId" element={<Home />}></Route>
                 <Route path="/presend/:presendId" element={<Home />}></Route>
+                <Route path="/invite/:groupId/:inviteId" element={<Home />}></Route>
                 <Route path="*" element={<Error />}></Route>
             </Routes>
         </Suspense>
