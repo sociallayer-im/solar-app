@@ -38,7 +38,15 @@ const style = {
         fontSize: '14px'
     },
     textLink: {
-        cursor: 'pointer'
+        cursor: 'pointer',
+        overflow: 'hidden',
+        whiteSpace: 'nowrap' as const,
+        textOverflow: 'ellipsis'
+    },
+    text: {
+        overflow: 'hidden',
+        whiteSpace: 'nowrap' as const,
+        textOverflow: 'ellipsis'
     },
     img: {
         width:'24px',
@@ -56,7 +64,6 @@ const style = {
 function DetailArea (props: DetailAreaProps ) {
     const [css] = useStyletron()
     const navigate = useNavigate()
-    const [a, seta] = useState('')
 
     const handleNavigate = () => {
         if (props.navigate) {
@@ -70,10 +77,10 @@ function DetailArea (props: DetailAreaProps ) {
         <div className={ css(style.content) }>
             { props.image && <img className={ css(style.img) } src={ props.image } alt=""/> }
 
-            <div className={ props.navigate ? css(style.textLink) : '' } onClick={ handleNavigate }> { props.content } </div>
+            <div className={ props.navigate ? css(style.textLink) : css(style.text) } onClick={ handleNavigate }> { props.content } </div>
 
             { props.link &&
-                <a className={ css(style.link) } target='_blank' href={ props.image }>
+                <a className={ css(style.link) } target='_blank' href={ props.link }>
                     <i className='icon icon-icon_share'></i>
                 </a>
             }

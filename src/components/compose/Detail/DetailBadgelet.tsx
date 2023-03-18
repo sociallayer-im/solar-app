@@ -16,6 +16,7 @@ import BtnGroup from '../../base/BtnGroup/BtnGroup'
 import solas, { Badgelet, ProfileSimple } from '../../../service/solas'
 import useEvent, { EVENT } from '../../../hooks/globalEvent'
 import ReasonText from '../../base/ReasonText/ReasonText'
+import DetailScrollBox from './atoms/DetailScrollBox'
 
 
 export interface DetailBadgeletProps {
@@ -114,24 +115,26 @@ function DetailBadgelet(props: DetailBadgeletProps ) {
             <DetailName> { badgelet.badge.name } </DetailName>
             <DetailDes> <ReasonText text={badgelet.content}></ReasonText> </DetailDes>
 
-            <DetailArea
-                onClose={ props.handleClose }
-                title={ lang['BadgeDialog_Label_Creator'] }
-                content={ badgelet.sender.domain! }
-                navigate={ `/profile/${badgelet.sender.domain?.split('.')[0]}` }
-                image={ props.badgelet.sender.image_url || defaultAvatar(props.badgelet.sender.id) } />
+            <DetailScrollBox>
+                <DetailArea
+                    onClose={ props.handleClose }
+                    title={ lang['BadgeDialog_Label_Creator'] }
+                    content={ badgelet.sender.domain! }
+                    navigate={ `/profile/${badgelet.sender.domain?.split('.')[0]}` }
+                    image={ props.badgelet.sender.image_url || defaultAvatar(props.badgelet.sender.id) } />
 
-            <DetailArea
-                onClose={ props.handleClose }
-                title={ lang['BadgeDialog_Label_Issuees'] }
-                content={ badgelet.receiver.domain! }
-                navigate={ `/profile/${badgelet.receiver.domain?.split('.')[0]}` }
-                image={ badgelet.receiver.image_url || defaultAvatar(badgelet.receiver.id) } />
+                <DetailArea
+                    onClose={ props.handleClose }
+                    title={ lang['BadgeDialog_Label_Issuees'] }
+                    content={ badgelet.receiver.domain! }
+                    navigate={ `/profile/${badgelet.receiver.domain?.split('.')[0]}` }
+                    image={ badgelet.receiver.image_url || defaultAvatar(badgelet.receiver.id) } />
 
-            <DetailArea
-                title={ lang['BadgeDialog_Label_Token'] }
-                content={ badgelet.domain }
-                link={ badgelet.chain_info ? `https://moonscan.io/tx/${badgelet.chain_info}` : undefined } />
+                <DetailArea
+                    title={ lang['BadgeDialog_Label_Token'] }
+                    content={ badgelet.domain }
+                    link={ badgelet.chain_data ? `https://moonscan.io/tx/${badgelet.chain_data}` : undefined } />
+            </DetailScrollBox>
 
             <BtnGroup>
                 { !user.id && LoginBtn }

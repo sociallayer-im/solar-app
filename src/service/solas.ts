@@ -238,7 +238,7 @@ export interface Badgelet {
     status: 'accepted' | 'pending' | 'new' | 'rejected',
     token_id: string | null,
     badge: Badge,
-    chain_info: string | null
+    chain_data: string | null
     group: Group | null
 }
 

@@ -93,7 +93,7 @@ function DetailBadge (props: DetailBadgeProps ) {
                     <DetailCover src={ props.badge.image_url }></DetailCover>
                     <DetailName> { props.badge.name } </DetailName>
 
-                    <DetailScrollBox style={{ maxHeight: loginUserIsSender ? '270px' : 'initial' } }>
+                    <DetailScrollBox>
                         <DetailArea
                             onClose={ props.handleClose }
                             title={ lang['BadgeDialog_Label_Creator'] }
