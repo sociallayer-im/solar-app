@@ -1,11 +1,10 @@
-import {useContext, useEffect, useState} from 'react'
+import { useContext, useEffect } from 'react'
 import CardInvite from '../../base/CardInvite'
-import solas, { Profile, Invite } from '../../../service/solas'
+import solas, { Profile } from '../../../service/solas'
 import ListWrapper from '../../base/ListWrapper'
 import Empty from '../../base/Empty'
 import LangContext from '../../provider/LangProvider/LangContext'
 import useScrollToLoad from '../../../hooks/scrollToLoad'
-import UserContext from '../../provider/UserProvider/UserContext'
 
 interface ListUserBadgeletProps {
     group: Profile
@@ -40,7 +39,7 @@ function ListGroupInvite (props: ListUserBadgeletProps) {
                 })
                 : false
             }
-            <div ref={ref}></div>
+            <div ref={ref} className='page-bottom-marker'></div>
         </ListWrapper>)
 }
 

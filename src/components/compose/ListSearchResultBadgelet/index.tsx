@@ -35,7 +35,7 @@ function ListSearchResultBadgelet (props: ListSearchResultBadgeletProps) {
                 })
                 : false
             }
-            <div ref={ref}></div>
+            <div ref={ref} className='page-bottom-marker'></div>
         </ListWrapper>)
 }
 

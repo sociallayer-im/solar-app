@@ -41,7 +41,7 @@ function ListUserMinted ({ userType = 'user',  ...props }: ListUserMintedProps) 
                     return <CardBadge badge={ item } key={ index.toString() }/>
                 })
             }
-            <div ref={ref}></div>
+            <div ref={ref} className='page-bottom-marker'></div>
         </ListWrapper>)
 }
 

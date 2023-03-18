@@ -61,7 +61,7 @@ function ListUserBadgelet (props: ListUserBadgeletProps) {
                 })
                 : false
             }
-            <div ref={ref}></div>
+            <div ref={ref} className='page-bottom-marker'></div>
         </ListWrapper>)
 }
 
