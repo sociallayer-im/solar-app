@@ -23,7 +23,22 @@ function HeaderSearch(props: HeaderSearchProps) {
 
     const onConfirm = () => {
         window.localStorage.setItem('search', keyword)
+
+        if (!window.location.href.includes('/search/')) {
+            window.localStorage.setItem('searchfallback', window.location.pathname + window.location.search)
+        }
+
         navigate(`/search/${keyword}`)
+    }
+
+    const cancel = () => {
+        !!props.onClose && props.onClose()
+
+        const ifFallback = window.localStorage.getItem('searchfallback')
+        if (ifFallback) {
+            window.localStorage.removeItem('searchfallback')
+            navigate(ifFallback)
+        }
     }
 
 
@@ -38,7 +53,7 @@ function HeaderSearch(props: HeaderSearchProps) {
             endEnhancer={ () => ConfirmBtn }
             onChange={ (e) => { setKeyword(e.target.value) } }
         />
-        <div className='search-cancel-btn' onClick={ ()=>{ !!props.onClose && props.onClose() } }>{ lang['Search_Cancel'] }</div>
+        <div className='search-cancel-btn' onClick={ cancel }>{ lang['Search_Cancel'] }</div>
     </div>)
 }
 
