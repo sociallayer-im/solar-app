@@ -1,9 +1,7 @@
 import Layout from '../../components/Layout/Layout'
 import './Home.less'
 import AppButton, { BTN_KIND } from "../../components/base/AppButton";
-import { useConnect, useAccount } from 'wagmi'
-import useLang , { LangType } from '../../hooks/lang/lang'
-import { useContext, useEffect, useState} from 'react'
+import { useContext, useEffect } from 'react'
 import UserContext from '../../components/provider/UserProvider/UserContext'
 import DialogsContext from '../../components/provider/DialogProvider/DialogsContext'
 import solas from '../../service/solas'
