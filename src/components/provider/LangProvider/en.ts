@@ -260,7 +260,11 @@ const langEN = {
   Empty_No_Badge: 'No badge yet~',
   Empty_No_Present: 'No presned yet~',
   Empty_No_Group: 'No group yet~',
-  Empty_No_Invite: 'No invite yet~'
+  Empty_No_Invite: 'No invite yet~',
+
+  Search_Tab_Domain: 'Domain',
+  Search_Tab_Badge: 'Badge',
+  Search_Tab_Event: 'Event'
 }
 
 export type LangConfig = typeof langEN

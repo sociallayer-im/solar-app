@@ -11,7 +11,9 @@ const CreateBadge = lazy(() => import('../pages/CreateBadge'))
 const Issue = lazy(() => import('../pages/Issue'))
 const Invite = lazy(() => import('../pages/Invite'))
 const IssueSuccess = lazy(() => import('../pages/IssueSuccess'))
+const Search = lazy(() => import('../pages/Search'))
 const Error = lazy(() => import('../pages/Error'))
+
 
 function AppRouter () {
     return (
@@ -30,6 +32,7 @@ function AppRouter () {
                 <Route path="/badgelet/:badgeletId" element={<Home />}></Route>
                 <Route path="/presend/:presendId" element={<Home />}></Route>
                 <Route path="/invite/:groupId/:inviteId" element={<Home />}></Route>
+                <Route path="/search/:keyword" element={<Search />}></Route>
                 <Route path="*" element={<Error />}></Route>
             </Routes>
         </Suspense>

@@ -13,7 +13,7 @@ import DetailDes from './atoms/DetailDes'
 import DetailArea from './atoms/DetailArea'
 import AppButton, { BTN_KIND } from '../../base/AppButton'
 import BtnGroup from '../../base/BtnGroup/BtnGroup'
-import solas, { Badgelet } from '../../../service/solas'
+import solas, { Badgelet, ProfileSimple } from '../../../service/solas'
 import useEvent, { EVENT } from '../../../hooks/globalEvent'
 import ReasonText from '../../base/ReasonText/ReasonText'
 
@@ -114,13 +114,12 @@ function DetailBadgelet(props: DetailBadgeletProps ) {
             <DetailName> { badgelet.badge.name } </DetailName>
             <DetailDes> <ReasonText text={badgelet.content}></ReasonText> </DetailDes>
 
-
             <DetailArea
                 onClose={ props.handleClose }
                 title={ lang['BadgeDialog_Label_Creator'] }
-                content={ badgelet.owner.domain! }
-                navigate={ `/profile/${badgelet.owner.domain?.split('.')[0]}` }
-                image={ badgelet.owner.image_url || defaultAvatar(badgelet.owner.id) } />
+                content={ badgelet.sender.domain! }
+                navigate={ `/profile/${badgelet.sender.domain?.split('.')[0]}` }
+                image={ props.badgelet.sender.image_url || defaultAvatar(props.badgelet.sender.id) } />
 
             <DetailArea
                 onClose={ props.handleClose }

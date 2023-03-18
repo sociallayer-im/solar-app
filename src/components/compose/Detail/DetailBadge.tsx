@@ -98,7 +98,7 @@ function DetailBadge (props: DetailBadgeProps ) {
                             onClose={ props.handleClose }
                             title={ lang['BadgeDialog_Label_Creator'] }
                             content={ props.badge.sender.domain! }
-                            navigate={ `/profile/${props.badge.domain?.split('.')[0]}` }
+                            navigate={ `/profile/${props.badge.sender?.domain?.split('.')[0]}` }
                             image={ props.badge.sender.image_url || defaultAvatar(props.badge.sender.id) } />
 
                         <DetailReceivers
@@ -124,7 +124,7 @@ function DetailBadge (props: DetailBadgeProps ) {
                 badgelets.map((item, index) => {
                     return (
                         <SwiperSlide style={ slideSize } key={ index.toString() }>
-                            <DetailBadgelet badgelet={item} handleClose={props.handleClose} />
+                            <DetailBadgelet sender={ props.badge.sender } badgelet={item} handleClose={props.handleClose} />
                         </SwiperSlide>
                     )
                 })

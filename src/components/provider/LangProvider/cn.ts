@@ -260,7 +260,11 @@ const langCN: LangConfig = {
   Empty_No_Badge: '没有徽章~',
   Empty_No_Present: '没有预发送~',
   Empty_No_Group: '没有组织~',
-  Empty_No_Invite: '没有邀请~'
+  Empty_No_Invite: '没有邀请~',
+
+  Search_Tab_Domain: 'Domain',
+  Search_Tab_Badge: 'Badge',
+  Search_Tab_Event: 'Event'
 }
 
 export default langCN

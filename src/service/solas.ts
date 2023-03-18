@@ -153,7 +153,15 @@ export async function queryBadgeDetail (props: QueryBadgeDetailProps): Promise<B
         throw new Error(res.data.message)
     }
 
-    return res.data.badge as BadgeWithBadgelets
+    res.data.badge.badgelets = res.data.badge.badgelets.filter((item:Badgelet) => {
+        return !item.hide && item.status !== 'rejected'
+    })
+
+    res.data.badge.badgelets.forEach((item:Badgelet) => {
+        item.sender = res.data.badge.sender
+    })
+
+    return res.data.badge
 }
 
 interface QueryPresendProps {
@@ -851,6 +859,59 @@ export async function leaveGroup (props: LeaveGroupProps) {
     }
 }
 
+export interface SearchDomainProps {
+    username: string,
+    page: number
+}
+
+export async function searchDomain (props: SearchDomainProps): Promise<Profile[]> {
+    const res = await fetch.get({
+        url: `${api}/profile/search`,
+        data:  props
+    })
+
+    return res.data.profiles
+}
+
+export interface SearchBadgeProps {
+    title: string,
+    page: number
+}
+export async function searchBadge (props: SearchBadgeProps): Promise<Badge[]>  {
+    const res = await fetch.get({
+        url: `${api}/badge/search`,
+        data:  props
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+
+    return res.data.badges
+}
+
+export interface QueryBadgeByHashTagProps {
+    hashtag: string,
+    page: number
+}
+
+export async function queryBadgeByHashTag (props: QueryBadgeByHashTagProps): Promise<Badgelet[]> {
+    const res = await fetch.get({
+        url:`${api}/badgelet/list`,
+        data:  props
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+
+    return res.data.badgelets
+        .filter((item: Badgelet) => {
+            return item.status !== 'rejected'
+        })
+}
+
+
 export default {
     login,
     getProfile,
@@ -887,5 +948,8 @@ export default {
     cancelInvite,
     queryPendingInvite,
     updateGroup,
-    leaveGroup
+    leaveGroup,
+    searchDomain,
+    searchBadge,
+    queryBadgeByHashTag
 }

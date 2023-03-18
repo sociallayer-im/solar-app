@@ -53,6 +53,7 @@ interface AppInputProps  {
     startEnhancer?: () => ReactNode,
     maxLength?: number,
     style?: any
+    autoFocus?: boolean
 }
 
 /**
@@ -101,6 +102,7 @@ export default function AppInput(props: AppInputProps) {
                 placeholder={ props.placeholder || ''}
                 startEnhancer={ props.startEnhancer }
                 endEnhancer={ props.endEnhancer }
+                autoFocus={ props.autoFocus || false }
             />
             {   props.errorMsg ?
                 <div className={css(errorStyle)}>{ props.errorMsg }</div>

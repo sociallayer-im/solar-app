@@ -2,8 +2,11 @@ import LangContext from './LangContext'
 import en, { LangConfig } from "./en"
 import cn from "./cn"
 import { ReactNode, useEffect, useState } from "react";
-import { LangType } from "../../../hooks/lang/lang";
 
+export enum LangType {
+    cn='cn',
+    en='en'
+}
 export interface LangProviderProps {
     children? : ReactNode
 }

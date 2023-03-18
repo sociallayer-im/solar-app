@@ -1,30 +1,42 @@
 import './PageHeader.less'
-import LangSwitch from './LangSwitch'
+import LangSwitch from '../../base/LangSwitch'
 import PageLogo from '../../base/PageLogo'
 import LoginBtn from '../../base/LoginBtn'
-import ProfileMenu from './ProfileMenu'
-import { useContext } from 'react'
+import ProfileMenu from '../../base/ProfileMenu'
+import HeaderSearch from '../../base/HeaderSearch/HeaderSearch'
+import { useContext, useState } from 'react'
 import UserContext from '../../provider/UserProvider/UserContext'
 
 function PageHeader () {
     const { user } = useContext(UserContext)
+    const [showSearch, setShowSearch] = useState(false)
 
     return (
         <header className="pager-header">
             <PageLogo />
             <div className='pager-header-right-menu'>
 
-                <div className="header-search">
-                    <i className='icon-search'></i>
-                </div>
+                { showSearch &&
+                    <div className="header-search">
+                        <HeaderSearch onClose={() => { setShowSearch(false) }} />
+                    </div>
+                }
 
-                <div className='split'></div>
+                { !showSearch &&
+                    <>
+                        <div className="header-search">
+                            <i className='icon-search' onClick={() => { setShowSearch(true) } }></i>
+                        </div>
 
-                <LangSwitch />
+                        <div className='split'></div>
 
-                <div className='split'></div>
+                        <LangSwitch />
 
-                { !user.id ? <LoginBtn /> : <ProfileMenu />}
+                        <div className='split'></div>
+
+                        { !user.id ? <LoginBtn /> : <ProfileMenu />}
+                    </>
+                }
             </div>
         </header>
     )

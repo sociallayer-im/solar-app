@@ -1,6 +1,6 @@
 import { useContext } from 'react'
-import LangContext, { LangType } from '../../provider/LangProvider/LangContext'
-import MenuItem from '../../base/MenuItem'
+import LangContext, { LangType } from '../provider/LangProvider/LangContext'
+import MenuItem from './MenuItem'
 import { StatefulPopover, PLACEMENT } from 'baseui/popover'
 import { useStyletron } from 'baseui'
 

@@ -1,11 +1,11 @@
 import { useContext } from 'react'
-import UserContext from '../../provider/UserProvider/UserContext'
+import UserContext from '../provider/UserProvider/UserContext'
 import { useNavigate } from 'react-router-dom'
-import MenuItem from '../../base/MenuItem'
+import MenuItem from './MenuItem'
 import { StatefulPopover, PLACEMENT } from 'baseui/popover'
 import { useStyletron } from 'baseui'
-import LangContext from '../../provider/LangProvider/LangContext'
-import usePicture from '../../../hooks/pictrue'
+import LangContext from '../provider/LangProvider/LangContext'
+import usePicture from '../../hooks/pictrue'
 
 function ProfileMenu () {
     const { user, logOut } = useContext(UserContext)
