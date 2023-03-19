@@ -239,8 +239,8 @@ const langCN: LangConfig = {
   Group_relation_ship_member: '成员',
   Group_relation_ship_owner: '拥有者',
 
-  Follow_detail_followed: '关注',
-  Follow_detail_following: '被关注',
+  Follow_detail_followed: '被关注',
+  Follow_detail_following: '关注',
   Follow_detail_groups: '组织',
   Follow_detail_btn_mint: '为组织颁发徽章',
 
