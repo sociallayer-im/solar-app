@@ -7,6 +7,8 @@ import solas from '../../../service/solas'
 import { useNavigate } from 'react-router-dom'
 import useEvent, {EVENT} from '../../../hooks/globalEvent'
 
+import solaExtensionLogin from '../../../service/ExtensionLogin'
+
 export interface User {
     id: number | null,
     userName: string | null,
@@ -78,6 +80,9 @@ function UserProvider (props: UserProviderProps) {
             if (window.location.pathname === '/') {
                 navigate(`/profile/${profileInfo.username}`)
             }
+
+            // Float Extension Login
+            solaExtensionLogin.login(profileInfo.id.toString(), profileInfo.domain,props.authToken, profileInfo.image_url || '')
         } catch (e: any) {
             console.log('[setProfile]: ', e)
             showToast('Login fail', 3000)
