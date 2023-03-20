@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom'
 const overrides = {
     TabBar: {
         paddingBottom: '20px',
+        paddingTop: '20px',
         backgroundColor: '#fff',
         maxWidth: '450px',
         width: '100%',
@@ -77,13 +78,13 @@ function DialogFollowInfo(props: DialogFollowInfoProps) {
            </div>
            <AppTabs styleOverrides={ overrides } initialState={ { activeKey: "follower" } }>
                <Tab key='follower' title={lang['Follow_detail_followed']}>
-                   <div className='center'>
+                   <div className='center scroll-box'>
                        { followersEmpty && <Empty text={'no data'} /> }
                        <AddressList selected={ [] } data= { followers }  onClick={(domain) => { toProfile(domain) }}/>
                    </div>
                </Tab>
                <Tab key='following' title={lang['Follow_detail_following']}>
-                   <div className='center'>
+                   <div className='center scroll-box'>
                        { followingsEmpty && <Empty text={'no data'} /> }
                        <AddressList selected={ [] } data= { followings } onClick={(domain) => { toProfile(domain) }} />
                    </div>

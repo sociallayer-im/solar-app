@@ -12,6 +12,7 @@ import Empty from '../../Empty'
 
 const overrides = {
     TabBar: {
+        paddingTop: '20px',
         paddingBottom: '20px',
         backgroundColor: '#fff',
         maxWidth: '450px',
@@ -26,6 +27,7 @@ const overrides = {
         width: '100%',
         marginLeft: 'auto',
         marginRight: 'auto',
+        paddingTop: '12px',
     },
     Tab: {
         flex: 1,
@@ -34,9 +36,9 @@ const overrides = {
 }
 const overridesSubTab = {
     TabContent: {
-        paddingLeft: 0,
-        paddingRight: 0
-    },
+        paddingLeft: '0',
+        paddingRight: '0'
+    }
 }
 
 export interface AddressListProps {
