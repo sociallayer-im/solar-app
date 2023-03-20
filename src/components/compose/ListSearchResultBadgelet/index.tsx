@@ -1,5 +1,5 @@
 import {useContext, useEffect, useState} from 'react'
-import CardSearchBadgelet from '../../base/Card/CardSearchBadgelet'
+import CardSearchBadgelet from '../../base/Cards/CardSearchBadgelet'
 import solas from '../../../service/solas'
 import ListWrapper from '../../base/ListWrapper'
 import Empty from '../../base/Empty'

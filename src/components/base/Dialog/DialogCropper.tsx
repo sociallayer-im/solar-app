@@ -1,13 +1,13 @@
 import {useNavigate} from 'react-router-dom'
 import {useStyletron} from 'baseui'
 import {useState, useContext, useEffect, useRef} from 'react'
-import { Profile } from '../../service/solas'
-import usePicture from '../../hooks/pictrue'
+import { Profile } from '../../../service/solas'
+import usePicture from '../../../hooks/pictrue'
 import { Delete } from 'baseui/icon'
-import langContext from '../provider/LangProvider/LangContext'
+import langContext from '../../provider/LangProvider/LangContext'
 import Cropper, { ReactCropperElement } from 'react-cropper'
 import 'cropperjs/dist/cropper.css'
-import AppButton, { BTN_KIND } from './AppButton'
+import AppButton, { BTN_KIND } from '../AppButton'
 
 export interface DialogCropperProps {
     imgURL: string

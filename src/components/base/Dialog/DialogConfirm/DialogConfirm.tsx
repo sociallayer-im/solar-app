@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import AppButton, { BTN_KIND } from '../AppButton'
+import AppButton, { BTN_KIND } from '../../AppButton'
 import './DialogConfirm.less'
 
 export interface DialogConfirmProps {

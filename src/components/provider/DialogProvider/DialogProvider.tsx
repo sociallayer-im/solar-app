@@ -1,17 +1,18 @@
 import { ReactNode, useEffect, useState } from 'react'
+import { Badge, Badgelet, Invite, Presend, Profile, Group} from '../../../service/solas'
+import DialogsContext, { DialogsContextType } from './DialogsContext'
+import DialogConfirm, { DialogConfirmProps } from '../../base/Dialog/DialogConfirm/DialogConfirm'
 import Dialog from '../../base/Dialog/Dialog'
 import Toast from '../../base/Toast'
-import DialogConnectWallet from '../../base/DialogConnectWallet/DialogConnectWallet'
+import DialogConnectWallet from '../../base/Dialog/DialogConnectWallet/DialogConnectWallet'
 import ToastLoading from '../../base/ToastLoading'
-import DialogConfirm, { DialogConfirmProps } from '../../base/DialogConfirm/DialogConfirm'
-import DialogsContext, { DialogsContextType } from './DialogsContext'
-import {Badge, Badgelet, Invite, Presend, Profile} from '../../../service/solas'
 import DetailBadgelet from '../../compose/Detail/DetailBadgelet'
 import DetailPresend from '../../compose/Detail/DetailPresend'
 import DetailBadge from '../../compose/Detail/DetailBadge'
-import DialogAvatar from '../../base/DialogAvatar'
-import DialogCropper from '../../base/DialogCropper'
+import DialogAvatar from '../../base/Dialog/DialogAvatar'
+import DialogCropper from '../../base/Dialog/DialogCropper'
 import DetailInvite from '../../compose/Detail/DetailInvite'
+import DialogGroupSetting from '../../base/Dialog/DialogGroupSetting/DialogGroupSetting'
 
 export interface DialogProviderProps {
     children: ReactNode
@@ -357,6 +358,30 @@ function DialogProvider (props: DialogProviderProps) {
         setDialogsGroup({ ...dialogsGroup })
     }
 
+    const showGroupSetting = (group: Group) => {
+        const id = genID()
+        dialogsGroup.dialogs.push({
+            id,
+            content: () => {
+                const close = () => {
+                    closeDialogByID(id)
+                }
+
+                const dialogProps = {
+                    key: id.toString(),
+                    size: ['100%', '100%'],
+                }
+
+                return (
+                    <Dialog { ...dialogProps } >
+                        <DialogGroupSetting group={group} handleClose={ close }/>
+                    </Dialog>
+                )
+            }
+        })
+        setDialogsGroup({ ...dialogsGroup })
+    }
+
     const contextValue: DialogsContextType = {
         openConnectWalletDialog,
         showLoading,
@@ -369,7 +394,8 @@ function DialogProvider (props: DialogProviderProps) {
         showAvatar,
         showCropper,
         clean,
-        showInvite
+        showInvite,
+        showGroupSetting
     }
 
     return (

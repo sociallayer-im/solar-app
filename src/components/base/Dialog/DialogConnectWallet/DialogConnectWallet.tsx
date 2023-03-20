@@ -1,8 +1,8 @@
 import {Connector, useAccount, useConnect, useSigner, useDisconnect } from 'wagmi'
 import './DialogConnectWallet.less'
 import { useContext } from 'react'
-import LangContext from '../../provider/LangProvider/LangContext'
-import { setLastLoginType } from '../../../utils/authStorage'
+import LangContext from '../../../provider/LangProvider/LangContext'
+import { setLastLoginType } from '../../../../utils/authStorage'
 import {useNavigate} from "react-router-dom";
 
 interface DialogConnectWalletProps {

@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { useStyletron, styled } from 'baseui'
 import LangContext from '../provider/LangProvider/LangContext'
-import { useState, useContext, useEffect } from 'react'
+import {useState, useContext, useEffect, ReactNode} from 'react'
 import { ArrowLeft } from 'baseui/icon'
 
 const Wrapper = styled('div', ({$theme}) => ({
@@ -32,7 +32,7 @@ const Title = styled('div', ({$theme}) => ({
 interface PageBackProp {
     to?: string
     title?: string,
-    menu?: string,
+    menu?: () => ReactNode | string,
     onClose?: () => any
 }
 
@@ -55,6 +55,7 @@ function PageBack (props: PageBackProp) {
         <Wrapper>
             <BackBtn onClick={handleBack} ><ArrowLeft size={18}/>{ lang['Page_Back'] }</BackBtn>
             <Title>{ props.title }</Title>
+            { !!props.menu && props.menu() }
         </Wrapper>
     )
 }

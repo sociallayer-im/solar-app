@@ -1,13 +1,13 @@
 import { useState, useContext, useEffect } from 'react'
 import './DialogFollowInfo.less'
-import PageBack from '../PageBack';
-import langContext from '../../provider/LangProvider/LangContext'
-import AppTabs from "../AppTabs"
+import PageBack from '../../PageBack';
+import langContext from '../../../provider/LangProvider/LangContext'
+import AppTabs from "../../AppTabs"
 import { Tab } from 'baseui/tabs'
-import UserContext from '../../provider/UserProvider/UserContext'
-import solas, { Profile, Group } from '../../../service/solas'
-import AddressList from '../AddressList/AddressList'
-import Empty from '../Empty'
+import UserContext from '../../../provider/UserProvider/UserContext'
+import solas, { Profile, Group } from '../../../../service/solas'
+import AddressList from '../../AddressList/AddressList'
+import Empty from '../../Empty'
 import { useNavigate } from 'react-router-dom'
 
 const overrides = {

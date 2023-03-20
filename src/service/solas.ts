@@ -264,7 +264,7 @@ export interface Group {
     group_owner_id: number
     image_url: string | null,
     is_group: boolean,
-    status: 'active' | 'freeze',
+    status: 'active' | 'freezed',
     token_id: string,
     twitter: string | null
     twitter_proof_url: string | null
@@ -911,6 +911,23 @@ export async function queryBadgeByHashTag (props: QueryBadgeByHashTagProps): Pro
         })
 }
 
+export interface freezeGroupProps {
+    group_id: number
+    auth_token: string
+}
+
+export async function freezeGroup (props: freezeGroupProps) {
+    checkAuth(props)
+    const res = await fetch.post({
+        url:`${api}/group/freeze`,
+        data:  props
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+}
+
 
 export default {
     login,
@@ -951,5 +968,6 @@ export default {
     leaveGroup,
     searchDomain,
     searchBadge,
-    queryBadgeByHashTag
+    queryBadgeByHashTag,
+    freezeGroup
 }

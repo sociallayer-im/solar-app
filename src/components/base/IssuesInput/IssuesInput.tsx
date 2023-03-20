@@ -3,7 +3,7 @@ import AppInput from '../AppInput'
 import LangContext from '../../provider/LangProvider/LangContext'
 import { Plus, CheckIndeterminate } from 'baseui/icon'
 import './IssuesInpu.less'
-import DialogAddressList from '../DialogAddressList/DialogAddressList'
+import DialogAddressList from '../Dialog/DialogAddressList/DialogAddressList'
 import DialogsContext from '../../provider/DialogProvider/DialogsContext'
 
 export interface IssuesInputProps {

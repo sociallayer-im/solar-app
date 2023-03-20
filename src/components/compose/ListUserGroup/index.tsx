@@ -1,11 +1,11 @@
 import {useContext, useEffect} from 'react'
-import CardGroup from '../../base/Card/CardGroup'
+import CardGroup from '../../base/Cards/CardGroup'
 import solas, { Profile, Group } from '../../../service/solas'
 import ListWrapper from '../../base/ListWrapper'
 import Empty from '../../base/Empty'
 import LangContext from '../../provider/LangProvider/LangContext'
 import useScrollToLoad from '../../../hooks/scrollToLoad'
-import CardCreateGroup from '../../base/Card/CardCreateGroup'
+import CardCreateGroup from '../../base/Cards/CardCreateGroup'
 import UserContext from '../../provider/UserProvider/UserContext'
 
 interface ListUserGroupProps {

@@ -1,14 +1,14 @@
-import {useState, useContext, useEffect} from 'react'
+import { useState, useContext, useEffect } from 'react'
 import './DialogAddressList.less'
-import PageBack from '../PageBack';
-import langContext from '../../provider/LangProvider/LangContext'
-import AppTabs from "../AppTabs"
+import PageBack from '../../PageBack';
+import langContext from '../../../provider/LangProvider/LangContext'
+import AppTabs from "../../AppTabs"
 import { Tab } from 'baseui/tabs'
-import UserContext from '../../provider/UserProvider/UserContext'
-import solas, { Group, Profile } from '../../../service/solas'
-import AddressList from '../AddressList/AddressList'
-import AppSubTabs from '../AppSubTabs'
-import Empty from '../Empty'
+import UserContext from '../../../provider/UserProvider/UserContext'
+import solas, { Group, Profile } from '../../../../service/solas'
+import AddressList from '../../AddressList/AddressList'
+import AppSubTabs from '../../AppSubTabs'
+import Empty from '../../Empty'
 
 const overrides = {
     TabBar: {

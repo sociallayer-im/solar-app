@@ -1,13 +1,13 @@
 import {useStyletron} from 'baseui'
 import {useContext, useState} from 'react'
-import solas, {Profile, updateGroup} from '../../service/solas'
-import usePicture from '../../hooks/pictrue'
+import solas, {Profile, updateGroup} from '../../../service/solas'
+import usePicture from '../../../hooks/pictrue'
 import {Delete} from 'baseui/icon'
-import langContext from '../provider/LangProvider/LangContext'
-import DialogsContext from '../provider/DialogProvider/DialogsContext'
-import chooseFile from '../../utils/chooseFile'
-import UserContext from '../provider/UserProvider/UserContext'
-import useEvent, {EVENT} from '../../hooks/globalEvent'
+import langContext from '../../provider/LangProvider/LangContext'
+import DialogsContext from '../../provider/DialogProvider/DialogsContext'
+import chooseFile from '../../../utils/chooseFile'
+import UserContext from '../../provider/UserProvider/UserContext'
+import useEvent, {EVENT} from '../../../hooks/globalEvent'
 
 const style = {
     wrapper: {

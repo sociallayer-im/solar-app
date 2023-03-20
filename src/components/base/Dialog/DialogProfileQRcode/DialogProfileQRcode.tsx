@@ -1,12 +1,12 @@
 import './DialogProfileQRcode.less'
-import { Profile } from '../../../service/solas'
+import { Profile } from '../../../../service/solas'
 import './DialogProfileQRcode.less'
 import {useContext, useEffect, useRef, useState} from 'react'
-import LangContext from '../../provider/LangProvider/LangContext'
-import QRcode from '../QRcode'
-import usePicture from '../../../hooks/pictrue'
+import LangContext from '../../../provider/LangProvider/LangContext'
+import QRcode from '../../QRcode'
+import usePicture from '../../../../hooks/pictrue'
 import html2canvas from 'html2canvas'
-import DialogsContext from '../../provider/DialogProvider/DialogsContext'
+import DialogsContext from '../../../provider/DialogProvider/DialogsContext'
 
 export interface DialogProfileQRcodeProps {
     profile: Profile

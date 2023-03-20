@@ -18,12 +18,13 @@ import ListGroupInvitep from '../../components/compose/ListGroupInvite'
 import ListGroupMember from '../../components/compose/ListGroupMember'
 import UserContext from '../../components/provider/UserProvider/UserContext'
 import { useNavigate } from 'react-router-dom'
+import { Overflow } from 'baseui/icon'
 
 
 function GroupPage () {
     const { groupname } = useParams()
     const [profile, setProfile] = useState<Profile | null>(null)
-    const { showLoading } = useContext(DialogsContext)
+    const { showLoading, showGroupSetting } = useContext(DialogsContext)
     const { lang } = useContext(LangContext)
     const { user } = useContext(UserContext)
     const [selectedTab, setSelectedTab] = useState('Minted')
@@ -51,12 +52,19 @@ function GroupPage () {
             : `/badge-create?to=${profile?.domain}`)
     }
 
+    const groupOption = () => {
+        const style = { cursor: 'pointer' }
+        return user.id === profile?.group_owner_id
+                ? <Overflow size={22} onClick={ () => { showGroupSetting(profile) } } style={ style } />
+                : ''
+    }
+
     return <Layout>
         { !!profile &&
             <div className='profile-page'>
             <div className='up-side'>
                 <div className='center'>
-                    <PageBack />
+                    <PageBack  menu={ groupOption } />
                     <div className='slot_1'>
                         <GroupPanel group={ profile } />
                     </div>
