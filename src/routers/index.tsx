@@ -12,7 +12,9 @@ const Issue = lazy(() => import('../pages/Issue'))
 const Invite = lazy(() => import('../pages/Invite'))
 const IssueSuccess = lazy(() => import('../pages/IssueSuccess'))
 const Search = lazy(() => import('../pages/Search'))
+const Event = lazy(() => import('../pages/Event'))
 const Error = lazy(() => import('../pages/Error'))
+
 
 
 function AppRouter () {
@@ -33,6 +35,7 @@ function AppRouter () {
                 <Route path="/presend/:presendId" element={<Home />}></Route>
                 <Route path="/invite/:groupId/:inviteId" element={<Home />}></Route>
                 <Route path="/search/:keyword" element={<Search />}></Route>
+                <Route path="/event/:tag" element={<Event />}></Route>
                 <Route path="*" element={<Error />}></Route>
             </Routes>
         </Suspense>
