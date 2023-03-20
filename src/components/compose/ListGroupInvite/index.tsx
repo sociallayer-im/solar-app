@@ -1,5 +1,5 @@
 import { useContext, useEffect } from 'react'
-import CardInvite from '../../base/CardInvite'
+import CardInvite from '../../base/Card/CardInvite'
 import solas, { Profile } from '../../../service/solas'
 import ListWrapper from '../../base/ListWrapper'
 import Empty from '../../base/Empty'

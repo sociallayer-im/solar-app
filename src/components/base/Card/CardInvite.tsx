@@ -1,8 +1,10 @@
 import { useStyletron } from 'baseui'
-import { Badgelet } from '../../service/solas'
-import DialogsContext from '../provider/DialogProvider/DialogsContext'
+import { Invite } from '../../../service/solas'
+import DialogsContext from '../../provider/DialogProvider/DialogsContext'
 import { useContext } from 'react'
-import UserContext from '../provider/UserProvider/UserContext'
+import UserContext from '../../provider/UserProvider/UserContext'
+import usePicture from '../../../hooks/pictrue'
+import LangContext from '../../provider/LangProvider/LangContext'
 
 const style = {
     wrapper: {
@@ -48,6 +50,7 @@ const style = {
         whiteSpace: 'nowrap' as const,
         overflow: 'hidden' as const,
         textOverflow: 'ellipsis' as const,
+        fontSize: '14px'
     },
     pendingMark: {
         position: 'absolute' as const,
@@ -62,35 +65,29 @@ const style = {
         borderRadius: '28px',
         top: '5px',
         left: '5px'
-    },
-    hideMark: {
-        width: '90px',
-        height: '90px',
-        borderRadius: '50%',
-        position: 'absolute' as const,
-        background: 'rgba(0,0,0,0.3)',
-        top: '18px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontSize: '24px'
     }
-
 }
 
-export interface CardSearchBadgeletProps {
-    badgelet: Badgelet
-    keyword?: string
+export interface CardBadgeletProps {
+    invite: Invite,
+    groupCover?: string
+    groupName?: string
 }
 
-function CardSearchBadgelet (props: CardSearchBadgeletProps) {
+function CardInvite(props: CardBadgeletProps) {
     const [css] = useStyletron()
-    const { showBadgelet } = useContext(DialogsContext)
+    const { showInvite } = useContext(DialogsContext)
+    const { defaultAvatar } = usePicture()
+    const { user } = useContext(UserContext)
+    const { lang } = useContext(LangContext)
 
-    return (<div className={ css(style.wrapper) } onClick={ () => { showBadgelet(props.badgelet) }}>
-                <img className={ css(style.img) } src={ props.badgelet.badge.image_url } alt=""/>
-                <div className={ css(style.name) }>{ props.badgelet.badge.name }</div>
+    const isOwner = user.id === props.invite.receiver_id
+
+    return (<div className={ css(style.wrapper) } onClick={ () => { showInvite(props.invite) }}>
+                <img className={ css(style.img) } src={ props.groupCover || defaultAvatar(props.invite.group_id) } alt=""/>
+                <div className={ css(style.name) }>{ lang['Group_invite_badge_name']([props.groupName]) || '' }</div>
+                { isOwner && props.invite.status === 'new' && <div className={ css(style.pendingMark) }>Pending</div> }
             </div>)
 }
 
-export default CardSearchBadgelet
+export default CardInvite

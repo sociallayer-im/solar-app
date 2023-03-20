@@ -1,6 +1,6 @@
 import { useStyletron } from 'baseui'
 import {useState, useContext, useEffect, useRef} from 'react'
-import CardBadge from '../../base/CardBadge'
+import CardBadge from '../../base/Card/CardBadge'
 import solas, { Profile, Badge } from '../../../service/solas'
 import { onReachBottom } from '../../../utils/scroll'
 import ListWrapper from '../../base/ListWrapper'

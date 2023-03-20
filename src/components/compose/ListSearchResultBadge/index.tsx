@@ -1,5 +1,5 @@
 import { useContext, useEffect } from 'react'
-import CardBadge from '../../base/CardBadge'
+import CardBadge from '../../base/Card/CardBadge'
 import solas from '../../../service/solas'
 import ListWrapper from '../../base/ListWrapper'
 import Empty from '../../base/Empty'

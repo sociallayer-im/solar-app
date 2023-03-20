@@ -1,5 +1,5 @@
 import {useContext, useEffect, useState} from 'react'
-import CardBadgelet from '../../base/CardBadgelet'
+import CardBadgelet from '../../base/Card/CardBadgelet'
 import solas, { Profile, Badgelet } from '../../../service/solas'
 import ListWrapper from '../../base/ListWrapper'
 import Empty from '../../base/Empty'

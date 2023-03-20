@@ -1,8 +1,8 @@
 import {useNavigate} from 'react-router-dom'
 import { useStyletron } from 'baseui'
 import { useState, useContext, useEffect } from 'react'
-import { Presend } from '../../service/solas'
-import DialogsContext from '../provider/DialogProvider/DialogsContext'
+import { Presend } from '../../../service/solas'
+import DialogsContext from '../../provider/DialogProvider/DialogsContext'
 
 const style = {
     wrapper: {
@@ -48,6 +48,7 @@ const style = {
         whiteSpace: 'nowrap' as const,
         overflow: 'hidden' as const,
         textOverflow: 'ellipsis' as const,
+        fontSize: '14px'
     }
 }
 

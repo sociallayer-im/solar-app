@@ -2,9 +2,9 @@ import {useNavigate} from 'react-router-dom'
 import { useStyletron } from 'baseui'
 import { useState, useContext, useEffect } from 'react'
 import { ellipsisText } from 'baseui/styles/util'
-import { Group, Profile } from '../../service/solas'
-import usePicture from '../../hooks/pictrue'
-import LangContext from '../provider/LangProvider/LangContext'
+import { Group, Profile } from '../../../service/solas'
+import usePicture from '../../../hooks/pictrue'
+import LangContext from '../../provider/LangProvider/LangContext'
 
 const style = {
     wrapper: {

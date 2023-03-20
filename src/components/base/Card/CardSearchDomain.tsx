@@ -1,7 +1,7 @@
 import { useStyletron } from 'baseui'
-import { Profile } from '../../service/solas'
+import { Profile } from '../../../service/solas'
 import { useNavigate } from 'react-router-dom'
-import usePicture from '../../hooks/pictrue'
+import usePicture from '../../../hooks/pictrue'
 import { ReactDOM, ReactNode } from 'react'
 
 const style = {
@@ -38,30 +38,28 @@ const style = {
     }
 }
 
-export interface CardBadgeletProps {
-    profile?: Profile,
-    endEnhancer? : () =>  string | ReactNode
-    content?: () =>  string | ReactNode
-    img?: () =>  string | ReactNode
+export interface CardSearchDomainProps {
+    profile: Profile,
+    keyword?: string
     onClick?: () => any
 }
 
-function CardUser (props: CardBadgeletProps) {
+function CardSearchDomain (props: CardSearchDomainProps) {
     const [css] = useStyletron()
     const navigate = useNavigate()
     const { defaultAvatar } = usePicture()
 
+    const highLightText = props.keyword
+        ? props.profile?.domain!.replace(props.keyword, `<span class="heighlight">${props.keyword}</span>`)
+        : props.profile.domain!
+
     return (<div className={ css(style.wrapper) } onClick={ () => { props.onClick ? props.onClick() : navigate(`/profile/${props.profile?.username}`) }}>
                 <div className={css(style.leftSide)}>
-                    { props.img
-                        ? props.img()
-                        : <img className={ css(style.img) } src={ props.profile?.image_url || defaultAvatar(props.profile?.id)} alt=""/>
-                    }
-
-                    <div className={ css(style.name) }>{ props.content ? props.content() : props.profile?.domain }</div>
+                    <img className={ css(style.img) } src={ props.profile?.image_url || defaultAvatar(props.profile?.id)} alt=""/>
+                    <div className={ css(style.name) } dangerouslySetInnerHTML={{__html: highLightText}}></div>
                 </div>
-                <div>{ !!props.endEnhancer && props.endEnhancer() }</div>
+                <div></div>
             </div>)
 }
 
-export default CardUser
+export default CardSearchDomain

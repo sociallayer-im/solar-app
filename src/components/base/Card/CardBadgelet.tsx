@@ -1,8 +1,8 @@
 import { useStyletron } from 'baseui'
-import { Badgelet } from '../../service/solas'
-import DialogsContext from '../provider/DialogProvider/DialogsContext'
+import { Badgelet } from '../../../service/solas'
+import DialogsContext from '../../provider/DialogProvider/DialogsContext'
 import { useContext } from 'react'
-import UserContext from '../provider/UserProvider/UserContext'
+import UserContext from '../../provider/UserProvider/UserContext'
 
 const style = {
     wrapper: {
@@ -48,6 +48,7 @@ const style = {
         whiteSpace: 'nowrap' as const,
         overflow: 'hidden' as const,
         textOverflow: 'ellipsis' as const,
+        fontSize: '14px'
     },
     pendingMark: {
         position: 'absolute' as const,
