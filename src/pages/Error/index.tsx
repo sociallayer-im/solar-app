@@ -1,17 +1,20 @@
-import {useNavigate} from 'react-router-dom'
-import {useStyletron} from 'baseui'
-import {useState, useContext, useEffect} from 'react'
+import { useNavigate } from 'react-router-dom'
+import Layout from '../../components/Layout/Layout'
+import Empty from '../../components/base/Empty'
+import './Error.less'
+import AppButton, { BTN_KIND } from '../../components/base/AppButton'
 
 function ErrorPage() {
-    const [css] = useStyletron()
     const navigate = useNavigate()
-    const [a, seta] = useState('')
 
-    useEffect(() => {
-
-    }, [])
-
-    return (<div>Error</div>)
+    return (
+        <Layout>
+            <div className='error-page'>
+                <Empty text={'Page not found~'}></Empty>
+                <AppButton kind={BTN_KIND.primary} onClick={ () => {navigate('/') } }>Back to Home</AppButton>
+            </div>
+        </Layout>
+    )
 }
 
 export default ErrorPage
