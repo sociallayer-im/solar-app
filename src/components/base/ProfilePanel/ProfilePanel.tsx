@@ -179,7 +179,7 @@ function ProfilePanel(props: ProfilePanelProps) {
                         popoverMargin={ 0 }
                         content={ ({ close }) => <MenuItem onClick={ () => { handleUnFollow() } }>{ lang['Relation_Ship_Action_Unfollow'] }</MenuItem> }>
                         <div>
-                            <AppButton size={ BTN_SIZE.compact }>
+                            <AppButton size={ BTN_SIZE.mini  } >
                                 { lang['Relation_Ship_Action_Followed'] }
                             </AppButton>
                         </div>
@@ -190,7 +190,7 @@ function ProfilePanel(props: ProfilePanelProps) {
                     showFollowBtn &&
                     <AppButton
                         onClick={ () => { handleFollow() } }
-                        kind={ BTN_KIND.primary } size={ BTN_SIZE.compact }>
+                        kind={ BTN_KIND.primary } size={ BTN_SIZE.mini }>
                         { lang['Relation_Ship_Action_Follow'] }
                     </AppButton>
                 }

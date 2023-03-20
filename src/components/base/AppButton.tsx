@@ -3,7 +3,9 @@ import { withStyle } from 'baseui'
 import { ReactNode } from 'react'
 
 export const BTN_KIND = KIND
-export const BTN_SIZE = SIZE
+export const BTN_SIZE = {
+    ...SIZE
+}
 
 interface AppButtonProps {
     children?: ReactNode,
