@@ -1,16 +1,12 @@
-import { useNavigate } from 'react-router-dom'
-import { useStyletron} from 'baseui'
-import { useState , useContext, useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import Layout from '../../components/Layout/Layout'
 import './Regist.less'
 import langContext from '../../components/provider/LangProvider/LangContext'
 import RegistForm from '../../components/compose/FormRegist'
 import DialogsContext from '../../components/provider/DialogProvider/DialogsContext'
+import PageBack from '../../components/base/PageBack'
 
 function ComponentName () {
-    const [css] = useStyletron()
-    const navigate = useNavigate()
-    const [a, seta] = useState('')
     const { lang } = useContext(langContext)
     const { clean } = useContext(DialogsContext)
 
@@ -23,6 +19,7 @@ function ComponentName () {
             <div className='regist-page'>
                 <div className='regist-page-bg'></div>
                 <div className='regist-page-wrapper'>
+                    <div className='regist-page-back'><PageBack /></div>
                     <div className='regist-page-content' >
                         <div className='title'>{ lang['Regist_Title'] }</div>
                         <div className='des' dangerouslySetInnerHTML={ { __html: lang['Domain_Rule'] } }></div>

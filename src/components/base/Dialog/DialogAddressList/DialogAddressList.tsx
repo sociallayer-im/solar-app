@@ -9,6 +9,7 @@ import solas, { Group, Profile } from '../../../../service/solas'
 import AddressList from '../../AddressList/AddressList'
 import AppSubTabs from '../../AppSubTabs'
 import Empty from '../../Empty'
+import AppButton, { BTN_KIND, BTN_SIZE } from '../../AppButton'
 
 const overrides = {
     TabBar: {
@@ -61,9 +62,9 @@ function DialogAddressList(props: AddressListProps) {
     const [groupsMemberEmpty, setGroupsMemberEmpty] = useState(false)
 
     const getMember = async (groupId: number) => {
-        setGroupsMember([])
         setGroupsMemberEmpty(false)
         setTimeout(async () => {
+            setGroupsMember([])
             const members = await solas.getGroupMembers({ group_id: groupId })
             setGroupsMember(members)
             setGroupsMemberEmpty(!members.length)
@@ -127,7 +128,7 @@ function DialogAddressList(props: AddressListProps) {
            <AppTabs styleOverrides={ overrides } initialState={ { activeKey: "group" } }>
                <Tab key='group' title={lang['Follow_detail_groups']}>
                    <div className='center'>
-                       { groupsMemberEmpty && <Empty text={'no data'} /> }
+                       { !groups.length && <Empty text={'no data'} /> }
                        { !!groups.length &&
                            <AppSubTabs
                                styleOverrides={ overridesSubTab }
@@ -136,7 +137,10 @@ function DialogAddressList(props: AddressListProps) {
                                    groups.map((item, index) => {
                                        return  (
                                            <Tab key={ item.id } title={ item.username } >
-                                               <AddressList selected={ selected } data= { groupsMember } onClick={(domain) => { addAddress(domain)} } />
+                                               { groupsMember.length
+                                                   ? <AddressList selected={ selected } data= { groupsMember } onClick={(domain) => { addAddress(domain)} } />
+                                                   : groupsMemberEmpty ? <Empty text={'no data'} /> : ''
+                                               }
                                            </Tab>
                                        )
                                    })
@@ -158,6 +162,14 @@ function DialogAddressList(props: AddressListProps) {
                    </div>
                </Tab>
            </AppTabs>
+           <div className='dialog-bottom'>
+               <AppButton
+                   onClick={() => { props.handleClose() }}
+                   kind={ BTN_KIND.primary }
+                   size={ BTN_SIZE.compact }>
+                   { lang['Regist_Confirm']}
+               </AppButton>
+           </div>
        </div>
     </div>)
 }
