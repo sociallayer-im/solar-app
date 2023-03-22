@@ -9,5 +9,17 @@ export default defineConfig({
   },
   preview: {
     port: 8080
+  },
+  resolve: {
+    alias:[
+        {
+          find: 'wagmi/dist',
+          replacement:'wagmi/dist'
+        },
+        {
+          find: './dist/connectors/walletConnect',
+          replacement:'wagmi/dist/connectors/walletConnect.js'
+        }
+      ]
   }
 })

@@ -1,6 +1,6 @@
 import Layout from '../../components/Layout/Layout'
 import './Home.less'
-import AppButton, { BTN_KIND } from "../../components/base/AppButton";
+import AppButton, { BTN_KIND } from "../../components/base/AppButton/AppButton";
 import { useContext, useEffect } from 'react'
 import UserContext from '../../components/provider/UserProvider/UserContext'
 import DialogsContext from '../../components/provider/DialogProvider/DialogsContext'

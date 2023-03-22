@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import langContext from '../../provider/LangProvider/LangContext'
 import AppInput from '../../base/AppInput'
-import AppButton from '../../base/AppButton'
+import AppButton from '../../base/AppButton/AppButton'
 import { KIND } from 'baseui/button'
 import { useStyletron } from 'baseui'
 import solas from '../../../service/solas'

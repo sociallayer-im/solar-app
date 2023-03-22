@@ -6,11 +6,13 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "storybook": "start-storybook -p 8080",
+    "build-storybook": "build-storybook",
+    "test-storybook": "test-storybook --url http://localhost:8080"
   },
   "dependencies": {
     "add": "^2.0.6",
-    "antd": "^5.2.2",
     "axios": "^1.3.3",
     "baseui": "^12.2.0",
     "ethers": "^5",
@@ -26,17 +28,29 @@
     "styletron-engine-atomic": "^1.5.0",
     "styletron-react": "^6.1.0",
     "swiper": "^9.1.0",
-    "wagmi": "^0.11.5",
-    "web3-utils": "^1.8.2",
-    "yarn": "^1.22.19"
+    "wagmi": "0.11.5",
+    "web3-utils": "^1.8.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.21.3",
+    "@storybook/addon-actions": "^6.5.16",
+    "@storybook/addon-essentials": "^6.5.16",
+    "@storybook/addon-interactions": "^6.5.16",
+    "@storybook/addon-links": "^6.5.16",
+    "@storybook/builder-vite": "^0.4.2",
+    "@storybook/jest": "^0.0.10",
+    "@storybook/react": "^6.5.16",
+    "@storybook/test-runner": "^0.9.4",
+    "@storybook/testing-library": "^0.0.13",
     "@types/lodash": "^4.14.191",
     "@types/qrcode": "^1.5.0",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "@vitejs/plugin-react": "^3.1.0",
+    "babel-loader": "^8.3.0",
+    "cross-env": "^7.0.3",
     "typescript": "^4.9.3",
-    "vite": "^4.1.0"
+    "vite": "^4.1.0",
+    "yarn": "^1.22.19"
   }
 }

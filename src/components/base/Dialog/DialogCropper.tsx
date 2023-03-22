@@ -7,7 +7,7 @@ import { Delete } from 'baseui/icon'
 import langContext from '../../provider/LangProvider/LangContext'
 import Cropper, { ReactCropperElement } from 'react-cropper'
 import 'cropperjs/dist/cropper.css'
-import AppButton, { BTN_KIND } from '../AppButton'
+import AppButton, { BTN_KIND } from '../AppButton/AppButton'
 
 export interface DialogCropperProps {
     imgURL: string
