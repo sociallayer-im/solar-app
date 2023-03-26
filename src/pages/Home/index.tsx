@@ -20,8 +20,10 @@ function Home () {
         }
 
         async function showPresendDetail () {
-            const newBadgelet = await solas.queryPresendDetail({ id: Number(presendId) })
-            showPresend(newBadgelet)
+            const id = presendId?.split('_')[0]
+            const code = presendId?.split('_')[1]
+            const newBadgelet = await solas.queryPresendDetail({ id: Number(id) })
+            showPresend(newBadgelet, code)
         }
 
         async function showInviteDetail () {
