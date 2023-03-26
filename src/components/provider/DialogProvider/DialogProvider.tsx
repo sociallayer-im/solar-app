@@ -268,7 +268,7 @@ function DialogProvider (props: DialogProviderProps) {
 
                 const dialogProps = {
                     key: id.toString(),
-                    size: [340, 'auto'],
+                    size: [340, '600px'],
                     handleClose: close
                 }
 
