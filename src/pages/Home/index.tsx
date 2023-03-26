@@ -1,6 +1,6 @@
 import Layout from '../../components/Layout/Layout'
 import './Home.less'
-import AppButton, { BTN_KIND } from "../../components/base/AppButton";
+import AppButton, { BTN_KIND } from "../../components/base/AppButton/AppButton";
 import { useContext, useEffect } from 'react'
 import UserContext from '../../components/provider/UserProvider/UserContext'
 import DialogsContext from '../../components/provider/DialogProvider/DialogsContext'
@@ -20,8 +20,10 @@ function Home () {
         }
 
         async function showPresendDetail () {
-            const newBadgelet = await solas.queryPresendDetail({ id: Number(presendId) })
-            showPresend(newBadgelet)
+            const id = presendId?.split('_')[0]
+            const code = presendId?.split('_')[1]
+            const newBadgelet = await solas.queryPresendDetail({ id: Number(id) })
+            showPresend(newBadgelet, code)
         }
 
         async function showInviteDetail () {

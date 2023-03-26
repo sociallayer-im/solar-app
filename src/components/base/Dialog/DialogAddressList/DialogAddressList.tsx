@@ -9,7 +9,7 @@ import solas, { Group, Profile } from '../../../../service/solas'
 import AddressList from '../../AddressList/AddressList'
 import AppSubTabs from '../../AppSubTabs'
 import Empty from '../../Empty'
-import AppButton, { BTN_KIND, BTN_SIZE } from '../../AppButton'
+import AppButton, { BTN_KIND, BTN_SIZE } from '../../AppButton/AppButton'
 
 const overrides = {
     TabBar: {

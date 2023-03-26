@@ -7,7 +7,7 @@ import UserContext from '../../components/provider/UserProvider/UserContext'
 import usePicture from '../../hooks/pictrue'
 import PageBack from '../../components/base/PageBack'
 import QRcode from '../../components/base/QRcode'
-import AppButton, { BTN_KIND } from '../../components/base/AppButton'
+import AppButton, { BTN_KIND } from '../../components/base/AppButton/AppButton'
 import html2canvas from 'html2canvas'
 import copy from '../../utils/copy'
 

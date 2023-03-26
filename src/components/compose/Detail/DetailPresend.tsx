@@ -10,7 +10,7 @@ import DetailCover from './atoms/DetailCover'
 import DetailName from './atoms/DetailName'
 import DetailDes from './atoms/DetailDes'
 import DetailArea from './atoms/DetailArea'
-import AppButton, { BTN_KIND } from '../../base/AppButton'
+import AppButton, { BTN_KIND } from '../../base/AppButton/AppButton'
 import BtnGroup from '../../base/BtnGroup/BtnGroup'
 import solas, { Profile } from '../../../service/solas'
 import useEvent, { EVENT } from '../../../hooks/globalEvent'
@@ -22,6 +22,7 @@ import ReasonText from '../../base/ReasonText/ReasonText'
 
 export interface DetailPresendProps {
     presend: Presend,
+    code?: string
     handleClose: () => void
 }
 
@@ -68,7 +69,7 @@ function DetailPresend (props: DetailPresendProps ) {
     </AppButton>
 
     const handleCopy = () => {
-        const link = `https://${window.location.host}/presend/${props.presend.id}_${props.presend.code}`
+        const link = `https://${window.location.host}/presend/${props.presend.id}_${props.code || ''}`
         copy(link)
         showToast('Copyed')
     }
@@ -78,7 +79,7 @@ function DetailPresend (props: DetailPresendProps ) {
         try {
             const accept = await solas.acceptPresend({
                 id: props.presend.id,
-                code: props.presend.code || '',
+                code: props.code || '',
                 auth_token: user.authToken || ''
             })
             unload()

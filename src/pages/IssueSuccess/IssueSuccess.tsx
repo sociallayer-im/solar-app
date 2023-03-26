@@ -3,7 +3,7 @@ import { useContext} from 'react'
 import { Badgelet } from '../../service/solas'
 import LangContext from '../../components/provider/LangProvider/LangContext'
 import UserContext from '../../components/provider/UserProvider/UserContext'
-import AppButton, { BTN_KIND } from '../../components/base/AppButton'
+import AppButton, { BTN_KIND } from '../../components/base/AppButton/AppButton'
 
 interface IssueSuccessProps {
     badgelet: Badgelet

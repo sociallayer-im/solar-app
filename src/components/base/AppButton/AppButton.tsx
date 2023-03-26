@@ -7,7 +7,7 @@ export const BTN_SIZE = {
     ...SIZE
 }
 
-interface AppButtonProps {
+export interface AppButtonProps {
     children?: ReactNode,
     inline?:boolean,
     kind?: keyof typeof KIND,

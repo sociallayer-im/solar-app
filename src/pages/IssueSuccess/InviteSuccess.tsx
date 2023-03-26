@@ -3,7 +3,7 @@ import { useContext} from 'react'
 import { Invite, Group, Profile } from '../../service/solas'
 import LangContext from '../../components/provider/LangProvider/LangContext'
 import UserContext from '../../components/provider/UserProvider/UserContext'
-import AppButton, { BTN_KIND } from '../../components/base/AppButton'
+import AppButton, { BTN_KIND } from '../../components/base/AppButton/AppButton'
 import usePicture from '../../hooks/pictrue'
 
 

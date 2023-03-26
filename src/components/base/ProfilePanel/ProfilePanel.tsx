@@ -10,7 +10,7 @@ import DialogProfileQRcode from '../Dialog/DialogProfileQRcode/DialogProfileQRco
 import useEvent, { EVENT } from '../../../hooks/globalEvent'
 import DialogFollowInfo from '../Dialog/DialogFollowInfo/DialogFollowInfo'
 import { StatefulPopover, PLACEMENT } from 'baseui/popover'
-import AppButton, { BTN_KIND, BTN_SIZE } from '../AppButton'
+import AppButton, { BTN_KIND, BTN_SIZE } from '../AppButton/AppButton'
 import MenuItem from '../MenuItem'
 
 interface ProfilePanelProps {

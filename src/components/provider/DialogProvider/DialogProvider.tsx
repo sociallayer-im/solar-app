@@ -257,7 +257,7 @@ function DialogProvider (props: DialogProviderProps) {
         setDialogsGroup({ ...dialogsGroup })
     }
 
-    const showPresend = (props: Presend) => {
+    const showPresend = (props: Presend, code?: string) => {
         const id = genID()
         dialogsGroup.dialogs.push({
             id,
@@ -274,7 +274,7 @@ function DialogProvider (props: DialogProviderProps) {
 
                 return (
                     <Dialog { ...dialogProps } >
-                        <DetailPresend presend={ props } handleClose={ close } />
+                        <DetailPresend presend={ props } code={ code } handleClose={ close } />
                     </Dialog>
                 )
             }

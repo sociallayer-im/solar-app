@@ -12,14 +12,14 @@ import { Provider as StyletronProvider } from 'styletron-react'
 import { BaseProvider } from 'baseui'
 import theme from './theme'
 import Subscriber from './components/base/Subscriber'
+import { BrowserRouter } from 'react-router-dom'
+import './styles/index.less'
 
 const engine = new Styletron();
 
 const walletconnect = new WalletConnectConnector({
     chains: [mainnet, moonbeam],
-    options: {
-        qrcode: true,
-    },
+    options: {},
 })
 
 const inject = new InjectedConnector({
@@ -39,24 +39,26 @@ const wagmiClient = createClient({
 
 function App() {
   return (
-      <div id="solas">
-          <WagmiConfig client={ wagmiClient }>
-              <StyletronProvider value={ engine }>
-                  <BaseProvider theme={ theme }>
-                      <DialogProvider>
-                          <UserProvider>
-                              <LangProvider>
-                                  <DialogProvider>
-                                      <Subscriber />
-                                      <AppRouter />
-                                  </DialogProvider>
-                              </LangProvider>
-                        </UserProvider>
-                      </DialogProvider>
-                  </BaseProvider>
-              </StyletronProvider>
-          </WagmiConfig>
-      </div>
+      <BrowserRouter>
+          <div id="solas">
+              <WagmiConfig client={ wagmiClient }>
+                  <StyletronProvider value={ engine }>
+                      <BaseProvider theme={ theme }>
+                          <DialogProvider>
+                              <UserProvider>
+                                  <LangProvider>
+                                      <DialogProvider>
+                                          <Subscriber />
+                                          <AppRouter />
+                                      </DialogProvider>
+                                  </LangProvider>
+                            </UserProvider>
+                          </DialogProvider>
+                      </BaseProvider>
+                  </StyletronProvider>
+              </WagmiConfig>
+          </div>
+      </BrowserRouter>
   )
 }
 
