@@ -77,9 +77,9 @@ function UserProvider (props: UserProviderProps) {
                 return
             }
 
-            if (window.location.pathname === '/') {
-                navigate(`/profile/${profileInfo.username}`)
-            }
+            // if (window.location.pathname === '/') {
+            //     navigate(`/profile/${profileInfo.username}`)
+            // }
 
             // Float Extension Login
             solaExtensionLogin.login(profileInfo.id.toString(), profileInfo.domain,props.authToken, profileInfo.image_url || '')

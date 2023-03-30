@@ -11,7 +11,7 @@ import AppButton, { BTN_KIND } from '../../components/base/AppButton/AppButton'
 import html2canvas from 'html2canvas'
 import copy from '../../utils/copy'
 
-//Swiper deps
+//AppSwiper deps
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import 'swiper/css/pagination'

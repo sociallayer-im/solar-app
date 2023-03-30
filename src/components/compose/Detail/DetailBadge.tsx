@@ -15,7 +15,7 @@ import DetailScrollBox from './atoms/DetailScrollBox'
 import DetailBadgelet from './DetailBadgelet'
 import { useNavigate } from 'react-router-dom'
 
-//Swiper deps
+//AppSwiper deps
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination } from 'swiper'
 import 'swiper/css'

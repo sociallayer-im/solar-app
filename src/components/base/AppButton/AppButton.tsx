@@ -10,12 +10,13 @@ export const BTN_SIZE = {
 export interface AppButtonProps {
     children?: ReactNode,
     inline?:boolean,
-    kind?: keyof typeof KIND,
+    kind?: keyof typeof BTN_KIND,
     onClick?: (...rest: any[]) => any
     disabled?: boolean
     isLoading?: boolean,
     size?: keyof typeof SIZE,
     style?: any
+    special?: boolean
 }
 
 export default function AppButton (props: AppButtonProps) {
@@ -44,6 +45,10 @@ export default function AppButton (props: AppButtonProps) {
 
         if (props.style) {
             style = {...style, ...props.style}
+        }
+
+        if (props.special) {
+            style.background = 'linear-gradient(88.02deg, #BAFFAD -2.09%, #A1F4E6 62.09%, #80F8C0 97.29%)'
         }
 
         return style

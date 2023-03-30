@@ -6,12 +6,14 @@ import UserContext from '../../components/provider/UserProvider/UserContext'
 import DialogsContext from '../../components/provider/DialogProvider/DialogsContext'
 import solas from '../../service/solas'
 import { useNavigate, useParams } from 'react-router-dom'
+import useIssueBadge from '../../hooks/useIssueBadge'
 
 function Home () {
     const { user } = useContext( UserContext )
     const { showBadgelet, showPresend, clean, openConnectWalletDialog, showInvite } = useContext( DialogsContext )
     const navigate = useNavigate()
     const { badgeletId, presendId, groupId, inviteId } = useParams()
+    const startIssueBadge = useIssueBadge()
 
     useEffect(() => {
         async function showBadgeletDetail () {
@@ -55,17 +57,15 @@ function Home () {
 
     const start = () => {
         if (user.userName) {
-            navigate(`/profile/${user.userName}`)
+            startIssueBadge()
         } else {
             openConnectWalletDialog()
         }
     }
 
-    useEffect(() => {
-        if (user.userName) {
-            navigate(`/profile/${user.userName}`)
-        }
-    },[user.userName])
+    // useEffect(() => {
+    //     start()
+    // },[user.userName])
 
     return <Layout>
         <div className='home-page'>
@@ -78,7 +78,7 @@ function Home () {
                     <h1>Create a badge </h1>
                     <p>Join now to start creating badges, describing your achievements, and awarding them to deserving individuals.</p>
                     <AppButton onClick={ start }
-                        kind={ BTN_KIND.primary }>Create your badge</AppButton>
+                        kind={ BTN_KIND.primary } special>Create your badge</AppButton>
                 </div>
             </div>
         </div>

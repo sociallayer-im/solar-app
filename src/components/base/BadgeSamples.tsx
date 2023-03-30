@@ -3,7 +3,7 @@ import { useStyletron } from 'baseui'
 import { useState, useContext, useEffect } from 'react'
 import langContext from '../provider/LangProvider/LangContext'
 
-//Swiper deps
+//AppSwiper deps
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import 'swiper/css/pagination'
