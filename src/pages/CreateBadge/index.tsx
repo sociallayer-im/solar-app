@@ -11,6 +11,7 @@ import AppButton, { BTN_KIND } from '../../components/base/AppButton/AppButton'
 import useVerify from '../../hooks/verify'
 import solas, { Group } from '../../service/solas'
 import DialogsContext from '../../components/provider/DialogProvider/DialogsContext'
+import ReasonInput from "../../components/base/ReasonInput/ReasonInput";
 
 function CreateBadge() {
     const navigate = useNavigate()
@@ -18,6 +19,7 @@ function CreateBadge() {
     const [domain, setDomain,] = useState('')
     const [domainError, setDomainError,] = useState('')
     const [badgeName, setBadgeName] = useState('')
+    const [reason, setReason] = useState('')
     const [group, setGroup] = useState<Group | null>(null)
     const [badgeNameError, setBadgeNameError] = useState('')
     const enhancer = import.meta.env.VITE_SOLAS_DOMAIN
@@ -93,53 +95,61 @@ function CreateBadge() {
         <Layout>
             <div className='create-badge-page'>
                 <div className='create-badge-page-wrapper'>
-                    <PageBack />
-                    <div className='create-badge-title'>{ lang['MintBadge_Title'] }</div>
-                    <div className='upload-image'>
-                        <UploadImage
-                            imageSelect={ cover }
-                            confirm={(coverUrl) => { setCover(coverUrl) } }/>
-                    </div>
+                    <PageBack title={ lang['MintBadge_Title'] }/>
 
-                    <div className='input-area'>
-                        <div className='input-area-title'>{ lang['MintBadge_Name_Label'] }</div>
-                        <AppInput
-                            clearable
-                            maxLength={ 30 }
-                            value={ badgeName }
-                            errorMsg={ badgeNameError }
-                            endEnhancer={() => <span style={ { fontSize: '12px', color: '#999' } }>
+                    <div className='create-badge-page-form'>
+                        <div className='input-area'>
+                            <div className='input-area-title'>{ lang['MintBadge_Upload'] }</div>
+                            <UploadImage
+                                imageSelect={ cover }
+                                confirm={(coverUrl) => { setCover(coverUrl) } }/>
+                        </div>
+
+                        <div className='input-area'>
+                            <div className='input-area-title'>{ lang['MintBadge_Name_Label'] }</div>
+                            <AppInput
+                                clearable
+                                maxLength={ 30 }
+                                value={ badgeName }
+                                errorMsg={ badgeNameError }
+                                endEnhancer={() => <span style={ { fontSize: '12px', color: '#999' } }>
                                     { `${badgeName.length}/30` }
                                 </span>
-                            }
-                            placeholder={ lang['MintBadge_Name_Placeholder'] }
-                            onChange={ (e) => { setBadgeName(e.target.value) } } />
-                    </div>
+                                }
+                                placeholder={ lang['MintBadge_Name_Placeholder'] }
+                                onChange={ (e) => { setBadgeName(e.target.value) } } />
+                        </div>
 
-                    <div className='input-area'>
-                        <div className='input-area-title'>{ lang['MintBadge_Domain_Label'] }</div>
-                        <AppInput
-                            clearable
-                            value={ domain }
-                            errorMsg={ domainError }
-                            placeholder={ lang['MintBadge_Domain_Placeholder'] }
-                            endEnhancer={() => <span>{ enhancer }</span>}
-                            onChange={ (e) => { setDomain(e.target.value) } } />
-                        <div className='input-area-des' dangerouslySetInnerHTML={{__html: lang['MintBadge_Domain_Rule']}} />
-                    </div>
+                        <div className='input-area'>
+                            <div className='input-area-title'>{ lang['IssueBadge_Reason'] }</div>
+                            <ReasonInput value={reason}  onChange={ (value) => { setReason(value) }} />
+                        </div>
 
-                    <div className='input-area'>
-                        <div className='input-area-title'>{ lang['BadgeDialog_Label_Creator'] }</div>
-                        <AppInput
-                            clearable
-                            readOnly
-                            value={ group?.domain || user.domain || '' } />
-                    </div>
+                        <div className='input-area'>
+                            <div className='input-area-title'>{ lang['MintBadge_Domain_Label'] }</div>
+                            <AppInput
+                                clearable
+                                value={ domain }
+                                errorMsg={ domainError }
+                                placeholder={ lang['MintBadge_Domain_Placeholder'] }
+                                endEnhancer={() => <span>{ enhancer }</span>}
+                                onChange={ (e) => { setDomain(e.target.value) } } />
+                            <div className='input-area-des' dangerouslySetInnerHTML={{__html: lang['MintBadge_Domain_Rule']}} />
+                        </div>
 
-                    <AppButton kind={ BTN_KIND.primary }
-                               onClick={ () => { handleCreate() } }>
-                        { lang['MintBadge_Submit'] }
-                    </AppButton>
+                        <div className='input-area'>
+                            <div className='input-area-title'>{ lang['BadgeDialog_Label_Creator'] }</div>
+                            <AppInput
+                                clearable
+                                readOnly
+                                value={ group?.domain || user.domain || '' } />
+                        </div>
+
+                        <AppButton kind={ BTN_KIND.primary }
+                                   onClick={ () => { handleCreate() } }>
+                            { lang['MintBadge_Submit'] }
+                        </AppButton>
+                    </div>
                 </div>
             </div>
         </Layout>

@@ -70,7 +70,7 @@ const langEN = {
   BadgeDialog_Label_hide_tip: 'Only visible to yourself',
 
   MintBadge_Title: 'Mint a badge',
-  MintBadge_Upload: 'Upload an image',
+  MintBadge_Upload: 'Badge Image',
   MintBadge_UploadTip: slotLang('Support JPG, GIF, PNG. Max size of {size}'),
   MintBadge_Name_Label: 'Badge Name',
   MintBadge_Name_Placeholder: 'Naming your badge',

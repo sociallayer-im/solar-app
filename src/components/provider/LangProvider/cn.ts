@@ -70,7 +70,7 @@ const langCN: LangConfig = {
   BadgeDialog_Label_hide_tip: '仅本人可见',
 
   MintBadge_Title: '铸造徽章',
-  MintBadge_Upload: '上传图片',
+  MintBadge_Upload: '徽章图片',
   MintBadge_UploadTip: slotLang('支持JPG, PNG, GIF， 大小不超过 {size}'),
   MintBadge_Name_Label: '徽章名称',
   MintBadge_Name_Placeholder: '徽章名称',

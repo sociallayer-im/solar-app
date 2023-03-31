@@ -27,6 +27,7 @@ const Title = styled('div', ({$theme}) => ({
     left: '50%',
     transform: 'translate(-50%, 0)',
     fontSize: '14px',
+    fontWeight: '600'
 }))
 
 interface PageBackProp {

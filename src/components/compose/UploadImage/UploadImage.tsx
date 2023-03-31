@@ -11,9 +11,12 @@ import BadgeSamples from "../../base/BadgeSamples";
 const Wrapper = styled('div', () => {
     return {
         width: '100%',
+        height: '214px',
         display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: '#F8F9F8',
+        borderRadius: '16px'
     }
 })
 
@@ -22,19 +25,9 @@ const Pic = styled('img', () => {
         width: '130px',
         height: '130px',
         borderRadius: '50%',
-        boxShadow: '0 1.64557px 9.87342px rgb(0 0 0 / 10%)',
         display: 'block',
         cursor: 'pointer',
         marginTop: '25px'
-    }
-})
-
-const Des = styled('div', () => {
-    return {
-        fontSize: '12px',
-        lineHeight: '18px',
-        color: '#c3c7c3',
-        marginTop: '12px'
     }
 })
 
@@ -44,7 +37,7 @@ export interface UploadImageProps {
 }
 
 function UploadImage (props: UploadImageProps) {
-    const defaultImg = '/images/upload_default.svg'
+    const defaultImg = '/images/upload_default.png'
     const [css] = useStyletron()
     const navigate = useNavigate()
     const [imageSelect, setImageSelect] = useState(props.imageSelect)
@@ -110,9 +103,7 @@ function UploadImage (props: UploadImageProps) {
     }
 
     return (<Wrapper>
-        <BadgeSamples onConfirm={ (coverUrl) => { setImageSelect(coverUrl); props.confirm(coverUrl) } }/>
         <Pic onClick={ () => { selectFile() } } src={ imageSelect || defaultImg } alt=""/>
-        <Des>{ lang['MintBadge_UploadTip'](['800K']) }</Des>
     </Wrapper>)
 }
 
