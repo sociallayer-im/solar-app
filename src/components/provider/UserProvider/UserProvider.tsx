@@ -73,6 +73,7 @@ function UserProvider (props: UserProviderProps) {
 
             if (!profileInfo || !profileInfo.domain) {
                 window.localStorage.setItem('fallback', window.location.href)
+                clean()
                 navigate('/regist')
                 return
             }
