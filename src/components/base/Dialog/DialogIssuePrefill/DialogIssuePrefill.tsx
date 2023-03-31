@@ -1,9 +1,9 @@
-import {useNavigate} from 'react-router-dom'
-import {useStyletron} from 'baseui'
 import {useState, useContext, useEffect, ReactNode} from 'react'
 import './DialogIssuePrefill.less'
 import AppSwiper from '../../AppSwiper/AppSwiper'
 import { Delete } from 'baseui/icon'
+import LangContext from '../../../provider/LangProvider/LangContext'
+import { useNavigate } from 'react-router-dom'
 
 
 
@@ -20,13 +20,17 @@ interface DialogIssuePrefillProps {
 
 
 function DialogIssuePrefill(props: DialogIssuePrefillProps) {
-    const [css] = useStyletron()
-    const navigate = useNavigate()
-    const [a, seta] = useState('')
+    const { lang } = useContext(LangContext)
+    const navigation = useNavigate()
 
     useEffect(() => {
 
     }, [])
+
+    const gotoCreateBadge = () => {
+        navigation('/badge-create')
+        props.handleClose()
+    }
 
     const items = () => {
         return [
@@ -50,26 +54,26 @@ function DialogIssuePrefill(props: DialogIssuePrefillProps) {
 
     return (<div className='dialog-issue-prefill'>
         <div className='prefill-module'>
-            <div className='prefill-module-title'>Choose from Badge book</div>
+            <div className='prefill-module-title'>{ lang['Badgebook_Dialog_Choose_Badgebook'] }</div>
             <div className='prefill-module-items'>
                 <AppSwiper items={items()} space={6} itemWidth={68}/>
             </div>
         </div>
         <div className='prefill-module'>
-            <div className='prefill-module-title'>Choose from Minted</div>
+            <div className='prefill-module-title'>{ lang['Badgebook_Dialog_Choose_Badge'] }</div>
             <div className='prefill-module-items'>
                 <AppSwiper items={items()} space={6} itemWidth={68}/>
             </div>
         </div>
         <div className='prefill-module'>
-            <div className='prefill-module-title'>Choose from Draft</div>
+            <div className='prefill-module-title'>{ lang['Badgebook_Dialog_Choose_Draft'] }</div>
             <div className='prefill-module-items'>
                 <AppSwiper items={items()} space={6} itemWidth={68}/>
             </div>
         </div>
-        <div className='create-badge-btn'>
+        <div className='create-badge-btn' onClick={ gotoCreateBadge }>
             <img src="/images/create_badge_icon.png" alt=""/>
-            <span>Create a new badge</span>
+            <span>{ lang['Badgebook_Dialog_Cetate_Badge'] }</span>
         </div>
         <div className='close-dialog' onClick={ () => { props.handleClose() }}><Delete size={ 20 } title='Close' /></div>
     </div>)

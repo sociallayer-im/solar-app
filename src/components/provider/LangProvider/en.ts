@@ -264,7 +264,12 @@ const langEN = {
 
   Search_Tab_Domain: 'Domain',
   Search_Tab_Badge: 'Badge',
-  Search_Tab_Event: 'Event'
+  Search_Tab_Event: 'Event',
+
+  Badgebook_Dialog_Choose_Badgebook: 'Choose from Badge book',
+  Badgebook_Dialog_Choose_Badge: 'Choose from Minted',
+  Badgebook_Dialog_Choose_Draft: 'Choose from Draft',
+  Badgebook_Dialog_Cetate_Badge: 'Create a new badge',
 }
 
 export type LangConfig = typeof langEN
