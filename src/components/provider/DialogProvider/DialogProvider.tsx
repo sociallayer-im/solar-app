@@ -10,7 +10,7 @@ import DetailBadgelet from '../../compose/Detail/DetailBadgelet'
 import DetailPresend from '../../compose/Detail/DetailPresend'
 import DetailBadge from '../../compose/Detail/DetailBadge'
 import DialogAvatar from '../../base/Dialog/DialogAvatar'
-import DialogCropper from '../../base/Dialog/DialogCropper'
+import DialogCropper from '../../base/Dialog/DialogCropper/DialogCropper'
 import DetailInvite from '../../compose/Detail/DetailInvite'
 import DialogGroupSetting from '../../base/Dialog/DialogGroupSetting/DialogGroupSetting'
 
@@ -345,12 +345,12 @@ function DialogProvider (props: DialogProviderProps) {
 
                 const dialogProps = {
                     key: id.toString(),
-                    size: ['100%', '100%'],
+                    size: ['343px', '388px'],
                 }
 
                 return (
                     <Dialog { ...dialogProps } >
-                        { (close) => <DialogCropper
+                        { () => <DialogCropper
                             imgURL={ props.imgURL }
                             handleClose={ close }
                             handleConfirm={props.onConfirm} /> }

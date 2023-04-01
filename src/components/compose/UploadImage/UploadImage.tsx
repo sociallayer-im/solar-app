@@ -6,7 +6,7 @@ import chooseFile from '../../../utils/chooseFile'
 import solas from '../../../service/solas'
 import UserContext from '../../provider/UserProvider/UserContext'
 import DialogsContext from '../../provider/DialogProvider/DialogsContext'
-import BadgeSamples from "../../base/BadgeSamples";
+import DialogPublicImage from '../../base/Dialog/DialogPublicImage/DialogPublicImage'
 
 const Wrapper = styled('div', () => {
     return {
@@ -16,7 +16,7 @@ const Wrapper = styled('div', () => {
         alignItems: 'center',
         justifyContent: 'center',
         background: '#F8F9F8',
-        borderRadius: '16px'
+        borderRadius: '16px',
     }
 })
 
@@ -27,7 +27,6 @@ const Pic = styled('img', () => {
         borderRadius: '50%',
         display: 'block',
         cursor: 'pointer',
-        marginTop: '25px'
     }
 })
 
@@ -43,67 +42,18 @@ function UploadImage (props: UploadImageProps) {
     const [imageSelect, setImageSelect] = useState(props.imageSelect)
     const { lang } = useContext(LangContext)
     const { user } = useContext(UserContext)
-    const { showToast, showLoading, showCropper } = useContext(DialogsContext)
+    const { showToast, showLoading, showCropper, openDialog } = useContext(DialogsContext)
 
-    const compress = (data: Blob):Promise<Blob | null> => {
-        return new Promise((resolve, reject) => {
-            const img = new Image()
-            img.src = URL.createObjectURL(data)
-            img.onload = () => {
-                const canvas = document.createElement('canvas')
-                const ctx = canvas.getContext('2d')
-                if (ctx) {
-                    ctx.save()
-                    canvas.width = 900
-                    canvas.height = 900
-                    ctx.drawImage(img, 0, 0, 900, 900)
-                    ctx.restore()
-                    canvas.toBlob(
-                        blob => {
-                            resolve(blob)
-                        },
-                        'image/png',
-                        1
-                    )
-                }
-            }
+    const showPublicImageDialog = () => {
+        const dialog = openDialog({
+            content: (close: any) => <DialogPublicImage handleClose={close} onConfirm={(image) => { setImageSelect(image) }} />,
+            position: 'bottom',
+            size: [360, 'auto']
         })
     }
 
-    const selectFile = async () => {
-        try {
-            const file = await chooseFile({ accepts: ['image/png', 'image/jpeg']})
-            const reader = new FileReader()
-            reader.readAsDataURL(file[0])
-            reader.onload = async (file)=> {
-                showCropper({ imgURL: reader.result as string, onConfirm: async (res: Blob, close: () => any) => {
-                        close()
-                        const unload = showLoading()
-                        try {
-                            const newImage = await solas.uploadImage({
-                                file: await compress(res),
-                                uploader: user.wallet || user.email || '',
-                                auth_token: user.authToken || ''
-                            })
-                            unload()
-                            setImageSelect(newImage)
-                            props.confirm(newImage)
-                        } catch (e: any) {
-                            console.log('[selectFile]: ', e)
-                            unload()
-                            showToast(e.message|| 'Upload fail')
-                        }
-                    }
-                })
-            }
-        } catch (e: any) {
-            console.log('[selectFile]: ', e)
-            showToast(e.message || 'Upload fail')
-        }
-    }
-
     return (<Wrapper>
-        <Pic onClick={ () => { selectFile() } } src={ imageSelect || defaultImg } alt=""/>
+        <Pic onClick={ () => { showPublicImageDialog() } } src={ imageSelect || defaultImg } alt=""/>
     </Wrapper>)
 }
 

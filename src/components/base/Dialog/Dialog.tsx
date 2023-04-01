@@ -1,4 +1,4 @@
-import {ReactNode, useEffect, useState} from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import './dialog.less'
 
 export interface DialogProps {
