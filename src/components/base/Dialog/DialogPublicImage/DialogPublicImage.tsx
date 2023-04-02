@@ -91,16 +91,16 @@ function DialogPublicImage (props: DialogPublicImageProps) {
 
     return (<div className='dialog-public-image'>
         <div className='dialog-title'>
-            <div>{ 'Choose a image for badge' }</div>
+            <div>{ lang['Dialog_Public_Image_Title'] }</div>
             <div className='dialog-close-btn' onClick={() => { props.handleClose() }}><Delete size={18} title='Close' /></div>
         </div>
         <div className='upload-image-btn' onClick={ selectFile }>
             <img src="/images/upload_image_icon.png" alt=""/>
-            <div className='btn-main-text'>Upload a image</div>
-            <div className='btn-sub-text'>JPG or PNG. Max size of 800K</div>
+            <div className='btn-main-text'>{ lang['Dialog_Public_Image_UploadBtn'] }</div>
+            <div className='btn-sub-text'>{ lang['Dialog_Public_Image_UploadBtn_Des'] }</div>
         </div>
         <div className='public-pic'>
-            <div className='public-pic-title'>Public</div>
+            <div className='public-pic-title'>{ lang['Dialog_Public_Image_List_Title'] }</div>
             <AppSwiper items={ items() } space={6} itemWidth={88}></AppSwiper>
         </div>
 

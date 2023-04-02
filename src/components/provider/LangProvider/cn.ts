@@ -270,6 +270,14 @@ const langCN: LangConfig = {
   Badgebook_Dialog_Choose_Badge: '从已经颁发的徽章中选择',
   Badgebook_Dialog_Choose_Draft: '从保存的草稿中选择',
   Badgebook_Dialog_Cetate_Badge: '创建新的徽章',
+
+  Dialog_Public_Image_Title: '选择一张徽章图片',
+  Dialog_Public_Image_UploadBtn: '上传图片',
+  Dialog_Public_Image_UploadBtn_Des: 'JPG 或者 PNG. 最大 800K',
+  Dialog_Public_Image_List_Title: '公共图片',
+
+  Cropper_Dialog_Title: '编辑图片',
+  Cropper_Dialog_Btn: '应用',
 }
 
 export default langCN

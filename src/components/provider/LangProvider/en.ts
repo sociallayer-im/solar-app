@@ -270,6 +270,14 @@ const langEN = {
   Badgebook_Dialog_Choose_Badge: 'Choose from Minted',
   Badgebook_Dialog_Choose_Draft: 'Choose from Draft',
   Badgebook_Dialog_Cetate_Badge: 'Create a new badge',
+
+  Dialog_Public_Image_Title: 'Choose a image for badge',
+  Dialog_Public_Image_UploadBtn: 'Upload a image',
+  Dialog_Public_Image_UploadBtn_Des: 'JPG or PNG. Max size of 800K',
+  Dialog_Public_Image_List_Title: 'Public',
+
+  Cropper_Dialog_Title: 'Edit image',
+  Cropper_Dialog_Btn: 'Apply',
 }
 
 export type LangConfig = typeof langEN
