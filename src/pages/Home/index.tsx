@@ -10,7 +10,7 @@ import useIssueBadge from '../../hooks/useIssueBadge'
 
 function Home () {
     const { user } = useContext( UserContext )
-    const { showBadgelet, showPresend, clean, openConnectWalletDialog, showInvite } = useContext( DialogsContext )
+    const { showBadgelet, showPresend, clean, openConnectWalletDialog, showInvite, showLoading } = useContext(DialogsContext)
     const navigate = useNavigate()
     const { badgeletId, presendId, groupId, inviteId } = useParams()
     const startIssueBadge = useIssueBadge()
@@ -55,9 +55,12 @@ function Home () {
         }
     },[])
 
-    const start = () => {
+    const start = async () => {
         if (user.userName) {
-            startIssueBadge()
+            const unload = showLoading()
+            const badges = await solas.queryBadge({ sender_id: user.id!, page: 1 })
+            unload()
+            startIssueBadge({ badges })
         } else {
             openConnectWalletDialog()
         }
