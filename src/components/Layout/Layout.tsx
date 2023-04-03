@@ -2,15 +2,20 @@ import PageHeader from '../compose/PageHeader'
 import { useStyletron } from 'baseui'
 import {useEffect, useState} from "react";
 
+
+
 function Layout(props?: any) {
     const [css] = useStyletron()
-    const [flag, setFlag] = useState('')
+    const [windowHeight, setWindowHeight] = useState(window.innerHeight)
+    const innerHeight = window.innerHeight
+
     const wrapper = {
         width: '100%',
         maxHeight: 'fill-available',
         display: 'flex',
         flexDirection: 'column' as const,
-        overflow: 'hidden'
+        overflow: 'hidden',
+        height: `${innerHeight}px`
     }
     const content = {
         width: '100%',
@@ -18,18 +23,9 @@ function Layout(props?: any) {
         overflow: 'auto'
     }
 
-    const innerHeight = window.innerHeight
-    const el = document.documentElement || document.body
-    const originHeight = el.clientHeight;
-
     useEffect(() => {
-        /**
-         * 通过强制重新渲染解决软键盘
-         * 收起后页面底部留白的问题，
-         * 有更好的方法？
-         */
         const watchSoftKeyboard = () => {
-            setFlag(Date.parse(new Date().toString()).toString())
+            setWindowHeight(window.innerHeight)
         }
 
         window.addEventListener('resize', watchSoftKeyboard)
@@ -38,7 +34,7 @@ function Layout(props?: any) {
     }, [])
 
     return (
-        <div className={ css(wrapper) } style={{height: `${innerHeight}px`}} data-flag={ flag }>
+        <div className={ css(wrapper) }>
             <PageHeader />
             <div className={ css(content)} >
                 {props.children}
