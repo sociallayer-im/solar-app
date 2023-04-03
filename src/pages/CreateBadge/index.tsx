@@ -9,9 +9,10 @@ import AppInput from '../../components/base/AppInput'
 import UserContext from '../../components/provider/UserProvider/UserContext'
 import AppButton, { BTN_KIND } from '../../components/base/AppButton/AppButton'
 import useVerify from '../../hooks/verify'
-import solas, { Group } from '../../service/solas'
+import solas, { Group, Profile } from '../../service/solas'
 import DialogsContext from '../../components/provider/DialogProvider/DialogsContext'
-import ReasonInput from "../../components/base/ReasonInput/ReasonInput";
+import ReasonInput from '../../components/base/ReasonInput/ReasonInput'
+import SelectCreator from '../../components/compose/SelectCreator/SelectCreator'
 
 function CreateBadge() {
     const navigate = useNavigate()
@@ -20,7 +21,7 @@ function CreateBadge() {
     const [domainError, setDomainError,] = useState('')
     const [badgeName, setBadgeName] = useState('')
     const [reason, setReason] = useState('')
-    const [group, setGroup] = useState<Group | null>(null)
+    const [creator, setCreator] = useState<Group | Profile | null>(null)
     const [badgeNameError, setBadgeNameError] = useState('')
     const enhancer = import.meta.env.VITE_SOLAS_DOMAIN
     const { user } = useContext(UserContext)
@@ -29,17 +30,6 @@ function CreateBadge() {
     const [searchParams, _] = useSearchParams()
 
     const { lang } = useContext(LangContext)
-
-    useEffect(() => {
-       async function getGroup () {
-           const groupId = searchParams.get('group')
-           if (groupId) {
-               const group = await solas.queryGroupDetail(Number(groupId))
-               setGroup(group)
-           }
-       }
-        getGroup()
-    },[])
 
     useEffect(() => {
         if (!domain.length) {
@@ -121,11 +111,6 @@ function CreateBadge() {
                         </div>
 
                         <div className='input-area'>
-                            <div className='input-area-title'>{ lang['IssueBadge_Reason'] }</div>
-                            <ReasonInput value={reason}  onChange={ (value) => { setReason(value) }} />
-                        </div>
-
-                        <div className='input-area'>
                             <div className='input-area-title'>{ lang['MintBadge_Domain_Label'] }</div>
                             <AppInput
                                 clearable
@@ -138,11 +123,13 @@ function CreateBadge() {
                         </div>
 
                         <div className='input-area'>
+                            <div className='input-area-title'>{ lang['IssueBadge_Reason'] }</div>
+                            <ReasonInput value={reason}  onChange={ (value) => { setReason(value) }} />
+                        </div>
+
+                        <div className='input-area'>
                             <div className='input-area-title'>{ lang['BadgeDialog_Label_Creator'] }</div>
-                            <AppInput
-                                clearable
-                                readOnly
-                                value={ group?.domain || user.domain || '' } />
+                            <SelectCreator value={ creator } onChange={(res) => { console.log('resres', res);setCreator(res) }}/>
                         </div>
 
                         <AppButton kind={ BTN_KIND.primary }

@@ -49,7 +49,9 @@ function Dialog ({ position = '', ...props }: DialogProps) {
         }
     }, [])
 
-    return (<div className='dialog'>
+    const height = window.innerHeight
+
+    return (<div className='dialog' style={{height: `${height}px`}}>
         <div className={ `dialog-shell ${ props.noShell ? 'light': '' }` } onClick={ close }></div>
         <div className={ contentClassName }  style={ sizeStyle }>
             { children && children(close) }

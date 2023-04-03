@@ -94,5 +94,8 @@
    content: "\e915";
    color: #fff;
  }
+.icon-exchange:before {
+  content: "\e916";
+}
 
 

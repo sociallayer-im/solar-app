@@ -10,7 +10,11 @@ export interface StartIssueBadgeProps {
     badges: Badge[]
 }
 
-function useIssueBadge () {
+interface UseIssueBadgeProp {
+    senderGroup?: number
+}
+
+function useIssueBadge (useIssueBadgeProps?: UseIssueBadgeProp) {
     const { user } = useContext(UserContext)
     const { openDialog } = useContext(DialogsContext)
     const navigate = useNavigate()
@@ -18,12 +22,22 @@ function useIssueBadge () {
     function toIssuePage (props: BadgeBookDialogRes) {
         let path = '/issue'
 
+        if (useIssueBadgeProps && useIssueBadgeProps.senderGroup) {
+            path = `/issue?group=${useIssueBadgeProps.senderGroup}`
+        }
+
+        const split = path.includes('?') ? '&' : '?'
+
         if (props.badgeId) {
-            path = `/issue?badge=${props.badgeId}`
+            path = path + split + `badge=${props.badgeId}`
+            navigate(path)
+            return
         }
 
         if (props.badgebookId) {
-            path = `/issue?badgebook=${props.badgebookId}`
+            path = path + split + `badgebook=${props.badgeId}`
+            navigate(path)
+            return
         }
 
         navigate(path)
