@@ -7,7 +7,6 @@ import {useEffect, useState} from "react";
 function Layout(props?: any) {
     const [css] = useStyletron()
     const [windowHeight, setWindowHeight] = useState(window.innerHeight)
-    const innerHeight = window.innerHeight
 
     const wrapper = {
         width: '100%',
@@ -15,8 +14,9 @@ function Layout(props?: any) {
         display: 'flex',
         flexDirection: 'column' as const,
         overflow: 'hidden',
-        height: `${innerHeight}px`
+        height: `${windowHeight}px`
     }
+
     const content = {
         width: '100%',
         flex: 1,
