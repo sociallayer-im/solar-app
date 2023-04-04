@@ -13,6 +13,7 @@ import { Tab } from 'baseui/tabs'
 import AmountInput from '../../components/base/AmountInput/AmountInput'
 import IssuesInput from '../../components/base/IssuesInput/IssuesInput'
 import GenFaceToFace from '../../components/base/GenFaceToFace/GenFaceToFace'
+import PresendQrcode from '../../components/compose/PresendQrcode/PresendQrcode'
 
 function Issue() {
     const { user } = useContext(UserContext)
@@ -141,10 +142,13 @@ function Issue() {
                                            onChange={ (key) => { setIssueType(key.activeKey.toString()) } }>
 
                                 <Tab key='face2face' title={ lang['IssueBadge_Face_to_Face'] }>
-                                    <GenFaceToFace
+                                    {  face2facePresend
+                                        ? <PresendQrcode presendId={ face2facePresend.id } />
+                                        : <GenFaceToFace
                                         onConfirm={ handleCreate }
                                         badge={ badge }
                                         reason={ state.reason } />
+                                    }
                                 </Tab>
 
                                 <Tab key='presend' title={ lang['IssueBadge_Sendwithlink'] }>

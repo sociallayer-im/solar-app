@@ -181,6 +181,8 @@ export interface Presend {
     code: string | null,
     badge: Badge,
     counter: number
+    badge_id: number
+    expires_at: string
 
 }
 

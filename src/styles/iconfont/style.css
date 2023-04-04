@@ -100,5 +100,8 @@
 .icon-clock:before {
   content: "\e917";
 }
+.icon-profile:before {
+  content: "\e918";
+}
 
 

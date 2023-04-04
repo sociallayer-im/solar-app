@@ -17,6 +17,7 @@ import ListUserBadgelet from '../../components/compose/ListUserBadgelet'
 import ListUserGroup from '../../components/compose/ListUserGroup'
 import UserContext from '../../components/provider/UserProvider/UserContext'
 import { useNavigate } from 'react-router-dom'
+import useIssueBadge from '../../hooks/useIssueBadge'
 
 
 function ProfilePage () {
