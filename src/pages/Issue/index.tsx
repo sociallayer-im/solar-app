@@ -4,16 +4,15 @@ import Layout from '../../components/Layout/Layout'
 import PageBack from '../../components/base/PageBack'
 import './Issue.less'
 import LangContext from '../../components/provider/LangProvider/LangContext'
-import AppInput from '../../components/base/AppInput'
 import AppButton, { BTN_KIND } from '../../components/base/AppButton/AppButton'
-import solas, {Badge, issueBatch} from '../../service/solas'
+import solas, {Badge, Presend} from '../../service/solas'
 import DialogsContext from '../../components/provider/DialogProvider/DialogsContext'
 import UserContext from '../../components/provider/UserProvider/UserContext'
-import ReasonInput from '../../components/base/ReasonInput/ReasonInput'
 import IssueTypeTabs from '../../components/base/IssueTypeTabs'
 import { Tab } from 'baseui/tabs'
 import AmountInput from '../../components/base/AmountInput/AmountInput'
 import IssuesInput from '../../components/base/IssuesInput/IssuesInput'
+import GenFaceToFace from '../../components/base/GenFaceToFace/GenFaceToFace'
 
 function Issue() {
     const { user } = useContext(UserContext)
@@ -22,7 +21,8 @@ function Issue() {
     const params = useParams()
     const [SearchParams, _] = useSearchParams()
     const [presendAmount, setPresendAmount] = useState<number | string>(0)
-    const [issueType, setIssueType] = useState('presend')
+    const [face2facePresend, setFace2facePresend] = useState<Presend | null>(null)
+    const [issueType, setIssueType] = useState('face2face')
     const [issues, setIssues] = useState<string[]>([''])
     const navigate = useNavigate()
     const { state } = useLocation()
@@ -98,11 +98,35 @@ function Issue() {
         }
     }
 
+    const handleCreateFace2Face = async () => {
+        const unload = showLoading()
+        try {
+            const presend = await solas.createPresend({
+                badge_id: badge?.id!,
+                message: state.reason || '',
+                counter: 1,
+                auth_token: user.authToken || ''
+            })
+            unload()
+            setFace2facePresend(presend)
+        } catch (e: any) {
+            console.log('[handleCreatePresend]: ', e)
+            unload()
+            showToast(e.message || 'Create presend fail')
+        }
+    }
+
     const handleCreate = async () => {
         if (issueType === 'presend') {
             handleCreatePresend()
-        } else {
+        }
+
+        if (issueType === 'domain') {
             handleCreateIssue()
+        }
+
+        if (issueType === 'face2face') {
+            handleCreateFace2Face()
         }
     }
 
@@ -111,36 +135,48 @@ function Issue() {
             <div className='issue-page'>
                 <div className='issue-page-wrapper'>
                     <PageBack title={ lang['IssueBadge_Title'] } to={`/profile/${user.userName}`}/>
-                    <div className='issue-page-form'>
-                        <IssueTypeTabs activeKey={issueType}
-                                       onChange={ (key) => { setIssueType(key.activeKey.toString()) } }>
-                            <Tab key='face2face' title={ lang['IssueBadge_Face_to_Face'] }>
-                               <div>face ot face</div>
-                            </Tab>
-                            <Tab key='presend' title={ lang['IssueBadge_Sendwithlink'] }>
-                                <div className='input-area'>
-                                    <div className='issues-des' dangerouslySetInnerHTML={{__html: lang['Presend_step']}} />
-                                    <AmountInput value={ presendAmount }
-                                                 onChange={ (newValue) => { setPresendAmount(newValue) } }/>
-                                </div>
-                            </Tab>
-                            <Tab key='domain' title={ lang['IssueBadge_Sendwithdomain'] }>
-                                <div className='input-area'>
-                                    <div className='issues-des'>
-                                        { lang['IssueBadge_Input_Des'] }
-                                    </div>
-                                    <IssuesInput value={ issues }
-                                                 onChange={ (newIssues) => { setIssues(newIssues) } } />
-                                </div>
-                            </Tab>
-                        </IssueTypeTabs>
+                    {  !!badge &&
+                        <div className='issue-page-form'>
+                            <IssueTypeTabs activeKey={issueType}
+                                           onChange={ (key) => { setIssueType(key.activeKey.toString()) } }>
 
-                        <AppButton kind={ BTN_KIND.primary }
-                                   special
-                                   onClick={ () => { handleCreate() } }>
-                            { lang['MintBadge_Submit'] }
-                        </AppButton>
-                    </div>
+                                <Tab key='face2face' title={ lang['IssueBadge_Face_to_Face'] }>
+                                    <GenFaceToFace
+                                        onConfirm={ handleCreate }
+                                        badge={ badge }
+                                        reason={ state.reason } />
+                                </Tab>
+
+                                <Tab key='presend' title={ lang['IssueBadge_Sendwithlink'] }>
+                                    <div className='input-area'>
+                                        <div className='issues-des' dangerouslySetInnerHTML={{__html: lang['Presend_step']}} />
+                                        <AmountInput value={ presendAmount }
+                                                     onChange={ (newValue) => { setPresendAmount(newValue) } }/>
+                                    </div>
+                                    <AppButton kind={ BTN_KIND.primary }
+                                               special
+                                               onClick={ () => { handleCreate() } }>
+                                        { lang['MintBadge_Submit'] }
+                                    </AppButton>
+                                </Tab>
+
+                                <Tab key='domain' title={ lang['IssueBadge_Sendwithdomain'] }>
+                                    <div className='input-area'>
+                                        <div className='issues-des'>
+                                            { lang['IssueBadge_Input_Des'] }
+                                        </div>
+                                        <IssuesInput value={ issues }
+                                                     onChange={ (newIssues) => { setIssues(newIssues) } } />
+                                    </div>
+                                    <AppButton kind={ BTN_KIND.primary }
+                                               special
+                                               onClick={ () => { handleCreate() } }>
+                                        { lang['MintBadge_Submit'] }
+                                    </AppButton>
+                                </Tab>
+                            </IssueTypeTabs>
+                        </div>
+                    }
                 </div>
             </div>
         </Layout>
