@@ -28,6 +28,7 @@ function CreateBadgeNonPrefill() {
     const { showLoading, showToast } = useContext(DialogsContext)
     const { verifyDomain } = useVerify()
     const [searchParams, _] = useSearchParams()
+    const presetAcceptor = searchParams.get('to')
 
     const { lang } = useContext(LangContext)
 
@@ -68,12 +69,23 @@ function CreateBadgeNonPrefill() {
                 domain: domain + enhancer,
                 image_url: cover,
                 auth_token: user.authToken || '',
-                content: '',
+                content: reason || '',
                 group_id: searchParams.get('group') ? Number(searchParams.get('group') ) : undefined
             })
+
+            if (presetAcceptor) {
+                const badgelets = await solas.issueBatch({
+                    badgeId: newBadge.id!,
+                    reason: reason || '',
+                    issues: [presetAcceptor],
+                    auth_token: user.authToken || ''
+                })
+                unload()
+                navigate(`/issue-success?badgelet=${badgelets[0].id}`)
+            } else {
+                navigate(`/issue/${newBadge.id}`, { state: { reason: reason } })
+            }
             unload()
-            const presetAcceptor = searchParams.get('to')
-            navigate(presetAcceptor ? `/issue/${newBadge.id}?to=${presetAcceptor}` : `/issue/${newBadge.id}`, { state: { reason: reason } })
         } catch (e: any) {
             unload()
             console.log('[handleCreate]: ', e)
@@ -135,8 +147,12 @@ function CreateBadgeNonPrefill() {
                         <AppButton kind={ BTN_KIND.primary }
                                    special
                                    onClick={ () => { handleCreate() } }>
-                            { lang['MintBadge_Submit'] }
+                            { presetAcceptor
+                                ? lang['MintBadge_Submit_To']([presetAcceptor.split('.')[0]])
+                                : lang['MintBadge_Submit']
+                            }
                         </AppButton>
+                        // todo: 测试客态主态发送
                     </div>
                 </div>
             </div>

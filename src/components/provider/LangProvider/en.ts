@@ -76,7 +76,8 @@ const langEN = {
   MintBadge_Name_Placeholder: 'Naming your badge',
   MintBadge_Domain_Label: 'Badge Domain',
   MintBadge_Domain_Placeholder: 'Domain',
-  MintBadge_Submit: 'Mint',
+  MintBadge_Submit: 'Send to friend',
+  MintBadge_Submit_To: slotLang('Send to {1}'),
   MintBadge_Submiting: 'Minting',
   MintBadge_Domain_Rule: 'The domain is the unique identifier for your badge. <br /> Domains can contain the English-language letters a-z, and the digits 0-9. Hyphens can also be used but it can not be used at the beginning and at the end of a domain name. It should be longer than 4 characters.',
 
@@ -94,6 +95,7 @@ const langEN = {
   IssueBadge_IssueesPlaceholder: 'Enter receiver\'s domain or wallet address',
   IssueBadge_GoToIssue: 'Go to Send',
   IssueBadge_Issuesing: 'Minting',
+  IssueBadge_Mint: 'Mint',
   IssueBadge_Sendwithlink: 'Non-designated',
   IssueBadge_Face_to_Face: 'Face to face',
   IssueBadge_Sendwithdomain: 'Designated',

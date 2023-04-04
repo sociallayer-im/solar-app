@@ -160,7 +160,7 @@ function Issue() {
                                     <AppButton kind={ BTN_KIND.primary }
                                                special
                                                onClick={ () => { handleCreate() } }>
-                                        { lang['MintBadge_Submit'] }
+                                        { lang['IssueBadge_Mint'] }
                                     </AppButton>
                                 </Tab>
 
@@ -175,7 +175,7 @@ function Issue() {
                                     <AppButton kind={ BTN_KIND.primary }
                                                special
                                                onClick={ () => { handleCreate() } }>
-                                        { lang['MintBadge_Submit'] }
+                                        { lang['IssueBadge_Mint'] }
                                     </AppButton>
                                 </Tab>
                             </IssueTypeTabs>

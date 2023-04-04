@@ -28,6 +28,7 @@ function ProfilePage () {
     const { user } = useContext(UserContext)
     const [selectedTab, setSelectedTab] = useState('Minted')
     const navigate = useNavigate()
+    const startIssue = useIssueBadge()
 
     useEffect(() => {
         const getProfile  =  async function () {
@@ -45,8 +46,14 @@ function ProfilePage () {
         getProfile()
     },[username])
 
-    const handleMintOrIssue = () => {
-        navigate(user.userName === profile?.username ? '/badge-create' : `/badge-create?to=${profile?.domain}`)
+    const handleMintOrIssue = async () => {
+        const unload = showLoading()
+        const badges = await solas.queryBadge({ sender_id: user.id!, page: 1 })
+        unload()
+
+        user.userName === profile?.username
+            ? startIssue({ badges })
+            : startIssue({ badges, to: profile?.domain || ''})
     }
 
     return <Layout>

@@ -9,6 +9,7 @@ import solas, {Badge, Group, Profile} from '../../service/solas'
 import DialogsContext from '../../components/provider/DialogProvider/DialogsContext'
 import ReasonInput from '../../components/base/ReasonInput/ReasonInput'
 import DetailPrefillBadge from '../../components/base/DetailPrefillBadge/DetailPrefillBadge'
+import UserContext from '../../components/provider/UserProvider/UserContext'
 
 interface CreateBadgeWithPrefillProp {
     badgeId: number
@@ -16,17 +17,19 @@ interface CreateBadgeWithPrefillProp {
 function CreateBadgeWithPrefill(props: CreateBadgeWithPrefillProp) {
     const navigate = useNavigate()
     const [reason, setReason] = useState('')
-    const { showLoading } = useContext(DialogsContext)
+    const { showLoading, showToast } = useContext(DialogsContext)
+    const { user } = useContext(UserContext)
     const [searchParams, _] = useSearchParams()
     const [preFillBadge,setPreFillBadge] = useState<Badge | null>(null)
+    const presetAcceptor = searchParams.get('to')
 
     const { lang } = useContext(LangContext)
 
     useEffect(() => {
         async function getBadgeDetail () {
-            const unload = showLoading()
+           const unload = showLoading()
            try {
-               const badge = await  solas.queryBadgeDetail({ id: props.badgeId })
+               const badge = await solas.queryBadgeDetail({ id: props.badgeId })
                setPreFillBadge(badge)
                setReason(badge.content)
            } finally {
@@ -37,9 +40,30 @@ function CreateBadgeWithPrefill(props: CreateBadgeWithPrefillProp) {
         getBadgeDetail()
     }, [])
 
+    const send = async (acceptorDomain: string) => {
+        const unload = showLoading()
+        try {
+            const badgelets = await solas.issueBatch({
+                badgeId: preFillBadge?.id!,
+                reason: reason || '',
+                issues: [acceptorDomain],
+                auth_token: user.authToken || ''
+            })
+            unload()
+            navigate(`/issue-success?badgelet=${badgelets[0].id}`)
+        } catch (e: any) {
+            console.log('[handleCreateIssue]: ', e)
+            unload()
+            showToast(e.message || 'Issue fail')
+        }
+    }
+
     const handleCreate = async () => {
-        const presetAcceptor = searchParams.get('to')
-        navigate(presetAcceptor ? `/issue/${props.badgeId}?to=${presetAcceptor}` : `/issue/${props.badgeId}`, { state: { reason: reason }})
+        if (presetAcceptor) {
+            send(presetAcceptor)
+        } else {
+            navigate( `/issue/${props.badgeId}`, { state: { reason: reason }})
+        }
     }
 
     return (
@@ -58,7 +82,10 @@ function CreateBadgeWithPrefill(props: CreateBadgeWithPrefillProp) {
                             <AppButton kind={ BTN_KIND.primary }
                                        special
                                        onClick={ () => { handleCreate() } }>
-                                { lang['MintBadge_Submit'] }
+                                { presetAcceptor
+                                    ? lang['MintBadge_Submit_To']([presetAcceptor.split('.')[0]])
+                                    :lang['MintBadge_Submit']
+                                }
                             </AppButton>
                         </div>
                     </div>

@@ -77,6 +77,7 @@ const langCN: LangConfig = {
   MintBadge_Domain_Label: '徽章域名',
   MintBadge_Domain_Placeholder: '徽章域名',
   MintBadge_Submit: '发送给朋友',
+  MintBadge_Submit_To: slotLang('发送给 {1}'),
   MintBadge_Submiting: '铸造中',
   MintBadge_Domain_Rule: '这个域名是徽章的唯一标识符。<br />只能包含字母数字连字符，并且连字符不能在开头和结尾，不能有空格，4个字符以上。',
 
@@ -94,6 +95,7 @@ const langCN: LangConfig = {
   IssueBadge_IssueesPlaceholder: '请输入对方钱包地址、域名、用户名',
   IssueBadge_GoToIssue: '直接颁发',
   IssueBadge_Issuesing: '颁发中',
+  IssueBadge_Mint: '发送',
   IssueBadge_Sendwithlink: '非指定发送',
   IssueBadge_Face_to_Face: '面对面发送',
   IssueBadge_Sendwithdomain: '指定发送',
