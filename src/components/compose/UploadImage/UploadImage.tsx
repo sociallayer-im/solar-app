@@ -46,7 +46,7 @@ function UploadImage (props: UploadImageProps) {
 
     const showPublicImageDialog = () => {
         const dialog = openDialog({
-            content: (close: any) => <DialogPublicImage handleClose={close} onConfirm={(image) => { setImageSelect(image) }} />,
+            content: (close: any) => <DialogPublicImage handleClose={close} onConfirm={(image) => { props.confirm(image); setImageSelect(image) }} />,
             position: 'bottom',
             size: [360, 'auto']
         })

@@ -97,5 +97,8 @@
 .icon-exchange:before {
   content: "\e916";
 }
+.icon-clock:before {
+  content: "\e917";
+}
 
 

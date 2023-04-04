@@ -27,7 +27,7 @@ function AppRouter () {
                 <Route path="/login" element={<Login />}></Route>
                 <Route path="/regist" element={<Regist />}></Route>
                 <Route path="/create-group" element={<RegistGroup />}></Route>
-                <Route path="/issue" element={<CreateBadge />}></Route>
+                <Route path="/create-badge" element={<CreateBadge />}></Route>
                 <Route path="/issue/:badgeId" element={<Issue />}></Route>
                 <Route path="/invite-create/:groupId" element={<Invite />}></Route>
                 <Route path="/issue-success" element={<IssueSuccess />}></Route>

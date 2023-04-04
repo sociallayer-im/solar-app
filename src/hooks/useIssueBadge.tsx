@@ -20,10 +20,10 @@ function useIssueBadge (useIssueBadgeProps?: UseIssueBadgeProp) {
     const navigate = useNavigate()
 
     function toIssuePage (props: BadgeBookDialogRes) {
-        let path = '/issue'
+        let path = '/create-badge'
 
         if (useIssueBadgeProps && useIssueBadgeProps.senderGroup) {
-            path = `/issue?group=${useIssueBadgeProps.senderGroup}`
+            path = `/create-badge?group=${useIssueBadgeProps.senderGroup}`
         }
 
         const split = path.includes('?') ? '&' : '?'
