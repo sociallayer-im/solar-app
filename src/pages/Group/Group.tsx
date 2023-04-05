@@ -17,7 +17,6 @@ import ListUserBadgelet from '../../components/compose/ListUserBadgelet'
 import ListGroupInvitep from '../../components/compose/ListGroupInvite'
 import ListGroupMember from '../../components/compose/ListGroupMember'
 import UserContext from '../../components/provider/UserProvider/UserContext'
-import { useNavigate } from 'react-router-dom'
 import { Overflow } from 'baseui/icon'
 import useIssueBadge from '../../hooks/useIssueBadge'
 
@@ -29,7 +28,6 @@ function GroupPage () {
     const { lang } = useContext(LangContext)
     const { user } = useContext(UserContext)
     const [selectedTab, setSelectedTab] = useState('Minted')
-    const navigate = useNavigate()
     const startIssue = useIssueBadge({ groupName: groupname})
 
     useEffect(() => {
