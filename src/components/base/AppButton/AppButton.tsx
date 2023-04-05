@@ -35,7 +35,7 @@ export default function AppButton (props: AppButtonProps) {
             'flexWrap': 'nowrap',
             width: props.inline ? 'auto' : '100%',
             fontSize: '14px',
-            fontWeight: 600
+            fontWeight: 600,
         }
 
         if ($size === SIZE.compact) {

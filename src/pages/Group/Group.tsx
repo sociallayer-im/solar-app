@@ -56,6 +56,8 @@ function GroupPage () {
             : startIssue({ badges, to: profile?.domain || ''})
     }
 
+    // 卸载组件
+
     const groupOption = () => {
         const style = { cursor: 'pointer' }
         return user.id === profile?.group_owner_id

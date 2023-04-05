@@ -1,7 +1,7 @@
 import LangContext from '../../provider/LangProvider/LangContext'
 import UserContext from '../../provider/UserProvider/UserContext'
 import { useContext, useEffect, useRef, useState } from 'react'
-import DetailWrapper from './atoms/DetailWrapper'
+import DetailWrapper from './atoms/DetailWrapper/DetailWrapper'
 import usePicture from '../../../hooks/pictrue'
 import DetailHeader from './atoms/DetailHeader'
 import solas, { Badge, Badgelet, ProfileSimple } from '../../../service/solas'
@@ -11,7 +11,7 @@ import DetailArea from './atoms/DetailArea'
 import AppButton, { BTN_KIND } from '../../base/AppButton/AppButton'
 import BtnGroup from '../../base/BtnGroup/BtnGroup'
 import DetailReceivers from './atoms/DetailReceivers'
-import DetailScrollBox from './atoms/DetailScrollBox'
+import DetailScrollBox from './atoms/DetailScrollBox/DetailScrollBox'
 import DetailBadgelet from './DetailBadgelet'
 import { useNavigate } from 'react-router-dom'
 
@@ -89,7 +89,7 @@ function DetailBadge (props: DetailBadgeProps ) {
             className="mySwiper">
             <SwiperSlide style={ slideSize }>
                 <DetailWrapper>
-                    <DetailHeader onClose={ props.handleClose }/>
+                    <DetailHeader title={ lang['BadgeletDialog_title'] } onClose={ props.handleClose }/>
                     <DetailCover src={ props.badge.image_url }></DetailCover>
                     <DetailName> { props.badge.name } </DetailName>
 

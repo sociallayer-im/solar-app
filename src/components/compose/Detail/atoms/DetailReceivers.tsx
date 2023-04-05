@@ -15,21 +15,18 @@ const Title = styled('div', ()=> {
     return {
         fontSize: '14px',
         lineHeight: '22px',
-        color: '#7b7c7b',
-        marginBottom: '8px',
-        paddingLeft: '10px'
+        marginBottom: '6px',
+        color: '#272928',
+        fontWeight: '600'
     }
 })
 
 const List = styled('div', ()=> {
     return {
-        paddingLeft: '10px',
-        paddingRight: '10px',
         width: '100%',
         flexWrap: 'wrap',
         display: 'flex',
         flexDirection: 'row' as const,
-        marginBottom: '6px',
         alignItems: 'center',
         boxSizing: 'border-box'
     }

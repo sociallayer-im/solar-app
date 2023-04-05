@@ -57,6 +57,7 @@ const langCN: LangConfig = {
   BadgeDialog_Btn_Login: '登录以接收',
   BadgeDialog_Btn_Reject: '拒绝',
   BadgeDialog_Btn_Accept: '接收',
+  BadgeDialog_Btn_Face2face: '面对面二维码',
   BadgeDialog_Btn_Issue: '再次颁发',
   BadgeDialog_Btn_None_Left: '领取完毕',
 
@@ -68,6 +69,11 @@ const langCN: LangConfig = {
   BadgeDialog_Label_action_top: '设为置顶',
   BadgeDialog_Label_action_untop: '取消置顶',
   BadgeDialog_Label_hide_tip: '仅本人可见',
+  BadgeDialog_Label_Creat_Time: '创建时间',
+
+  BadgeletDialog_title: '徽章详情',
+  BadgeletDialog_presend_title: '预发送详情',
+  BadgeletDialog_Reason: '颁发理由',
 
   MintBadge_Title: '铸造徽章',
   MintBadge_Upload: '徽章图片',

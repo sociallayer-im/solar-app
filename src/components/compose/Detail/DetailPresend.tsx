@@ -3,12 +3,12 @@ import UserContext from '../../provider/UserProvider/UserContext'
 import DialogsContext from '../../provider/DialogProvider/DialogsContext'
 import { useContext, useEffect, useState } from 'react'
 import { Presend, ProfileSimple } from '../../../service/solas'
-import DetailWrapper from './atoms/DetailWrapper'
+import DetailWrapper from './atoms/DetailWrapper/DetailWrapper'
 import usePicture from '../../../hooks/pictrue'
 import DetailHeader from './atoms/DetailHeader'
 import DetailCover from './atoms/DetailCover'
 import DetailName from './atoms/DetailName'
-import DetailDes from './atoms/DetailDes'
+import DetailDes from './atoms/DetailDes/DetailDes'
 import DetailArea from './atoms/DetailArea'
 import AppButton, { BTN_KIND } from '../../base/AppButton/AppButton'
 import BtnGroup from '../../base/BtnGroup/BtnGroup'
@@ -16,9 +16,11 @@ import solas, { Profile } from '../../../service/solas'
 import useEvent, { EVENT } from '../../../hooks/globalEvent'
 import copy from '../../../utils/copy'
 import DetailReceivers from './atoms/DetailReceivers'
-import DetailScrollBox from './atoms/DetailScrollBox'
+import DetailScrollBox from './atoms/DetailScrollBox/DetailScrollBox'
 import ReasonText from '../../base/ReasonText/ReasonText'
-
+import DetailCreator from './atoms/DetailCreator/DetailCreator'
+import useTime from '../../../hooks/formatTime'
+import DetailFace2FaceQrcode from './DetailFace2FaceQrcode'
 
 export interface DetailPresendProps {
     presend: Presend,
@@ -29,12 +31,14 @@ export interface DetailPresendProps {
 function DetailPresend (props: DetailPresendProps ) {
     const { lang } = useContext(LangContext)
     const { user } = useContext(UserContext)
-    const { openConnectWalletDialog, showLoading, showToast } = useContext(DialogsContext)
+    const { openConnectWalletDialog, showLoading, showToast, openDialog } = useContext(DialogsContext)
     const { defaultAvatar } = usePicture()
     const [_, emitUpdate] = useEvent(EVENT.badgeletListUpdate)
     const [sender, setSender] = useState<Profile | null>(null)
     const [receivers, setReceivers] = useState<ProfileSimple[]>([])
     const [acceptableAmount, setAcceptableAmount] = useState<number>(0)
+    const [showQrcode, setShowQrcode] = useState(false)
+    const formatTime = useTime()
 
     useEffect(() => {
         async function getOwnerProfile () {
@@ -62,12 +66,6 @@ function DetailPresend (props: DetailPresendProps ) {
     const loginUserIsSender = user.id === sender?.id
     const canAccept = props.presend.counter > 0
 
-    const LoginBtn = <AppButton
-        onClick={ () => { openConnectWalletDialog() } }
-        kind={ BTN_KIND.primary }>
-        { lang['BadgeDialog_Btn_Login'] }
-    </AppButton>
-
     const handleCopy = () => {
         const link = `https://${window.location.host}/presend/${props.presend.id}_${props.code || ''}`
         copy(link)
@@ -93,49 +91,71 @@ function DetailPresend (props: DetailPresendProps ) {
         }
     }
 
+    const toggleQRcode = () => {
+        setShowQrcode(!showQrcode)
+    }
+
     const ActionBtns =  <>
         { loginUserIsSender && canAccept
-            && <AppButton onClick={ () => { handleCopy() } }>
-                { lang['IssueFinish_CopyLink'] }</AppButton>
+            && <AppButton special onClick={ () => { toggleQRcode() } }>
+                { lang['BadgeDialog_Btn_Face2face'] }</AppButton>
         }
+
         <AppButton
-            onClick={ () => { handleAccept() } }
-            kind={ BTN_KIND.primary }>
+            special
+            onClick={ () => { handleAccept() } }>
             { canAccept ? lang['BadgeDialog_Btn_Accept'] : lang['BadgeDialog_Btn_None_Left'] }
         </AppButton>
+
+        { loginUserIsSender &&
+            <AppButton onClick={ () => { handleCopy() } }>
+                { lang['IssueFinish_CopyLink'] }</AppButton>
+        }
     </>
 
+    const LoginBtn = <AppButton
+        onClick={ () => { openConnectWalletDialog() } }
+        kind={ BTN_KIND.primary }>
+        { lang['BadgeDialog_Btn_Login'] }
+    </AppButton>
+
     return (
-        <DetailWrapper>
-            <DetailHeader onClose={ props.handleClose }/>
+        <>
+            { showQrcode
+                    ? <DetailFace2FaceQrcode presendId={ props.presend.id } handleClose={ toggleQRcode }/>
+                    : <DetailWrapper>
+                        <DetailHeader title={ lang['BadgeletDialog_presend_title'] } onClose={ props.handleClose }/>
 
-            <DetailCover src={ props.presend.badge.image_url }></DetailCover>
-            <DetailName> { props.presend.badge.name } </DetailName>
-            <DetailDes> <ReasonText text={ props.presend.message } /> </DetailDes>
+                        <DetailCover src={ props.presend.badge.image_url }></DetailCover>
+                        <DetailName> { props.presend.badge.name } </DetailName>
+                        { sender &&
+                            <DetailCreator profile={ props.presend.badge.group || sender } />
+                        }
 
-            <DetailScrollBox>
-                { sender && <DetailArea
-                    onClose={ props.handleClose }
-                    title={ lang['BadgeDialog_Label_Creator'] }
-                    content={ props.presend.badge.group?.domain || sender.domain! }
-                    navigate={ `/profile/${sender.domain?.split('.')[0]}` }
-                    image={ sender.image_url || defaultAvatar(sender.id) } /> }
+                        <DetailScrollBox>
+                            <DetailDes> <ReasonText text={ props.presend.message } /> </DetailDes>
 
-                <DetailReceivers
-                    length={ acceptableAmount }
-                    placeholder={ true }
-                    receivers={ receivers }
-                    title={ lang['BadgeDialog_Label_Issuees']} />
+                            <DetailReceivers
+                                length={ acceptableAmount }
+                                placeholder={ true }
+                                receivers={ receivers }
+                                title={ lang['BadgeDialog_Label_Issuees']} />
 
-                <DetailArea
-                    title={ lang['BadgeDialog_Label_Token'] }
-                    content={ props.presend.badge.domain } />
-            </DetailScrollBox>
+                            <DetailArea
+                                title={ lang['BadgeDialog_Label_Token'] }
+                                content={ props.presend.badge.domain } />
 
-            <BtnGroup>
-                { user.id ? ActionBtns : LoginBtn }
-            </BtnGroup>
-        </DetailWrapper>
+                            <DetailArea
+                                title={ lang['BadgeDialog_Label_Creat_Time'] }
+                                content={ formatTime(props.presend.created_at ) } />
+                        </DetailScrollBox>
+
+                        <BtnGroup>
+                            { user.id ? ActionBtns : LoginBtn }
+                        </BtnGroup>
+                    </DetailWrapper>
+            }
+        </>
     )
 }
 

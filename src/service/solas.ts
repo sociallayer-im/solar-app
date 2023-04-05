@@ -185,6 +185,7 @@ export interface Presend {
     counter: number
     badge_id: number
     expires_at: string
+    created_at: string
 
 }
 
@@ -245,6 +246,7 @@ export interface Badgelet {
     badge: Badge,
     chain_data: string | null
     group: Group | null
+    created_at: string
 }
 
 export async function queryBadgelet (props: QueryBadgeletProps): Promise<Badgelet[]> {

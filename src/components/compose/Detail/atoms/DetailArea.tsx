@@ -1,7 +1,5 @@
 import { useNavigate } from 'react-router-dom'
 import { useStyletron } from 'baseui'
-import { useState, useContext, useEffect } from 'react'
-
 
 export interface DetailAreaProps {
     title: string,
@@ -15,27 +13,22 @@ export interface DetailAreaProps {
 const style = {
     wrapper: {
         width: '100%',
-        marginBottom: '18px'
+        marginBottom: '14px'
     },
     title: {
         fontSize: '14px',
         lineHeight: '22px',
-        color: '#7b7c7b',
-        marginBottom: '8px',
-        paddingLeft: '10px'
+        color: '#272928',
+        fontWeight:'600',
     },
     content: {
         display: 'flex',
         flexDirection: 'row' as const,
         alignItems: 'center',
-        paddingTop: '8px',
-        paddingBottom: '8px',
-        paddingLeft: '10px',
-        paddingRight: '10px',
-        background: '#f8f9f8',
         borderRadius: '50px',
-        color: '#3c3e3d',
-        fontSize: '14px'
+        color: '#272928',
+        fontSize: '14px',
+        paddingTop: '0'
     },
     textLink: {
         cursor: 'pointer',
@@ -52,10 +45,8 @@ const style = {
         width:'24px',
         height: '24px',
         borderRadius: '50%',
-        marginRight: '8px'
     },
     link: {
-        marginLeft: '8px',
         color: '#3c3e3d',
         textDecoration: 'none'
     }
