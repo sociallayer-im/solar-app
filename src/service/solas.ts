@@ -108,6 +108,7 @@ export async function regist (props: SolasRegistProps ): Promise<Profile> {
 
 interface QueryBadgeProps {
     sender_id?: number,
+    group_id?:number,
     page: number
 }
 
@@ -120,6 +121,7 @@ export interface Badge {
     token_id: string,
     image_url: string,
     sender: Profile,
+    group?: Group,
     content: string
 }
 

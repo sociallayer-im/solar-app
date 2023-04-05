@@ -63,6 +63,12 @@ function CreateBadgeNonPrefill() {
 
         const unload = showLoading()
         try {
+            let groupId = 0
+            if (searchParams.get('group')) {
+                const group = await solas.getProfile({ domain: searchParams.get('group')! })
+                groupId = group!.id
+            }
+
             const newBadge = await solas.createBadge({
                 name: badgeName,
                 title: badgeName,
@@ -70,7 +76,7 @@ function CreateBadgeNonPrefill() {
                 image_url: cover,
                 auth_token: user.authToken || '',
                 content: reason || '',
-                group_id: searchParams.get('group') ? Number(searchParams.get('group') ) : undefined
+                group_id:  groupId || undefined
             })
 
             if (presetAcceptor) {

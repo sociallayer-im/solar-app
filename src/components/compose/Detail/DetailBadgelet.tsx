@@ -119,7 +119,7 @@ function DetailBadgelet(props: DetailBadgeletProps ) {
                 <DetailArea
                     onClose={ props.handleClose }
                     title={ lang['BadgeDialog_Label_Creator'] }
-                    content={ badgelet.sender.domain! }
+                    content={ badgelet.badge.group?.domain || badgelet.sender.domain! }
                     navigate={ `/profile/${badgelet.sender.domain?.split('.')[0]}` }
                     image={ props.badgelet.sender.image_url || defaultAvatar(props.badgelet.sender.id) } />
 

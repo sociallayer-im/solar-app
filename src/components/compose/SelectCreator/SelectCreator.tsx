@@ -98,10 +98,10 @@ function SelectCreator(props: SelectCreatorProp) {
             const groups = await solas.queryUserGroup({ profile_id: user.id!})
             setList([profile!, ...groups])
 
-            const groupSenderId = searchParams.get('group')
-            if (groupSenderId) {
+            const groupSenderDomain = searchParams.get('group')
+            if (groupSenderDomain) {
                 const selectedGroup = groups.find(item => {
-                    return item.id === Number(groupSenderId)
+                    return item.domain === groupSenderDomain
                 })
                 if (selectedGroup) {
                     props.onChange(selectedGroup)

@@ -117,7 +117,7 @@ function DetailPresend (props: DetailPresendProps ) {
                 { sender && <DetailArea
                     onClose={ props.handleClose }
                     title={ lang['BadgeDialog_Label_Creator'] }
-                    content={ sender.domain! }
+                    content={ props.presend.badge.group?.domain || sender.domain! }
                     navigate={ `/profile/${sender.domain?.split('.')[0]}` }
                     image={ sender.image_url || defaultAvatar(sender.id) } /> }
 

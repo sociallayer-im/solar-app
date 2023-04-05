@@ -61,7 +61,7 @@ function DetailBadge (props: DetailBadgeProps ) {
     }, [])
 
     const handleIssue= async () => {
-        navigate(`/issue/${props.badge.id}`)
+        navigate(`/create-badge?badge=${props.badge.id}`)
         props.handleClose()
     }
 
@@ -97,7 +97,7 @@ function DetailBadge (props: DetailBadgeProps ) {
                         <DetailArea
                             onClose={ props.handleClose }
                             title={ lang['BadgeDialog_Label_Creator'] }
-                            content={ props.badge.sender.domain! }
+                            content={ props.badge.group?.domain || props.badge.sender.domain! }
                             navigate={ `/profile/${props.badge.sender?.domain?.split('.')[0]}` }
                             image={ props.badge.sender.image_url || defaultAvatar(props.badge.sender.id) } />
 

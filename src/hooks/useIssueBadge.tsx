@@ -12,7 +12,7 @@ export interface StartIssueBadgeProps {
 }
 
 interface UseIssueBadgeProp {
-    senderGroup?: number
+    groupName?: string
 }
 
 function useIssueBadge (useIssueBadgeProps?: UseIssueBadgeProp) {
@@ -23,8 +23,9 @@ function useIssueBadge (useIssueBadgeProps?: UseIssueBadgeProp) {
     function toIssuePage (props: BadgeBookDialogRes, to?: string) {
         let path = '/create-badge'
 
-        if (useIssueBadgeProps && useIssueBadgeProps.senderGroup) {
-            path = `/create-badge?group=${useIssueBadgeProps.senderGroup}`
+        if (useIssueBadgeProps && useIssueBadgeProps.groupName) {
+            const groupDomain = useIssueBadgeProps.groupName + import.meta.env.VITE_SOLAS_DOMAIN
+            path = `/create-badge?group=${groupDomain}`
         }
 
         const split = (path: string) => path.includes('?') ? '&' : '?'
