@@ -45,8 +45,8 @@ function useIssueBadge (useIssueBadgeProps?: UseIssueBadgeProp) {
     }
 
     return (props: StartIssueBadgeProps) => {
-        if (!user.id) return () => { toIssuePage({}, props.to) }
-        if (!props.badges.length) return () => { toIssuePage({}, props.to) }
+        if (!user.id) { toIssuePage({}, props.to); return }
+        if (!props.badges.length) {toIssuePage({}, props.to); return;}
 
         openDialog({
             content: (close: any) => <DialogIssuePrefill

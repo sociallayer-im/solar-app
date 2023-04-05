@@ -128,6 +128,10 @@ function IssueSuccessPage () {
         copy(link)
     }
 
+    const themes = [
+        '/images/share_card/share_bg_1.png'
+    ]
+
     return (
         <Layout>
             <div className='send-success'>
@@ -149,13 +153,16 @@ function IssueSuccessPage () {
                             freeMode
                             centeredSlides
                             slidesPerView={'auto'} >
-                            <SwiperSlide style={{width: '335px', height: '456px'}}>
-                                <SendSuccessCard
-                                    shareLink={ genShareLink() }
-                                    type={ issueType }
-                                    info={ info }
-                                    sender={sender} />
-                            </SwiperSlide>
+                            {
+                                themes.map(item =>  <SwiperSlide key={item} style={{width: '335px', height: '456px'}}>
+                                    <SendSuccessCard
+                                        bg={ item }
+                                        shareLink={ genShareLink() }
+                                        type={ issueType }
+                                        info={ info }
+                                        sender={sender} />
+                                </SwiperSlide>)
+                            }
                         </Swiper>
                     }
                 </div>

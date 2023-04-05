@@ -17,6 +17,7 @@ export interface SendSuccessCardProps {
     sender: Profile | ProfileSimple | Group
     type: 'invite' | 'presend' | 'badgelet'
     shareLink?: string
+    bg: string
 }
 
 function SendSuccessCard(props: SendSuccessCardProps) {
@@ -24,6 +25,7 @@ function SendSuccessCard(props: SendSuccessCardProps) {
     const { lang } = useContext(LangContext)
 
     return (<div className='send-success-card'>
+        <img className='card-bg' src={ props.bg } alt=""/>
         <img className='cover' src={props.info.cover!} alt=""/>
         <div className='name'>{ props.info.name }</div>
         <div className='reason'>

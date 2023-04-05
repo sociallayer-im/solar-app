@@ -152,7 +152,6 @@ function CreateBadgeNonPrefill() {
                                 : lang['MintBadge_Submit']
                             }
                         </AppButton>
-                        // todo: 测试客态主态发送
                     </div>
                 </div>
             </div>
