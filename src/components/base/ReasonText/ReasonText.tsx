@@ -29,7 +29,7 @@ function ReasonText(props: ReasonTextProps) {
         }
     }
 
-    return (<div className={props.className + ' showText'} dangerouslySetInnerHTML={{__html: newShowText }} />)
+    return (<div className={(props.className || '') + ' showText'} dangerouslySetInnerHTML={{__html: newShowText }} />)
 }
 
 export default ReasonText

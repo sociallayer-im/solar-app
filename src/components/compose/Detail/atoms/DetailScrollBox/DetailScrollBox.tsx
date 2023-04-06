@@ -1,38 +1,41 @@
-import { styled } from 'baseui'
 import './DetailScrollBox.less'
-import {createRef, ReactNode, useEffect, useState} from "react";
+import { createRef, ReactNode } from "react";
 
 interface DetailScrollBoxProp {
     children: ReactNode
 }
 
 function DetailScrollBox (props: DetailScrollBoxProp) {
-    const [className, setClassName] = useState('detail-scroll-box')
     const div = createRef<any>()
 
-    useEffect(() => {
-        const stopScroll = () => {
-            window.document.querySelectorAll('.detail-scroll-box').forEach((item: any) => {
-                item.style.overflow = 'hidden'
-            })
+    let startScroll:number, touchStart:number, touchCurrent:number
+
+    const touchStartCb = (e: any) => {
+        startScroll = e.target.scrollTop;
+        touchStart = e.targetTouches[0].pageY;
+    }
+
+    const touchMoveCb = (e: any) => {
+        touchCurrent = e.targetTouches[0].pageY;
+        const touchesDiff = touchCurrent - touchStart;
+        // @ts-ignore
+        const slide: any = e.currentTarget
+        const onlyScrolling =
+            (slide.scrollHeight > slide.offsetHeight) &&
+            (
+                (touchesDiff < 0 && startScroll === 0) ||
+                (touchesDiff > 0 && startScroll === (slide.scrollHeight - slide.offsetHeight)) ||
+                (startScroll > 0 && startScroll < (slide.scrollHeight - slide.offsetHeight))
+            );
+        if (onlyScrolling) {
+            e.stopPropagation();
         }
-        const reScroll = () => {
-            window.document.querySelectorAll('.detail-scroll-box').forEach((item: any) => {
-                item.style.overflow = 'auto'
-            })
-        }
+    }
 
-        window.document.addEventListener('touchstart', stopScroll)
-        window.document.addEventListener('touchend', reScroll)
-
-        return () => {
-            window.document.removeEventListener('touchstart', stopScroll)
-            window.document.removeEventListener('touchend', reScroll)
-        }
-
-    }, [])
-
-    return <div ref={ div } className='detail-scroll-box'>
+    return <div
+        onTouchStart={ touchStartCb }
+        onTouchMove={ touchMoveCb }
+        ref={ div } className='detail-scroll-box'>
         { props.children }
     </div>
 }
