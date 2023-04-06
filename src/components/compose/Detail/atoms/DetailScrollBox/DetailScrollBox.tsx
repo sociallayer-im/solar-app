@@ -11,25 +11,28 @@ function DetailScrollBox (props: DetailScrollBoxProp) {
     let startScroll:number, touchStart:number, touchCurrent:number
 
     const touchStartCb = (e: any) => {
-        startScroll = e.target.scrollTop;
-        touchStart = e.targetTouches[0].pageY;
+        e.stopPropagation();
+        // startScroll = e.target.scrollTop;
+        // touchStart = e.targetTouches[0].pageY;
     }
 
     const touchMoveCb = (e: any) => {
-        touchCurrent = e.targetTouches[0].pageY;
-        const touchesDiff = touchCurrent - touchStart;
-        // @ts-ignore
-        const slide: any = e.currentTarget
-        const onlyScrolling =
-            (slide.scrollHeight > slide.offsetHeight) &&
-            (
-                (touchesDiff < 0 && startScroll === 0) ||
-                (touchesDiff > 0 && startScroll === (slide.scrollHeight - slide.offsetHeight)) ||
-                (startScroll > 0 && startScroll < (slide.scrollHeight - slide.offsetHeight))
-            );
-        if (onlyScrolling) {
-            e.stopPropagation();
-        }
+        // touchCurrent = e.targetTouches[0].pageY;
+        // const touchesDiff = touchCurrent - touchStart;
+        // // @ts-ignore
+        // const slide: any = e.currentTarget
+        // const onlyScrolling =
+        //     (slide.scrollHeight > slide.offsetHeight) &&
+        //     (
+        //         (touchesDiff < 0 && startScroll === 0) ||
+        //         (touchesDiff > 0 && startScroll === (slide.scrollHeight - slide.offsetHeight)) ||
+        //         (startScroll > 0 && startScroll < (slide.scrollHeight - slide.offsetHeight))
+        //     );
+        // if (onlyScrolling) {
+        //     e.stopPropagation();
+        // }
+
+        e.stopPropagation();
     }
 
     return <div
