@@ -287,7 +287,9 @@ const langCN: LangConfig = {
   Presend_Qrcode_Des: slotLang('{1} 给你发送徽章。\n 扫描二维码获取。'),
   Presend_Qrcode_Scan: '扫描二维码',
   Presend_Qrcode_Limit: slotLang('限制 {1} 人'),
-  Presend_Qrcode_Time: slotLang('有效期至: {1}')
+  Presend_Qrcode_Time: slotLang('有效期至: {1}'),
+  Presend_Qrcode_Expired: '这个徽章已经过期了',
+  Presend_Qrcode_Regen: '你可以重新生成二维码',
 
 }
 
