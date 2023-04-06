@@ -75,6 +75,7 @@ function DetailBadge (props: DetailBadgeProps ) {
             <DetailCreator profile={ props.badge.sender }></DetailCreator>
 
             { badgelets.length > 0 ?
+                
                 <div style={{ width:'100%'}}>
                     <Swiper
                         ref={ swiper }
