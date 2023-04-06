@@ -10,22 +10,29 @@ function DetailScrollBox (props: DetailScrollBoxProp) {
     const [className, setClassName] = useState('detail-scroll-box')
     const div = createRef<any>()
 
-    // useEffect(() => {
-    //     const stopScroll = () => {
-    //         setClassName('detail-scroll-box stop-scroll')
-    //     }
-    //     const reScroll = () => {
-    //         setClassName('detail-scroll-box')
-    //     }
-    //
-    //     setTimeout(() => {
-    //         div.current.addEventListener('touchstart', stopScroll)
-    //         div.current.addEventListener('touchend', reScroll)
-    //     }, 100)
-    //
-    // }, [])
+    useEffect(() => {
+        const stopScroll = () => {
+            window.document.querySelectorAll('.detail-scroll-box').forEach((item: any) => {
+                item.style.overflow = 'hidden'
+            })
+        }
+        const reScroll = () => {
+            window.document.querySelectorAll('.detail-scroll-box').forEach((item: any) => {
+                item.style.overflow = 'auto'
+            })
+        }
 
-    return <div ref={ div } className={ className }>
+        window.document.addEventListener('touchstart', stopScroll)
+        window.document.addEventListener('touchend', reScroll)
+
+        return () => {
+            window.document.removeEventListener('touchstart', stopScroll)
+            window.document.removeEventListener('touchend', reScroll)
+        }
+
+    }, [])
+
+    return <div ref={ div } className='detail-scroll-box'>
         { props.children }
     </div>
 }
