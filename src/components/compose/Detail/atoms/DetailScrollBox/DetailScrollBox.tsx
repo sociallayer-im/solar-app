@@ -1,5 +1,6 @@
 import './DetailScrollBox.less'
 import { createRef, ReactNode } from "react";
+import { Scrollbars } from 'react-custom-scrollbars'
 
 interface DetailScrollBoxProp {
     children: ReactNode
@@ -39,8 +40,7 @@ function DetailScrollBox (props: DetailScrollBoxProp) {
     //     e.stopPropagation();
     // }
 
-    return <div
-        ref={ div } className='detail-scroll-box'>
+    return <div ref={ div } className='detail-scroll-box'>
         { props.children }
     </div>
 }
