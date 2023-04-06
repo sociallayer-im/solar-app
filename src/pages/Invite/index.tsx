@@ -33,7 +33,6 @@ function Invite() {
         async function getGroupDetail () {
             const group = await solas.queryGroupDetail(Number(params.groupId))
             const prefill = lang['Group_invite_default_reason']([group.username])
-            alert(prefill)
             setReason(prefill)
             setGroup(group)
         }

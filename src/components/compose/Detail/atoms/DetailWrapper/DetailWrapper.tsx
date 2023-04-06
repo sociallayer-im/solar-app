@@ -6,8 +6,6 @@ interface DetailWrapperProp {
     children?: ReactNode
 }
 
-// todo: invite 样式， badge 样式
-
 function DetailWrapper (props: DetailWrapperProp) {
     const DetailWrapper = styled('div', () => {
         return {

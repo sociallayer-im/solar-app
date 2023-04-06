@@ -73,6 +73,7 @@ const langCN: LangConfig = {
 
   BadgeletDialog_title: '徽章详情',
   BadgeletDialog_presend_title: '预发送详情',
+  BadgeletDialog_invite_title: '邀请详情',
   BadgeletDialog_Reason: '颁发理由',
 
   MintBadge_Title: '铸造徽章',

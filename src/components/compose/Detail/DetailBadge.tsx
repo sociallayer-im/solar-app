@@ -14,6 +14,7 @@ import DetailReceivers from './atoms/DetailReceivers'
 import DetailScrollBox from './atoms/DetailScrollBox/DetailScrollBox'
 import DetailBadgelet from './DetailBadgelet'
 import { useNavigate } from 'react-router-dom'
+import useTime from '../../../hooks/formatTime'
 
 //AppSwiper deps
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -34,6 +35,7 @@ function DetailBadge (props: DetailBadgeProps ) {
     const [receivers, setReceivers] = useState<ProfileSimple[]>([])
     const [badgelets, setBadgelets] = useState<Badgelet[]>([])
     const swiper = useRef<any>(null)
+    const formatTime = useTime()
 
     useEffect(() => {
         async function getBadgelet () {
@@ -109,6 +111,10 @@ function DetailBadge (props: DetailBadgeProps ) {
                         <DetailArea
                             title={ lang['BadgeDialog_Label_Token'] }
                             content={ props.badge.domain } />
+
+                        <DetailArea
+                            title={ lang['BadgeDialog_Label_Creat_Time'] }
+                            content={ formatTime(props.badge.created_at ) } />
                     </DetailScrollBox>
 
                     <BtnGroup>

@@ -73,6 +73,7 @@ const langEN = {
 
   BadgeletDialog_title: 'Badge Details',
   BadgeletDialog_presend_title: 'Presend Details',
+  BadgeletDialog_invite_title: 'Invite Details',
   BadgeletDialog_Reason: 'Reason',
 
   MintBadge_Title: 'Send a badge',

@@ -45,6 +45,7 @@ const style = {
         width:'24px',
         height: '24px',
         borderRadius: '50%',
+        marginRight: '8px'
     },
     link: {
         color: '#3c3e3d',

@@ -704,6 +704,7 @@ export interface Invite {
     status: 'accepted' | 'cancelled' | 'new'
     expires_at: string
     group_id: number
+    created_at: string
 }
 
 export interface QueryGroupInvitesProps {
