@@ -40,8 +40,6 @@ function DetailScrollBox (props: DetailScrollBoxProp) {
     // }
 
     return <div
-        onTouchStart={ touchStartCb }
-        onTouchEnd={ touchEnd }
         ref={ div } className='detail-scroll-box'>
         { props.children }
     </div>
