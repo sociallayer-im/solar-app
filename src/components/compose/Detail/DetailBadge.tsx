@@ -86,7 +86,8 @@ function DetailBadge (props: DetailBadgeProps ) {
                         className="mySwiper">
                         {
                             badgelets.map((badgelet, index) =>
-                                <SwiperSlide style={{width: '90%', height: '304px'}} key={ badgelet.id }>
+                                <SwiperSlide
+                                    style={{width: '90%', height: '304px', overflow: "hidden"}} key={ badgelet.id }>
                                     <DetailScrollBox>
                                         <DetailDes>
                                             <ReasonText text={badgelet.content} />
