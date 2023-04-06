@@ -4,10 +4,11 @@ import {ReactNode} from "react";
 
 interface DetailScrollBoxProp {
     children: ReactNode
+    className?: string
 }
 
 function DetailScrollBox (props: DetailScrollBoxProp) {
-    return <div className='detail-scroll-box'>
+    return <div className={'detail-scroll-box ' + props.className || ''}>
         { props.children }
     </div>
 }

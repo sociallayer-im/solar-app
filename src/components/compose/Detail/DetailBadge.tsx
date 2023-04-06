@@ -19,7 +19,7 @@ import DetailDes from "./atoms/DetailDes/DetailDes";
 
 //AppSwiper deps
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Pagination } from 'swiper'
+import { Pagination, Virtual } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/pagination'
 
@@ -75,7 +75,7 @@ function DetailBadge (props: DetailBadgeProps ) {
             <DetailCreator profile={ props.badge.sender }></DetailCreator>
 
             { badgelets.length > 0 ?
-                
+
                 <div style={{ width:'100%'}}>
                     <Swiper
                         ref={ swiper }
@@ -86,21 +86,20 @@ function DetailBadge (props: DetailBadgeProps ) {
                         className="mySwiper">
                         {
                             badgelets.map((badgelet, index) =>
-                                <SwiperSlide style={{width: '90%', height: '304px'}} key={ index.toString() }>
+                                <SwiperSlide style={{width: '90%', height: '304px'}} key={ badgelet.id }>
                                     <DetailScrollBox>
-                                        <DetailDes> <ReasonText text={badgelet.content}></ReasonText> </DetailDes>
-
+                                        <DetailDes>
+                                            <ReasonText text={badgelet.content} />
+                                        </DetailDes>
                                         <DetailArea
                                             onClose={ props.handleClose }
                                             title={ lang['BadgeDialog_Label_Issuees'] }
                                             content={ badgelet.receiver.domain! }
                                             navigate={ `/profile/${badgelet.receiver.domain?.split('.')[0]}` }
                                             image={ badgelet.receiver.image_url || defaultAvatar(badgelet.receiver.id) } />
-
                                         <DetailArea
                                             title={ lang['BadgeDialog_Label_Token'] }
                                             content={ props.badge.domain } />
-
                                         <DetailArea
                                             title={ lang['BadgeDialog_Label_Creat_Time'] }
                                             content={ formatTime(props.badge.created_at ) } />

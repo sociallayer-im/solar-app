@@ -12,7 +12,6 @@ function DetailWrapper (props: DetailWrapperProp) {
             width: '100%',
             height: '660px',
             boxShadow: '0px 2px 18px rgba(0, 0, 0, 0.2)',
-            overflow: 'hidden',
             borderRadius: '12px'
         }
     })
