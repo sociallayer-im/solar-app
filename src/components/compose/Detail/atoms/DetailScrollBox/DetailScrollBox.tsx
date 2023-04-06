@@ -18,13 +18,11 @@ function DetailScrollBox (props: DetailScrollBoxProp) {
             setClassName('detail-scroll-box')
         }
 
-        div.current.addEventListener('touchstart', stopScroll, false)
-        div.current.addEventListener('touchend', reScroll, false)
+        setTimeout(() => {
+            div.current.addEventListener('touchstart', stopScroll)
+            div.current.addEventListener('touchend', reScroll)
+        }, 100)
 
-        return () => {
-            div.current.removeEventListener('touchstart', stopScroll)
-            div.current.removeEventListener('touchend', reScroll)
-        }
     }, [])
 
     return <div ref={ div } className={ className }>
