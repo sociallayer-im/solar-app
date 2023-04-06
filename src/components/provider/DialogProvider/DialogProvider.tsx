@@ -8,7 +8,7 @@ import DialogConnectWallet from '../../base/Dialog/DialogConnectWallet/DialogCon
 import ToastLoading from '../../base/ToastLoading'
 import DetailBadgelet from '../../compose/Detail/DetailBadgelet'
 import DetailPresend from '../../compose/Detail/DetailPresend'
-import DetailBadge from '../../compose/Detail/DetailBadge'
+import DetailBadge from '../../compose/Detail/DetailBadge/DetailBadge'
 import DialogAvatar from '../../base/Dialog/DialogAvatar'
 import DialogCropper from '../../base/Dialog/DialogCropper/DialogCropper'
 import DetailInvite from '../../compose/Detail/DetailInvite'

@@ -2,7 +2,7 @@ import './DetailScrollBox.less'
 import { createRef, ReactNode } from "react";
 
 interface DetailScrollBoxProp {
-    children: ReactNode
+    children?: ReactNode
 }
 
 function DetailScrollBox (props: DetailScrollBoxProp) {
