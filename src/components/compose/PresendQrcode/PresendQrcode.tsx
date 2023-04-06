@@ -17,7 +17,7 @@ function PresendQrcode(props: PresendQrcodeProp) {
     const [badge, setBadge] = useState<Badge | null>(null)
     const [presend, setPresend] = useState<PresendWithBadgelets | null>(null)
     const [link, setLink] = useState('')
-    const [expired, setExpired] = useState(true)
+    const [expired, setExpired] = useState(false)
 
     const formatTime = (dateString: string) => {
         const dateObject = new Date(dateString)
@@ -40,7 +40,7 @@ function PresendQrcode(props: PresendQrcodeProp) {
 
             const now = Date.parse(new Date().toString())
             const expirationDate = Date.parse(new Date(presend.expires_at).toString())
-            // setExpired(now > expirationDate)
+            setExpired(now > expirationDate)
 
             const profile = await solas.getProfile({ id: presend.sender_id })
             setSender(profile)
