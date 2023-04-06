@@ -10,17 +10,19 @@ import DetailName from './atoms/DetailName'
 import DetailArea from './atoms/DetailArea'
 import AppButton, { BTN_KIND } from '../../base/AppButton/AppButton'
 import BtnGroup from '../../base/BtnGroup/BtnGroup'
-import DetailReceivers from './atoms/DetailReceivers'
 import DetailScrollBox from './atoms/DetailScrollBox/DetailScrollBox'
-import DetailBadgelet from './DetailBadgelet'
 import { useNavigate } from 'react-router-dom'
 import useTime from '../../../hooks/formatTime'
+import DetailCreator from './atoms/DetailCreator/DetailCreator'
+import ReasonText from "../../base/ReasonText/ReasonText";
+import DetailDes from "./atoms/DetailDes/DetailDes";
 
 //AppSwiper deps
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/pagination'
+
 
 export interface DetailBadgeProps {
     badge: Badge,
@@ -55,10 +57,6 @@ function DetailBadge (props: DetailBadgeProps ) {
             setReceivers(receivers)
         }
 
-        if (swiper) {
-            swiper && swiper.current && swiper.current.click()
-        }
-
         getBadgelet()
     }, [])
 
@@ -69,73 +67,60 @@ function DetailBadge (props: DetailBadgeProps ) {
 
     const loginUserIsSender = user.id === props.badge.sender.id
 
-    const slideSize = {
-        width: '340px',
-        height: badgelets.length ? '520px': 'auto'
-    }
-
-    const swiperSize = {
-        height: badgelets.length ? '550px': 'auto'
-    }
-
     return (
-        <Swiper
-            ref={ swiper }
-            pagination={ {dynamicBullets: true } }
-            modules={ [Pagination] }
-            spaceBetween={ 12 }
-            freeMode={ true }
-            slidesPerView={'auto'}
-            centeredSlides={ true }
-            style={ swiperSize }
-            className="mySwiper">
-            <SwiperSlide style={ slideSize }>
-                <DetailWrapper>
-                    <DetailHeader title={ lang['BadgeletDialog_title'] } onClose={ props.handleClose }/>
-                    <DetailCover src={ props.badge.image_url }></DetailCover>
-                    <DetailName> { props.badge.name } </DetailName>
+        <DetailWrapper>
+            <DetailHeader title={ lang['BadgeletDialog_title'] } onClose={ props.handleClose }/>
+            <DetailCover src={ props.badge.image_url }></DetailCover>
+            <DetailName> { props.badge.name } </DetailName>
+            <DetailCreator profile={ props.badge.sender }></DetailCreator>
 
-                    <DetailScrollBox>
-                        <DetailArea
-                            onClose={ props.handleClose }
-                            title={ lang['BadgeDialog_Label_Creator'] }
-                            content={ props.badge.group?.domain || props.badge.sender.domain! }
-                            navigate={ `/profile/${props.badge.sender?.domain?.split('.')[0]}` }
-                            image={ props.badge.sender.image_url || defaultAvatar(props.badge.sender.id) } />
+            { badgelets.length > 0 ?
+                <div style={{ width:'100%'}}>
+                    <Swiper
+                        ref={ swiper }
+                        modules={ [Pagination] }
+                        navigation
+                        spaceBetween={ 12 }
+                        slidesPerView={'auto'}
+                        className="mySwiper">
+                        {
+                            badgelets.map((badgelet, index) =>
+                                <SwiperSlide style={{width: '90%', height: '304px'}} key={ index.toString() }>
+                                    <DetailScrollBox>
+                                        <DetailDes> <ReasonText text={badgelet.content}></ReasonText> </DetailDes>
 
-                        <DetailReceivers
-                            length={20}
-                            receivers={ receivers }
-                            title={ lang['BadgeDialog_Label_Issuees']} />
+                                        <DetailArea
+                                            onClose={ props.handleClose }
+                                            title={ lang['BadgeDialog_Label_Issuees'] }
+                                            content={ badgelet.receiver.domain! }
+                                            navigate={ `/profile/${badgelet.receiver.domain?.split('.')[0]}` }
+                                            image={ badgelet.receiver.image_url || defaultAvatar(badgelet.receiver.id) } />
 
-                        <DetailArea
-                            title={ lang['BadgeDialog_Label_Token'] }
-                            content={ props.badge.domain } />
+                                        <DetailArea
+                                            title={ lang['BadgeDialog_Label_Token'] }
+                                            content={ props.badge.domain } />
 
-                        <DetailArea
-                            title={ lang['BadgeDialog_Label_Creat_Time'] }
-                            content={ formatTime(props.badge.created_at ) } />
-                    </DetailScrollBox>
-
-                    <BtnGroup>
-                        { loginUserIsSender &&
-                            <AppButton onClick={ () => { handleIssue() } } kind={ BTN_KIND.primary }>
-                                { lang['BadgeDialog_Btn_Issue'] }
-                            </AppButton>
+                                        <DetailArea
+                                            title={ lang['BadgeDialog_Label_Creat_Time'] }
+                                            content={ formatTime(props.badge.created_at ) } />
+                                    </DetailScrollBox>
+                                </SwiperSlide>
+                            )
                         }
-                    </BtnGroup>
-                </DetailWrapper>
-            </SwiperSlide>
-            {
-                badgelets.map((item, index) => {
-                    return (
-                        <SwiperSlide style={ slideSize } key={ index.toString() }>
-                            <DetailBadgelet badgelet={item} handleClose={props.handleClose} />
-                        </SwiperSlide>
-                    )
-                })
+                    </Swiper>
+                </div>
+
+                : <div>oookkkk</div>
             }
-        </Swiper>
+
+            <BtnGroup>
+                { loginUserIsSender &&
+                    <AppButton onClick={ () => { handleIssue() } } kind={ BTN_KIND.primary }>
+                        { lang['BadgeDialog_Btn_Issue'] }
+                    </AppButton>
+                }
+            </BtnGroup>
+        </DetailWrapper>
     )
 }
 
