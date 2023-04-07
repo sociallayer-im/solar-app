@@ -13,18 +13,43 @@ function SwiperPagination({ index, total, showNumber = 3 }: SwiperPaginationProp
     const [css] = useStyletron()
     const navigate = useNavigate()
     const [amount, setamount] = useState(0)
+    const [mainIndex, setMainIndex] = useState(0)
 
     useEffect(() => {
+        if (total === 1) {
+            setamount(0)
+            return
+        }
 
-    }, [amount])
+        if (total < showNumber) {
+            setamount(total)
+            return
+        }
 
-    return (<div className='swiper-pagination' style={{width: (showNumber * 20 + (showNumber - 1) * 8) + 'px'}}>
+        setamount(showNumber)
+    }, [total])
+
+    useEffect(() => {
+        if (index < showNumber - 1) {
+            setMainIndex(index)
+            return
+        }
+
+        if (index > total - showNumber) {
+            setMainIndex(total % index)
+            return
+        }
+    }, [index])
+
+    return (
+        <div className='swiper-pagination-custom' style={{width: (showNumber * 20 + (showNumber - 1) * 8) + 'px'}}>
         {
-            Array.from({ length: amount }).map((item, i) => {
-                return <div className='swiper-pagination-dot'></div>
+            new Array(amount).fill('1').map((item, i) => {
+                return <div key={ i } className={ mainIndex === i ? 'swiper-pagination-dot active' : 'swiper-pagination-dot'}></div>
             })
         }
-    </div>)
+    </div>
+    )
 }
 
 export default SwiperPagination

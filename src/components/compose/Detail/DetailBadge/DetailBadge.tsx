@@ -82,7 +82,6 @@ function DetailBadge (props: DetailBadgeProps ) {
                         modules={ [Pagination] }
                         pagination
                         spaceBetween={ 12 }
-                        onSlideChange={(swiper) => { setSwiperIndex(swiper.activeIndex)} }
                         className='badge-detail-swiper'
                         slidesPerView={'auto'}>
                         {
