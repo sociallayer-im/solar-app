@@ -1,54 +1,138 @@
-import {useNavigate} from 'react-router-dom'
-import {useStyletron} from 'baseui'
-import {useState, useContext, useEffect} from 'react'
+import {useState, useEffect, useRef} from 'react'
 import './SwiperPagination.less'
+import { useSwiper } from 'swiper/react'
 
 interface SwiperPaginationProps {
-    index: number,
     total: number,
     showNumber?: number
 }
 
-function SwiperPagination({ index, total, showNumber = 3 }: SwiperPaginationProps) {
-    const [css] = useStyletron()
-    const navigate = useNavigate()
-    const [amount, setamount] = useState(0)
-    const [mainIndex, setMainIndex] = useState(0)
+function SwiperPagination({ total, showNumber = 3 }: SwiperPaginationProps) {
+    const swiper = useSwiper()
+    const [currIndex, setCurrIndex] = useState(0)
+    const [leftAmount, setLeftAmount] = useState(0)
+    const [rightAmount, setRightAmount] = useState(showNumber - 1)
+    const [firstClose, setFirstClose] = useState(false)
+    const [animate, setAnimate] = useState(true)
+    const history = useRef(currIndex)
+
 
     useEffect(() => {
-        if (total === 1) {
-            setamount(0)
-            return
-        }
-
-        if (total < showNumber) {
-            setamount(total)
-            return
-        }
-
-        setamount(showNumber)
-    }, [total])
+        swiper.on('slideChange', (swiper) => {
+            setCurrIndex(swiper.realIndex)
+        })
+    }, [swiper])
 
     useEffect(() => {
-        if (index < showNumber - 1) {
-            setMainIndex(index)
-            return
+        async function slide () {
+            const isFirstPage = currIndex < showNumber
+            const isLastPage = currIndex > total - showNumber
+            const isForward = currIndex > history.current
+            const isBackward = currIndex < history.current
+
+
+            if (isForward) {
+                // 下一页
+                const animate = (newLeftAmount: number) => {
+                    setTimeout(() => {
+                        setAnimate(true)
+                        setFirstClose(true)
+                        setRightAmount(1)
+
+                        setTimeout(() => {
+                            setAnimate(false)
+                            setFirstClose(false)
+                            setLeftAmount(newLeftAmount ? newLeftAmount - 1 : 0)
+                        }, 300)
+                    }, 100)
+                }
+
+                if (isFirstPage) {
+                    const newLeftAmount = currIndex % showNumber
+                    const newRightAmount = showNumber - newLeftAmount - 1
+                    setLeftAmount(newLeftAmount)
+                    setRightAmount(newRightAmount)
+                    if (newRightAmount === 0 && currIndex !== total - 1) {
+                        animate(newLeftAmount)
+                    }
+                } else if (isLastPage) {
+                    if (currIndex === total - 1) {
+                        setLeftAmount(showNumber - 1)
+                        setRightAmount(0)
+
+                    } else {
+                        setLeftAmount(showNumber - 1)
+                        setRightAmount(0)
+                        animate(showNumber - 1)
+                    }
+                } else {
+                    const newLeftAmount = showNumber - 1
+                    setLeftAmount(newLeftAmount)
+                    setRightAmount(0)
+                    animate(newLeftAmount)
+                }
+
+            }
+
+            if (isBackward) {
+                // 上一页
+                const animate = (newRightAmount: number) => {
+                    setTimeout(() => {
+                        setLeftAmount(1)
+                        setFirstClose(true)
+                        setAnimate(true)
+                        setTimeout(() => {
+                            setFirstClose(false)
+                            setTimeout(() => {
+                                setAnimate(false)
+                            },300)
+                        }, 100)
+                    }, 0)
+                }
+
+                if (isLastPage) {
+                    const newRightAmount = total - currIndex - 1
+                    const newLeftAmount = showNumber - newRightAmount - 1
+                    setRightAmount(newRightAmount)
+                    setLeftAmount(newLeftAmount)
+                } else if (isFirstPage){
+                    if (currIndex === 0) {
+                        setLeftAmount(0)
+                        setRightAmount(showNumber - 1)
+                    } else {
+                        setRightAmount(showNumber - 1)
+                        setLeftAmount(0)
+                        animate(showNumber - 1)
+                    }
+                } else {
+                    const newRightAmount = showNumber - 1
+                    setRightAmount(newRightAmount)
+                    setLeftAmount(0)
+                    animate(newRightAmount)
+                }
+            }
+
+            history.current = currIndex
         }
 
-        if (index > total - showNumber) {
-            setMainIndex(total % index)
-            return
-        }
-    }, [index])
+        slide()
+    }, [currIndex])
 
     return (
-        <div className='swiper-pagination-custom' style={{width: (showNumber * 20 + (showNumber - 1) * 8) + 'px'}}>
-        {
-            new Array(amount).fill('1').map((item, i) => {
-                return <div key={ i } className={ mainIndex === i ? 'swiper-pagination-dot active' : 'swiper-pagination-dot'}></div>
-            })
-        }
-    </div>
+        <div className= { animate ? 'app-swiper-pagination animate' : 'app-swiper-pagination'}
+             style={{width: (showNumber * 20 + (showNumber - 1) * 8) + 'px'}}>
+            {
+                new Array(leftAmount).fill('1').map((item, i) => {
+                    return <div key={i} className={ i===0 && firstClose ? 'swiper-pagination-dot close' : 'swiper-pagination-dot'} />
+                })
+            }
+            <div className='swiper-pagination-dot active' />
+            {
+                new Array(rightAmount).fill('1').map((item, i) => {
+                    return <div key={i} className='swiper-pagination-dot' />
+                })
+            }
+        </div>
     )
 }
 

@@ -21,7 +21,7 @@ import './DetailBadge.less'
 import SwiperPagination from '../../../base/SwiperPagination/SwiperPagination'
 
 //AppSwiper deps
-import { Swiper, SwiperSlide } from 'swiper/react'
+import { Swiper, SwiperSlide, useSwiper } from 'swiper/react'
 import { Pagination } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/pagination'
@@ -40,7 +40,8 @@ function DetailBadge (props: DetailBadgeProps ) {
     const [badgelets, setBadgelets] = useState<Badgelet[]>([])
     const swiper = useRef<any>(null)
     const formatTime = useTime()
-    const [swiperIndex, setSwiperIndex] = useState(0)
+    const swiperIndex = useRef(0)
+    const swiperIns = useSwiper()
 
     useEffect(() => {
         async function getBadgelet () {
@@ -78,12 +79,12 @@ function DetailBadge (props: DetailBadgeProps ) {
                 <div style={{ width:'100%'}}>
                     <Swiper
                         ref={ swiper }
-                        loop
                         modules={ [Pagination] }
-                        pagination
                         spaceBetween={ 12 }
                         className='badge-detail-swiper'
+                        onSlideChange={ (swiper) => swiperIndex.current = swiper.activeIndex }
                         slidesPerView={'auto'}>
+                        <SwiperPagination total={badgelets.length} showNumber={3}></SwiperPagination>
                         {
                             badgelets.map((badgelet, index) =>
                                 <SwiperSlide className='badge-detail-swiper-slide' key={ badgelet.id }>
