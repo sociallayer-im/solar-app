@@ -8,7 +8,7 @@ import AppButton, { BTN_KIND } from '../../base/AppButton/AppButton'
 import useTime from '../../../hooks/formatTime'
 
 interface PresendQrcodeProp {
-    presend: PresendWithBadgelets
+    presend: Presend
 }
 
 function PresendQrcode(props: PresendQrcodeProp) {
@@ -19,10 +19,14 @@ function PresendQrcode(props: PresendQrcodeProp) {
     const [badge, setBadge] = useState<Badge | null>(null)
     const [link, setLink] = useState('')
     const [expired, setExpired] = useState(false)
+    const [presendWithBadgelets, setPresendWithBadgelets] = useState<PresendWithBadgelets | null>(null)
     const formatTime = useTime()
 
     useEffect(() => {
         const getDetail = async function() {
+            const presend = await solas.queryPresendDetail({id: props.presend.id, auth_token: user.authToken || ''})
+            setPresendWithBadgelets(presend)
+
             if (presend.code) {
                 setLink(`${window.location.protocol}//${window.location.host}/presend/${presend.id}_${presend.code}`)
             } else {
@@ -59,10 +63,12 @@ function PresendQrcode(props: PresendQrcodeProp) {
                         <div className='code'>
                             <QRcode size={[160, 160]} text={ link }></QRcode>
                         </div>
-                        <div className='limit'>
-                            <i className='icon-profile'></i>
-                            <span>{ lang['Presend_Qrcode_Limit']([presend.badgelets.length + presend.counter]) }</span>
-                        </div>
+                        { !!presendWithBadgelets &&
+                            <div className='limit'>
+                                <i className='icon-profile'></i>
+                                <span>{ lang['Presend_Qrcode_Limit']([presendWithBadgelets.badgelets.length + presend.counter]) }</span>
+                            </div>
+                        }
                         <div className='time'>
                             <i className='icon-clock'></i>
                             <span>{ lang['Presend_Qrcode_Time']([formatTime(presend.expires_at)]) }</span>

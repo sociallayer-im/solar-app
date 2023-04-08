@@ -143,7 +143,7 @@ function Issue() {
 
                                 <Tab key='face2face' title={ lang['IssueBadge_Face_to_Face'] }>
                                     {  face2facePresend
-                                        ? <PresendQrcode presendId={ face2facePresend.id } />
+                                        ? <PresendQrcode presend={ face2facePresend } />
                                         : <GenFaceToFace
                                         onConfirm={ handleCreate }
                                         badge={ badge }
