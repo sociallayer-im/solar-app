@@ -4,6 +4,7 @@ import { useContext } from 'react'
 import LangContext from '../../../provider/LangProvider/LangContext'
 import { setLastLoginType } from '../../../../utils/authStorage'
 import { useNavigate } from 'react-router-dom'
+import DialogsContext from '../../../provider/DialogProvider/DialogsContext'
 
 interface DialogConnectWalletProps {
     handleClose: (...rest: any[]) => any
@@ -15,6 +16,7 @@ function DialogConnectWallet (props: DialogConnectWalletProps) {
     const { lang } = useContext(LangContext)
     const { isDisconnected } = useAccount()
     const navigate = useNavigate()
+    const { clean } = useContext(DialogsContext)
 
 
     const handleConnectWallet = (connector: Connector) => {
@@ -27,7 +29,7 @@ function DialogConnectWallet (props: DialogConnectWalletProps) {
        setTimeout(() => {
            setLastLoginType('wallet')
            connect({ connector })
-           props.handleClose()
+           clean()
        },500)
     }
 
@@ -44,7 +46,7 @@ function DialogConnectWallet (props: DialogConnectWalletProps) {
                     </div>
                 </div>
             ))}
-            <div className='connect-item' onClick={ () => { props.handleClose() ; navigate('/login'); props.handleClose() } }>
+            <div className='connect-item' onClick={ () => { clean() ; navigate('/login'); props.handleClose() } }>
                 <img src="/images/email.svg" alt="email"/>
                 <div className='connect-name'>Email</div>
                 <div className='connect-des'>{ lang['Login_alert'] }</div>
