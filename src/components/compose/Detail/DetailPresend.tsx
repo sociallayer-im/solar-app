@@ -14,7 +14,6 @@ import AppButton, { BTN_KIND } from '../../base/AppButton/AppButton'
 import BtnGroup from '../../base/BtnGroup/BtnGroup'
 import solas, { Profile } from '../../../service/solas'
 import useEvent, { EVENT } from '../../../hooks/globalEvent'
-import copy from '../../../utils/copy'
 import DetailReceivers from './atoms/DetailReceivers'
 import DetailScrollBox from './atoms/DetailScrollBox/DetailScrollBox'
 import ReasonText from '../../base/ReasonText/ReasonText'
@@ -66,12 +65,6 @@ function DetailPresend (props: DetailPresendProps ) {
     const loginUserIsSender = user.id === sender?.id
     const canAccept = props.presend.counter > 0
 
-    const handleCopy = () => {
-        const link = `https://${window.location.host}/presend/${props.presend.id}_${props.code || ''}`
-        copy(link)
-        showToast('Copyed')
-    }
-
     const handleAccept= async () => {
         const unload = showLoading()
         try {
@@ -96,9 +89,9 @@ function DetailPresend (props: DetailPresendProps ) {
     }
 
     const ActionBtns =  <>
-        { loginUserIsSender && canAccept
-            && <AppButton special onClick={ () => { toggleQRcode() } }>
-                { lang['BadgeDialog_Btn_Face2face'] }</AppButton>
+        { loginUserIsSender
+            && <AppButton onClick={ () => { toggleQRcode() } }>
+                { lang['BadgeDialog_Btn_share'] }</AppButton>
         }
 
         <AppButton
@@ -106,11 +99,6 @@ function DetailPresend (props: DetailPresendProps ) {
             onClick={ () => { handleAccept() } }>
             { canAccept ? lang['BadgeDialog_Btn_Accept'] : lang['BadgeDialog_Btn_None_Left'] }
         </AppButton>
-
-        { loginUserIsSender &&
-            <AppButton onClick={ () => { handleCopy() } }>
-                { lang['IssueFinish_CopyLink'] }</AppButton>
-        }
     </>
 
     const LoginBtn = <AppButton

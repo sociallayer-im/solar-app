@@ -5,33 +5,24 @@ import './PresendQrcode.less'
 import QRcode from '../../base/QRcode'
 import UserContext from '../../provider/UserProvider/UserContext'
 import AppButton, { BTN_KIND } from '../../base/AppButton/AppButton'
+import useTime from '../../../hooks/formatTime'
 
 interface PresendQrcodeProp {
-    presendId: number
+    presend: PresendWithBadgelets
 }
 
 function PresendQrcode(props: PresendQrcodeProp) {
+    const { presend } = props
     const { lang } = useContext(langContext)
     const { user } = useContext(UserContext)
     const [sender, setSender] = useState<Profile | null>(null)
     const [badge, setBadge] = useState<Badge | null>(null)
-    const [presend, setPresend] = useState<PresendWithBadgelets | null>(null)
     const [link, setLink] = useState('')
     const [expired, setExpired] = useState(false)
-
-    const formatTime = (dateString: string) => {
-        const dateObject = new Date(dateString)
-        const year = dateObject.getFullYear()
-        const mon = dateObject.getMonth() + 1
-        const date = dateObject.getDate()
-        return `${year}.${mon}.${date}`
-    }
+    const formatTime = useTime()
 
     useEffect(() => {
         const getDetail = async function() {
-            const presend = await solas.queryPresendDetail({ id: props.presendId, auth_token: user.authToken || '' })
-            setPresend(presend)
-
             if (presend.code) {
                 setLink(`${window.location.protocol}//${window.location.host}/presend/${presend.id}_${presend.code}`)
             } else {
@@ -55,28 +46,27 @@ function PresendQrcode(props: PresendQrcodeProp) {
         <div className='presend-qrcode-card'>
             { !!sender && !!badge && !!presend &&
                 <>
+                    <div className='inner'>
+                        <div className='card-header'>
+                            <img src={ badge.image_url } alt=""/>
+                            <div className='sender-info'>
+                                <div className='badge-name'>{ lang['Presend_Qrcode_Badge'] } { badge.name }</div>
+                                <div className='des'>{ lang['Presend_Qrcode_Des']([sender.username]) }</div>
+                            </div>
+                        </div>
 
-                        <div className='inner'>
-                            <div className='card-header'>
-                                <img src={ badge.image_url } alt=""/>
-                                <div className='sender-info'>
-                                    <div className='badge-name'>{ lang['Presend_Qrcode_Badge'] } { badge.name }</div>
-                                    <div className='des'>{ lang['Presend_Qrcode_Des']([sender.username]) }</div>
-                                </div>
-                            </div>
-
-                            <div className='card-title'>{ lang['Presend_Qrcode_Scan'] }</div>
-                            <div className='code'>
-                                <QRcode size={[160, 160]} text={ link }></QRcode>
-                            </div>
-                            <div className='limit'>
-                                <i className='icon-profile'></i>
-                                <span>{ lang['Presend_Qrcode_Limit']([presend.badgelets.length + presend.counter]) }</span>
-                            </div>
-                            <div className='time'>
-                                <i className='icon-clock'></i>
-                                <span>{ lang['Presend_Qrcode_Time']([formatTime(presend.expires_at)]) }</span>
-                            </div>
+                        <div className='card-title'>{ lang['Presend_Qrcode_Scan'] }</div>
+                        <div className='code'>
+                            <QRcode size={[160, 160]} text={ link }></QRcode>
+                        </div>
+                        <div className='limit'>
+                            <i className='icon-profile'></i>
+                            <span>{ lang['Presend_Qrcode_Limit']([presend.badgelets.length + presend.counter]) }</span>
+                        </div>
+                        <div className='time'>
+                            <i className='icon-clock'></i>
+                            <span>{ lang['Presend_Qrcode_Time']([formatTime(presend.expires_at)]) }</span>
+                        </div>
                     </div>
                     { expired  && <div className='expired-mask'>
                         <div className='expired-text'>

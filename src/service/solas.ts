@@ -192,7 +192,7 @@ export interface Presend {
 export async function queryPresend (props: QueryPresendProps): Promise<Presend[]> {
     const res = await fetch.get({
         url: `${api}/presend/list`,
-        data: props
+        data: { ...props, all: 1 }
     })
 
     if (res.data.result === 'error') {

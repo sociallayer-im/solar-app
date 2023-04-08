@@ -1,10 +1,13 @@
-import {useNavigate} from 'react-router-dom'
-import {useStyletron} from 'baseui'
-import {useState, useContext, useEffect} from 'react'
+import {useContext, useEffect, useState} from 'react'
 import LangContext from '../../provider/LangProvider/LangContext'
 import DetailWrapper from './atoms/DetailWrapper/DetailWrapper'
 import DetailHeader from './atoms/DetailHeader'
 import PresendQrcode from '../PresendQrcode/PresendQrcode'
+import AppButton from '../../base/AppButton/AppButton'
+import copy from '../../../utils/copy'
+import DialogsContext from '../../provider/DialogProvider/DialogsContext'
+import solas, { PresendWithBadgelets } from '../../../service/solas'
+import userContext from '../../provider/UserProvider/UserContext'
 
 interface DetailFace2FaceQrcodeProps {
     handleClose: () => void
@@ -12,19 +15,36 @@ interface DetailFace2FaceQrcodeProps {
 }
 
 function DetailFace2FaceQrcode(props: DetailFace2FaceQrcodeProps) {
-    const [css] = useStyletron()
-    const navigate = useNavigate()
-    const [a, seta] = useState('')
     const { lang } = useContext(LangContext)
+    const { showToast } = useContext(DialogsContext)
+    const [presend, setPresend] = useState<PresendWithBadgelets | null>(null)
+    const { user } = useContext(userContext)
+
+    const handleCopy = () => {
+        const link = `https://${window.location.host}/presend/${presend?.id}_${presend?.code || ''}`
+        copy(link)
+        showToast('Copyed')
+    }
 
     useEffect(() => {
+        const getDetail = async function() {
+            const presend = await solas.queryPresendDetail({ id: props.presendId, auth_token: user.authToken || '' })
+            setPresend(presend)
+        }
+        getDetail()
 
     }, [])
 
     return (
         <DetailWrapper>
             <DetailHeader title={ lang['BadgeDialog_Btn_Face2face'] } onClose={()=> { props.handleClose() }}></DetailHeader>
-            <PresendQrcode presendId={ props.presendId }></PresendQrcode>
+            { !!presend &&
+                <>
+                    <PresendQrcode presend={ presend }></PresendQrcode>
+                    <AppButton special style={ { marginTop: '20px' } } onClick={ () => { handleCopy() } }>
+                        { lang['IssueFinish_CopyLink'] }</AppButton>
+                </>
+            }
         </DetailWrapper>
     )
 }

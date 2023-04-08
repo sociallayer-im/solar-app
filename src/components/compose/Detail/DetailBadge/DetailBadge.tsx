@@ -32,7 +32,6 @@ export interface DetailBadgeProps {
 }
 
 function DetailBadge (props: DetailBadgeProps ) {
-    const [ css ] = useStyletron()
     const { lang } = useContext(LangContext)
     const { user } = useContext(UserContext)
     const { defaultAvatar } = usePicture()
@@ -41,7 +40,6 @@ function DetailBadge (props: DetailBadgeProps ) {
     const swiper = useRef<any>(null)
     const formatTime = useTime()
     const swiperIndex = useRef(0)
-    const swiperIns = useSwiper()
 
     useEffect(() => {
         async function getBadgelet () {
@@ -84,7 +82,7 @@ function DetailBadge (props: DetailBadgeProps ) {
                         className='badge-detail-swiper'
                         onSlideChange={ (swiper) => swiperIndex.current = swiper.activeIndex }
                         slidesPerView={'auto'}>
-                        <SwiperPagination total={badgelets.length} showNumber={3}></SwiperPagination>
+                        <SwiperPagination total={ badgelets.length } showNumber={3} />
                         {
                             badgelets.map((badgelet, index) =>
                                 <SwiperSlide className='badge-detail-swiper-slide' key={ badgelet.id }>

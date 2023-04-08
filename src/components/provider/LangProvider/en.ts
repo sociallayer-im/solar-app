@@ -58,6 +58,7 @@ const langEN = {
   BadgeDialog_Btn_Reject: 'Reject',
   BadgeDialog_Btn_Accept: 'Accept',
   BadgeDialog_Btn_Face2face: 'Face to face QR code',
+  BadgeDialog_Btn_share: 'Send',
   BadgeDialog_Btn_Issue: 'Send again',
   BadgeDialog_Btn_None_Left: 'What a pity',
 
