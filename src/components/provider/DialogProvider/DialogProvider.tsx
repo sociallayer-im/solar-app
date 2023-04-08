@@ -259,6 +259,7 @@ function DialogProvider (props: DialogProviderProps) {
     }
 
     const showPresend = (props: Presend, code?: string) => {
+        alert('ok')
         const id = genID()
         dialogsGroup.dialogs.push({
             id,

@@ -46,7 +46,7 @@ function DialogConnectWallet (props: DialogConnectWalletProps) {
                     </div>
                 </div>
             ))}
-            <div className='connect-item' onClick={ () => { clean() ; navigate('/login'); props.handleClose() } }>
+            <div className='connect-item' onClick={ () => { clean(); navigate('/login') } }>
                 <img src="/images/email.svg" alt="email"/>
                 <div className='connect-name'>Email</div>
                 <div className='connect-des'>{ lang['Login_alert'] }</div>
