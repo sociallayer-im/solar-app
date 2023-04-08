@@ -32,10 +32,15 @@ function LangProvider (props: LangProviderProps) {
         const storageLang = window.localStorage.getItem('lang')
         if (storageLang === LangType.en) {
             switchLang(LangType.en)
+            return
         }
         if (storageLang === LangType.cn) {
             switchLang(LangType.cn)
+            return
         }
+
+        const lang = navigator.language
+        switchLang(lang === 'zh-CN' ? LangType.cn : LangType.en)
     }, [])
 
    return (

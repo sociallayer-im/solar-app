@@ -7,6 +7,7 @@ import DialogsContext from '../../components/provider/DialogProvider/DialogsCont
 import solas from '../../service/solas'
 import { useNavigate, useParams } from 'react-router-dom'
 import useIssueBadge from '../../hooks/useIssueBadge'
+import LangContext from '../../components/provider/LangProvider/LangContext'
 
 function Home () {
     const { user } = useContext( UserContext )
@@ -14,6 +15,7 @@ function Home () {
     const navigate = useNavigate()
     const { badgeletId, presendId, groupId, inviteId } = useParams()
     const startIssueBadge = useIssueBadge()
+    const { lang } = useContext(LangContext)
 
     useEffect(() => {
         async function showBadgeletDetail () {
@@ -78,10 +80,10 @@ function Home () {
             <div className='wrapper'>
                 <img className='cover' src="/images/home/home_1.png" alt=""/>
                 <div className='text'>
-                    <h1>Create a badge </h1>
-                    <p>Join now to start creating badges, describing your achievements, and awarding them to deserving individuals.</p>
+                    <h1>{ lang['Home_Page_New_Title'] }</h1>
+                    <p>{ lang['Home_Page_New_Des'] }</p>
                     <AppButton onClick={ start }
-                        kind={ BTN_KIND.primary } special>Create your badge</AppButton>
+                        kind={ BTN_KIND.primary } special>{ lang['Home_Page_New_Btn'] }</AppButton>
                 </div>
             </div>
         </div>

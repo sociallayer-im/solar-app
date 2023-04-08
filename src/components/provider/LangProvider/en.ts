@@ -291,7 +291,11 @@ const langEN = {
   Presend_Qrcode_Limit: slotLang('Limited to {1} person'),
   Presend_Qrcode_Time: slotLang('Expiry time : {1}'),
   Presend_Qrcode_Expired: 'The badge is no longer valid',
-  Presend_Qrcode_Regen: 'Regenerate the QR code'
+  Presend_Qrcode_Regen: 'Regenerate the QR code',
+
+  Home_Page_New_Title: 'Create a badge',
+  Home_Page_New_Des: 'Join now to start creating badges, describing your achievements, and awarding them to deserving individuals.',
+  Home_Page_New_Btn: 'Create your badge',
 }
 
 export type LangConfig = typeof langEN

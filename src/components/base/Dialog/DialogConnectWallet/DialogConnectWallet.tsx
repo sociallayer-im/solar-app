@@ -3,7 +3,7 @@ import './DialogConnectWallet.less'
 import { useContext } from 'react'
 import LangContext from '../../../provider/LangProvider/LangContext'
 import { setLastLoginType } from '../../../../utils/authStorage'
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from 'react-router-dom'
 
 interface DialogConnectWalletProps {
     handleClose: (...rest: any[]) => any
@@ -44,7 +44,7 @@ function DialogConnectWallet (props: DialogConnectWalletProps) {
                     </div>
                 </div>
             ))}
-            <div className='connect-item' onClick={ () => { navigate('/login'); props.handleClose() } }>
+            <div className='connect-item' onClick={ () => { props.handleClose() ; navigate('/login'); props.handleClose() } }>
                 <img src="/images/email.svg" alt="email"/>
                 <div className='connect-name'>Email</div>
                 <div className='connect-des'>{ lang['Login_alert'] }</div>
