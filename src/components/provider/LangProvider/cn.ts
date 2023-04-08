@@ -294,7 +294,7 @@ const langCN: LangConfig = {
   Presend_Qrcode_Regen: '你可以重新生成二维码',
 
   Home_Page_New_Title: '创建一个徽章',
-  Home_Page_New_Des: '现在就加入吧，开始创建徽章，描述你的成就，并将它们颁发给值得拥有的个人。',
+  Home_Page_New_Des: '现在就加入吧，开始创建徽章，描述你的成就，并将它们颁发给值得拥有的人。',
   Home_Page_New_Btn: '创建你的徽章'
 }
 

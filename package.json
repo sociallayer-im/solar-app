@@ -28,6 +28,7 @@
     "styletron-engine-atomic": "^1.5.0",
     "styletron-react": "^6.1.0",
     "swiper": "^9.1.0",
+    "trackjs": "^3.10.1",
     "wagmi": "0.11.5",
     "web3-utils": "^1.8.2"
   },
