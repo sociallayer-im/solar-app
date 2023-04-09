@@ -10,7 +10,7 @@ function DetailWrapper (props: DetailWrapperProp) {
     const DetailWrapper = styled('div', () => {
         return {
             width: '100%',
-            height: '660px',
+            height: '590px',
             boxShadow: '0px 2px 18px rgba(0, 0, 0, 0.2)',
             borderRadius: '12px'
         }
