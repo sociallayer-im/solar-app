@@ -10,6 +10,7 @@ import PageBack from '../../components/base/PageBack'
 import SendSuccessCard, { Info } from '../../components/compose/SendSuccessCard/SendSuccessCard'
 import usePicture from '../../hooks/pictrue'
 import AppButton, { BTN_SIZE } from '../../components/base/AppButton/AppButton'
+import usePageHeight from '../../hooks/pageHeight'
 
 //AppSwiper deps
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -26,6 +27,7 @@ function IssueSuccessPage () {
     const { lang } =  useContext(LangContext)
     const { user } =  useContext(UserContext)
     const { defaultAvatar } =  usePicture()
+    const { heightWithoutNav } = usePageHeight()
 
     // presend成功传参
     const presendId = searchParams.get('presend')
@@ -134,7 +136,7 @@ function IssueSuccessPage () {
 
     return (
         <Layout>
-            <div className='send-success'>
+            <div className='send-success' style={{minHeight: `${heightWithoutNav}px`}}>
                 <div className='center-box header'>
                     <PageBack title={ lang['IssueFinish_Title'] } to={`/profile/${user.userName}`} />
                 </div>
