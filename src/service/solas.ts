@@ -546,7 +546,7 @@ export async function getFollowers (userId: number): Promise<Profile[]> {
         throw new Error(res.data.message)
     }
 
-    return res.data.followers
+    return res.data.profiles
 }
 
 export async function getFollowings (userId: number): Promise<Profile[]>{
