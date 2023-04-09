@@ -26,7 +26,7 @@ function Login () {
 
     useEffect(() => {
         if (user.domain) {
-            navigate(`/profile/${user.userName}`)
+            // navigate(`/profile/${user.userName}`)
         }
     }, [user.domain])
 

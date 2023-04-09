@@ -25,15 +25,16 @@ function Layout(props?: any) {
         height: `${heightWithoutNav}px`
     }
 
-    // useEffect(() => {
-    //     const watchSoftKeyboard = () => {
-    //         setWindowHeight(window.innerHeight)
-    //     }
-    //
-    //     window.addEventListener('resize', watchSoftKeyboard)
-    //
-    //     return () => { window.removeEventListener('resize', watchSoftKeyboard) }
-    // }, [])
+    useEffect(() => {
+        const watchSoftKeyboard = () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0
+            window.scroll(0, scrollTop)
+        }
+
+        window.addEventListener('focusout', watchSoftKeyboard)
+
+        return () => { window.removeEventListener('focusout', watchSoftKeyboard) }
+    }, [])
 
     return (
         <div className={ css(wrapper) }>
