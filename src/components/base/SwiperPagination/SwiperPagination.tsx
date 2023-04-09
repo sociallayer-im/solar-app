@@ -15,6 +15,15 @@ function SwiperPagination({ total, showNumber = 3 }: SwiperPaginationProps) {
     const [firstClose, setFirstClose] = useState(false)
     const [animate, setAnimate] = useState(true)
     const history = useRef(currIndex)
+    const [actualShowNumber, setActualShowNumber] = useState(0)
+
+    useEffect(() => {
+       if (total > showNumber) {
+           setActualShowNumber(showNumber)
+       } else {
+           setActualShowNumber(total)
+       }
+    }, [])
 
 
     useEffect(() => {
@@ -25,8 +34,8 @@ function SwiperPagination({ total, showNumber = 3 }: SwiperPaginationProps) {
 
     useEffect(() => {
         async function slide () {
-            const isFirstPage = currIndex < showNumber
-            const isLastPage = currIndex > total - showNumber
+            const isFirstPage = currIndex < actualShowNumber
+            const isLastPage = currIndex > total - actualShowNumber
             const isForward = currIndex > history.current
             const isBackward = currIndex < history.current
 
@@ -48,8 +57,8 @@ function SwiperPagination({ total, showNumber = 3 }: SwiperPaginationProps) {
                 }
 
                 if (isFirstPage) {
-                    const newLeftAmount = currIndex % showNumber
-                    const newRightAmount = showNumber - newLeftAmount - 1
+                    const newLeftAmount = currIndex % actualShowNumber
+                    const newRightAmount = actualShowNumber - newLeftAmount - 1
                     setLeftAmount(newLeftAmount)
                     setRightAmount(newRightAmount)
                     if (newRightAmount === 0 && currIndex !== total - 1) {
@@ -57,16 +66,16 @@ function SwiperPagination({ total, showNumber = 3 }: SwiperPaginationProps) {
                     }
                 } else if (isLastPage) {
                     if (currIndex === total - 1) {
-                        setLeftAmount(showNumber - 1)
+                        setLeftAmount(actualShowNumber - 1)
                         setRightAmount(0)
 
                     } else {
-                        setLeftAmount(showNumber - 1)
+                        setLeftAmount(actualShowNumber - 1)
                         setRightAmount(0)
-                        animate(showNumber - 1)
+                        animate(actualShowNumber - 1)
                     }
                 } else {
-                    const newLeftAmount = showNumber - 1
+                    const newLeftAmount = actualShowNumber - 1
                     setLeftAmount(newLeftAmount)
                     setRightAmount(0)
                     animate(newLeftAmount)
@@ -92,20 +101,20 @@ function SwiperPagination({ total, showNumber = 3 }: SwiperPaginationProps) {
 
                 if (isLastPage) {
                     const newRightAmount = total - currIndex - 1
-                    const newLeftAmount = showNumber - newRightAmount - 1
+                    const newLeftAmount = actualShowNumber - newRightAmount - 1
                     setRightAmount(newRightAmount)
                     setLeftAmount(newLeftAmount)
                 } else if (isFirstPage){
                     if (currIndex === 0) {
                         setLeftAmount(0)
-                        setRightAmount(showNumber - 1)
+                        setRightAmount(actualShowNumber - 1)
                     } else {
-                        setRightAmount(showNumber - 1)
+                        setRightAmount(actualShowNumber - 1)
                         setLeftAmount(0)
-                        animate(showNumber - 1)
+                        animate(actualShowNumber - 1)
                     }
                 } else {
-                    const newRightAmount = showNumber - 1
+                    const newRightAmount = actualShowNumber - 1
                     setRightAmount(newRightAmount)
                     setLeftAmount(0)
                     animate(newRightAmount)
@@ -120,7 +129,7 @@ function SwiperPagination({ total, showNumber = 3 }: SwiperPaginationProps) {
 
     return (
         <div className= { animate ? 'app-swiper-pagination animate' : 'app-swiper-pagination'}
-             style={{width: (showNumber * 20 + (showNumber - 1) * 8) + 'px'}}>
+             style={{width: (actualShowNumber * 20 + (actualShowNumber - 1) * 8) + 'px'}}>
             {
                 new Array(leftAmount).fill('1').map((item, i) => {
                     return <div key={i} className={ i===0 && firstClose ? 'swiper-pagination-dot close' : 'swiper-pagination-dot'} />
