@@ -7,7 +7,6 @@ export const usePageHeight = () => {
 
     useEffect(() => {
         const listener = () => {
-            alert('resize')
             setWindowHeight(window.innerHeight)
             setHeightWithoutNav(window.innerHeight - 48)
         }
