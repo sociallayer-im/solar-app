@@ -69,6 +69,11 @@ function CodeInputForm (props: CodeInputFormProps) {
                 setLoading(true)
                 const unload = showLoading()
                 console.log('unload', unload)
+                const inputs = document.querySelectorAll('input')
+                inputs.forEach((item) => {
+                    item.blur()
+                })
+
                 try {
                     const loginRes = await solas.emailLogin(props.loginEmail, code)
                     props.onConfirm(loginRes)
