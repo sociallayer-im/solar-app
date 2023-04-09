@@ -15,16 +15,8 @@ function SwiperPagination({ total, showNumber = 3 }: SwiperPaginationProps) {
     const [firstClose, setFirstClose] = useState(false)
     const [animate, setAnimate] = useState(true)
     const history = useRef(currIndex)
-    const [actualShowNumber, setActualShowNumber] = useState(0)
 
-    useEffect(() => {
-       if (total > showNumber) {
-           setActualShowNumber(showNumber)
-       } else {
-           setActualShowNumber(total)
-       }
-    }, [])
-
+    const actualShowNumber = total > showNumber ? showNumber : total
 
     useEffect(() => {
         swiper.on('slideChange', (swiper) => {

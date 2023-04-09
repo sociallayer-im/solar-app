@@ -217,7 +217,7 @@ function DialogProvider (props: DialogProviderProps) {
 
                 const dialogProps = {
                     key: id.toString(),
-                    size: ['auto', 'auto'],
+                    size: [460, 'auto'],
                     handleClose: close,
                     position: 'bottom' as const
                 }
@@ -243,7 +243,7 @@ function DialogProvider (props: DialogProviderProps) {
 
                 const dialogProps = {
                     key: id.toString(),
-                    size: ['auto', 'auto'],
+                    size: [460, 'auto'],
                     handleClose: close,
                     position: 'bottom' as const
                 }
@@ -269,7 +269,7 @@ function DialogProvider (props: DialogProviderProps) {
 
                 const dialogProps = {
                     key: id.toString(),
-                    size: ['auto', 'auto'],
+                    size: [460, 'auto'],
                     handleClose: close,
                     position: 'bottom' as const
                 }
@@ -295,7 +295,7 @@ function DialogProvider (props: DialogProviderProps) {
 
                 const dialogProps = {
                     key: id.toString(),
-                    size: ['auto', 'auto'],
+                    size: [460, 'auto'],
                     handleClose: close,
                     position: 'bottom' as const
                 }
