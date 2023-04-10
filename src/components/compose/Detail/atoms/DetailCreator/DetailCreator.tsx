@@ -12,7 +12,7 @@ function DetailCreator(props: DetailCreatorProp) {
     const { profile } = props
     const { defaultAvatar } = usePicture()
     const { lang } = useContext(langContext)
-    const link = props.isGroup ? `/group/${profile.id}` : `/profile/${profile.id}`
+    const link = props.isGroup ? `/group/${profile.id}` : `/profile/${profile.domain?.split('.')[0]}`
 
     return (<a className='badge-creator-tag' href={link} target='_blank'>
         <div className='label'>{ lang['BadgeDialog_Label_Creator'] }</div>
