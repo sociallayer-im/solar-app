@@ -14,6 +14,7 @@ import AmountInput from '../../components/base/AmountInput/AmountInput'
 import IssuesInput from '../../components/base/IssuesInput/IssuesInput'
 import GenFaceToFace from '../../components/base/GenFaceToFace/GenFaceToFace'
 import PresendQrcode from '../../components/compose/PresendQrcode/PresendQrcode'
+import copy from '../../utils/copy'
 
 function Issue() {
     const { user } = useContext(UserContext)
@@ -23,6 +24,7 @@ function Issue() {
     const [SearchParams, _] = useSearchParams()
     const [presendAmount, setPresendAmount] = useState<number | string>(0)
     const [face2facePresend, setFace2facePresend] = useState<Presend | null>(null)
+    const [face2faceShareLink, setFace2faceShareLink] = useState('')
     const [issueType, setIssueType] = useState('face2face')
     const [issues, setIssues] = useState<string[]>([''])
     const navigate = useNavigate()
@@ -110,6 +112,12 @@ function Issue() {
             })
             unload()
             setFace2facePresend(presend)
+            const link = `${window.location.origin}/presend/${presend.id}_${presend.code}`
+            const description = lang['IssueFinish_share']
+                .replace('#1',  user.domain!)
+                .replace('#2', badge?.name || '')
+                .replace('#3', link)
+            setFace2faceShareLink(description)
         } catch (e: any) {
             console.log('[handleCreatePresend]: ', e)
             unload()
@@ -130,6 +138,10 @@ function Issue() {
             handleCreateFace2Face()
         }
     }
+    const handleCopy = () => {
+        copy(face2faceShareLink)
+        showToast('Copied')
+    }
 
     return (
         <Layout>
@@ -143,7 +155,16 @@ function Issue() {
 
                                 <Tab key='face2face' title={ lang['IssueBadge_Face_to_Face'] }>
                                     {  face2facePresend
-                                        ? <PresendQrcode presend={ face2facePresend } />
+                                        ? <>
+                                            <PresendQrcode presend={ face2facePresend } />
+                                            <AppButton
+                                                style={{marginTop: '15px'}}
+                                                special
+                                                onClick={ () => { handleCopy() } }>
+                                                <i className='icon-copy' style={{marginRight: '10px'}}></i>
+                                                <span>{ lang['IssueFinish_CopyLink'] }</span>
+                                            </AppButton>
+                                        </>
                                         : <GenFaceToFace
                                         onConfirm={ handleCreate }
                                         badge={ badge }
