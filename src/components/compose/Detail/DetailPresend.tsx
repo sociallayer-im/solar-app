@@ -117,11 +117,15 @@ function DetailPresend (props: DetailPresendProps ) {
                         <DetailCover src={ props.presend.badge.image_url }></DetailCover>
                         <DetailName> { props.presend.badge.name } </DetailName>
                         { sender &&
-                            <DetailCreator profile={ props.presend.badge.group || sender } />
+                            <DetailCreator isGroup={!!props.presend.badge.group } profile={ props.presend.badge.group || sender } />
                         }
 
                         <DetailScrollBox>
-                            <DetailDes> <ReasonText text={ props.presend.message } /> </DetailDes>
+                            { !!props.presend.message &&
+                                <DetailDes>
+                                    <ReasonText text={ props.presend.message } />
+                                </DetailDes>
+                            }
 
                             <DetailReceivers
                                 length={ acceptableAmount }

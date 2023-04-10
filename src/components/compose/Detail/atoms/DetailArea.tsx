@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom'
 import { useStyletron } from 'baseui'
 
 export interface DetailAreaProps {
@@ -34,12 +33,14 @@ const style = {
         cursor: 'pointer',
         overflow: 'hidden',
         whiteSpace: 'nowrap' as const,
-        textOverflow: 'ellipsis'
+        textOverflow: 'ellipsis',
+        color: '#272928',
+        textDecoration: 'none'
     },
     text: {
         overflow: 'hidden',
         whiteSpace: 'nowrap' as const,
-        textOverflow: 'ellipsis'
+        textOverflow: 'ellipsis',
     },
     img: {
         width:'24px',
@@ -55,23 +56,20 @@ const style = {
 
 function DetailArea (props: DetailAreaProps ) {
     const [css] = useStyletron()
-    const navigate = useNavigate()
-
-    const handleNavigate = () => {
-        if (props.navigate) {
-            props.onClose && props.onClose()
-            navigate(props.navigate)
-        }
-    }
 
     return (<div className={ css(style.wrapper) }>
         <div className={ css(style.title) }> { props.title } </div>
         <div className={ css(style.content) }>
-            { props.image && <img className={ css(style.img) } src={ props.image } alt=""/> }
+            { !!props.image && <img className={ css(style.img) } src={ props.image } alt=""/> }
 
-            <div className={ props.navigate ? css(style.textLink) : css(style.text) } onClick={ handleNavigate }> { props.content } </div>
+            { props.navigate
+                ? <a className={ props.navigate ? css(style.textLink) : css(style.text) } href={props.navigate} target='_blank'> { props.content } </a>
+                : <div className={ props.navigate ? css(style.textLink) : css(style.text) }> { props.content } </div>
 
-            { props.link &&
+            }
+
+
+            { !!props.link &&
                 <a className={ css(style.link) } target='_blank' href={ props.link }>
                     <i className='icon icon-icon_share'></i>
                 </a>

@@ -16,7 +16,6 @@ import useTime from '../../../../hooks/formatTime'
 import DetailCreator from '../atoms/DetailCreator/DetailCreator'
 import ReasonText from '../../../base/ReasonText/ReasonText'
 import DetailDes from '../atoms/DetailDes/DetailDes'
-import { useStyletron } from 'styletron-react'
 import './DetailBadge.less'
 import SwiperPagination from '../../../base/SwiperPagination/SwiperPagination'
 
@@ -69,7 +68,7 @@ function DetailBadge (props: DetailBadgeProps ) {
             <DetailHeader title={ lang['BadgeletDialog_title'] } onClose={ props.handleClose }/>
             <DetailCover src={ props.badge.image_url }></DetailCover>
             <DetailName> { props.badge.name } </DetailName>
-            <DetailCreator profile={ props.badge.sender }></DetailCreator>
+            <DetailCreator isGroup={ !!props.badge.group } profile={ props.badge.group || props.badge.sender }></DetailCreator>
 
 
             { badgelets.length > 0 ?
@@ -111,10 +110,12 @@ function DetailBadge (props: DetailBadgeProps ) {
                     </Swiper>
                 </div>
 
-                : <DetailScrollBox >
-                    <DetailDes>
-                        <ReasonText text={props.badge.content} />
-                    </DetailDes>
+                : <DetailScrollBox>
+                    { !! props.badge.content &&
+                        <DetailDes>
+                            <ReasonText text={props.badge.content} />
+                        </DetailDes>
+                    }
 
                     <DetailArea
                         title={ lang['BadgeDialog_Label_Token'] }

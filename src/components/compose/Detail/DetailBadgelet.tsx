@@ -119,16 +119,21 @@ function DetailBadgelet(props: DetailBadgeletProps ) {
 
             <DetailCover src={ badgelet.badge.image_url }></DetailCover>
             <DetailName> { badgelet.badge.name } </DetailName>
-            <DetailCreator profile={ badgelet.badge.group || badgelet.sender } />
+            <DetailCreator isGroup={ !!badgelet.badge.group } profile={ badgelet.badge.group || badgelet.sender } />
 
 
             <DetailScrollBox>
-                <DetailDes> <ReasonText text={badgelet.content}></ReasonText> </DetailDes>
+                {
+                    !!badgelet.content &&
+                    <DetailDes>
+                        <ReasonText text={badgelet.content}></ReasonText>
+                    </DetailDes>
+                }
 
                 <DetailArea
                     onClose={ props.handleClose }
                     title={ lang['BadgeDialog_Label_Issuees'] }
-                    content={ badgelet.receiver.domain! }
+                    content={ badgelet.receiver.domain!.split('.')[0] }
                     navigate={ `/profile/${badgelet.receiver.domain?.split('.')[0]}` }
                     image={ badgelet.receiver.image_url || defaultAvatar(badgelet.receiver.id) } />
 

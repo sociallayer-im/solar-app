@@ -109,12 +109,15 @@ function DetailInvite(props: DetailInviteProps ) {
             <DetailCover src={ group?.image_url || defaultAvatar(props.invite.group_id)}></DetailCover>
             <DetailName> { group?.username } </DetailName>
             {
-                !!group && <DetailCreator profile={ group }></DetailCreator>
+                !!group && <DetailCreator isGroup profile={ group }></DetailCreator>
             }
 
 
             <DetailScrollBox>
-                <DetailDes> <ReasonText text={props.invite.message} /></DetailDes>
+                { !!props.invite.message && <DetailDes>
+                    <ReasonText text={props.invite.message} />
+                </DetailDes>
+                }
 
                 <DetailArea
                     onClose={ props.handleClose }
