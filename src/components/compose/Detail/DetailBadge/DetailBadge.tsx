@@ -8,7 +8,7 @@ import solas, { Badge, Badgelet  } from '../../../../service/solas'
 import DetailCover from '../atoms/DetailCover'
 import DetailName from '../atoms/DetailName'
 import DetailArea from '../atoms/DetailArea'
-import AppButton, { BTN_KIND } from '../../../base/AppButton/AppButton'
+import AppButton, { BTN_KIND, BTN_SIZE } from '../../../base/AppButton/AppButton'
 import BtnGroup from '../../../base/BtnGroup/BtnGroup'
 import DetailScrollBox from '../atoms/DetailScrollBox/DetailScrollBox'
 import { useNavigate } from 'react-router-dom'
@@ -130,7 +130,7 @@ function DetailBadge (props: DetailBadgeProps ) {
 
             <BtnGroup>
                 { loginUserIsSender &&
-                    <AppButton onClick={ () => { handleIssue() } } kind={ BTN_KIND.primary }>
+                    <AppButton size={ BTN_SIZE.compact } onClick={ () => { handleIssue() } } kind={ BTN_KIND.primary }>
                         { lang['BadgeDialog_Btn_Issue'] }
                     </AppButton>
                 }

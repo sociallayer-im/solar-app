@@ -45,7 +45,7 @@ function SwiperPagination({ total, showNumber = 3 }: SwiperPaginationProps) {
                             setFirstClose(false)
                             setLeftAmount(newLeftAmount ? newLeftAmount - 1 : 0)
                         }, 300)
-                    }, 100)
+                    }, 300)
                 }
 
                 if (isFirstPage) {
@@ -87,7 +87,7 @@ function SwiperPagination({ total, showNumber = 3 }: SwiperPaginationProps) {
                             setTimeout(() => {
                                 setAnimate(false)
                             },300)
-                        }, 100)
+                        }, 300)
                     }, 0)
                 }
 
