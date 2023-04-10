@@ -32,7 +32,8 @@ function DetailPresend (props: DetailPresendProps ) {
     const { user } = useContext(UserContext)
     const { openConnectWalletDialog, showLoading, showToast, openDialog } = useContext(DialogsContext)
     const { defaultAvatar } = usePicture()
-    const [_, emitUpdate] = useEvent(EVENT.badgeletListUpdate)
+    const [_1, emitBadgeletListUpdate] = useEvent(EVENT.badgeletListUpdate)
+    const [_2, emitPresendListUpdate] = useEvent(EVENT.presendListUpdate)
     const [sender, setSender] = useState<Profile | null>(null)
     const [receivers, setReceivers] = useState<ProfileSimple[]>([])
     const [claimed, setClaimed] = useState(true)
@@ -81,7 +82,8 @@ function DetailPresend (props: DetailPresendProps ) {
                 auth_token: user.authToken || ''
             })
             unload()
-            emitUpdate(props.presend)
+            emitBadgeletListUpdate(props.presend)
+            emitPresendListUpdate(props.presend)
             showToast('Accept success')
             props.handleClose()
         } catch (e: any) {

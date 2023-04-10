@@ -1,11 +1,12 @@
 import {useContext, useEffect} from 'react'
 import CardPresend from '../../base/Cards/CardPresend'
-import solas, { Profile, Presend } from '../../../service/solas'
+import solas, { Profile } from '../../../service/solas'
 import ListWrapper from '../../base/ListWrapper'
 import Empty from '../../base/Empty'
 import LangContext from '../../provider/LangProvider/LangContext'
 import useScrollToLoad from '../../../hooks/scrollToLoad'
 import UserContext from '../../provider/UserProvider/UserContext'
+import useEvent, { EVENT } from '../../../hooks/globalEvent'
 
 interface ListUserPresendProps {
     profile: Profile,
@@ -15,6 +16,8 @@ interface ListUserPresendProps {
 function ListUserPresend ({ userType = 'user',  ...props }: ListUserPresendProps) {
     const { lang } = useContext(LangContext)
     const { user } = useContext(UserContext)
+    const [newPresend, _] = useEvent(EVENT.presendListUpdate)
+
     const getPresend = async (page: number) => {
         const queryProps = userType === 'user'
             ? { sender_id: props.profile.id, page, auth_token: user.authToken || undefined }
@@ -28,6 +31,12 @@ function ListUserPresend ({ userType = 'user',  ...props }: ListUserPresendProps
     useEffect(() => {
         refresh()
     }, [props.profile])
+
+    useEffect(() => {
+        if (newPresend) {
+            refresh()
+        }
+    }, [newPresend])
 
     return (
         <ListWrapper>
