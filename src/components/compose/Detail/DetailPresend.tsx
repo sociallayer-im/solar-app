@@ -35,6 +35,7 @@ function DetailPresend (props: DetailPresendProps ) {
     const [_, emitUpdate] = useEvent(EVENT.badgeletListUpdate)
     const [sender, setSender] = useState<Profile | null>(null)
     const [receivers, setReceivers] = useState<ProfileSimple[]>([])
+    const [claimed, setClaimed] = useState(true)
     const [acceptableAmount, setAcceptableAmount] = useState<number>(0)
     const [showQrcode, setShowQrcode] = useState(false)
     const formatTime = useTime()
@@ -50,10 +51,16 @@ function DetailPresend (props: DetailPresendProps ) {
                 id: props.presend.id,
                 auth_token: user.authToken || ''
             })
+
             const receiver = presendWithBadgelets.badgelets.map(item => {
                 return item.receiver
             })
 
+            const claimed = receiver.some(item => item.id === user.id)
+
+            console.log('hasClaim', claimed)
+
+            setClaimed(claimed)
             setReceivers(receiver)
             setAcceptableAmount(Math.min(20, receiver.length + props.presend.counter))
         }
@@ -63,7 +70,7 @@ function DetailPresend (props: DetailPresendProps ) {
     },[])
 
     const loginUserIsSender = user.id === sender?.id
-    const canAccept = props.presend.counter > 0
+    const canClaim = props.presend.counter > 0
 
     const handleAccept= async () => {
         const unload = showLoading()
@@ -89,16 +96,16 @@ function DetailPresend (props: DetailPresendProps ) {
     }
 
     const ActionBtns =  <>
-        { loginUserIsSender
-            && <AppButton onClick={ () => { toggleQRcode() } }>
-                { lang['BadgeDialog_Btn_share'] }</AppButton>
+        { loginUserIsSender && canClaim
+            && <AppButton special onClick={ () => { toggleQRcode() } }>
+                { lang['BadgeDialog_Btn_Issue'] }</AppButton>
         }
 
-        <AppButton
-            special
+        { canClaim && !claimed &&
+            <AppButton
             onClick={ () => { handleAccept() } }>
-            { canAccept ? lang['BadgeDialog_Btn_Accept'] : lang['BadgeDialog_Btn_None_Left'] }
-        </AppButton>
+            { lang['BadgeDialog_Btn_Accept'] }</AppButton>
+        }
     </>
 
     const LoginBtn = <AppButton

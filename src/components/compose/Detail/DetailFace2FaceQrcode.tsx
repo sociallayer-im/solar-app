@@ -41,8 +41,10 @@ function DetailFace2FaceQrcode(props: DetailFace2FaceQrcodeProps) {
             { !!presend &&
                 <>
                     <PresendQrcode presend={ presend }></PresendQrcode>
-                    <AppButton special style={ { marginTop: '20px' } } onClick={ () => { handleCopy() } }>
-                        { lang['IssueFinish_CopyLink'] }</AppButton>
+                    <AppButton special inline style={ { marginTop: '16px', width: '160px' } } onClick={ () => { handleCopy() } }>
+                        <i className='icon-copy' style={{marginRight: '10px'}}></i>
+                        <span>{ lang['IssueFinish_CopyLink'] }</span>
+                    </AppButton>
                 </>
             }
         </DetailWrapper>
