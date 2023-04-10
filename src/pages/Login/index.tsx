@@ -26,7 +26,14 @@ function Login () {
 
     useEffect(() => {
         if (user.domain) {
-            navigate(`/profile/${user.userName}`)
+            const fallBack = window.localStorage.getItem('fallback')
+
+            if (fallBack) {
+                window.localStorage.removeItem('fallback')
+                window.location.href = fallBack
+            } else {
+                navigate(`/profile/${user.userName}`)
+            }
         }
     }, [user.domain])
 

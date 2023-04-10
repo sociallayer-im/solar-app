@@ -33,6 +33,12 @@ function DialogConnectWallet (props: DialogConnectWalletProps) {
        },500)
     }
 
+    const handleConnectEmail = () => {
+        window.localStorage.setItem('fallback', window.location.href)
+        clean()
+        navigate('/login')
+    }
+
     return (
         <div className='dialog-connect-wallet'>
             {connectors.map((connector) => (
@@ -46,7 +52,7 @@ function DialogConnectWallet (props: DialogConnectWalletProps) {
                     </div>
                 </div>
             ))}
-            <div className='connect-item' onClick={ () => { clean(); navigate('/login') } }>
+            <div className='connect-item' onClick={ handleConnectEmail }>
                 <img src="/images/email.svg" alt="email"/>
                 <div className='connect-name'>Email</div>
                 <div className='connect-des'>{ lang['Login_alert'] }</div>

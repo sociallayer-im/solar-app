@@ -561,7 +561,7 @@ export async function getFollowings (userId: number): Promise<Profile[]>{
         throw new Error(res.data.message)
     }
 
-    return res.data.followings
+    return res.data.profiles
 }
 
 export interface IssueBatchProps {

@@ -22,7 +22,13 @@ function DetailFace2FaceQrcode(props: DetailFace2FaceQrcodeProps) {
 
     const handleCopy = () => {
         const link = `https://${window.location.host}/presend/${presend?.id}_${presend?.code || ''}`
-        copy(link)
+        const description = lang['IssueFinish_share']
+            .replace('#1',  user.domain!)
+            .replace('#2', presend?.badge.name || '')
+            .replace('#3', link)
+
+        copy(description)
+        props.handleClose()
         showToast('Copyed')
     }
 
