@@ -1,20 +1,14 @@
 import { useContext } from 'react'
-import {Badge} from "../../../service/solas";
-import langContext from "../../provider/LangProvider/LangContext";
+import {Badge} from '../../../service/solas'
+import langContext from '../../provider/LangProvider/LangContext'
+import useTime from '../../../hooks/formatTime'
 
 interface DetailPrefillBadgeProps {
     badge: Badge
 }
 function DetailPrefillBadge(props: DetailPrefillBadgeProps) {
     const { lang } = useContext(langContext)
-
-    const formatTime = (dateString: string) => {
-        const dateObject = new Date(dateString)
-        const year = dateObject.getFullYear()
-        const mon = dateObject.getMonth() + 1
-        const date = dateObject.getDate()
-        return `${year}.${mon}.${date}`
-    }
+    const formatTime = useTime()
 
     return (
         <div className='prefill-preview'>
