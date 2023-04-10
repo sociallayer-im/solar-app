@@ -135,7 +135,7 @@ function CreateBadgeNonPrefill() {
                                 value={ domain }
                                 errorMsg={ domainError }
                                 placeholder={ lang['MintBadge_Domain_Placeholder'] }
-                                endEnhancer={() => <span>{ enhancer }</span>}
+                                endEnhancer={() => <span style={{ fontSize: '13px' }}>.{user.userName}{ enhancer }</span>}
                                 onChange={ (e) => { setDomain(e.target.value.toLowerCase()) } } />
                             <div className='input-area-des' dangerouslySetInnerHTML={{__html: lang['MintBadge_Domain_Rule']}} />
                         </div>
