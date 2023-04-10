@@ -140,7 +140,7 @@ function Issue() {
     }
     const handleCopy = () => {
         copy(face2faceShareLink)
-        showToast('Copied')
+        // showToast('Copied')
     }
 
     return (

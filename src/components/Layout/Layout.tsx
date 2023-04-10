@@ -15,16 +15,14 @@ function Layout(props?: any) {
         display: 'flex',
         flexDirection: 'column' as const,
         overflow: 'hidden',
-        //height: `${windowHeight}px`
-        height: `100vh`
+        height: `${windowHeight}px`
     }
 
     const content = {
         width: '100%',
         flex: 1,
         overflow: 'auto',
-        // height: `${heightWithoutNav}px`
-        height: `calc(100vh - 48px)`
+        height: `${heightWithoutNav}px`
     }
 
     useEffect(() => {
