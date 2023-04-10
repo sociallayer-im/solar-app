@@ -88,7 +88,7 @@ function SwiperPagination({ total, showNumber = 3 }: SwiperPaginationProps) {
                                 setAnimate(false)
                             },300)
                         }, 300)
-                    }, 0)
+                    }, 100)
                 }
 
                 if (isLastPage) {
