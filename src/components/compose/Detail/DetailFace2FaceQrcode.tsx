@@ -29,7 +29,7 @@ function DetailFace2FaceQrcode(props: DetailFace2FaceQrcodeProps) {
 
         copy(description)
         props.handleClose()
-        showToast('Copyed')
+        showToast('Copied')
     }
 
     useEffect(() => {

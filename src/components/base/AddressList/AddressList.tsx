@@ -18,7 +18,7 @@ function AddressList({ selected = [], ...props }: AddressListProp) {
                             onClick={() => { !!props.onClick && props.onClick(item.domain!)} }>
                     <div className='left'>
                         <img src={item.image_url || defaultAvatar(item.id) } alt=""/>
-                        <span>{item.domain}</span>
+                        <span>{item.username}</span>
                     </div>
                     { (selected?.indexOf(item.domain!)) != -1 ? <i className='icon icon-selected'></i> : false }
                 </div>

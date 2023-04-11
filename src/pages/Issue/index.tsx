@@ -153,7 +153,7 @@ function Issue() {
                             <IssueTypeTabs activeKey={issueType}
                                            onChange={ (key) => { setIssueType(key.activeKey.toString()) } }>
 
-                                <Tab key='face2face' title={ lang['IssueBadge_Face_to_Face'] }>
+                                <Tab key='face2face' title={ lang['IssueBadge_By_QRcode'] }>
                                     {  face2facePresend
                                         ? <>
                                             <PresendQrcode presend={ face2facePresend } />

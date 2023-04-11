@@ -155,7 +155,7 @@ function CreateBadgeNonPrefill() {
                                    onClick={ () => { handleCreate() } }>
                             { presetAcceptor
                                 ? lang['MintBadge_Submit_To']([presetAcceptor.split('.')[0]])
-                                : lang['MintBadge_Submit']
+                                : lang['MintBadge_Next']
                             }
                         </AppButton>
                     </div>

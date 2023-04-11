@@ -75,7 +75,7 @@ function SelectCreator(props: SelectCreatorProp) {
         DropdownListItem: { component: forwardRef((props: { item: Profile | Group, onClick: () => {}}, _ref) => {
                 return <ListItem onClick={ props.onClick }>
                     <Avatar src={ props.item.image_url || defaultAvatar(props.item.id)} alt=""/>
-                    <Label>{ props.item.domain }</Label>
+                    <Label>{ props.item.username }</Label>
                     { props.item.is_group && <GroupMark>Group</GroupMark> }
                 </ListItem>
             })
@@ -83,7 +83,7 @@ function SelectCreator(props: SelectCreatorProp) {
         ValueContainer: { component: forwardRef((_props, _ref) => {
                 return <ListItem>
                     <Avatar src={ props.value!.image_url || defaultAvatar(props.value!.id)} alt=""/>
-                    <Label>{ props.value!.domain }</Label>
+                    <Label>{ props.value!.username }</Label>
                 </ListItem>
             })
         }
@@ -122,7 +122,7 @@ function SelectCreator(props: SelectCreatorProp) {
                 overrides={ overrides }
                 options={ list }
                 value={ [props.value] }
-                labelKey="domain"
+                labelKey="username"
                 valueKey="id"
                 searchable={false}
                 clearable={false}
