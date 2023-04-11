@@ -44,8 +44,8 @@ function SwiperPagination({ total, showNumber = 3 }: SwiperPaginationProps) {
                             setAnimate(false)
                             setFirstClose(false)
                             setLeftAmount(newLeftAmount ? newLeftAmount - 1 : 0)
-                        }, 300)
-                    }, 300)
+                        }, 200)
+                    }, 200)
                 }
 
                 if (isFirstPage) {
@@ -86,8 +86,8 @@ function SwiperPagination({ total, showNumber = 3 }: SwiperPaginationProps) {
                             setFirstClose(false)
                             setTimeout(() => {
                                 setAnimate(false)
-                            },300)
-                        }, 300)
+                            },200)
+                        }, 200)
                     }, 100)
                 }
 
@@ -119,22 +119,24 @@ function SwiperPagination({ total, showNumber = 3 }: SwiperPaginationProps) {
         slide()
     }, [currIndex])
 
-    return (
-        <div className= { animate ? 'app-swiper-pagination animate' : 'app-swiper-pagination'}
-             style={{width: (actualShowNumber * 20 + (actualShowNumber - 1) * 8) + 'px'}}>
-            {
-                new Array(leftAmount).fill('1').map((item, i) => {
-                    return <div key={i} className={ i===0 && firstClose ? 'swiper-pagination-dot close' : 'swiper-pagination-dot'} />
-                })
-            }
-            <div className='swiper-pagination-dot active' />
-            {
-                new Array(rightAmount).fill('1').map((item, i) => {
-                    return <div key={i} className='swiper-pagination-dot' />
-                })
-            }
-        </div>
-    )
+    return <>
+        { total > 1 &&
+            <div className= { animate ? 'app-swiper-pagination animate' : 'app-swiper-pagination'}
+                 style={{width: (actualShowNumber * 20 + (actualShowNumber - 1) * 8) + 'px'}}>
+                {
+                    new Array(leftAmount).fill('1').map((item, i) => {
+                        return <div key={i} className={ i===0 && firstClose ? 'swiper-pagination-dot close' : 'swiper-pagination-dot'} />
+                    })
+                }
+                <div className='swiper-pagination-dot active' />
+                {
+                    new Array(rightAmount).fill('1').map((item, i) => {
+                        return <div key={i} className='swiper-pagination-dot' />
+                    })
+                }
+            </div>
+        }
+    </>
 }
 
 export default SwiperPagination
