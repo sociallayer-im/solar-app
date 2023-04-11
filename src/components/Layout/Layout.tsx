@@ -22,7 +22,7 @@ function Layout(props?: any) {
     const content = {
         width: '100%',
         flex: 1,
-        overflow: 'auto',
+        overflowX: 'hidden',
         height: `${heightWithoutNav}px`,
         touchAction: 'pan-y'
     }
