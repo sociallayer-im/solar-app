@@ -116,6 +116,7 @@ function DetailPresend (props: DetailPresendProps ) {
         { lang['BadgeDialog_Btn_Login'] }
     </AppButton>
 
+    const swiperMaxHeight = window.innerHeight * 0.96 - 364
     return (
         <>
             { showQrcode
@@ -129,7 +130,7 @@ function DetailPresend (props: DetailPresendProps ) {
                             <DetailCreator isGroup={!!props.presend.badge.group } profile={ props.presend.badge.group || sender } />
                         }
 
-                        <DetailScrollBox>
+                        <DetailScrollBox style={{maxHeight: swiperMaxHeight - 60 + 'px', marginLeft: 0}}>
                             { !!props.presend.message &&
                                 <DetailDes>
                                     <ReasonText text={ props.presend.message } />

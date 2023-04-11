@@ -105,6 +105,7 @@ function DetailBadgelet(props: DetailBadgeletProps ) {
         </AppButton>
     </>
 
+    const swiperMaxHeight = window.innerHeight * 0.96 - 364
     return (
         <DetailWrapper>
             <DetailHeader
@@ -122,7 +123,7 @@ function DetailBadgelet(props: DetailBadgeletProps ) {
             <DetailCreator isGroup={ !!badgelet.badge.group } profile={ badgelet.badge.group || badgelet.sender } />
 
 
-            <DetailScrollBox>
+            <DetailScrollBox style={{maxHeight: swiperMaxHeight - 60 + 'px', marginLeft: 0}}>
                 {
                     !!badgelet.content &&
                     <DetailDes>

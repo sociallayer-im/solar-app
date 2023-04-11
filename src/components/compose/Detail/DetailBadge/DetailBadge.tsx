@@ -62,7 +62,7 @@ function DetailBadge (props: DetailBadgeProps ) {
     }
 
     const loginUserIsSender = user.id === props.badge.sender.id
-
+    const swiperMaxHeight = window.innerHeight * 0.96 - 364
     return (
         <DetailWrapper>
             <DetailHeader title={ lang['BadgeletDialog_title'] } onClose={ props.handleClose }/>
@@ -73,7 +73,7 @@ function DetailBadge (props: DetailBadgeProps ) {
 
             { badgelets.length > 0 ?
 
-                <div style={{ width:'100%'}}>
+                <div style={{width: '100%', overflow: 'hidden', maxHeight: swiperMaxHeight + 'px'}}>
                     <Swiper
                         ref={ swiper }
                         modules={ [Pagination] }
@@ -85,7 +85,7 @@ function DetailBadge (props: DetailBadgeProps ) {
                         {
                             badgelets.map((badgelet, index) =>
                                 <SwiperSlide className='badge-detail-swiper-slide' key={ badgelet.id }>
-                                    <DetailScrollBox>
+                                    <DetailScrollBox style={{maxHeight: swiperMaxHeight - 40 + 'px'}}>
                                         <DetailDes>
                                             <ReasonText text={badgelet.content} />
                                         </DetailDes>
@@ -110,7 +110,7 @@ function DetailBadge (props: DetailBadgeProps ) {
                     </Swiper>
                 </div>
 
-                : <DetailScrollBox>
+                : <DetailScrollBox style={{maxHeight: swiperMaxHeight - 60 + 'px', marginLeft: 0}}>
                     { !! props.badge.content &&
                         <DetailDes>
                             <ReasonText text={props.badge.content} />

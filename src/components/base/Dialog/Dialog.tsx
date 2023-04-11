@@ -32,6 +32,10 @@ function Dialog ({ position = '', ...props }: DialogProps) {
         sizeStyle.maxHeight =  props.minSize[1]
     }
 
+    if (position === 'bottom') {
+        sizeStyle.maxHeight = window.innerHeight + 'px'
+    }
+
     const close = () => {
         if (props.handleClose) {
             setContentClassName(contentClassName.replace(' active', ''))

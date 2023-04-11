@@ -10,7 +10,8 @@ function DetailWrapper (props: DetailWrapperProp) {
     const DetailWrapper = styled('div', () => {
         return {
             width: '100%',
-            height: '590px',
+            height: 'auto',
+            maxHeight:window.innerHeight * 0.96 + 'px',
             boxShadow: '0px 2px 18px rgba(0, 0, 0, 0.2)',
             borderRadius: '12px'
         }
@@ -24,7 +25,9 @@ function DetailWrapper (props: DetailWrapperProp) {
                 <div className='ball1'></div>
             </div>
             <div className='container'>
-                { props.children }
+               <div className='detail-flex-box'>
+                   { props.children }
+               </div>
             </div>
         </DetailWrapper>
     )

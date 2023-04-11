@@ -102,6 +102,7 @@ function DetailInvite(props: DetailInviteProps ) {
         </AppButton>
     </>
 
+    const swiperMaxHeight = window.innerHeight * 0.96 - 364
     return (
         <DetailWrapper>
             <DetailHeader title={lang['BadgeletDialog_invite_title']} onClose={ props.handleClose }/>
@@ -113,7 +114,7 @@ function DetailInvite(props: DetailInviteProps ) {
             }
 
 
-            <DetailScrollBox>
+            <DetailScrollBox style={{maxHeight: swiperMaxHeight - 60 + 'px', marginLeft: 0}}>
                 { !!props.invite.message && <DetailDes>
                     <ReasonText text={props.invite.message} />
                 </DetailDes>
