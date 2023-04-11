@@ -2,18 +2,21 @@ import LangContext from '../../provider/LangProvider/LangContext'
 import UserContext from '../../provider/UserProvider/UserContext'
 import DialogsContext from '../../provider/DialogProvider/DialogsContext'
 import { useContext, useEffect, useState } from 'react'
-import DetailWrapper from './atoms/DetailWrapper'
+import DetailWrapper from './atoms/DetailWrapper/DetailWrapper'
 import usePicture from '../../../hooks/pictrue'
 import DetailHeader from './atoms/DetailHeader'
 import DetailCover from './atoms/DetailCover'
 import DetailName from './atoms/DetailName'
-import DetailDes from './atoms/DetailDes'
+import DetailDes from './atoms/DetailDes/DetailDes'
 import DetailArea from './atoms/DetailArea'
 import AppButton, { BTN_KIND } from '../../base/AppButton/AppButton'
 import BtnGroup from '../../base/BtnGroup/BtnGroup'
 import solas, {Group, Invite, Profile } from '../../../service/solas'
 import useEvent, { EVENT } from '../../../hooks/globalEvent'
 import ReasonText from '../../base/ReasonText/ReasonText'
+import DetailScrollBox from './atoms/DetailScrollBox/DetailScrollBox'
+import DetailCreator from './atoms/DetailCreator/DetailCreator'
+import useTime from '../../../hooks/formatTime'
 
 
 export interface DetailInviteProps {
@@ -31,6 +34,7 @@ function DetailInvite(props: DetailInviteProps ) {
     const [group, setGroup,] = useState<Group | null>(null)
     const [receiver, setReceiver,] = useState<Profile | null>(null)
     const isReceiver= user.id === props.invite.receiver_id
+    const formatTime = useTime()
 
     useEffect(() => {
         async function getInfo () {
@@ -80,43 +84,54 @@ function DetailInvite(props: DetailInviteProps ) {
     }
 
     const LoginBtn = <AppButton
+        special
         onClick={ () => { openConnectWalletDialog() } }
         kind={ BTN_KIND.primary }>
         { lang['BadgeDialog_Btn_Login'] }
     </AppButton>
 
     const ActionBtns =  <>
-        <AppButton onClick={ () => { handleReject() }} >
-            { lang['BadgeDialog_Btn_Reject'] }
-        </AppButton>
         <AppButton
+            special
             kind={ BTN_KIND.primary }
             onClick={() => { handleAccept() }}>
             { lang['BadgeDialog_Btn_Accept'] }
         </AppButton>
+        <AppButton onClick={ () => { handleReject() }} >
+            { lang['BadgeDialog_Btn_Reject'] }
+        </AppButton>
     </>
 
+    const swiperMaxHeight = window.innerHeight - 320
     return (
         <DetailWrapper>
-            <DetailHeader onClose={ props.handleClose }/>
+            <DetailHeader title={lang['BadgeletDialog_invite_title']} onClose={ props.handleClose }/>
 
             <DetailCover src={ group?.image_url || defaultAvatar(props.invite.group_id)}></DetailCover>
             <DetailName> { group?.username } </DetailName>
-            <DetailDes> <ReasonText text={props.invite.message} /></DetailDes>
+            {
+                !!group && <DetailCreator isGroup profile={ group }></DetailCreator>
+            }
 
-            <DetailArea
-                onClose={ props.handleClose }
-                title={ lang['BadgeDialog_Label_Creator'] }
-                content={ group?.domain || '' }
-                navigate={ `/group/${group?.domain?.split('.')[0]}` }
-                image={ group?.image_url || defaultAvatar(props.invite.group_id) } />
 
-            <DetailArea
-                onClose={ props.handleClose }
-                title={ lang['BadgeDialog_Label_Issuees'] }
-                content={ receiver?.domain! }
-                navigate={ `/profile/${receiver?.username}` }
-                image={ receiver?.image_url || defaultAvatar(receiver?.id) } />
+            <DetailScrollBox style={{maxHeight: swiperMaxHeight - 60 + 'px', marginLeft: 0}}>
+                { !!props.invite.message && <DetailDes>
+                    <ReasonText text={props.invite.message} />
+                </DetailDes>
+                }
+
+                <DetailArea
+                    onClose={ props.handleClose }
+                    title={ lang['BadgeDialog_Label_Issuees'] }
+                    content={ receiver?.domain! }
+                    navigate={ `/profile/${receiver?.username}` }
+                    image={ receiver?.image_url || defaultAvatar(receiver?.id) } />
+
+                <DetailArea
+                    title={ lang['BadgeDialog_Label_Creat_Time'] }
+                    content={ formatTime(props.invite.created_at ) } />
+
+            </DetailScrollBox>
 
             <BtnGroup>
                 { !user.id && LoginBtn }

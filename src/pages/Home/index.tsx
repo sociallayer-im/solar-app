@@ -6,12 +6,16 @@ import UserContext from '../../components/provider/UserProvider/UserContext'
 import DialogsContext from '../../components/provider/DialogProvider/DialogsContext'
 import solas from '../../service/solas'
 import { useNavigate, useParams } from 'react-router-dom'
+import useIssueBadge from '../../hooks/useIssueBadge'
+import LangContext from '../../components/provider/LangProvider/LangContext'
 
 function Home () {
     const { user } = useContext( UserContext )
-    const { showBadgelet, showPresend, clean, openConnectWalletDialog, showInvite } = useContext( DialogsContext )
+    const { showBadgelet, showPresend, clean, openConnectWalletDialog, showInvite, showLoading } = useContext(DialogsContext)
     const navigate = useNavigate()
     const { badgeletId, presendId, groupId, inviteId } = useParams()
+    const startIssueBadge = useIssueBadge()
+    const { lang } = useContext(LangContext)
 
     useEffect(() => {
         async function showBadgeletDetail () {
@@ -53,19 +57,22 @@ function Home () {
         }
     },[])
 
-    const start = () => {
+    const start = async () => {
         if (user.userName) {
-            navigate(`/profile/${user.userName}`)
+            const unload = showLoading()
+            const badges = await solas.queryBadge({ sender_id: user.id!, page: 1 })
+            unload()
+            startIssueBadge({ badges })
         } else {
             openConnectWalletDialog()
         }
     }
 
     useEffect(() => {
-        if (user.userName) {
-            navigate(`/profile/${user.userName}`)
+        if (user.domain && user.userName && (!badgeletId && !presendId && !inviteId)) {
+            navigate(`/profile/${user.userName}`, { replace: true })
         }
-    },[user.userName])
+    },[user.userName, user.userName, badgeletId, presendId, inviteId])
 
     return <Layout>
         <div className='home-page'>
@@ -75,10 +82,10 @@ function Home () {
             <div className='wrapper'>
                 <img className='cover' src="/images/home/home_1.png" alt=""/>
                 <div className='text'>
-                    <h1>Create a badge </h1>
-                    <p>Join now to start creating badges, describing your achievements, and awarding them to deserving individuals.</p>
+                    <h1>{ lang['Home_Page_New_Title'] }</h1>
+                    <p>{ lang['Home_Page_New_Des'] }</p>
                     <AppButton onClick={ start }
-                        kind={ BTN_KIND.primary }>Create your badge</AppButton>
+                        kind={ BTN_KIND.primary } special>{ lang['Home_Page_New_Btn'] }</AppButton>
                 </div>
             </div>
         </div>

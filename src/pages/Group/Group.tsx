@@ -17,8 +17,8 @@ import ListUserBadgelet from '../../components/compose/ListUserBadgelet'
 import ListGroupInvitep from '../../components/compose/ListGroupInvite'
 import ListGroupMember from '../../components/compose/ListGroupMember'
 import UserContext from '../../components/provider/UserProvider/UserContext'
-import { useNavigate } from 'react-router-dom'
 import { Overflow } from 'baseui/icon'
+import useIssueBadge from '../../hooks/useIssueBadge'
 
 
 function GroupPage () {
@@ -28,7 +28,7 @@ function GroupPage () {
     const { lang } = useContext(LangContext)
     const { user } = useContext(UserContext)
     const [selectedTab, setSelectedTab] = useState('Minted')
-    const navigate = useNavigate()
+    const startIssue = useIssueBadge({ groupName: groupname})
 
     useEffect(() => {
         const getProfile  =  async function () {
@@ -46,11 +46,17 @@ function GroupPage () {
         getProfile()
     },[groupname])
 
-    const handleMintOrIssue = () => {
-        navigate(user.id === profile?.group_owner_id
-            ? `/badge-create?group=${profile.id}`
-            : `/badge-create?to=${profile?.domain}`)
+    const handleMintOrIssue = async () => {
+        const unload = showLoading()
+        const badges = await solas.queryBadge({ group_id: profile!.id!, page: 1 })
+        unload()
+
+        user.id === profile?.group_owner_id
+            ? startIssue({ badges })
+            : startIssue({ badges, to: profile?.domain || ''})
     }
+
+    // 卸载组件
 
     const groupOption = () => {
         const style = { cursor: 'pointer' }

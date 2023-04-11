@@ -27,7 +27,11 @@ const RootWithStyle = withStyle(StyledRoot, (props) => {
         borderRightWidth: '1px',
         borderTopWidth: '1px',
         borderBottomWidth: '1px',
-        fontSize: '12px!important'
+        fontSize: '12px!important',
+        borderBottomRightRadius: '16px',
+        borderBottomLeftRadius: '16px',
+        borderTopLeftRadius: '16px',
+        borderTopRightRadius: '16px'
     }
 })
 

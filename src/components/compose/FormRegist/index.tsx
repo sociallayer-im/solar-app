@@ -91,7 +91,7 @@ function RegistForm (props: RegistFormProps) {
             errorMsg={ error }
             value={ domain }
             readOnly = { loading }
-            onChange={ (e) => { setDomain(e.target.value) } }
+            onChange={ (e) => { setDomain(e.target.value.toLowerCase()) } }
             endEnhancer={() => <span>{ domainEndEnhancer }</span> }
             placeholder={ lang['Regist_Input_Placeholder'] } />
         <div className={css({ marginTop: '34px' })}>

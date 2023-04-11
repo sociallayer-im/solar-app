@@ -1,18 +1,19 @@
-import { ReactNode } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import './dialog.less'
 
 export interface DialogProps {
-    children?: ReactNode
+    children?: (close: () => any) => ReactNode
     size?: (number | string)[]
     maxSize?: string[]
     minSize?: string[]
     noShell?: boolean
     handleClose?: (...rest: any[]) => any
+    position?: 'center' | 'bottom' | ''
 }
 
-
-function Dialog (props: DialogProps) {
+function Dialog ({ position = '', ...props }: DialogProps) {
     const { children } = props
+    const [contentClassName, setContentClassName] = useState('dialog-content' + ' ' + position)
 
     let sizeStyle = { width: 'auto', height: 'auto', maxWidth: 'initial', maxHeight: 'initial', minWidth:'initial',  minHeight: 'initial' }
 
@@ -31,16 +32,33 @@ function Dialog (props: DialogProps) {
         sizeStyle.maxHeight =  props.minSize[1]
     }
 
+    if (position === 'bottom') {
+        sizeStyle.maxHeight = window.innerHeight + 'px'
+    }
+
     const close = () => {
         if (props.handleClose) {
-            props.handleClose()
+            setContentClassName(contentClassName.replace(' active', ''))
+            setTimeout(() => {
+               props.handleClose!()
+            }, 200)
         }
     }
 
-    return (<div className='dialog'>
+    useEffect(() => {
+        if (position) {
+            setTimeout(()=> {
+                setContentClassName(contentClassName + ' active')
+            }, 200)
+        }
+    }, [])
+
+    const height = window.innerHeight
+
+    return (<div className='dialog' style={{height: `${height}px`}}>
         <div className={ `dialog-shell ${ props.noShell ? 'light': '' }` } onClick={ close }></div>
-        <div className='dialog-content'  style={ sizeStyle }>
-            { children }
+        <div className={ contentClassName }  style={ sizeStyle }>
+            { children && children(close) }
         </div>
     </div>)
 }

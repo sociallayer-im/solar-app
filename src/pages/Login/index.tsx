@@ -8,12 +8,14 @@ import solas, { EmailLoginRes } from '../../service/solas'
 import UserContext from '../../components/provider/UserProvider/UserContext'
 import { setAuth } from '../../utils/authStorage'
 import { useNavigate } from 'react-router-dom'
+import usePageHeight from '../../hooks/pageHeight'
 
 function Login () {
     const { lang } = useContext(LangContext)
     const [loginEmail, setLoginEmail] = useState('')
     const { setUser, user, emailLogin } = useContext(UserContext)
     const navigate = useNavigate()
+    const { heightWithoutNav } = usePageHeight()
 
     const setEmailAuth = async (loginRes: EmailLoginRes) => {
         window.localStorage.setItem('lastLoginType', 'email')
@@ -24,14 +26,21 @@ function Login () {
 
     useEffect(() => {
         if (user.domain) {
-            navigate(`/profile/${user.userName}`)
+            const fallBack = window.localStorage.getItem('fallback')
+
+            if (fallBack) {
+                window.localStorage.removeItem('fallback')
+                window.location.href = fallBack
+            } else {
+                navigate(`/profile/${user.userName}`)
+            }
         }
     }, [user.domain])
 
     return <Layout>
         <div className='login-page'>
             <div className='login-page-bg'></div>
-            <div className='login-page-wrapper'>
+            <div className='login-page-wrapper' style={{height: `${heightWithoutNav}px`}}>
                 { !loginEmail ?
                     <div className='login-page-content' >
                         <div className='title'>{ lang['Login_Title'] }</div>

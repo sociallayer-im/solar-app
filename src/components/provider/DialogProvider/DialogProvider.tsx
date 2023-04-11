@@ -8,9 +8,9 @@ import DialogConnectWallet from '../../base/Dialog/DialogConnectWallet/DialogCon
 import ToastLoading from '../../base/ToastLoading'
 import DetailBadgelet from '../../compose/Detail/DetailBadgelet'
 import DetailPresend from '../../compose/Detail/DetailPresend'
-import DetailBadge from '../../compose/Detail/DetailBadge'
+import DetailBadge from '../../compose/Detail/DetailBadge/DetailBadge'
 import DialogAvatar from '../../base/Dialog/DialogAvatar'
-import DialogCropper from '../../base/Dialog/DialogCropper'
+import DialogCropper from '../../base/Dialog/DialogCropper/DialogCropper'
 import DetailInvite from '../../compose/Detail/DetailInvite'
 import DialogGroupSetting from '../../base/Dialog/DialogGroupSetting/DialogGroupSetting'
 
@@ -21,6 +21,12 @@ export interface DialogProviderProps {
 interface Dialog {
     id: number,
     content: () => ReactNode
+}
+
+export interface OpenDialogProps {
+    content: (close: any) => ReactNode,
+    size?: (number | string)[],
+    position?: 'bottom' | 'center'
 }
 
 function genID () {
@@ -59,7 +65,7 @@ function DialogProvider (props: DialogProviderProps) {
         setDialogsGroup(copy)
     }
 
-    const openDialog = (openDialogProps: { content: (close: any) => ReactNode, size?: number[] } ) => {
+    const openDialog = (openDialogProps: OpenDialogProps ) => {
         const id = genID()
         dialogsGroup.dialogs.push({
             id: id,
@@ -71,12 +77,13 @@ function DialogProvider (props: DialogProviderProps) {
                 const props = {
                     key: id.toString(),
                     size: openDialogProps.size || [320, 450],
+                    position: openDialogProps.position || 'center' as const,
                     handleClose: close
                 }
 
                 return (
                     <Dialog {...props} >
-                        { openDialogProps.content(close) }
+                        { (close) => openDialogProps.content(close) }
                     </Dialog>
                 )
             }
@@ -96,12 +103,13 @@ function DialogProvider (props: DialogProviderProps) {
                 const props = {
                     key: id.toString(),
                     size: [320, 450],
-                    handleClose: close
+                    handleClose: close,
+                    position: 'bottom' as const
                 }
 
                 return (
                     <Dialog {...props} >
-                        <DialogConnectWallet  handleClose={close} />
+                        { (close) => <DialogConnectWallet  handleClose={close} />}
                     </Dialog>
                 )
             }
@@ -123,7 +131,7 @@ function DialogProvider (props: DialogProviderProps) {
 
                 return (
                     <Dialog {...props} >
-                        <ToastLoading />
+                        { (close) => <ToastLoading /> }
                     </Dialog>
                 )
             }
@@ -156,7 +164,7 @@ function DialogProvider (props: DialogProviderProps) {
 
                 return (
                     <Dialog { ...props } >
-                        <Toast text={ text }></Toast>
+                        { (close) => <Toast text={ text }></Toast> }
                     </Dialog>
                 )
             }
@@ -181,16 +189,6 @@ function DialogProvider (props: DialogProviderProps) {
                     closeDialogByID(id)
                 }
 
-                if (props.onCancel) {
-                    const propsClose = props.onCancel
-                    props.onCancel = () => {
-                        propsClose()
-                        close()
-                    }
-                } else {
-                    props.onCancel = close
-                }
-
                 const dialogProps = {
                     key: id.toString(),
                     size: [340, 'auto'],
@@ -199,7 +197,8 @@ function DialogProvider (props: DialogProviderProps) {
 
                 return (
                     <Dialog { ...dialogProps } >
-                        <DialogConfirm { ...props } />
+                        { (close) => <DialogConfirm { ...props }
+                                                    onCancel={ ()=> { close(); props.onCancel &&  props.onCancel()} }/> }
                     </Dialog>
                 )
             }
@@ -218,13 +217,14 @@ function DialogProvider (props: DialogProviderProps) {
 
                 const dialogProps = {
                     key: id.toString(),
-                    size: [340, 'auto'],
-                    handleClose: close
+                    size: [460, 'auto'],
+                    handleClose: close,
+                    position: 'bottom' as const
                 }
 
                 return (
                     <Dialog { ...dialogProps } >
-                        <DetailBadgelet badgelet={ props } handleClose={ close } />
+                        { (close) => <DetailBadgelet badgelet={ props } handleClose={ close } /> }
                     </Dialog>
                 )
             }
@@ -243,13 +243,14 @@ function DialogProvider (props: DialogProviderProps) {
 
                 const dialogProps = {
                     key: id.toString(),
-                    size: [340, 'auto'],
-                    handleClose: close
+                    size: [460, 'auto'],
+                    handleClose: close,
+                    position: 'bottom' as const
                 }
 
                 return (
                     <Dialog { ...dialogProps } >
-                        <DetailInvite invite={ props } handleClose={ close } />
+                        { (close) =>  <DetailInvite invite={ props } handleClose={ close } /> }
                     </Dialog>
                 )
             }
@@ -268,13 +269,14 @@ function DialogProvider (props: DialogProviderProps) {
 
                 const dialogProps = {
                     key: id.toString(),
-                    size: [340, '600px'],
-                    handleClose: close
+                    size: [460, 'auto'],
+                    handleClose: close,
+                    position: 'bottom' as const
                 }
 
                 return (
                     <Dialog { ...dialogProps } >
-                        <DetailPresend presend={ props } code={ code } handleClose={ close } />
+                        { (close) => <DetailPresend presend={ props } code={ code } handleClose={ close } /> }
                     </Dialog>
                 )
             }
@@ -293,13 +295,14 @@ function DialogProvider (props: DialogProviderProps) {
 
                 const dialogProps = {
                     key: id.toString(),
-                    size: ['100%', 'auto'],
-                    handleClose: close
+                    size: [460, 'auto'],
+                    handleClose: close,
+                    position: 'bottom' as const
                 }
 
                 return (
                     <Dialog { ...dialogProps } >
-                        <DetailBadge badge={ props } handleClose={ close } />
+                        { (close) => <DetailBadge badge={ props } handleClose={ close } /> }
                     </Dialog>
                 )
             }
@@ -323,7 +326,7 @@ function DialogProvider (props: DialogProviderProps) {
 
                 return (
                     <Dialog { ...dialogProps } >
-                        <DialogAvatar profile={ props } handleClose={ close } />
+                        { (transitionClose) => <DialogAvatar profile={ props } handleClose={ close } /> }
                     </Dialog>
                 )
             }
@@ -342,15 +345,15 @@ function DialogProvider (props: DialogProviderProps) {
 
                 const dialogProps = {
                     key: id.toString(),
-                    size: ['100%', '100%'],
+                    size: ['343px', '388px'],
                 }
 
                 return (
                     <Dialog { ...dialogProps } >
-                        <DialogCropper
+                        { () => <DialogCropper
                             imgURL={ props.imgURL }
                             handleClose={ close }
-                            handleConfirm={props.onConfirm} />
+                            handleConfirm={props.onConfirm} /> }
                     </Dialog>
                 )
             }
@@ -374,7 +377,7 @@ function DialogProvider (props: DialogProviderProps) {
 
                 return (
                     <Dialog { ...dialogProps } >
-                        <DialogGroupSetting group={group} handleClose={ close }/>
+                        { (close) => <DialogGroupSetting group={group} handleClose={ close }/> }
                     </Dialog>
                 )
             }

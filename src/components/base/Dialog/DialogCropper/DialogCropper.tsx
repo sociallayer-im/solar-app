@@ -1,13 +1,12 @@
-import {useNavigate} from 'react-router-dom'
 import {useStyletron} from 'baseui'
 import {useState, useContext, useEffect, useRef} from 'react'
-import { Profile } from '../../../service/solas'
-import usePicture from '../../../hooks/pictrue'
 import { Delete } from 'baseui/icon'
-import langContext from '../../provider/LangProvider/LangContext'
+import langContext from '../../../provider/LangProvider/LangContext'
 import Cropper, { ReactCropperElement } from 'react-cropper'
 import 'cropperjs/dist/cropper.css'
-import AppButton, { BTN_KIND } from '../AppButton/AppButton'
+import './DialogCropper.less'
+import AppButton, { BTN_KIND, BTN_SIZE } from '../../AppButton/AppButton'
+import AppSlider from '../../AppSlider/AppSlider'
 
 export interface DialogCropperProps {
     imgURL: string
@@ -19,7 +18,9 @@ function DialogCropper(props: DialogCropperProps) {
     const [css] = useStyletron()
     const { lang } = useContext(langContext)
     const cropperRef = useRef<ReactCropperElement>(null);
-    const cropBoxInitWidth = window.innerWidth > 450 ?  316 : window.innerWidth
+    const cropBoxInitWidth = 216
+    const [scale, setScale] = useState([1])
+    const [initScale, setInitScale] = useState(1)
 
     const setPosition = () => {
         const cropper = cropperRef.current?.cropper
@@ -28,6 +29,8 @@ function DialogCropper(props: DialogCropperProps) {
         img.onload = () => {
             const isVertical = img.width < img.height
             const ration = cropBoxInitWidth / img.height
+            setScale([ration])
+            setInitScale(ration)
             if (!isVertical) {
                 cropper!.zoomTo(ration)
             }
@@ -69,32 +72,26 @@ function DialogCropper(props: DialogCropperProps) {
         })
     }
 
-    const style = {
-        wrapper: {
-            width: '100%',
-            height: '100%',
-            background: '#fff',
-            position: 'relative' as const
-        },
-        btnGroup: {
-            position: 'absolute' as const,
-            left: '0',
-            width: '100%',
-            height: '10px',
-            display: 'flex',
-            bottom: (window.innerHeight - cropBoxInitWidth)  / 2 + 38 + 'px'
-        },
-        btn: {
-            marginLeft: '10px',
-            marginRight: '10px',
-            height: '40px'
+    useEffect(() => {
+        if (scale) {
+            console.log('scale', scale)
+            setTimeout(()=> {
+                const cropper = cropperRef.current?.cropper
+                cropper && cropper!.zoomTo(scale[0])
+            }, 100)
         }
-    }
+    }, [scale])
 
-    return (<div className={css(style.wrapper)}>
+    return (<div className='dialog-cropper'>
+        <div className='dialog-title'>
+            <span>{ lang['Cropper_Dialog_Title'] }</span>
+            <div className='close-dialog-btn' onClick={ props.handleClose }>
+                <Delete title={'Close'} size={20}/>
+            </div>
+        </div>
         <Cropper
             src={ props.imgURL }
-            style={{ height: "100%", width: "100%" }}
+            style={{ height: "216px", width: "311px", marginBottom: '12px' }}
             aspectRatio={1}
             guides={false}
             ref={cropperRef}
@@ -111,15 +108,11 @@ function DialogCropper(props: DialogCropperProps) {
                 setPosition()
             }}
         />
-        <div className={css(style.btnGroup)}>
-            <AppButton style={ style.btn }
-                       onClick={() => { props.handleClose() }}>
-                { lang['Search_Cancel'] }
-            </AppButton>
-            <AppButton style={ style.btn }
-                       onClick={() => { confirm() } }
-                       kind={ BTN_KIND.primary }>
-                { lang['Regist_Confirm'] }
+        <AppSlider onChange={setScale} step={0.1} value={scale} range={1}/>
+        <div className='btns'>
+            <AppButton onClick={() => { confirm() }}
+                       kind={ BTN_KIND.primary } special size={ BTN_SIZE.compact }>
+                { lang['Cropper_Dialog_Btn'] }
             </AppButton>
         </div>
     </div>)

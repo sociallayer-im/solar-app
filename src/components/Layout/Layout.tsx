@@ -1,13 +1,14 @@
 import PageHeader from '../compose/PageHeader'
-import { useStyletron } from 'baseui'
-import {useEffect, useState} from "react";
+
+import { useStyletron, styled } from 'baseui'
+import {useEffect, useState} from 'react'
+import usePageHeight from '../../hooks/pageHeight'
 
 
 
 function Layout(props?: any) {
     const [css] = useStyletron()
-    const [windowHeight, setWindowHeight] = useState(window.innerHeight)
-    const innerHeight = window.innerHeight
+    const { windowHeight, heightWithoutNav } = usePageHeight()
 
     const wrapper = {
         width: '100%',
@@ -15,22 +16,26 @@ function Layout(props?: any) {
         display: 'flex',
         flexDirection: 'column' as const,
         overflow: 'hidden',
-        height: `${innerHeight}px`
+        height: `${windowHeight}px`
     }
-    const content = {
+
+    const content: any = {
         width: '100%',
         flex: 1,
-        overflow: 'auto'
+        overflowX: 'hidden',
+        height: `${heightWithoutNav}px`,
+        touchAction: 'pan-y' as const
     }
 
     useEffect(() => {
         const watchSoftKeyboard = () => {
-            setWindowHeight(window.innerHeight)
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0
+            window.scroll(0, scrollTop)
         }
 
-        window.addEventListener('resize', watchSoftKeyboard)
+        window.addEventListener('focusout', watchSoftKeyboard)
 
-        return () => { window.removeEventListener('resize', watchSoftKeyboard) }
+        return () => { window.removeEventListener('focusout', watchSoftKeyboard) }
     }, [])
 
     return (

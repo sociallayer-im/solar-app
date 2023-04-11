@@ -3,9 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://js.pusher.com/8.0.1/pusher.min.js"></script>
-    <script defer data-domain="sociallayer.im" src="/analyse/plausible.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <script src="/jslib/pusher.min.js" async></script>
+    <script src="/jslib/trackjs.min.js" async></script>
     <title>Sociallayer</title>
     <script>
       window.global = window
@@ -14,14 +15,5 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-      <script src="/analyse/t.js"></script>
-      <script>
-          window.TrackJS && TrackJS.install({
-              token: "060b36e578af48159fdaca247b903919",
-              application: "sola",
-              console: { error: false }
-              // for more configuration options, see https://docs.trackjs.com
-          });
-      </script>
   </body>
 </html>

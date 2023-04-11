@@ -1,51 +1,78 @@
-import { useNavigate,  useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import { useState, useContext, useEffect } from 'react'
-import solas, { Badgelet, PresendWithBadgelets, Invite, Group } from '../../service/solas'
+import solas, { Group, Profile, ProfileSimple } from '../../service/solas'
 import Layout from '../../components/Layout/Layout'
 import LangContext from '../../components/provider/LangProvider/LangContext'
-import './IssueSuccess.less'
+import './SendSuccess.less'
 import UserContext from '../../components/provider/UserProvider/UserContext'
 import copy from '../../utils/copy'
-import PresendSussess from './PresendSuccess'
-import IssueSuccess from './IssueSuccess'
-import InviteSuccess from './InviteSuccess'
+import PageBack from '../../components/base/PageBack'
+import SendSuccessCard, { Info } from '../../components/compose/SendSuccessCard/SendSuccessCard'
+import usePicture from '../../hooks/pictrue'
+import AppButton, { BTN_SIZE } from '../../components/base/AppButton/AppButton'
+import usePageHeight from '../../hooks/pageHeight'
+
+//AppSwiper deps
+import { Swiper, SwiperSlide } from 'swiper/react'
+import 'swiper/css'
+import 'swiper/css/pagination'
+
 
 function IssueSuccessPage () {
-    const navigate = useNavigate()
     const [searchParams, _] = useSearchParams()
-    const [badgelet, setBadgelet] = useState<Badgelet | null>(null)
-    const [presend, setpresend] = useState<PresendWithBadgelets | null>(null)
-    const [invite, setInvite] = useState<Invite | null>(null)
-    const [inviteGroup, setInviteGroup] = useState<Group | null>(null)
+    const [info, setInfo] = useState<Info | null>(null)
+    const [sender, setSender] = useState<Profile| ProfileSimple | Group | null>(null)
     const [desText, setDesText] = useState('')
+    const [presendCode, setPresnedCode] = useState('')
     const { lang } =  useContext(LangContext)
     const { user } =  useContext(UserContext)
+    const { defaultAvatar } =  usePicture()
+    const { heightWithoutNav } = usePageHeight()
 
+    // presend成功传参
     const presendId = searchParams.get('presend')
 
+    // 颁发成功传参
     const badgeletId = searchParams.get('badgelet')
-    const acceptAmount = searchParams.get('amount')
 
+    // 邀请成功传参
     const inviteId = searchParams.get('invite')
     const groupId = searchParams.get('group')
+
+    const issueType = inviteId
+        ? 'invite'
+        : presendId
+            ? 'presend'
+            : 'badgelet'
 
 
     useEffect(() => {
         async function fetchInfo () {
             if (badgeletId) {
                 const badgeletDetail = await solas.queryBadgeletDetail({ id: Number(badgeletId) })
-                if (Number(acceptAmount) > 1) {
-                    setDesText(lang['IssueFinish_IssuedToMany']([badgeletDetail.receiver.domain, Number(acceptAmount) - 1]))
-                } else {
-                    setDesText(lang['IssueFinish_IssuedToOne']([badgeletDetail.receiver.domain]))
-                }
 
-                setBadgelet(badgeletDetail)
+                setSender(badgeletDetail.sender)
+                setInfo({
+                    content: badgeletDetail.content,
+                    name: badgeletDetail.badge.name,
+                    cover: badgeletDetail.badge.image_url,
+                })
             }
 
             if (presendId) {
                 const presendDetail = await solas.queryPresendDetail({ id: Number(presendId), auth_token: user.authToken || '' })
-                setpresend(presendDetail)
+                const sender = await solas.getProfile({ id: presendDetail.sender_id })
+
+
+                if (presendDetail.code) {
+                    setPresnedCode(presendDetail.code)
+                }
+                setSender(sender)
+                setInfo({
+                    content: presendDetail.message,
+                    name: presendDetail.badge.name,
+                    cover: presendDetail.badge.image_url,
+                })
             }
 
             if (inviteId && groupId) {
@@ -58,16 +85,16 @@ function IssueSuccessPage () {
                 const group = await solas.queryGroupDetail(Number(groupId))
                 if (!group) return
 
-                if (Number(acceptAmount) > 1) {
-                    setDesText(lang['IssueFinish_IssuedToMany']([receiver.domain, Number(acceptAmount) - 1]))
-                } else {
-                    setDesText(lang['IssueFinish_IssuedToOne']([receiver.domain]))
-                }
 
-                setInviteGroup(group)
-                setInvite(inviteDetail)
+                setSender(group)
+                setInfo({
+                    content: inviteDetail.message,
+                    name: group.username,
+                    cover: group.image_url || defaultAvatar(group.id) ,
+                })
             }
         }
+
         fetchInfo()
     }, [user.authToken])
 
@@ -81,73 +108,78 @@ function IssueSuccessPage () {
 
         if (presendId) {
             path = `${base}/presend/${presendId}`
+            if (presendCode) {
+                path = path + '_' + presendCode
+            }
         }
 
-        if (inviteId && inviteGroup) {
-            path = `${base}/invite/${inviteGroup.id}/${inviteId}`
+        if (inviteId && groupId) {
+            path = `${base}/invite/${groupId}/${inviteId}`
         }
 
         return path
-    }
-
-    const whatsAppShare = () => {
-        const text = lang['WhatsApp_Share']([
-            user.domain,
-            badgelet?.badge.title,
-            genShareLink()
-        ])
-        const decodeText = encodeURIComponent(text)
-        window.open(`https://wa.me/?text=${decodeText}`)
-    }
-
-    const systemShare = () => {
-        if (navigator.share) {
-            const shareUrl = genShareLink()
-            const text = lang['WhatsApp_Share']([
-                user.domain,
-                badgelet?.badge.title,
-                shareUrl
-            ])
-            navigator.share({
-                title: 'Social Layer',
-                url: shareUrl,
-                text: text
-            })
-        }
     }
 
     const handleCopy = () => {
         const shareUrl = genShareLink()
         const link = lang['IssueFinish_share']
             .replace('#1',  user.domain!)
-            .replace('#2', badgelet?.badge.title || '')
+            .replace('#2', info?.name || '')
             .replace('#3', shareUrl)
 
         copy(link)
     }
 
+    const themes = [
+        '/images/share_card/share_bg_1.png'
+    ]
+
     return (
         <Layout>
-                <div className='issue-success'>
-                    { !!badgelet && <IssueSuccess
-                        desText={desText}
-                        systemShare={ () => { systemShare() }}
-                        whatsAppShare={ () => { whatsAppShare() }}
-                        handleCopy={ () => { handleCopy() }}
-                        badgelet={ badgelet }
-                    ></IssueSuccess> }
-
-                    { !!invite && <InviteSuccess
-                        desText={desText}
-                        systemShare={ () => { systemShare() }}
-                        whatsAppShare={ () => { whatsAppShare() }}
-                        handleCopy={ () => { handleCopy() }}
-                        group={ inviteGroup! }
-                    ></InviteSuccess> }
-
-                    { !!presend && <PresendSussess presend={ presend }></PresendSussess> }
+            <div className='send-success' style={{minHeight: `${heightWithoutNav}px`}}>
+                <div className='center-box header'>
+                    <PageBack backBtnLabel={ lang['Page_Back_Done'] } title={ lang['IssueFinish_Title'] } to={`/profile/${user.userName}`} />
                 </div>
-
+                <div className='background'>
+                    <div className='ball1'></div>
+                    <div className='ball2'></div>
+                    <div className='ball3'></div>
+                </div>
+                <div className='cards'>
+                    { !!info &&  !!sender &&
+                        <Swiper
+                            onSlideChange={(swiper) => {
+                                console.log(swiper.activeIndex)
+                            }}
+                            spaceBetween={ 16 }
+                            freeMode
+                            centeredSlides
+                            slidesPerView={'auto'} >
+                            {
+                                themes.map(item =>  <SwiperSlide key={item} style={{width: '335px', height: '456px'}}>
+                                    <SendSuccessCard
+                                        bg={ item }
+                                        shareLink={ genShareLink() }
+                                        type={ issueType }
+                                        info={ info }
+                                        sender={sender} />
+                                </SwiperSlide>)
+                            }
+                        </Swiper>
+                    }
+                </div>
+                <div className='center-box actions'>
+                    <div className='text1'>{ lang['IssueFinish_Screenshot'] }</div>
+                    <div className='text2'>{ lang['IssueFinish_Screenshot_Or'] }</div>
+                    <AppButton inline
+                               size={ BTN_SIZE.compact }
+                               style={{background: '#fff'}}
+                               onClick={ handleCopy }>
+                        <i className='icon-copy'></i>
+                        <span>{ lang['IssueFinish_CopyLink'] }</span>
+                    </AppButton>
+                </div>
+            </div>
         </Layout>
     )
 }

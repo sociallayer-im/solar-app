@@ -1,9 +1,10 @@
 .home-page {
   width: 100%;
   position: relative;
-  min-height: calc(100vh - var(--height-nav));
   background: #F8F9F8;
-  overflow: hidden;
+  height: 100%;
+  overflow-x: hidden;
+  touch-action: pan-y;
 
   .circle-1 {
     position: absolute;
@@ -92,7 +93,7 @@
   }
 }
 
-@media (min-width: 450px) {
+@media (min-width: 660px) {
   .home-page {
     display: flex;
     flex-flow: column nowrap;

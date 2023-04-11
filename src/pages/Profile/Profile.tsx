@@ -17,6 +17,7 @@ import ListUserBadgelet from '../../components/compose/ListUserBadgelet'
 import ListUserGroup from '../../components/compose/ListUserGroup'
 import UserContext from '../../components/provider/UserProvider/UserContext'
 import { useNavigate } from 'react-router-dom'
+import useIssueBadge from '../../hooks/useIssueBadge'
 
 
 function ProfilePage () {
@@ -25,8 +26,9 @@ function ProfilePage () {
     const { showLoading } = useContext(DialogsContext)
     const { lang } = useContext(LangContext)
     const { user } = useContext(UserContext)
-    const [selectedTab, setSelectedTab] = useState('Minted')
+    const [selectedTab, setSelectedTab] = useState('Received')
     const navigate = useNavigate()
+    const startIssue = useIssueBadge()
 
     useEffect(() => {
         const getProfile  =  async function () {
@@ -44,8 +46,14 @@ function ProfilePage () {
         getProfile()
     },[username])
 
-    const handleMintOrIssue = () => {
-        navigate(user.userName === profile?.username ? '/badge-create' : `/badge-create?to=${profile?.domain}`)
+    const handleMintOrIssue = async () => {
+        const unload = showLoading()
+        const badges = await solas.queryBadge({ sender_id: user.id!, page: 1 })
+        unload()
+
+        user.userName === profile?.username
+            ? startIssue({ badges })
+            : startIssue({ badges, to: profile?.domain || ''})
     }
 
     return <Layout>
@@ -69,6 +77,9 @@ function ProfilePage () {
             </div>
             <div className='down-side'>
                 <AppTabs initialState={ { activeKey: selectedTab } }>
+                    <Tab key='Received' title={ lang['Profile_Tab_Received'] }>
+                        <ListUserBadgelet profile={ profile! } />
+                    </Tab>
                     <Tab key='Minted' title={ lang['Profile_Tab_Minted'] }>
                         <AppSubTabs>
                             <Tab key='Minted' title={ lang['Profile_Tab_Minted'] }>
@@ -81,9 +92,6 @@ function ProfilePage () {
                                 : <></>
                             }
                         </AppSubTabs>
-                    </Tab>
-                    <Tab key='Received' title={ lang['Profile_Tab_Received'] }>
-                        <ListUserBadgelet profile={ profile! } />
                     </Tab>
                     <Tab key='Groups' title={ lang['Profile_Tab_Groups'] }>
                         <ListUserGroup profile={ profile! } />

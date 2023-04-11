@@ -108,6 +108,7 @@ export async function regist (props: SolasRegistProps ): Promise<Profile> {
 
 interface QueryBadgeProps {
     sender_id?: number,
+    group_id?:number,
     page: number
 }
 
@@ -119,7 +120,9 @@ export interface Badge {
     title: string,
     token_id: string,
     image_url: string,
-    sender: Profile
+    sender: Profile,
+    group?: Group,
+    content: string
 }
 
 export async function queryBadge (props: QueryBadgeProps): Promise<Badge[]> {
@@ -169,6 +172,7 @@ interface QueryPresendProps {
     page: number,
     auth_token?: string,
     group_id?: number
+    all?: 1
 }
 
 export interface Presend {
@@ -180,13 +184,16 @@ export interface Presend {
     code: string | null,
     badge: Badge,
     counter: number
+    badge_id: number
+    expires_at: string
+    created_at: string
 
 }
 
 export async function queryPresend (props: QueryPresendProps): Promise<Presend[]> {
     const res = await fetch.get({
         url: `${api}/presend/list`,
-        data: props
+        data: { ...props }
     })
 
     if (res.data.result === 'error') {
@@ -240,6 +247,7 @@ export interface Badgelet {
     badge: Badge,
     chain_data: string | null
     group: Group | null
+    created_at: string
 }
 
 export async function queryBadgelet (props: QueryBadgeletProps): Promise<Badgelet[]> {
@@ -538,7 +546,7 @@ export async function getFollowers (userId: number): Promise<Profile[]> {
         throw new Error(res.data.message)
     }
 
-    return res.data.followers
+    return res.data.profiles
 }
 
 export async function getFollowings (userId: number): Promise<Profile[]>{
@@ -553,7 +561,7 @@ export async function getFollowings (userId: number): Promise<Profile[]>{
         throw new Error(res.data.message)
     }
 
-    return res.data.followings
+    return res.data.profiles
 }
 
 export interface IssueBatchProps {
@@ -697,6 +705,7 @@ export interface Invite {
     status: 'accepted' | 'cancelled' | 'new'
     expires_at: string
     group_id: number
+    created_at: string
 }
 
 export interface QueryGroupInvitesProps {
