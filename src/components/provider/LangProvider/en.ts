@@ -40,7 +40,7 @@ const langEN = {
   Regist_InUse: 'This domain name is already in use',
 
   Profile_User_NotExist: 'The user does not exist',
-  Profile_User_MindBadge: 'Mint a badge',
+  Profile_User_MindBadge: 'Send a badge',
   Profile_User_IssueBadge: 'Send a badge',
   Profile_User_Qrcode_download: 'Download',
   Profile_Tab_Received: 'Received',
@@ -87,10 +87,10 @@ const langEN = {
   MintBadge_Submit: 'Send to friend',
   MintBadge_Next: 'Next',
   MintBadge_Submit_To: slotLang('Send to {1}'),
-  MintBadge_Submiting: 'Minting',
+  MintBadge_Submiting: 'Sending',
   MintBadge_Domain_Rule: 'The domain is the unique identifier for your badge. <br /> Domains can contain the English-language letters a-z, and the digits 0-9. Hyphens can also be used but it can not be used at the beginning and at the end of a domain name. It should be longer than 4 characters.',
 
-  MintFinish_Title: 'Finish Minting!',
+  MintFinish_Title: 'Finish Sending!',
   MintFinish_Button_Later: 'Send later',
   MintFinish_Button_Issue: 'Go to Send',
 
@@ -103,8 +103,8 @@ const langEN = {
   IssueBadge_Support: 'Support <br />1.wallet address; <br/>2. domain end with \'.dot/.eth\'; <br /> 3.Social Layer username or user domain',
   IssueBadge_IssueesPlaceholder: 'Enter receiver\'s domain or wallet address',
   IssueBadge_GoToIssue: 'Go to Send',
-  IssueBadge_Issuesing: 'Minting',
-  IssueBadge_Mint: 'Mint',
+  IssueBadge_Issuesing: 'Sending',
+  IssueBadge_Mint: 'Send',
   IssueBadge_Sendwithlink: 'By link',
   IssueBadge_By_QRcode: 'By QR Code',
   IssueBadge_Sendwithdomain: 'By name',
@@ -120,7 +120,7 @@ const langEN = {
   IssueFinish_Screenshot_Or: 'or',
   IssueFinish_share: '#1 has sent you an NFT badge: #2. Go and get it!\n #3 \n It is recommended to use metamask or imToken browser to access the website.',
   IssueFinish_Share_Card_text_1: 'sent you a badge',
-  IssueFinish_Share_Card_text_2: 'Mint by @Social Layer',
+  IssueFinish_Share_Card_text_2: 'Send by @Social Layer',
 
   Search_Cancel: 'Cancel',
   Search_Label_Domain: slotLang('Domain for "{keyword}":'),
@@ -275,7 +275,7 @@ const langEN = {
   Search_Tab_Event: 'Event',
 
   Badgebook_Dialog_Choose_Badgebook: 'Choose from Badge book',
-  Badgebook_Dialog_Choose_Badge: 'Choose from Minted',
+  Badgebook_Dialog_Choose_Badge: 'Choose from Created',
   Badgebook_Dialog_Choose_Draft: 'Choose from Draft',
   Badgebook_Dialog_Cetate_Badge: 'Create a new badge',
 

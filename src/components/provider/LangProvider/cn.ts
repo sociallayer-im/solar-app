@@ -40,7 +40,7 @@ const langCN: LangConfig = {
   Regist_InUse: '该域名已被使用',
 
   Profile_User_NotExist: '该用户不存在',
-  Profile_User_MindBadge: '铸造徽章',
+  Profile_User_MindBadge: '颁发徽章',
   Profile_User_IssueBadge: '颁发徽章',
   Profile_User_Qrcode_download: '保存到相册',
   Profile_Tab_Received: '已收到',
@@ -77,7 +77,7 @@ const langCN: LangConfig = {
   BadgeletDialog_invite_title: '邀请详情',
   BadgeletDialog_Reason: '颁发理由',
 
-  MintBadge_Title: '铸造徽章',
+  MintBadge_Title: '创建徽章',
   MintBadge_Upload: '徽章图片',
   MintBadge_UploadTip: slotLang('支持JPG, PNG, GIF， 大小不超过 {size}'),
   MintBadge_Name_Label: '徽章名称',
@@ -87,10 +87,10 @@ const langCN: LangConfig = {
   MintBadge_Submit: '发送给朋友',
   MintBadge_Next: '下一步',
   MintBadge_Submit_To: slotLang('发送给 {1}'),
-  MintBadge_Submiting: '铸造中',
+  MintBadge_Submiting: '创建中',
   MintBadge_Domain_Rule: '这个域名是徽章的唯一标识符。<br />只能包含字母数字连字符，并且连字符不能在开头和结尾，不能有空格，4个字符以上。',
 
-  MintFinish_Title: '铸造完成！',
+  MintFinish_Title: '颁发完成！',
   MintFinish_Button_Later: '暂不颁发',
   MintFinish_Button_Issue: '直接颁发',
 

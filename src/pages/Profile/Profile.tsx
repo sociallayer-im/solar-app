@@ -26,7 +26,7 @@ function ProfilePage () {
     const { showLoading } = useContext(DialogsContext)
     const { lang } = useContext(LangContext)
     const { user } = useContext(UserContext)
-    const [selectedTab, setSelectedTab] = useState('Minted')
+    const [selectedTab, setSelectedTab] = useState('Received')
     const navigate = useNavigate()
     const startIssue = useIssueBadge()
 
@@ -77,6 +77,9 @@ function ProfilePage () {
             </div>
             <div className='down-side'>
                 <AppTabs initialState={ { activeKey: selectedTab } }>
+                    <Tab key='Received' title={ lang['Profile_Tab_Received'] }>
+                        <ListUserBadgelet profile={ profile! } />
+                    </Tab>
                     <Tab key='Minted' title={ lang['Profile_Tab_Minted'] }>
                         <AppSubTabs>
                             <Tab key='Minted' title={ lang['Profile_Tab_Minted'] }>
@@ -89,9 +92,6 @@ function ProfilePage () {
                                 : <></>
                             }
                         </AppSubTabs>
-                    </Tab>
-                    <Tab key='Received' title={ lang['Profile_Tab_Received'] }>
-                        <ListUserBadgelet profile={ profile! } />
                     </Tab>
                     <Tab key='Groups' title={ lang['Profile_Tab_Groups'] }>
                         <ListUserGroup profile={ profile! } />

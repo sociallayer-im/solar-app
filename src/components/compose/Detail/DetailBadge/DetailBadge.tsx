@@ -92,7 +92,7 @@ function DetailBadge (props: DetailBadgeProps ) {
                                         <DetailArea
                                             onClose={ props.handleClose }
                                             title={ lang['BadgeDialog_Label_Issuees'] }
-                                            content={ badgelet.receiver.domain! }
+                                            content={ badgelet.receiver.domain?.split('.')[0] || '' }
                                             navigate={ `/profile/${badgelet.receiver.domain?.split('.')[0]}` }
                                             image={ badgelet.receiver.image_url || defaultAvatar(badgelet.receiver.id) } />
 
