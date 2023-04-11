@@ -20,6 +20,7 @@ import ReasonText from '../../base/ReasonText/ReasonText'
 import DetailCreator from './atoms/DetailCreator/DetailCreator'
 import useTime from '../../../hooks/formatTime'
 import DetailFace2FaceQrcode from './DetailFace2FaceQrcode'
+import { useNavigate } from 'react-router-dom'
 
 export interface DetailPresendProps {
     presend: Presend,
@@ -38,8 +39,8 @@ function DetailPresend (props: DetailPresendProps ) {
     const [receivers, setReceivers] = useState<ProfileSimple[]>([])
     const [claimed, setClaimed] = useState(true)
     const [acceptableAmount, setAcceptableAmount] = useState<number>(0)
-    const [showQrcode, setShowQrcode] = useState(false)
     const formatTime = useTime()
+    const navigate = useNavigate()
 
     useEffect(() => {
         async function getOwnerProfile () {
@@ -86,15 +87,12 @@ function DetailPresend (props: DetailPresendProps ) {
             emitPresendListUpdate(props.presend)
             showToast('Accept success')
             props.handleClose()
+            navigate(`/profile/${user.userName}`)
         } catch (e: any) {
             unload()
             console.log('[handleAccept]: ', e)
             showToast(e.message || 'Accept fail')
         }
-    }
-
-    const toggleQRcode = () => {
-        setShowQrcode(!showQrcode)
     }
 
     const ActionBtns =  <>
@@ -106,7 +104,7 @@ function DetailPresend (props: DetailPresendProps ) {
         }
 
         { loginUserIsSender && canClaim
-            && <AppButton onClick={ () => { toggleQRcode() } }>
+            && <AppButton onClick={ () => { openQrCode() } }>
                 { lang['BadgeDialog_Btn_Issue'] }</AppButton>
         }
     </>
@@ -118,49 +116,47 @@ function DetailPresend (props: DetailPresendProps ) {
         { lang['BadgeDialog_Btn_Login'] }
     </AppButton>
 
+    const openQrCode = () => {
+        const dialog = openDialog({
+            content: (close: any) =>  <DetailFace2FaceQrcode presendId={ props.presend.id } handleClose={ close }/>,
+            position: 'bottom',
+            size: ['100%', 'auto']
+        })
+    }
+
     const swiperMaxHeight = window.innerHeight - 320
-    return (
-        <>
-            { showQrcode
-                    ? <DetailFace2FaceQrcode presendId={ props.presend.id } handleClose={ toggleQRcode }/>
-                    : <DetailWrapper>
-                        <DetailHeader title={ lang['BadgeletDialog_presend_title'] } onClose={ props.handleClose }/>
-
-                        <DetailCover src={ props.presend.badge.image_url }></DetailCover>
-                        <DetailName> { props.presend.badge.name } </DetailName>
-                        { sender &&
-                            <DetailCreator isGroup={!!props.presend.badge.group } profile={ props.presend.badge.group || sender } />
-                        }
-
-                        <DetailScrollBox style={{maxHeight: swiperMaxHeight - 60 + 'px', marginLeft: 0}}>
-                            { !!props.presend.message &&
-                                <DetailDes>
-                                    <ReasonText text={ props.presend.message } />
-                                </DetailDes>
-                            }
-
-                            <DetailReceivers
-                                length={ acceptableAmount }
-                                placeholder={ true }
-                                receivers={ receivers }
-                                title={ lang['BadgeDialog_Label_Issuees']} />
-
-                            <DetailArea
-                                title={ lang['BadgeDialog_Label_Token'] }
-                                content={ props.presend.badge.domain } />
-
-                            <DetailArea
-                                title={ lang['BadgeDialog_Label_Creat_Time'] }
-                                content={ formatTime(props.presend.created_at ) } />
-                        </DetailScrollBox>
-
-                        <BtnGroup>
-                            { user.id ? ActionBtns : LoginBtn }
-                        </BtnGroup>
-                    </DetailWrapper>
+    return <DetailWrapper>
+        <DetailHeader title={ lang['BadgeletDialog_presend_title'] } onClose={ props.handleClose }/>
+        <DetailCover src={ props.presend.badge.image_url }></DetailCover>
+        <DetailName> { props.presend.badge.name } </DetailName>
+        { sender &&
+            <DetailCreator isGroup={!!props.presend.badge.group } profile={ props.presend.badge.group || sender } />
+        }
+        <DetailScrollBox style={{maxHeight: swiperMaxHeight - 60 + 'px', marginLeft: 0}}>
+            { !!props.presend.message &&
+                <DetailDes>
+                    <ReasonText text={ props.presend.message } />
+                </DetailDes>
             }
-        </>
-    )
+
+            <DetailReceivers
+                length={ acceptableAmount }
+                placeholder={ true }
+                receivers={ receivers }
+                title={ lang['BadgeDialog_Label_Issuees']} />
+
+            <DetailArea
+                title={ lang['BadgeDialog_Label_Token'] }
+                content={ props.presend.badge.domain } />
+
+            <DetailArea
+                title={ lang['BadgeDialog_Label_Creat_Time'] }
+                content={ formatTime(props.presend.created_at ) } />
+        </DetailScrollBox>
+        <BtnGroup>
+            { user.id ? ActionBtns : LoginBtn }
+        </BtnGroup>
+    </DetailWrapper>
 }
 
 export default DetailPresend

@@ -57,7 +57,7 @@ const langEN = {
   BadgeDialog_Btn_Login: 'Login to receive',
   BadgeDialog_Btn_Reject: 'Reject',
   BadgeDialog_Btn_Accept: 'Accept',
-  BadgeDialog_Btn_Face2face: 'Face to face QR code',
+  BadgeDialog_Btn_Face2face: 'QR code',
   BadgeDialog_Btn_share: 'Send',
   BadgeDialog_Btn_Issue: 'Send again',
   BadgeDialog_Btn_None_Left: 'What a pity',
@@ -288,7 +288,8 @@ const langEN = {
   Cropper_Dialog_Btn: 'Apply',
 
   Presend_Qrcode_Badge: 'badge:',
-  Presend_Qrcode_Des: slotLang('{1} sent you a badge.\n Scan the QR Code to get it.'),
+  Presend_Qrcode_Des: slotLang('{1} sent you a badge.'),
+  Presend_Qrcode_Recommended : 'Recommended',
   Presend_Qrcode_Scan: 'Scan the QR Code',
   Presend_Qrcode_Limit: slotLang('Limited to {1} person'),
   Presend_Qrcode_Time: slotLang('Expiry time : {1}'),

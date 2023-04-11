@@ -57,7 +57,7 @@ const langCN: LangConfig = {
   BadgeDialog_Btn_Login: '登录以接收',
   BadgeDialog_Btn_Reject: '拒绝',
   BadgeDialog_Btn_Accept: '接收',
-  BadgeDialog_Btn_Face2face: '面对面二维码',
+  BadgeDialog_Btn_Face2face: '二维码',
   BadgeDialog_Btn_share: '发送',
   BadgeDialog_Btn_Issue: '再次颁发',
   BadgeDialog_Btn_None_Left: '领取完毕',
@@ -288,7 +288,8 @@ const langCN: LangConfig = {
   Cropper_Dialog_Btn: '应用',
 
   Presend_Qrcode_Badge: '徽章：',
-  Presend_Qrcode_Des: slotLang('{1} 给你发送徽章。\n 扫描二维码获取。'),
+  Presend_Qrcode_Des: slotLang('{1} 给你发送徽章。'),
+  Presend_Qrcode_Recommended: '推荐使用',
   Presend_Qrcode_Scan: '扫描二维码',
   Presend_Qrcode_Limit: slotLang('限制 {1} 人'),
   Presend_Qrcode_Time: slotLang('有效期至: {1}'),

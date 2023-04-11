@@ -17,6 +17,7 @@ import ReasonText from '../../base/ReasonText/ReasonText'
 import DetailScrollBox from './atoms/DetailScrollBox/DetailScrollBox'
 import DetailCreator from './atoms/DetailCreator/DetailCreator'
 import useTime from '../../../hooks/formatTime'
+import { useNavigate } from 'react-router-dom'
 
 
 export interface DetailInviteProps {
@@ -35,6 +36,7 @@ function DetailInvite(props: DetailInviteProps ) {
     const [receiver, setReceiver,] = useState<Profile | null>(null)
     const isReceiver= user.id === props.invite.receiver_id
     const formatTime = useTime()
+    const navigate = useNavigate()
 
     useEffect(() => {
         async function getInfo () {
@@ -58,6 +60,7 @@ function DetailInvite(props: DetailInviteProps ) {
             unload()
             props.handleClose()
             showToast('Accept success')
+            navigate(`/group/${group?.id}`)
         } catch (e: any) {
             unload()
             console.log('[handleAccept]: ', e)
