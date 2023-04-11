@@ -19,6 +19,7 @@ import ReasonText from '../../base/ReasonText/ReasonText'
 import DetailScrollBox from './atoms/DetailScrollBox/DetailScrollBox'
 import DetailCreator from './atoms/DetailCreator/DetailCreator'
 import useTime from '../../../hooks/formatTime'
+import { useNavigate } from 'react-router-dom'
 
 
 export interface DetailBadgeletProps {
@@ -36,6 +37,7 @@ function DetailBadgelet(props: DetailBadgeletProps ) {
     const [badgelet, setBadgelet] = useState(props.badgelet)
     const isBadgeletOwner = user.id === props.badgelet.receiver.id
     const formatTime = useTime()
+    const navigate = useNavigate()
 
     const upDateBadgelet = async () => {
         const newBadgelet = await solas.queryBadgeletDetail({ id: props.badgelet.id })
@@ -60,6 +62,7 @@ function DetailBadgelet(props: DetailBadgeletProps ) {
             emitUpdate(badgelet)
             props.handleClose()
             showToast('Accept success')
+            navigate(`/profile/${user.userName}`)
         } catch (e: any) {
             unload()
             console.log('[handleAccept]: ', e)

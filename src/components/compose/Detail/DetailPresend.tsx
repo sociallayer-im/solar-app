@@ -20,6 +20,7 @@ import ReasonText from '../../base/ReasonText/ReasonText'
 import DetailCreator from './atoms/DetailCreator/DetailCreator'
 import useTime from '../../../hooks/formatTime'
 import DetailFace2FaceQrcode from './DetailFace2FaceQrcode'
+import { useNavigate } from 'react-router-dom'
 
 export interface DetailPresendProps {
     presend: Presend,
@@ -40,6 +41,7 @@ function DetailPresend (props: DetailPresendProps ) {
     const [acceptableAmount, setAcceptableAmount] = useState<number>(0)
     const [showQrcode, setShowQrcode] = useState(false)
     const formatTime = useTime()
+    const navigate = useNavigate()
 
     useEffect(() => {
         async function getOwnerProfile () {
@@ -86,6 +88,7 @@ function DetailPresend (props: DetailPresendProps ) {
             emitPresendListUpdate(props.presend)
             showToast('Accept success')
             props.handleClose()
+            navigate(`/profile/${user.userName}`)
         } catch (e: any) {
             unload()
             console.log('[handleAccept]: ', e)
