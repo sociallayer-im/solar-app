@@ -102,7 +102,7 @@ function DetailInvite(props: DetailInviteProps ) {
         </AppButton>
     </>
 
-    const swiperMaxHeight = window.innerHeight - 350
+    const swiperMaxHeight = window.innerHeight - 320
     return (
         <DetailWrapper>
             <DetailHeader title={lang['BadgeletDialog_invite_title']} onClose={ props.handleClose }/>

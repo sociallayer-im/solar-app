@@ -105,7 +105,7 @@ function DetailBadgelet(props: DetailBadgeletProps ) {
         </AppButton>
     </>
 
-    const swiperMaxHeight = window.innerHeight - 350
+    const swiperMaxHeight = window.innerHeight - 320
     return (
         <DetailWrapper>
             <DetailHeader

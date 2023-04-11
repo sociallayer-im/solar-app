@@ -116,7 +116,7 @@ function DetailPresend (props: DetailPresendProps ) {
         { lang['BadgeDialog_Btn_Login'] }
     </AppButton>
 
-    const swiperMaxHeight = window.innerHeight - 350
+    const swiperMaxHeight = window.innerHeight - 320
     return (
         <>
             { showQrcode
