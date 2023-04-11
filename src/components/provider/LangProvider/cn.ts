@@ -57,7 +57,7 @@ const langCN: LangConfig = {
   BadgeDialog_Btn_Login: '登录以接收',
   BadgeDialog_Btn_Reject: '拒绝',
   BadgeDialog_Btn_Accept: '接收',
-  BadgeDialog_Btn_Face2face: '面对面二维码',
+  BadgeDialog_Btn_Face2face: '二维码',
   BadgeDialog_Btn_share: '发送',
   BadgeDialog_Btn_Issue: '再次颁发',
   BadgeDialog_Btn_None_Left: '领取完毕',
