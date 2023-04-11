@@ -19,12 +19,12 @@ function Layout(props?: any) {
         height: `${windowHeight}px`
     }
 
-    const content = {
+    const content: any = {
         width: '100%',
         flex: 1,
         overflowX: 'hidden',
         height: `${heightWithoutNav}px`,
-        touchAction: 'pan-y'
+        touchAction: 'pan-y' as const
     }
 
     useEffect(() => {
