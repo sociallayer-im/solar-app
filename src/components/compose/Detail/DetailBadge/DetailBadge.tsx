@@ -86,9 +86,11 @@ function DetailBadge (props: DetailBadgeProps ) {
                             badgelets.map((badgelet, index) =>
                                 <SwiperSlide className='badge-detail-swiper-slide' key={ badgelet.id }>
                                     <DetailScrollBox style={{maxHeight: swiperMaxHeight - 40 + 'px'}}>
-                                        <DetailDes>
-                                            <ReasonText text={badgelet.content} />
-                                        </DetailDes>
+                                        { !!badgelet.content &&
+                                            <DetailDes>
+                                                <ReasonText text={ badgelet.content } />
+                                            </DetailDes>
+                                        }
                                         <DetailArea
                                             onClose={ props.handleClose }
                                             title={ lang['BadgeDialog_Label_Issuees'] }
