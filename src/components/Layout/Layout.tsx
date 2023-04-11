@@ -23,19 +23,9 @@ function Layout(props?: any) {
         width: '100%',
         flex: 1,
         overflow: 'auto',
-        height: `${heightWithoutNav}px`
+        height: `${heightWithoutNav}px`,
+        touchAction: 'pan-y'
     }
-
-    const CopyInput = styled('input', () => {
-        return {
-            position: 'absolute',
-            height: '0px',
-            width: '0px',
-            opacity: '0',
-            left: 0,
-            top: 0
-        }
-    })
 
     useEffect(() => {
         const watchSoftKeyboard = () => {
@@ -54,7 +44,6 @@ function Layout(props?: any) {
             <div className={ css(content)} >
                 {props.children}
             </div>
-            <CopyInput id='CopyInput'></CopyInput>
         </div>
     )
 }
