@@ -11,7 +11,7 @@ function DetailWrapper (props: DetailWrapperProp) {
         return {
             width: '100%',
             height: 'auto',
-            maxHeight:window.innerHeight * 0.99 + 'px',
+            maxHeight:window.innerHeight + 'px',
             boxShadow: '0px 2px 18px rgba(0, 0, 0, 0.2)',
             borderRadius: '12px'
         }

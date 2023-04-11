@@ -62,7 +62,7 @@ function DetailBadge (props: DetailBadgeProps ) {
     }
 
     const loginUserIsSender = user.id === props.badge.sender.id
-    const swiperMaxHeight = window.innerHeight * 0.99 - 364
+    const swiperMaxHeight = window.innerHeight - 350
     return (
         <DetailWrapper>
             <DetailHeader title={ lang['BadgeletDialog_title'] } onClose={ props.handleClose }/>
