@@ -1,5 +1,5 @@
 import PageHeader from '../compose/PageHeader'
-import { useStyletron } from 'baseui'
+import { useStyletron, styled } from 'baseui'
 import {useEffect, useState} from 'react'
 import usePageHeight from '../../hooks/pageHeight'
 
@@ -25,6 +25,17 @@ function Layout(props?: any) {
         height: `${heightWithoutNav}px`
     }
 
+    const CopyInput = styled('input', () => {
+        return {
+            position: 'absolute',
+            height: '0px',
+            width: '0px',
+            opacity: '0',
+            left: 0,
+            top: 0
+        }
+    })
+
     useEffect(() => {
         const watchSoftKeyboard = () => {
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0
@@ -42,6 +53,7 @@ function Layout(props?: any) {
             <div className={ css(content)} >
                 {props.children}
             </div>
+            <CopyInput id='CopyInput'></CopyInput>
         </div>
     )
 }
