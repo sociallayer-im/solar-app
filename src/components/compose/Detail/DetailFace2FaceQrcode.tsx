@@ -8,6 +8,7 @@ import copy from '../../../utils/copy'
 import DialogsContext from '../../provider/DialogProvider/DialogsContext'
 import solas, { PresendWithBadgelets } from '../../../service/solas'
 import userContext from '../../provider/UserProvider/UserContext'
+import BtnGroup from '../../base/BtnGroup/BtnGroup'
 
 interface DetailFace2FaceQrcodeProps {
     handleClose: () => void
@@ -47,10 +48,12 @@ function DetailFace2FaceQrcode(props: DetailFace2FaceQrcodeProps) {
             { !!presend &&
                 <>
                     <PresendQrcode presend={ presend }></PresendQrcode>
-                    <AppButton special inline style={ { marginTop: '16px', width: '160px' } } onClick={ () => { handleCopy() } }>
-                        <i className='icon-copy' style={{marginRight: '10px'}}></i>
-                        <span>{ lang['IssueFinish_CopyLink'] }</span>
-                    </AppButton>
+                    <BtnGroup style={ { marginTop: '16px'} } >
+                        <AppButton special onClick={ () => { handleCopy() } }>
+                            <i className='icon-copy' style={{marginRight: '10px'}}></i>
+                            <span>{ lang['IssueFinish_CopyLink'] }</span>
+                        </AppButton>
+                    </BtnGroup>
                 </>
             }
         </DetailWrapper>

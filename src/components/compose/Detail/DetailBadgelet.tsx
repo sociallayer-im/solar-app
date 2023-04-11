@@ -94,14 +94,14 @@ function DetailBadgelet(props: DetailBadgeletProps ) {
     </AppButton>
 
     const ActionBtns =  <>
-        <AppButton onClick={ () => { handleReject() }} >
-            { lang['BadgeDialog_Btn_Reject'] }
-        </AppButton>
         <AppButton
             special
             kind={ BTN_KIND.primary }
             onClick={() => { handleAccept() }}>
             { lang['BadgeDialog_Btn_Accept'] }
+        </AppButton>
+        <AppButton onClick={ () => { handleReject() }} >
+            { lang['BadgeDialog_Btn_Reject'] }
         </AppButton>
     </>
 

@@ -98,19 +98,21 @@ function DetailPresend (props: DetailPresendProps ) {
     }
 
     const ActionBtns =  <>
-        { loginUserIsSender && canClaim
-            && <AppButton special onClick={ () => { toggleQRcode() } }>
-                { lang['BadgeDialog_Btn_Issue'] }</AppButton>
-        }
-
         { canClaim && !claimed &&
             <AppButton
-            onClick={ () => { handleAccept() } }>
-            { lang['BadgeDialog_Btn_Accept'] }</AppButton>
+                special
+                onClick={ () => { handleAccept() } }>
+                { lang['BadgeDialog_Btn_Accept'] }</AppButton>
+        }
+
+        { loginUserIsSender && canClaim
+            && <AppButton onClick={ () => { toggleQRcode() } }>
+                { lang['BadgeDialog_Btn_Issue'] }</AppButton>
         }
     </>
 
     const LoginBtn = <AppButton
+        special
         onClick={ () => { openConnectWalletDialog() } }
         kind={ BTN_KIND.primary }>
         { lang['BadgeDialog_Btn_Login'] }
