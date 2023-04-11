@@ -8,7 +8,7 @@ import AppButton, { BTN_KIND } from '../../base/AppButton/AppButton'
 import useTime from '../../../hooks/formatTime'
 
 interface PresendQrcodeProp {
-    presend: Presend
+    presend: Presend | PresendWithBadgelets
 }
 
 function PresendQrcode(props: PresendQrcodeProp) {
@@ -24,10 +24,18 @@ function PresendQrcode(props: PresendQrcodeProp) {
 
     useEffect(() => {
         const getDetail = async function() {
-            const presend = await solas.queryPresendDetail({id: props.presend.id, auth_token: user.authToken || ''})
-            setPresendWithBadgelets(presend)
+            let presendInfo
+            if (!(presend as any).badgelets) {
+                const presendWithBadgelets = await solas.queryPresendDetail({id: props.presend.id, auth_token: user.authToken || ''})
+                setPresendWithBadgelets(presendWithBadgelets)
+                presendInfo = presendWithBadgelets
+            } else {
+                setPresendWithBadgelets(presend as PresendWithBadgelets)
+                presendInfo = presend as PresendWithBadgelets
+            }
 
-            if (presend.code) {
+
+            if (presendInfo.code) {
                 setLink(`${window.location.protocol}//${window.location.host}/presend/${presend.id}_${presend.code}`)
             } else {
                 setLink(`${window.location.protocol}//${window.location.host}/presend/${presend.id}`)
@@ -40,8 +48,12 @@ function PresendQrcode(props: PresendQrcodeProp) {
             const profile = await solas.getProfile({ id: presend.sender_id })
             setSender(profile)
 
-            const badge = await solas.queryBadgeDetail({ id: presend.badge_id })
-            setBadge(badge)
+            if (!presendInfo.badge) {
+                const badge = await solas.queryBadgeDetail({ id: presend.badge_id })
+                setBadge(badge)
+            } else {
+                setBadge(presendInfo.badge)
+            }
         }
         getDetail()
     }, [])

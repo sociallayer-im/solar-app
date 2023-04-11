@@ -45,17 +45,19 @@ function DetailFace2FaceQrcode(props: DetailFace2FaceQrcodeProps) {
     return (
         <DetailWrapper>
             <DetailHeader title={ lang['BadgeDialog_Btn_Face2face'] } onClose={()=> { props.handleClose() }}></DetailHeader>
-            { !!presend &&
-                <>
-                    <PresendQrcode presend={ presend }></PresendQrcode>
-                    <BtnGroup style={ { marginTop: '16px'} } >
-                        <AppButton special onClick={ () => { handleCopy() } }>
-                            <i className='icon-copy' style={{marginRight: '10px'}}></i>
-                            <span>{ lang['IssueFinish_CopyLink'] }</span>
-                        </AppButton>
-                    </BtnGroup>
-                </>
-            }
+            <div style={ { height: '545px' } }>
+                { !!presend &&
+                    <>
+                        <PresendQrcode presend={ presend }></PresendQrcode>
+                        <BtnGroup style={ { marginTop: '16px'} } >
+                            <AppButton special onClick={ () => { handleCopy() } }>
+                                <i className='icon-copy' style={{marginRight: '10px'}}></i>
+                                <span>{ lang['IssueFinish_CopyLink'] }</span>
+                            </AppButton>
+                        </BtnGroup>
+                    </>
+                }
+            </div>
         </DetailWrapper>
     )
 }
