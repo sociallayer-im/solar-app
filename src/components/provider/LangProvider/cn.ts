@@ -288,7 +288,8 @@ const langCN: LangConfig = {
   Cropper_Dialog_Btn: '应用',
 
   Presend_Qrcode_Badge: '徽章：',
-  Presend_Qrcode_Des: slotLang('{1} 给你发送徽章。\n 扫描二维码获取。'),
+  Presend_Qrcode_Des: slotLang('{1} 给你发送徽章。'),
+  Presend_Qrcode_Recommended: '推荐使用',
   Presend_Qrcode_Scan: '扫描二维码',
   Presend_Qrcode_Limit: slotLang('限制 {1} 人'),
   Presend_Qrcode_Time: slotLang('有效期至: {1}'),

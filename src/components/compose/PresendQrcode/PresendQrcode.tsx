@@ -58,8 +58,12 @@ function PresendQrcode(props: PresendQrcodeProp) {
                                 <div className='des'>{ lang['Presend_Qrcode_Des']([sender.username]) }</div>
                             </div>
                         </div>
-
-                        <div className='card-title'>{ lang['Presend_Qrcode_Scan'] }</div>
+                        <div className='card-title'> { lang['Presend_Qrcode_Scan'] } </div>
+                        <div className='card-recommended'>
+                            <span>{ lang['Presend_Qrcode_Recommended'] }</span>
+                            <img src="/images/wallet_icon/metamask.png" alt=""/>
+                            <img src="/images/wallet_icon/imtoken.png" alt=""/>
+                        </div>
                         <div className='code'>
                             <QRcode size={[160, 160]} text={ link }></QRcode>
                         </div>
