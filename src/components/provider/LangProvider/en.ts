@@ -157,6 +157,7 @@ const langEN = {
   Login_input_Code_des: slotLang('Enter the code we sent to {email} to complete your account set-up.'),
 
   Page_Back: 'Back',
+  Page_Back_Done: 'Done',
 
   Picture_Recommend_Title: 'Example',
   Picture_Recommend_Create_By_Canva: 'Create by Canva',

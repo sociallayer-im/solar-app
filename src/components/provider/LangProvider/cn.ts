@@ -62,7 +62,7 @@ const langCN: LangConfig = {
   BadgeDialog_Btn_Issue: '再次颁发',
   BadgeDialog_Btn_None_Left: '领取完毕',
 
-  BadgeDialog_Label_Creator: '铸造者',
+  BadgeDialog_Label_Creator: '颁发者',
   BadgeDialog_Label_Token: 'Token 域名',
   BadgeDialog_Label_Issuees: '接收者',
   BadgeDialog_Label_action_hide: '设为隐藏',
@@ -157,6 +157,7 @@ const langCN: LangConfig = {
   Login_input_Code_des: slotLang('输入你的邮箱 {email} 接收到的验证码完成登录操作'),
 
   Page_Back: '返回',
+  Page_Back_Done: '完成',
 
   Picture_Recommend_Title: '示例',
   Picture_Recommend_Create_By_Canva: '通过 Canva 创建',

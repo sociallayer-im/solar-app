@@ -68,11 +68,11 @@ function Home () {
         }
     }
 
-    // useEffect(() => {
-    //     if (user.domain && user.userName) {
-    //         navigate(`/profile/${user.userName}`, { replace: true })
-    //     }
-    // },[user.userName, user.userName])
+    useEffect(() => {
+        if (user.domain && user.userName && (!badgeletId && !presendId && !inviteId)) {
+            navigate(`/profile/${user.userName}`, { replace: true })
+        }
+    },[user.userName, user.userName, badgeletId, presendId, inviteId])
 
     return <Layout>
         <div className='home-page'>

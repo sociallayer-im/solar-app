@@ -33,8 +33,10 @@ const Title = styled('div', ({$theme}) => ({
 interface PageBackProp {
     to?: string
     title?: string,
+    backBtnLabel?: string,
     menu?: () => ReactNode | string,
     onClose?: () => any
+    historyReplace?: boolean
 }
 
 function PageBack (props: PageBackProp) {
@@ -44,7 +46,7 @@ function PageBack (props: PageBackProp) {
 
     const handleBack = () => {
         if (props.to) {
-            navigate(props.to)
+            props.historyReplace ? navigate(props.to, { replace: true }) : navigate(props.to)
         } else if (props.onClose) {
             props.onClose()
         } else {
@@ -54,7 +56,7 @@ function PageBack (props: PageBackProp) {
 
     return (
         <Wrapper>
-            <BackBtn onClick={handleBack} ><ArrowLeft size={18}/>{ lang['Page_Back'] }</BackBtn>
+            <BackBtn onClick={handleBack} ><ArrowLeft size={18}/>{ props.backBtnLabel ? props.backBtnLabel : lang['Page_Back'] }</BackBtn>
             <Title>{ props.title }</Title>
             { !!props.menu && props.menu() }
         </Wrapper>

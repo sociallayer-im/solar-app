@@ -138,7 +138,7 @@ function IssueSuccessPage () {
         <Layout>
             <div className='send-success' style={{minHeight: `${heightWithoutNav}px`}}>
                 <div className='center-box header'>
-                    <PageBack title={ lang['IssueFinish_Title'] } to={`/profile/${user.userName}`} />
+                    <PageBack backBtnLabel={ lang['Page_Back_Done'] } title={ lang['IssueFinish_Title'] } to={`/profile/${user.userName}`} />
                 </div>
                 <div className='background'>
                     <div className='ball1'></div>
