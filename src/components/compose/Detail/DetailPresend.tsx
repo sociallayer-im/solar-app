@@ -39,7 +39,6 @@ function DetailPresend (props: DetailPresendProps ) {
     const [receivers, setReceivers] = useState<ProfileSimple[]>([])
     const [claimed, setClaimed] = useState(true)
     const [acceptableAmount, setAcceptableAmount] = useState<number>(0)
-    const [showQrcode, setShowQrcode] = useState(false)
     const formatTime = useTime()
     const navigate = useNavigate()
 
@@ -130,40 +129,38 @@ function DetailPresend (props: DetailPresendProps ) {
     }
 
     const swiperMaxHeight = window.innerHeight - 320
-    return <>
-        <DetailWrapper>
-            <DetailHeader title={ lang['BadgeletDialog_presend_title'] } onClose={ props.handleClose }/>
-            <DetailCover src={ props.presend.badge.image_url }></DetailCover>
-            <DetailName> { props.presend.badge.name } </DetailName>
-            { sender &&
-                <DetailCreator isGroup={!!props.presend.badge.group } profile={ props.presend.badge.group || sender } />
+    return <DetailWrapper>
+        <DetailHeader title={ lang['BadgeletDialog_presend_title'] } onClose={ props.handleClose }/>
+        <DetailCover src={ props.presend.badge.image_url }></DetailCover>
+        <DetailName> { props.presend.badge.name } </DetailName>
+        { sender &&
+            <DetailCreator isGroup={!!props.presend.badge.group } profile={ props.presend.badge.group || sender } />
+        }
+        <DetailScrollBox style={{maxHeight: swiperMaxHeight - 60 + 'px', marginLeft: 0}}>
+            { !!props.presend.message &&
+                <DetailDes>
+                    <ReasonText text={ props.presend.message } />
+                </DetailDes>
             }
-            <DetailScrollBox style={{maxHeight: swiperMaxHeight - 60 + 'px', marginLeft: 0}}>
-                { !!props.presend.message &&
-                    <DetailDes>
-                        <ReasonText text={ props.presend.message } />
-                    </DetailDes>
-                }
 
-                <DetailReceivers
-                    length={ acceptableAmount }
-                    placeholder={ true }
-                    receivers={ receivers }
-                    title={ lang['BadgeDialog_Label_Issuees']} />
+            <DetailReceivers
+                length={ acceptableAmount }
+                placeholder={ true }
+                receivers={ receivers }
+                title={ lang['BadgeDialog_Label_Issuees']} />
 
-                <DetailArea
-                    title={ lang['BadgeDialog_Label_Token'] }
-                    content={ props.presend.badge.domain } />
+            <DetailArea
+                title={ lang['BadgeDialog_Label_Token'] }
+                content={ props.presend.badge.domain } />
 
-                <DetailArea
-                    title={ lang['BadgeDialog_Label_Creat_Time'] }
-                    content={ formatTime(props.presend.created_at ) } />
-            </DetailScrollBox>
-            <BtnGroup>
-                { user.id ? ActionBtns : LoginBtn }
-            </BtnGroup>
+            <DetailArea
+                title={ lang['BadgeDialog_Label_Creat_Time'] }
+                content={ formatTime(props.presend.created_at ) } />
+        </DetailScrollBox>
+        <BtnGroup>
+            { user.id ? ActionBtns : LoginBtn }
+        </BtnGroup>
     </DetailWrapper>
-    </>
 }
 
 export default DetailPresend
