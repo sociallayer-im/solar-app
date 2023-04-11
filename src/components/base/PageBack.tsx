@@ -56,7 +56,10 @@ function PageBack (props: PageBackProp) {
 
     return (
         <Wrapper>
-            <BackBtn onClick={handleBack} ><ArrowLeft size={18}/>{ props.backBtnLabel ? props.backBtnLabel : lang['Page_Back'] }</BackBtn>
+            <BackBtn onClick={handleBack} >
+                { !props.backBtnLabel && <ArrowLeft size={18}/> }
+                { props.backBtnLabel ? props.backBtnLabel : lang['Page_Back'] }
+            </BackBtn>
             <Title>{ props.title }</Title>
             { !!props.menu && props.menu() }
         </Wrapper>
