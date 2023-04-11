@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from 'react'
+import {ReactNode, useEffect, useRef, useState} from 'react'
 import './dialog.less'
 
 export interface DialogProps {
@@ -13,6 +13,7 @@ export interface DialogProps {
 
 function Dialog ({ position = '', ...props }: DialogProps) {
     const { children } = props
+    const dialogContent = useRef<HTMLDivElement | any>(null)
     const [contentClassName, setContentClassName] = useState('dialog-content' + ' ' + position)
 
     let sizeStyle = { width: 'auto', height: 'auto', maxWidth: 'initial', maxHeight: 'initial', minWidth:'initial',  minHeight: 'initial' }
@@ -38,7 +39,7 @@ function Dialog ({ position = '', ...props }: DialogProps) {
 
     const close = () => {
         if (props.handleClose) {
-            setContentClassName(contentClassName.replace(' active', ''))
+            dialogContent.current.className = contentClassName.replace('active', '')
             setTimeout(() => {
                props.handleClose!()
             }, 200)
@@ -48,7 +49,9 @@ function Dialog ({ position = '', ...props }: DialogProps) {
     useEffect(() => {
         if (position) {
             setTimeout(()=> {
-                setContentClassName(contentClassName + ' active')
+                if (dialogContent) {
+                    dialogContent.current.className = contentClassName + ' active'
+                }
             }, 200)
         }
     }, [])
@@ -57,7 +60,7 @@ function Dialog ({ position = '', ...props }: DialogProps) {
 
     return (<div className='dialog' style={{height: `${height}px`}}>
         <div className={ `dialog-shell ${ props.noShell ? 'light': '' }` } onClick={ close }></div>
-        <div className={ contentClassName }  style={ sizeStyle }>
+        <div className={ contentClassName }  style={ sizeStyle } ref={ dialogContent }>
             { children && children(close) }
         </div>
     </div>)

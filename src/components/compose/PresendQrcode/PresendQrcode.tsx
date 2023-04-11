@@ -24,6 +24,7 @@ function PresendQrcode(props: PresendQrcodeProp) {
 
     useEffect(() => {
         const getDetail = async function() {
+            console.log('getDetail')
             let presendInfo
             if (!(presend as any).badgelets) {
                 const presendWithBadgelets = await solas.queryPresendDetail({id: props.presend.id, auth_token: user.authToken || ''})
@@ -45,9 +46,6 @@ function PresendQrcode(props: PresendQrcodeProp) {
             const expirationDate = Date.parse(new Date(presend.expires_at).toString())
             setExpired(now > expirationDate)
 
-            const profile = await solas.getProfile({ id: presend.sender_id })
-            setSender(profile)
-
             if (!presendInfo.badge) {
                 const badge = await solas.queryBadgeDetail({ id: presend.badge_id })
                 setBadge(badge)
@@ -56,7 +54,17 @@ function PresendQrcode(props: PresendQrcodeProp) {
             }
         }
         getDetail()
-    }, [])
+    }, [presend])
+
+    useEffect(() => {
+        const getSender = async function() {
+            if (presendWithBadgelets) {
+                const profile = await solas.getProfile({ id: presendWithBadgelets.sender_id })
+                setSender(profile)
+            }
+        }
+        getSender()
+    }, [presendWithBadgelets])
 
     return (
         <div className='presend-qrcode-card'>

@@ -95,10 +95,6 @@ function DetailPresend (props: DetailPresendProps ) {
         }
     }
 
-    const toggleQRcode = () => {
-        openQrCode()
-    }
-
     const ActionBtns =  <>
         { canClaim && !claimed &&
             <AppButton
