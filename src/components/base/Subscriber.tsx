@@ -36,7 +36,7 @@ function Subscriber () {
     }, [ user.domain ])
 
     useEffect(() => {
-        if (!user.id) return
+        if (!user.id || !user.domain) return
 
         async function showPendingBadgelets () {
             const badgelets = await solas.queryBadgelet({ receiver_id: user.id!, page: 1 })
@@ -55,7 +55,7 @@ function Subscriber () {
             })
         }
         showPendingInvite()
-    }, [ user.id ])
+    }, [ user.id, user.domain ])
 
     return (<></>)
 }

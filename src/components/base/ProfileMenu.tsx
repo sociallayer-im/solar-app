@@ -23,7 +23,9 @@ function ProfileMenu () {
     }
 
     const menuContent = (close: any) => <>
-        <MenuItem onClick={ () => { toProfile(); close() } }>{ lang['UserAction_MyProfile'] }</MenuItem>
+        {   !!user.domain &&
+            <MenuItem onClick={ () => { toProfile(); close() } }>{ lang['UserAction_MyProfile'] }</MenuItem>
+        }
         <MenuItem onClick={ () => { handleLogOut(); close() } }>{ lang['UserAction_Disconnect'] }</MenuItem>
     </>
 
