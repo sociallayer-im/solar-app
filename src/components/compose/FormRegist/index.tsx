@@ -30,6 +30,7 @@ function RegistForm (props: RegistFormProps) {
     const [_, emitUpdate] = useEvent(EVENT.profileUpdate)
 
     const showConfirm = () => {
+        if (!domain) return
         const props = {
             title: lang['Regist_Dialog_Title'],
             confirmLabel: lang['Regist_Dialog_Create'],
@@ -91,7 +92,7 @@ function RegistForm (props: RegistFormProps) {
             errorMsg={ error }
             value={ domain }
             readOnly = { loading }
-            onChange={ (e) => { setDomain(e.target.value.toLowerCase()) } }
+            onChange={ (e) => { setDomain(e.target.value.toLowerCase().trim()) } }
             endEnhancer={() => <span>{ domainEndEnhancer }</span> }
             placeholder={ lang['Regist_Input_Placeholder'] } />
         <div className={css({ marginTop: '34px' })}>

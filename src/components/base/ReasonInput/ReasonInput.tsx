@@ -9,7 +9,7 @@ export interface ReasonInputProps {
 }
 
 function ReasonInput(props: ReasonInputProps) {
-    const [value, setValue] = useState(props.value)
+    const [value, setValue] = useState(props.value || '')
     const textarea = useRef<HTMLTextAreaElement | null>(null)
     const { lang } = useContext(LangContext)
 
