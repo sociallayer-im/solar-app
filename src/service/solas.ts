@@ -1,4 +1,4 @@
-import { signInWithEthereum } from './SIWE'
+import {signInWithEthereum} from './SIWE'
 import fetch from '../utils/fetch'
 
 const api = import.meta.env.VITE_SOLAS_API
@@ -285,8 +285,7 @@ export interface QueryUserGroupProps {
 }
 
 
-export async function queryUserGroup (props: QueryUserGroupProps): Promise<Group[]> {
-
+export async function queryGroupsUserJoined (props: QueryUserGroupProps): Promise<Group[]> {
     const res1 = await fetch.get({
         url: `${api}/group/my-groups`,
         data: props
@@ -295,6 +294,13 @@ export async function queryUserGroup (props: QueryUserGroupProps): Promise<Group
     if (res1.data.result === 'error') {
         throw new Error(res1.data.message)
     }
+
+    return res1.data.groups.filter((item: Group) => {
+        return item.status !== 'freezed'
+    })
+}
+
+export async function queryGroupsUserCreated(props: QueryUserGroupProps): Promise<Group[]> {
 
     const res2 = await fetch.get({
         url: `${api}/group/list`,
@@ -305,7 +311,18 @@ export async function queryUserGroup (props: QueryUserGroupProps): Promise<Group
         throw new Error(res2.data.message)
     }
 
-    const total = [...res2.data.groups, ...res1.data.groups]
+    return res2.data.groups.filter((item: Group) => {
+        return item.status !== 'freezed'
+    })
+}
+
+export async function queryUserGroup (props: QueryUserGroupProps): Promise<Group[]> {
+
+    const res1 = await queryGroupsUserJoined(props)
+
+    const res2 = await queryGroupsUserCreated(props)
+
+    const total = [...res2, ...res1]
     const groups = total.filter((item) => {
         return item.status !== 'freezed'
     })
@@ -978,5 +995,7 @@ export default {
     searchDomain,
     searchBadge,
     queryBadgeByHashTag,
-    freezeGroup
+    freezeGroup,
+    queryGroupsUserCreated,
+    queryGroupsUserJoined
 }
