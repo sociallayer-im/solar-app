@@ -3,25 +3,23 @@ import { Suspense, lazy } from 'react'
 
 
 // package
+// import RegistGroup from '../pages/RegistGroup'
+// import Group from '../pages/Group/Group'
 import Home from '../pages/Home'
 import Profile from '../pages/Profile/Profile'
-import Group from '../pages/Group/Group'
 import Login from '../pages/Login'
 import Regist from '../pages/Regist'
-import RegistGroup from '../pages/RegistGroup'
 import CreateBadge from '../pages/CreateBadge'
 
 
 // lazy load
-
 // const Home = lazy(() => import('../pages/Home'))
 // const Profile = lazy(() => import('../pages/Profile/Profile'))
-// const Group = lazy(() => import('../pages/Group/Group'))
 // const Login = lazy(() => import('../pages/Login'))
 // const Regist = lazy(() => import('../pages/Regist'))
-// const RegistGroup = lazy(() => import('../pages/RegistGroup'))
 // const CreateBadge = lazy(() => import('../pages/CreateBadge'))
-
+const Group = lazy(() => import('../pages/Group/Group'))
+const RegistGroup = lazy(() => import('../pages/RegistGroup'))
 const Search = lazy(() => import('../pages/Search'))
 const Event = lazy(() => import('../pages/Event'))
 const Error = lazy(() => import('../pages/Error'))
