@@ -21,6 +21,10 @@ export default defineConfig({
         {
           find: './dist/connectors/walletConnect',
           replacement:'wagmi/dist/connectors/walletConnect.js'
+        },
+        {
+            find: 'bn.js',
+            replacement:'node_modules/bn.js/lib/bn.js'
         }
       ]
   }
