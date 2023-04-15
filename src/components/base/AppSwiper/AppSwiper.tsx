@@ -1,6 +1,4 @@
-import {useNavigate} from 'react-router-dom'
-import {useStyletron} from 'baseui'
-import {useState, useContext, useEffect, ReactNode} from 'react'
+import { ReactNode } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Virtual } from 'swiper'
 
@@ -12,6 +10,7 @@ interface AppSwiperProps {
 
 function AppSwiper(props: AppSwiperProps) {
     return (<Swiper
+        data-testid='AppSwiper'
         modules={[Virtual]}
         spaceBetween={ props.space }
         freeMode={ true }

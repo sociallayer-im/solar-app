@@ -1,7 +1,7 @@
 import { useStyletron } from 'baseui'
 import { useContext } from 'react'
-import { Badge } from '../../../service/solas'
-import DialogsContext from '../../provider/DialogProvider/DialogsContext'
+import { Badge } from '../../../../service/solas'
+import DialogsContext from '../../../provider/DialogProvider/DialogsContext'
 
 const style = {
     wrapper: {
@@ -59,7 +59,7 @@ function CardBadge (props: CardBadgeProps) {
     const [css] = useStyletron()
     const { showBadge } = useContext(DialogsContext)
 
-    return (<div className={ css(style.wrapper) } onClick={() => { showBadge(props.badge) }}>
+    return (<div data-testid='CardBadge' className={ css(style.wrapper) } onClick={() => { showBadge(props.badge) }}>
                 <img className={ css(style.img) } src={ props.badge.image_url } alt=""/>
                 <div className={ css(style.name) }>{ props.badge.name }</div>
             </div>)

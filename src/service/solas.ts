@@ -121,8 +121,9 @@ export interface Badge {
     token_id: string,
     image_url: string,
     sender: Profile,
-    group?: Group,
-    content: string
+    group?: Group | null,
+    content: string,
+    counter: number,
 }
 
 export async function queryBadge (props: QueryBadgeProps): Promise<Badge[]> {

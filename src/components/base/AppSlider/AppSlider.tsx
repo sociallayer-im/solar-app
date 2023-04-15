@@ -53,7 +53,7 @@ interface AppSliderProp {
 function AppSlider(props: AppSliderProp) {
     const [initScale, _] = useState(props.value[0])
 
-    return <div className='app-slider'>
+    return <div className='app-slider' data-testid='AppSlider'>
         <img className='icon-1' src="/images/image_icon.png" alt=""/>
         <Slider
             overrides={ overrides }
