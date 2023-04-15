@@ -25,7 +25,7 @@ export interface Profile {
     username: string | null,
     followers: number
     following: number
-    is_group: boolean
+    is_group: boolean | null
 }
 
 export interface ProfileSimple {

@@ -10,17 +10,17 @@ interface AddressListProp {
 function AddressList({ selected = [], ...props }: AddressListProp) {
     const { defaultAvatar } = usePicture()
 
-    return (<div className='address-list'>
+    return (<div className='address-list' data-testid='AddressListItem'>
         {
             props.data.map((item,index) => {
                 return <div className='list-item'
                             key={ index }
                             onClick={() => { !!props.onClick && props.onClick(item.domain!)} }>
                     <div className='left'>
-                        <img src={item.image_url || defaultAvatar(item.id) } alt=""/>
+                        <img src={item.image_url || defaultAvatar(item.id)} alt=""/>
                         <span>{item.username}</span>
                     </div>
-                    { (selected?.indexOf(item.domain!)) != -1 ? <i className='icon icon-selected'></i> : false }
+                    { (selected?.indexOf(item.domain!)) != -1 ? <i className='icon icon-selected' title='selected'></i> : false }
                 </div>
             })
         }

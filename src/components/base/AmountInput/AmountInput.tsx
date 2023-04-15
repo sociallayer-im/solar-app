@@ -1,6 +1,4 @@
-import {useNavigate} from 'react-router-dom'
-import {useStyletron} from 'baseui'
-import {useState, useContext, useEffect} from 'react'
+import { useContext } from 'react'
 import './AmountInput.less'
 import LangContext from '../../provider/LangProvider/LangContext'
 
@@ -10,8 +8,6 @@ export interface AmountInputProps {
 }
 
 function AmountInput(props: AmountInputProps) {
-    const [css] = useStyletron()
-    const navigate = useNavigate()
     const { lang } = useContext(LangContext)
     const { value, onChange } = props
 
@@ -25,7 +21,7 @@ function AmountInput(props: AmountInputProps) {
         }
     }
 
-    return (<div className='amount-input'>
+    return (<div className='amount-input' data-testid='AmountInput'>
         <div className='title'>{lang['Quantity_input_label']}</div>
         <div className='row'>
             <input className='input-box' type="text"
