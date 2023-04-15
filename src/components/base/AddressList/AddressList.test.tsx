@@ -1,6 +1,6 @@
 import { render, screen, userEvent } from '../../../test/test-utils'
 import AddressList from './AddressList'
-import { groups, profiles } from '../../../test/mockDateForTest'
+import { groups, profiles } from '../../../test/mockDataForTest'
 
 describe('Input', async () => {
     it('正常渲染', () => {

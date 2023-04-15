@@ -1,6 +1,6 @@
 import { render, screen, userEvent , act} from '../../../../test/test-utils'
 import CardBadge from './CardBadge'
-import { badges } from '../../../../test/mockDateForTest'
+import { badges } from '../../../../test/mockDataForTest'
 import DialogProvider from '../../../provider/DialogProvider/DialogProvider'
 
 describe('CardBadge', async () => {
