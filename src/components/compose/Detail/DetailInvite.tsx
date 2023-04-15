@@ -60,7 +60,7 @@ function DetailInvite(props: DetailInviteProps ) {
             unload()
             props.handleClose()
             showToast('Accept success')
-            navigate(`/group/${group?.id}`)
+            navigate(`/group/${group?.username}`)
         } catch (e: any) {
             unload()
             console.log('[handleAccept]: ', e)

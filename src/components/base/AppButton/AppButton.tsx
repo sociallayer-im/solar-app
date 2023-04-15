@@ -56,6 +56,7 @@ export default function AppButton (props: AppButtonProps) {
 
     return (
         <Button
+            data-testid='AppButton'
             disabled={ props.disabled || false }
             isLoading={ props.isLoading || false }
             onClick={ props.onClick }

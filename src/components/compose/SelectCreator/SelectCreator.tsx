@@ -1,6 +1,6 @@
 import {useNavigate} from 'react-router-dom'
 import { useState, useContext, useEffect, forwardRef } from 'react'
-import solas, { Group, Profile } from '../../../service/solas'
+import solas, {Group, Profile, queryGroupsUserCreated} from '../../../service/solas'
 import { useSearchParams } from 'react-router-dom'
 import UserContext from '../../provider/UserProvider/UserContext'
 import { withStyle, useStyletron, styled } from 'baseui'
@@ -95,7 +95,7 @@ function SelectCreator(props: SelectCreatorProp) {
             const profile = await solas.getProfile({ id: user.id! })
             if (!profile) return
 
-            const groups = await solas.queryUserGroup({ profile_id: user.id!})
+            const groups = await solas.queryGroupsUserCreated({ profile_id: user.id!})
             setList([profile!, ...groups])
 
             const groupSenderDomain = searchParams.get('group')
