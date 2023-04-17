@@ -5,7 +5,7 @@ import Empty from '../../base/Empty'
 import LangContext from '../../provider/LangProvider/LangContext'
 import useScrollToLoad from '../../../hooks/scrollToLoad'
 import UserContext from '../../provider/UserProvider/UserContext'
-import CardSearchDomain from '../../base/Cards/CardSearchDomain'
+import CardSearchDomain from '../../base/Cards/CardSearchDomain/CardSearchDomain'
 
 interface ListSearchResultDomainProps {
     keyword: string

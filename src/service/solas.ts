@@ -179,7 +179,6 @@ interface QueryPresendProps {
 export interface Presend {
     id: number,
     message: string,
-    auth_token?: string,
     sender_id: number,
     group: number | null,
     code: string | null,

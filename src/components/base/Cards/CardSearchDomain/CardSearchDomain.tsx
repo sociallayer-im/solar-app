@@ -1,7 +1,7 @@
 import { useStyletron } from 'baseui'
-import { Profile } from '../../../service/solas'
+import { Profile } from '../../../../service/solas'
 import { useNavigate } from 'react-router-dom'
-import usePicture from '../../../hooks/pictrue'
+import usePicture from '../../../../hooks/pictrue'
 import { ReactDOM, ReactNode } from 'react'
 
 const style = {
@@ -50,10 +50,10 @@ function CardSearchDomain (props: CardSearchDomainProps) {
     const { defaultAvatar } = usePicture()
 
     const highLightText = props.keyword
-        ? props.profile?.domain!.replace(props.keyword, `<span class="heighlight">${props.keyword}</span>`)
+        ? props.profile?.domain!.replace(props.keyword, `<span class="highlight">${props.keyword}</span>`)
         : props.profile.domain!
 
-    return (<div className={ css(style.wrapper) } onClick={ () => { props.onClick ? props.onClick() : navigate(`/profile/${props.profile?.username}`) }}>
+    return (<div data-testid='CardSearchDomain' className={ css(style.wrapper) } onClick={ () => { props.onClick ? props.onClick() : navigate(`/profile/${props.profile?.username}`) }}>
                 <div className={css(style.leftSide)}>
                     <img className={ css(style.img) } src={ props.profile?.image_url || defaultAvatar(props.profile?.id)} alt=""/>
                     <div className={ css(style.name) } dangerouslySetInnerHTML={{__html: highLightText}}></div>

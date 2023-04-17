@@ -12,7 +12,7 @@ describe('CardBadge', async () => {
     })
 
     it('点击弹出徽章详情', async () => {
-        render(<DialogProvider><CardBadge badge={badges[0]}/></DialogProvider>)
+        render(<CardBadge badge={badges[0]}/>)
         await act(async () => {
             await userEvent.click(screen.getByTestId('CardBadge'))
         })
