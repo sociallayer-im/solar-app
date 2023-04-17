@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import {Badge} from '../../../service/solas'
+import { Badge } from '../../../service/solas'
 import langContext from '../../provider/LangProvider/LangContext'
 import useTime from '../../../hooks/formatTime'
 
@@ -11,7 +11,7 @@ function DetailPrefillBadge(props: DetailPrefillBadgeProps) {
     const formatTime = useTime()
 
     return (
-        <div className='prefill-preview'>
+        <div data-testid='DetailPrefillBadge' className='prefill-preview'>
         <img src={ props.badge.image_url } className='avatar' alt=""/>
         <div className='name'>{ props.badge.title }</div>
         <div className='create-time'>

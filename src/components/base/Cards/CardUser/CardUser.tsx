@@ -1,7 +1,7 @@
 import { useStyletron } from 'baseui'
-import { Profile } from '../../../service/solas'
+import { Profile } from '../../../../service/solas'
 import { useNavigate } from 'react-router-dom'
-import usePicture from '../../../hooks/pictrue'
+import usePicture from '../../../../hooks/pictrue'
 import { ReactDOM, ReactNode } from 'react'
 
 const style = {
@@ -38,7 +38,7 @@ const style = {
     }
 }
 
-export interface CardBadgeletProps {
+export interface CardUserProps {
     profile?: Profile,
     endEnhancer? : () =>  string | ReactNode
     content?: () =>  string | ReactNode
@@ -46,12 +46,12 @@ export interface CardBadgeletProps {
     onClick?: () => any
 }
 
-function CardUser (props: CardBadgeletProps) {
+function CardUser (props: CardUserProps) {
     const [css] = useStyletron()
     const navigate = useNavigate()
     const { defaultAvatar } = usePicture()
 
-    return (<div className={ css(style.wrapper) } onClick={ () => { props.onClick ? props.onClick() : navigate(`/profile/${props.profile?.username}`) }}>
+    return (<div data-testid='CardUser' className={ css(style.wrapper) } onClick={ () => { props.onClick ? props.onClick() : navigate(`/profile/${props.profile?.username}`) }}>
                 <div className={css(style.leftSide)}>
                     { props.img
                         ? props.img()
