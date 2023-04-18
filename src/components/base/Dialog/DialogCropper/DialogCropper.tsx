@@ -18,9 +18,11 @@ function DialogCropper(props: DialogCropperProps) {
     const [css] = useStyletron()
     const { lang } = useContext(langContext)
     const cropperRef = useRef<ReactCropperElement>(null);
-    const cropBoxInitWidth = 216
     const [scale, setScale] = useState([1])
-    const [initScale, setInitScale] = useState(1)
+    const [initSetScale, setInitSetScale] = useState(1)
+    const maxScale = 10
+    const minScale = 0.2
+    const cropBoxInitSize = 216
 
     const setPosition = () => {
         const cropper = cropperRef.current?.cropper
@@ -28,11 +30,14 @@ function DialogCropper(props: DialogCropperProps) {
         img.src = props.imgURL
         img.onload = () => {
             const isVertical = img.width < img.height
-            const ration = cropBoxInitWidth / img.height
-            setScale([ration])
-            setInitScale(ration)
+            const ration = cropBoxInitSize / img.height
+
+            // 限制最小缩放比例20%, 限制最大缩放比例1000%
+            const rationLimited = Math.min(Math.max(ration, minScale), maxScale)
+            setScale([rationLimited])
+            setInitSetScale(initSetScale)
             if (!isVertical) {
-                cropper!.zoomTo(ration)
+                cropper!.zoomTo(rationLimited)
             }
         }
     }
@@ -101,14 +106,14 @@ function DialogCropper(props: DialogCropperProps) {
             cropBoxMovable={false}
             scalable={false}
             dragMode={'move'}
-            minCropBoxHeight={cropBoxInitWidth}
-            minCropBoxWidth={cropBoxInitWidth}
+            minCropBoxHeight={cropBoxInitSize}
+            minCropBoxWidth={cropBoxInitSize}
             viewMode={0}
             ready={() => {
                 setPosition()
             }}
         />
-        <AppSlider onChange={setScale} step={0.1} value={scale} range={1}/>
+        <AppSlider onChange={ setScale } step={ 0.1 } value={scale} max={ maxScale } min={ minScale }/>
         <div className='btns'>
             <AppButton onClick={() => { confirm() }}
                        kind={ BTN_KIND.primary } special size={ BTN_SIZE.compact }>
