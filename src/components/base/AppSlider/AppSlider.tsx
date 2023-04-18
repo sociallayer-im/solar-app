@@ -64,6 +64,7 @@ function AppSlider(props: AppSliderProp) {
             max={ props.max }
             step={ props.step }
             onChange={({ value }) => value && props.onChange && props.onChange(value) }
+            onFinalChange={({ value }) => value && props.onFinalChange && props.onFinalChange(value) }
         />
         <img className='icon-2' src="/images/image_icon.png" alt=""/>
     </div>
