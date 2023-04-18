@@ -1,7 +1,6 @@
 import { render, screen, userEvent , act} from '../../../../test/test-utils'
 import CardBadge from './CardBadge'
 import { badges } from '../../../../test/mockDataForTest'
-import DialogProvider from '../../../provider/DialogProvider/DialogProvider'
 
 describe('CardBadge', async () => {
     it('正常渲染', () => {
@@ -12,7 +11,7 @@ describe('CardBadge', async () => {
     })
 
     it('点击弹出徽章详情', async () => {
-        render(<DialogProvider><CardBadge badge={badges[0]}/></DialogProvider>)
+        render(<CardBadge badge={badges[0]}/>)
         await act(async () => {
             await userEvent.click(screen.getByTestId('CardBadge'))
         })

@@ -65,7 +65,7 @@ function DialogAvatar (props: DialogAvatarProps) {
     const { defaultAvatar } = usePicture()
     const { lang } = useContext(langContext)
     const { user } = useContext(UserContext)
-    const { showCropper, showLoading, showToast } = useContext(DialogsContext)
+    const { showCropper, showLoading, showToast, clean } = useContext(DialogsContext)
     const [_1, emitProfileUpdate] = useEvent(EVENT.profileUpdate)
     const [_2, emitGroupUpdate] = useEvent(EVENT.groupUpdate)
     const [currProfile, setCurrProfile] = useState(props.profile)
@@ -111,7 +111,7 @@ function DialogAvatar (props: DialogAvatarProps) {
                         }
                         setCurrProfile(newProfile)
                         unload()
-                        close()
+                        clean()
                     } catch (e: any) {
                         console.log('[selectFile]: ', e)
                         unload()

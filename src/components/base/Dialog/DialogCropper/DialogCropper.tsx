@@ -3,6 +3,7 @@ import {useState, useContext, useEffect, useRef} from 'react'
 import { Delete } from 'baseui/icon'
 import langContext from '../../../provider/LangProvider/LangContext'
 import Cropper, { ReactCropperElement } from 'react-cropper'
+import CropperType from 'cropperjs'
 import 'cropperjs/dist/cropper.css'
 import './DialogCropper.less'
 import AppButton, { BTN_KIND, BTN_SIZE } from '../../AppButton/AppButton'
@@ -18,23 +19,64 @@ function DialogCropper(props: DialogCropperProps) {
     const [css] = useStyletron()
     const { lang } = useContext(langContext)
     const cropperRef = useRef<ReactCropperElement>(null);
-    const cropBoxInitWidth = 216
-    const [scale, setScale] = useState([1])
-    const [initScale, setInitScale] = useState(1)
+    const [scale, setScale] = useState([0])
+    const [minScale, setMinScale] = useState(0)
+    const [maxScale, setMaxScale] = useState(0.001)
+    const cropBoxInitSize = 216
+    const resetTimeout = useRef<any>(null)
 
     const setPosition = () => {
         const cropper = cropperRef.current?.cropper
         const img = new Image()
         img.src = props.imgURL
         img.onload = () => {
-            const isVertical = img.width < img.height
-            const ration = cropBoxInitWidth / img.height
-            setScale([ration])
-            setInitScale(ration)
-            if (!isVertical) {
-                cropper!.zoomTo(ration)
-            }
+            cropper!.zoomTo(0)
+            // 限制缩放比例
+            const reference = Math.min(img.width, img.height)
+            const calcMinScale = cropBoxInitSize / reference
+            const calcMaxScale = cropBoxInitSize * 3/ reference
+
+            setMaxScale(calcMaxScale)
+            setMinScale(calcMinScale)
+            console.log('calcMaxScale', calcMaxScale)
+            console.log('calcMinScale', calcMinScale)
+            setScale([calcMinScale])
+            const getData = cropper!.getData()
+            console.log('getData', getData)
+
+            setTimeout(() => {
+                cropper!.zoomTo(calcMinScale)
+            }, 100)
         }
+    }
+
+    const regression = () => {
+        const cropper = cropperRef.current?.cropper
+        clearTimeout(resetTimeout.current)
+        resetTimeout.current = setTimeout(() => {
+            const imageInfo = cropper!.getImageData()
+            const imageInfo2 = cropper!.getCanvasData()
+            let offsetX = imageInfo2.left
+            let offsetY = imageInfo2.top
+            if (imageInfo2.left > 0) {
+                offsetX = 48
+            } else if (imageInfo2.left + imageInfo.width - 48 < cropBoxInitSize) {
+                offsetX = (imageInfo.width - cropBoxInitSize) * -1 + 48
+            }
+
+            if (imageInfo2.top > 0) {
+                offsetY = 0
+            } else if (imageInfo2.top + imageInfo.height < cropBoxInitSize) {
+                offsetY = (imageInfo.height - cropBoxInitSize) * -1 + 48
+            }
+
+            if (offsetX !== imageInfo2.left || offsetY !== imageInfo2.top) {
+                cropper?.setCanvasData({
+                    left: offsetX,
+                    top: offsetY
+                })
+            }
+        }, 100)
     }
 
     const compress = (data: Blob):Promise<Blob | null> => {
@@ -78,6 +120,9 @@ function DialogCropper(props: DialogCropperProps) {
             setTimeout(()=> {
                 const cropper = cropperRef.current?.cropper
                 cropper && cropper!.zoomTo(scale[0])
+                setTimeout(() => {
+                    regression()
+                }, 100)
             }, 100)
         }
     }, [scale])
@@ -100,15 +145,20 @@ function DialogCropper(props: DialogCropperProps) {
             cropBoxResizable={false}
             cropBoxMovable={false}
             scalable={false}
+            zoomOnTouch={false}
+            zoomOnWheel={false}
             dragMode={'move'}
-            minCropBoxHeight={cropBoxInitWidth}
-            minCropBoxWidth={cropBoxInitWidth}
+            minCropBoxHeight={cropBoxInitSize}
+            minCropBoxWidth={cropBoxInitSize}
             viewMode={0}
-            ready={() => {
+            ready={(e) => {
                 setPosition()
             }}
+            cropend={(e) => {
+                regression()
+            }}
         />
-        <AppSlider onChange={setScale} step={0.1} value={scale} range={1}/>
+        <AppSlider onChange={ setScale } step={ 0.1 } value={ scale } max={ maxScale } min={ minScale }/>
         <div className='btns'>
             <AppButton onClick={() => { confirm() }}
                        kind={ BTN_KIND.primary } special size={ BTN_SIZE.compact }>

@@ -1,8 +1,8 @@
 import {useNavigate} from 'react-router-dom'
 import { useStyletron } from 'baseui'
 import { useState, useContext, useEffect } from 'react'
-import { Presend } from '../../../service/solas'
-import DialogsContext from '../../provider/DialogProvider/DialogsContext'
+import { Presend } from '../../../../service/solas'
+import DialogsContext from '../../../provider/DialogProvider/DialogsContext'
 
 const style = {
     wrapper: {
@@ -62,6 +62,7 @@ function CardPresend (props: CardPresendProps) {
 
 
     return (<div
+        data-testid='CardPresend'
         onClick={ () => { showPresend(props.presend, props.presend.code) } }
         className={ css(style.wrapper) } >
                 <img className={ css(style.img) } src={ props.presend.badge.image_url } alt=""/>

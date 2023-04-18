@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import {useEffect, useState} from 'react'
 import { Slider } from 'baseui/slider'
 import './AppSlider.less'
 
@@ -9,7 +9,10 @@ const overrides = {
     InnerTrack: {
         style: {
             height: '4px',
-            borderRadius: '2px',
+            borderTopLeftRadius: '2px',
+            borderTopRightRadius: '2px',
+            borderBottomRightRadius: '2px',
+            borderBottomLeftRadius: '2px',
             background: '#ECF2EE'
         }
     },
@@ -43,7 +46,8 @@ const overrides = {
 
 interface AppSliderProp {
     value: number[]
-    range:number
+    max:number
+    min:number
     step: number
     onChange?: (res: number[]) => any
     onFinalChange?: (res: number[]) => any
@@ -51,18 +55,15 @@ interface AppSliderProp {
 }
 
 function AppSlider(props: AppSliderProp) {
-    const [initScale, _] = useState(props.value[0])
-
     return <div className='app-slider' data-testid='AppSlider'>
         <img className='icon-1' src="/images/image_icon.png" alt=""/>
         <Slider
             overrides={ overrides }
             value={ props.value }
-            min={ initScale - props.range }
-            max={ initScale + props.range }
+            min={ props.min }
+            max={ props.max }
             step={ props.step }
             onChange={({ value }) => value && props.onChange && props.onChange(value) }
-            onFinalChange={({ value }) => value && props.onFinalChange && props.onFinalChange(value) }
         />
         <img className='icon-2' src="/images/image_icon.png" alt=""/>
     </div>

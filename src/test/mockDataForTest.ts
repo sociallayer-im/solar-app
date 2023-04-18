@@ -1,4 +1,4 @@
-import { Group, Profile, Badge } from '../service/solas'
+import { Group, Profile, Badge, Badgelet, ProfileSimple, Invite, Presend } from '../service/solas'
 
 export const groups: Group[] = [
     {
@@ -105,5 +105,88 @@ export const badges: Badge[] = [
         group: null,
         content: 'ttttasd',
         counter: 10
+    }
+]
+
+export const badgelets: Badgelet[] = [
+    {
+        id: 1140,
+        badge_id: 719,
+        content: 'zfd test issue',
+        domain: 'zfdtestissue.testgroup4.sociallayer.im#1',
+        hide: false,
+        top: false,
+        owner: {
+            id: 1,
+            address: '0x0b23E3588c906C3F723C58Ef4d6baEe7840A977c',
+            domain: 'zfd.sociallayer.im',
+            email: null,
+            image_url: 'https://ik.imagekit.io/soladata/tr:n-ik_ml_thumbnail/xydvdzqa_qBn0RxwN2',
+        },
+        receiver: {
+            id: 1,
+            address: '0x0b23E3588c906C3F723C58Ef4d6baEe7840A977c',
+            domain: 'zfd.sociallayer.im',
+            email: null,
+            image_url: 'https://ik.imagekit.io/soladata/tr:n-ik_ml_thumbnail/xydvdzqa_qBn0RxwN2',
+        },
+        sender: {
+            id: 1,
+            address: '0x0b23E3588c906C3F723C58Ef4d6baEe7840A977c',
+            domain: 'zfd.sociallayer.im',
+            email: null,
+            image_url: 'https://ik.imagekit.io/soladata/tr:n-ik_ml_thumbnail/xydvdzqa_qBn0RxwN2',
+        },
+        status: 'accepted',
+        token_id: '0x627d67bbc6fae2fa589a41febb664d1df0b4b5ec51ad007fb4591f2b09c917a2',
+        badge: {
+            id: 719,
+            domain: 'zfdtestissue.testgroup4.sociallayer.im',
+            created_at: '2023-04-11T09:12:13.107Z',
+            name: 'zfd test issue',
+            title: 'zfd test issue',
+            token_id: '0xabaab2fea3a70e84945448a841731e33c553c26bc4f3b0adad397d90e622e87a',
+            image_url: 'https://ik.imagekit.io/soladata/tr:n-ik_ml_thumbnail/5ypp629n_4fCVC1OIJ',
+            sender: profiles[0],
+            group: {
+                domain: 'testgroup4.sociallayer.im',
+                username: 'testgroup4',
+                id: 764,
+                image_url: 'https://ik.imagekit.io/soladata/tr:n-ik_ml_thumbnail/xewls18v_qXrB2mr8q'
+            } as any,
+            content: 'zfd test issue',
+            counter: 2
+        },
+        chain_data: null,
+        group: null,
+        created_at: '2023-04-14T10:20:01.997Z'
+    }
+]
+
+export const invites: Invite[] = [
+    {
+        id: 59,
+        message: 'Invite you to become a member of finalgroup',
+        receiver_id: 1,
+        sender_id: 1,
+        status: 'accepted',
+        expires_at: '2023-04-10T12:29:15.782Z',
+        group_id: 670,
+        created_at: '2023-04-10T07:23:39.196Z'
+    }
+]
+
+export const presends: Presend[] = [
+    {
+        id: 403,
+        message: '',
+        sender_id: 1,
+        group: null,
+        code: "4776253",
+        badge: badges[0],
+        counter: 1,
+        badge_id: badges[0].id,
+        expires_at: '2023-04-11T12:34:22.978Z',
+        created_at: '2023-05-11T12:34:22.977Z'
     }
 ]

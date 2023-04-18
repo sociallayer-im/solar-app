@@ -2,9 +2,9 @@ import {useNavigate} from 'react-router-dom'
 import { useStyletron } from 'baseui'
 import { useState, useContext, useEffect } from 'react'
 import { ellipsisText } from 'baseui/styles/util'
-import { Group, Profile } from '../../../service/solas'
-import usePicture from '../../../hooks/pictrue'
-import LangContext from '../../provider/LangProvider/LangContext'
+import { Group, Profile } from '../../../../service/solas'
+import usePicture from '../../../../hooks/pictrue'
+import LangContext from '../../../provider/LangProvider/LangContext'
 import { Plus } from 'baseui/icon'
 
 const style = {
@@ -63,11 +63,10 @@ const style = {
 function CardCreateGroup () {
     const [css] = useStyletron()
     const navigate = useNavigate()
-    const { defaultAvatar } = usePicture()
     const { lang } = useContext(LangContext)
 
     return (
-        <div className={ css(style.wrapper) } onClick={() => { navigate('/create-group')}}>
+        <div data-testid='CardCreateGroup' className={ css(style.wrapper) } onClick={() => { navigate('/create-group')}}>
             <div className={ css(style.img) }><Plus size={28}/></div>
             <div className={ css(style.name) }>{ lang['Group_regist_confirm'] }</div>
             <div className={ css(style.des) }>{ lang['Group_regist_des'] }</div>

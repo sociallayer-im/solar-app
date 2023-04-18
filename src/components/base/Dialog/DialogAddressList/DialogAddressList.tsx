@@ -10,6 +10,7 @@ import AddressList from '../../AddressList/AddressList'
 import AppSubTabs from '../../AppSubTabs'
 import Empty from '../../Empty'
 import AppButton, { BTN_KIND, BTN_SIZE } from '../../AppButton/AppButton'
+import DialogsContext from '../../../provider/DialogProvider/DialogsContext'
 
 const overrides = {
     TabBar: {
@@ -51,6 +52,7 @@ export interface AddressListProps {
 function DialogAddressList(props: AddressListProps) {
     const { lang } = useContext(langContext)
     const { user } = useContext(UserContext)
+    const { showToast } = useContext(DialogsContext)
 
     const [groups, setGroups] = useState<Group[]>([])
     const [groupsMember, setGroupsMember] = useState<Profile[]>([])
@@ -92,11 +94,16 @@ function DialogAddressList(props: AddressListProps) {
                 return
             }
 
-            const groups = await solas.queryUserGroup({ profile_id: user.id! })
-            setGroups(groups)
+            try {
+                const groups = await solas.queryUserGroup({ profile_id: user.id! })
+                setGroups(groups)
 
-            if (groups[0]) {
-                getMember(groups[0].id)
+                if (groups[0]) {
+                    getMember(groups[0].id)
+                }
+            } catch (e: any) {
+                console.log('[getGroups]: ', e)
+                showToast(e.message || 'network error')
             }
         }
 
@@ -116,9 +123,9 @@ function DialogAddressList(props: AddressListProps) {
 
         getGroups()
         getFollowInfo()
-    },[])
+    },[user.id])
 
-    return (<div className='address-list-dialog'>
+    return (<div data-testid='DialogAddressList' className='address-list-dialog'>
        <div className='top-side'>
            <div className='list-header'>
                <div className='center'>

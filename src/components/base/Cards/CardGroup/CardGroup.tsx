@@ -2,9 +2,9 @@ import {useNavigate} from 'react-router-dom'
 import { useStyletron } from 'baseui'
 import { useState, useContext, useEffect } from 'react'
 import { ellipsisText } from 'baseui/styles/util'
-import { Group, Profile } from '../../../service/solas'
-import usePicture from '../../../hooks/pictrue'
-import LangContext from '../../provider/LangProvider/LangContext'
+import { Group, Profile } from '../../../../service/solas'
+import usePicture from '../../../../hooks/pictrue'
+import LangContext from '../../../provider/LangProvider/LangContext'
 
 const style = {
     wrapper: {
@@ -67,7 +67,7 @@ function CardGroup (props: CardGroupProps) {
     }
 
     return (
-        <div className={ css(style.wrapper) } onClick={ toGroupDetail }>
+        <div data-testid='CardGroup' className={ css(style.wrapper) } onClick={ toGroupDetail }>
                 <img className={ css(style.img) } src={ props.group.image_url || defaultAvatar(props.group.id) } alt=""/>
                 <div className={ css(style.name) }>{ props.group.username }</div>
                 <div className={ css(style.des) }>{ props.group.group_owner_id === props.profile.id

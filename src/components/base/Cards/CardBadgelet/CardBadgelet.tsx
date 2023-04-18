@@ -1,8 +1,8 @@
 import { useStyletron } from 'baseui'
-import { Badgelet } from '../../../service/solas'
-import DialogsContext from '../../provider/DialogProvider/DialogsContext'
+import { Badgelet } from '../../../../service/solas'
+import DialogsContext from '../../../provider/DialogProvider/DialogsContext'
 import { useContext } from 'react'
-import UserContext from '../../provider/UserProvider/UserContext'
+import UserContext from '../../../provider/UserProvider/UserContext'
 
 const style = {
     wrapper: {
@@ -90,7 +90,7 @@ function CardBadgelet (props: CardBadgeletProps) {
 
     const isOwner = user.id === props.badgelet.receiver.id
 
-    return (<div className={ css(style.wrapper) } onClick={ () => { showBadgelet(props.badgelet) }}>
+    return (<div data-testid='CardBadgelet' className={ css(style.wrapper) } onClick={ () => { showBadgelet(props.badgelet) }}>
                 <img className={ css(style.img) } src={ props.badgelet.badge.image_url } alt=""/>
                 { props.badgelet.hide && <div className={css(style.hideMark)}><i className='icon-lock'></i></div> }
                 <div className={ css(style.name) }>{ props.badgelet.badge.name }</div>

@@ -1,5 +1,5 @@
 import {useContext, useEffect, useState} from 'react'
-import CardUser from '../../base/Cards/CardUser'
+import CardUser from '../../base/Cards/CardUser/CardUser'
 import solas, { Profile } from '../../../service/solas'
 import ListWrapper from '../../base/ListWrapper'
 import LangContext from '../../provider/LangProvider/LangContext'
