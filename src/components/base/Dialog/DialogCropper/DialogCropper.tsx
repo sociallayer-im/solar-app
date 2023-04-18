@@ -120,9 +120,6 @@ function DialogCropper(props: DialogCropperProps) {
             setTimeout(()=> {
                 const cropper = cropperRef.current?.cropper
                 cropper && cropper!.zoomTo(scale[0])
-                setTimeout(() => {
-                    regression()
-                }, 100)
             }, 100)
         }
     }, [scale])
@@ -158,7 +155,7 @@ function DialogCropper(props: DialogCropperProps) {
                 regression()
             }}
         />
-        <AppSlider onChange={ setScale } step={ 0.1 } value={ scale } max={ maxScale } min={ minScale }/>
+        <AppSlider onChange={ setScale }  onFinalChange={() => { regression() } } step={ 0.1 } value={ scale } max={ maxScale } min={ minScale }/>
         <div className='btns'>
             <AppButton onClick={() => { confirm() }}
                        kind={ BTN_KIND.primary } special size={ BTN_SIZE.compact }>
