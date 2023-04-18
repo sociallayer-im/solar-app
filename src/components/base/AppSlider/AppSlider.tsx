@@ -55,22 +55,16 @@ interface AppSliderProp {
 }
 
 function AppSlider(props: AppSliderProp) {
-    const [currValue, setCurrValue] = useState(props.value)
-
-    useEffect(() => {
-        setCurrValue(props.value)
-    },[props.value])
-
     return <div className='app-slider' data-testid='AppSlider'>
         <img className='icon-1' src="/images/image_icon.png" alt=""/>
         <Slider
             overrides={ overrides }
-            value={ currValue }
+            value={ props.value }
             min={ props.min }
             max={ props.max }
             step={ props.step }
-            onChange={({ value }) => { setCurrValue(value) } }
-            onFinalChange={({ value }) => {return value && props.onFinalChange && props.onFinalChange(currValue)} }
+            onChange={({ value }) => { value && props.onChange && props.onChange(value) } }
+            onFinalChange={({ value }) => { return value && props.onFinalChange && props.onFinalChange(value)} }
         />
         <img className='icon-2' src="/images/image_icon.png" alt=""/>
     </div>
