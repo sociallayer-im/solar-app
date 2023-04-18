@@ -23,6 +23,7 @@ function DialogCropper(props: DialogCropperProps) {
     const [maxScale, setMaxScale] = useState(0.001)
     const cropBoxInitSize = 216
     const resetTimeout = useRef<any>(null)
+    const changeTimeout = useRef<any>(null)
 
     const setPosition = () => {
         const cropper = cropperRef.current?.cropper
@@ -54,19 +55,24 @@ function DialogCropper(props: DialogCropperProps) {
         clearTimeout(resetTimeout.current)
         resetTimeout.current = setTimeout(() => {
             const imageInfo = cropper!.getImageData()
+            console.log('imageInfo', imageInfo)
             const imageInfo2 = cropper!.getCanvasData()
             let offsetX = imageInfo2.left
             let offsetY = imageInfo2.top
-            if (imageInfo2.left > 0) {
+            if (imageInfo2.left >= 48) {
                 offsetX = 48
+                console.log(1, 48)
             } else if (imageInfo2.left + imageInfo.width - 48 < cropBoxInitSize) {
                 offsetX = (imageInfo.width - cropBoxInitSize) * -1 + 48
+                console.log(2, offsetX)
             }
 
             if (imageInfo2.top > 0) {
                 offsetY = 0
+                console.log(11, offsetY)
             } else if (imageInfo2.top + imageInfo.height < cropBoxInitSize) {
-                offsetY = (imageInfo.height - cropBoxInitSize) * -1 + 48
+                offsetY = (imageInfo.height - cropBoxInitSize) * -1
+                console.log(22, offsetY)
             }
 
             if (offsetX !== imageInfo2.left || offsetY !== imageInfo2.top) {
@@ -119,6 +125,9 @@ function DialogCropper(props: DialogCropperProps) {
             setTimeout(()=> {
                 const cropper = cropperRef.current?.cropper
                 cropper && cropper!.zoomTo(scale[0])
+                setTimeout(() => {
+                    regression()
+                }, 500)
             }, 100)
         }
     }, [scale])
@@ -154,7 +163,7 @@ function DialogCropper(props: DialogCropperProps) {
                 regression()
             }}
         />
-        <AppSlider onFinalChange={(value) => { setScale(value); regression() } } step={ 0.1 } value={ scale } max={ maxScale } min={ minScale }/>
+        <AppSlider onChange={ setScale } step={ (maxScale - minScale) / 20 } value={ scale } max={ maxScale } min={ minScale }/>
         <div className='btns'>
             <AppButton onClick={() => { confirm() }}
                        kind={ BTN_KIND.primary } special size={ BTN_SIZE.compact }>
