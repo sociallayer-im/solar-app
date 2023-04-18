@@ -3,7 +3,6 @@ import {useState, useContext, useEffect, useRef} from 'react'
 import { Delete } from 'baseui/icon'
 import langContext from '../../../provider/LangProvider/LangContext'
 import Cropper, { ReactCropperElement } from 'react-cropper'
-import CropperType from 'cropperjs'
 import 'cropperjs/dist/cropper.css'
 import './DialogCropper.less'
 import AppButton, { BTN_KIND, BTN_SIZE } from '../../AppButton/AppButton'
@@ -155,7 +154,7 @@ function DialogCropper(props: DialogCropperProps) {
                 regression()
             }}
         />
-        <AppSlider onChange={ setScale }  onFinalChange={() => { regression() } } step={ 0.1 } value={ scale } max={ maxScale } min={ minScale }/>
+        <AppSlider onFinalChange={(value) => { setScale(value); regression() } } step={ 0.1 } value={ scale } max={ maxScale } min={ minScale }/>
         <div className='btns'>
             <AppButton onClick={() => { confirm() }}
                        kind={ BTN_KIND.primary } special size={ BTN_SIZE.compact }>
