@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import {useEffect, useRef, useState} from 'react'
 import { Slider } from 'baseui/slider'
 import './AppSlider.less'
 
@@ -55,16 +55,22 @@ interface AppSliderProp {
 }
 
 function AppSlider(props: AppSliderProp) {
+    const [currValue, setCurrValue] = useState(props.value)
+
+    useEffect(() => {
+        setCurrValue(props.value)
+    },[props.value])
+
     return <div className='app-slider' data-testid='AppSlider'>
         <img className='icon-1' src="/images/image_icon.png" alt=""/>
         <Slider
             overrides={ overrides }
-            value={ props.value }
+            value={ currValue }
             min={ props.min }
             max={ props.max }
             step={ props.step }
-            onChange={({ value }) => value && props.onChange && props.onChange(value) }
-            onFinalChange={({ value }) => value && props.onFinalChange && props.onFinalChange(value) }
+            onChange={({ value }) => { setCurrValue(value) } }
+            onFinalChange={({ value }) => {return value && props.onFinalChange && props.onFinalChange(currValue)} }
         />
         <img className='icon-2' src="/images/image_icon.png" alt=""/>
     </div>
