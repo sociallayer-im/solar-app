@@ -10,7 +10,7 @@ interface AddressListProp {
 function AddressList({ selected = [], ...props }: AddressListProp) {
     const { defaultAvatar } = usePicture()
 
-    return (<div className='address-list' data-testid='AddressListItem'>
+    return (<div className='address-list' data-testid='AddressList'>
         {
             props.data.map((item,index) => {
                 return <div className='list-item'
