@@ -81,44 +81,62 @@ function DialogAvatar (props: DialogAvatarProps) {
             }
         })
 
+        const unload = showLoading()
         const reader = new FileReader()
         reader.readAsDataURL(img[0])
         reader.onload = async () => {
-            showCropper({ imgURL: reader.result as string, onConfirm: async (res: Blob, close: () => any) => {
-                    close()
-                    const unload = showLoading()
-                    try {
-                        const newImage = await solas.uploadImage({
-                            file: res,
-                            uploader: user.wallet || user.email || '',
-                            auth_token: user.authToken || ''
-                        })
+            const img = new Image()
+            img.src = reader.result as string
+            img.onload = () => {
 
-                        let newProfile: Profile
-                        if (props.profile.is_group) {
-                            newProfile = await solas.updateGroup({
-                                id: props.profile.id,
-                                image_url: newImage,
+                // remove exif
+                const canvas = document.createElement('canvas')
+                const ctx = canvas.getContext('2d')
+                ctx!.save()
+                canvas.width = img.width
+                canvas.height = img.height
+                ctx!.drawImage(img, 0, 0, img.width, img.height)
+                ctx!.restore()
+                const dataUrl = canvas.toDataURL('image/png')
+                unload()
+
+                showCropper({
+                    imgURL: dataUrl as string, onConfirm: async (res: Blob, close: () => any) => {
+                        close()
+                        const unload = showLoading()
+                        try {
+                            const newImage = await solas.uploadImage({
+                                file: res,
+                                uploader: user.wallet || user.email || '',
                                 auth_token: user.authToken || ''
                             })
-                            emitGroupUpdate(newProfile)
-                        } else {
-                            newProfile = await solas.setAvatar({
-                                image_url: newImage,
-                                auth_token: user.authToken || ''
-                            })
-                            emitProfileUpdate(newProfile)
+
+                            let newProfile: Profile
+                            if (props.profile.is_group) {
+                                newProfile = await solas.updateGroup({
+                                    id: props.profile.id,
+                                    image_url: newImage,
+                                    auth_token: user.authToken || ''
+                                })
+                                emitGroupUpdate(newProfile)
+                            } else {
+                                newProfile = await solas.setAvatar({
+                                    image_url: newImage,
+                                    auth_token: user.authToken || ''
+                                })
+                                emitProfileUpdate(newProfile)
+                            }
+                            setCurrProfile(newProfile)
+                            unload()
+                            clean()
+                        } catch (e: any) {
+                            console.log('[selectFile]: ', e)
+                            unload()
+                            showToast(e.message || 'Upload fail')
                         }
-                        setCurrProfile(newProfile)
-                        unload()
-                        clean()
-                    } catch (e: any) {
-                        console.log('[selectFile]: ', e)
-                        unload()
-                        showToast(e.message || 'Upload fail')
                     }
-                }
-            })
+                })
+            }
         }
     }
 
