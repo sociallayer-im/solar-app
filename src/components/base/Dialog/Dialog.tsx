@@ -13,7 +13,7 @@ export interface DialogProps {
 
 function Dialog ({ position = '', ...props }: DialogProps) {
     const { children } = props
-    const dialogContent = useRef<HTMLDivElement | any>(null)
+    const dialogContent = useRef<HTMLDivElement | null>(null)
     const [contentClassName, setContentClassName] = useState('dialog-content' + ' ' + position)
 
     let sizeStyle = { width: 'auto', height: 'auto', maxWidth: 'initial', maxHeight: 'initial', minWidth:'initial',  minHeight: 'initial' }
@@ -38,7 +38,8 @@ function Dialog ({ position = '', ...props }: DialogProps) {
     }
 
     const close = () => {
-        if (props.handleClose) {
+        console.log('close dialog dialogContent', dialogContent)
+        if (props.handleClose && dialogContent && dialogContent.current) {
             dialogContent.current.className = contentClassName.replace('active', '')
             setTimeout(() => {
                props.handleClose!()
@@ -47,9 +48,10 @@ function Dialog ({ position = '', ...props }: DialogProps) {
     }
 
     useEffect(() => {
+        console.log('close dialog dialogContent', dialogContent)
         if (position) {
             setTimeout(()=> {
-                if (dialogContent) {
+                if (dialogContent && dialogContent.current) {
                     dialogContent.current.className = contentClassName + ' active'
                 }
             }, 200)

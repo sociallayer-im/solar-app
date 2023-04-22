@@ -154,7 +154,7 @@ function DetailPresend (props: DetailPresendProps ) {
                 content={ formatTime(props.presend.created_at ) } />
         </DetailScrollBox>
         <BtnGroup>
-            { user.id ? ActionBtns : LoginBtn }
+            { user.domain ? ActionBtns : LoginBtn }
         </BtnGroup>
     </DetailWrapper>
 }
