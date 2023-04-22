@@ -298,7 +298,11 @@ const langCN: LangConfig = {
 
   Home_Page_New_Title: '创建一个徽章',
   Home_Page_New_Des: '现在就加入吧，开始创建徽章，描述你的成就，并将它们颁发给值得拥有的人。',
-  Home_Page_New_Btn: '创建你的徽章'
+  Home_Page_New_Btn: '创建你的徽章',
+
+  Badgelet_List_Title: '已收集',
+  Badgelet_List_Unit: '徽章',
+  Created_List_Title: '已创建'
 }
 
 export default langCN

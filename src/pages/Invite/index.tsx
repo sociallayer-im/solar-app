@@ -48,6 +48,7 @@ function Invite() {
         }
 
         const checkedIssues = issues.filter(item => !!item)
+
         if (!checkedIssues.length) {
             showToast('Please type in issues')
             return

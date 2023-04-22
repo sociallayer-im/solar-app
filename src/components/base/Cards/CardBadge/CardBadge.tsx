@@ -5,35 +5,19 @@ import DialogsContext from '../../../provider/DialogProvider/DialogsContext'
 
 const style = {
     wrapper: {
+        position: 'relative' as const,
         display: 'flex',
         flexDirection: 'column' as const,
-        height: '162px',
+        width: '162px',
+        height: '182px',
         borderRadius: '15px',
         background: '#fff',
         boxShadow: '0 1.9878px 11.9268px rgb(0 0 0 / 10%)',
         padding: '10px',
         cursor: 'pointer' as const,
-        position: 'relative' as const,
         alignItems: 'center',
-        justifyContent: 'center',
         marginBottom: '10px',
-        minWidth: 'calc(50% - 5px)',
-        maxWidth: 'calc(50% - 5px)',
         boxSizing: 'border-box' as const,
-        marginRight: '10px',
-        ':nth-child(2n)': {
-            marginRight: '0'
-        },
-        '@media (min-width: 850px)': {
-            minWidth: 'calc((850px - 50px) / 6)',
-            maxWidth: 'calc((850px - 50px) / 6)',
-            ':nth-child(2n)': {
-                marginRight: '10px'
-            },
-            ':nth-child(6n)': {
-                marginRight: '0'
-            }
-        }
     },
     img:  {
         width: '90px',
@@ -48,6 +32,42 @@ const style = {
         overflow: 'hidden' as const,
         textOverflow: 'ellipsis' as const,
         fontSize: '14px'
+    },
+    pendingMark: {
+        position: 'absolute' as const,
+        fontWeight: 600,
+        fontSize: '12px',
+        color: '#272928',
+        padding: '0 10px',
+        background: '#ffdc62',
+        height: '28px',
+        boxSizing: 'border-box' as const,
+        lineHeight: '28px',
+        borderRadius: '28px',
+        top: '5px',
+        left: '5px'
+    },
+    hideMark: {
+        width: '90px',
+        height: '90px',
+        borderRadius: '50%',
+        position: 'absolute' as const,
+        background: 'rgba(0,0,0,0.3)',
+        top: '18px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: '24px'
+    },
+    coverBg: {
+        width: '142px',
+        height: '132px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'linear-gradient(180deg, rgba(247, 247, 247, 0.82) 0%, #EBF2F1 100%);',
+        borderRadius: '6px',
+        marginBottom: '8px'
     }
 }
 
@@ -60,7 +80,9 @@ function CardBadge (props: CardBadgeProps) {
     const { showBadge } = useContext(DialogsContext)
 
     return (<div data-testid='CardBadge' className={ css(style.wrapper) } onClick={() => { showBadge(props.badge) }}>
-                <img className={ css(style.img) } src={ props.badge.image_url } alt=""/>
+                <div className={ css(style.coverBg) }>
+                    <img className={ css(style.img) } src={ props.badge.image_url } alt=""/>
+                </div>
                 <div className={ css(style.name) }>{ props.badge.name }</div>
             </div>)
 }

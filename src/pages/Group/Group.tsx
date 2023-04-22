@@ -19,6 +19,7 @@ import ListGroupMember from '../../components/compose/ListGroupMember'
 import UserContext from '../../components/provider/UserProvider/UserContext'
 import { Overflow } from 'baseui/icon'
 import useIssueBadge from '../../hooks/useIssueBadge'
+import ListUserCreated from '../../components/compose/ListUserCreated/ListUserCreated'
 
 
 function GroupPage () {
@@ -85,29 +86,7 @@ function GroupPage () {
                 </div>
             </div>
             <div className='down-side'>
-                <AppTabs initialState={ { activeKey: selectedTab } }>
-                    <Tab key='Minted' title={ lang['Profile_Tab_Minted'] }>
-                        <AppSubTabs>
-                            <Tab key='Minted' title={ lang['Profile_Tab_Minted'] }>
-                                <ListUserMinted userType='group' profile={ profile! } />
-                            </Tab>
-                            <Tab key='Invite' title={ lang['Group_detail_tabs_Invite'] }>
-                                <ListGroupInvitep group={ profile! } />
-                            </Tab>
-                            { user.id === profile.group_owner_id ?
-                                <Tab key='Presend' title={ lang['Profile_Tab_Presend'] }>
-                                    <ListUserPresend userType='group' profile={ profile! } />
-                                </Tab> : <></>
-                             }
-                        </AppSubTabs>
-                    </Tab>
-                    <Tab key='Received' title={ lang['Profile_Tab_Received'] }>
-                        <ListUserBadgelet profile={ profile! } />
-                    </Tab>
-                    <Tab key='Members' title={ lang['Group_detail_tabs_member'] }>
-                        <ListGroupMember group={ profile! } />
-                    </Tab>
-                </AppTabs>
+                <ListUserCreated userType='group' profile={ profile! } />
             </div>
         </div>
         }

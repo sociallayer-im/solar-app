@@ -18,6 +18,7 @@ import ListUserGroup from '../../components/compose/ListUserGroup'
 import UserContext from '../../components/provider/UserProvider/UserContext'
 import { useNavigate } from 'react-router-dom'
 import useIssueBadge from '../../hooks/useIssueBadge'
+import ListUserCreated from '../../components/compose/ListUserCreated/ListUserCreated'
 
 
 function ProfilePage () {
@@ -76,27 +77,9 @@ function ProfilePage () {
                 </div>
             </div>
             <div className='down-side'>
-                <AppTabs initialState={ { activeKey: selectedTab } }>
-                    <Tab key='Received' title={ lang['Profile_Tab_Received'] }>
-                        <ListUserBadgelet profile={ profile! } />
-                    </Tab>
-                    <Tab key='Minted' title={ lang['Profile_Tab_Minted'] }>
-                        <AppSubTabs>
-                            <Tab key='Minted' title={ lang['Profile_Tab_Minted'] }>
-                                <ListUserMinted profile={ profile! } />
-                            </Tab>
-                            { user.id === profile.id
-                                ? <Tab key='Presend' title={ lang['Profile_Tab_Presend'] }>
-                                    <ListUserPresend profile={ profile! } />
-                                 </Tab>
-                                : <></>
-                            }
-                        </AppSubTabs>
-                    </Tab>
-                    <Tab key='Groups' title={ lang['Profile_Tab_Groups'] }>
-                        <ListUserGroup profile={ profile! } />
-                    </Tab>
-                </AppTabs>
+                <ListUserBadgelet profile={ profile! } />
+                <ListUserCreated profile={ profile! } />
+                <ListUserGroup profile={ profile! } />
             </div>
         </div>
         }

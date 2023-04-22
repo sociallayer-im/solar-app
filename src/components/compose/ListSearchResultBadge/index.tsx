@@ -4,7 +4,7 @@ import solas from '../../../service/solas'
 import ListWrapper from '../../base/ListWrapper'
 import Empty from '../../base/Empty'
 import LangContext from '../../provider/LangProvider/LangContext'
-import useScrollToLoad from "../../../hooks/scrollToLoad";
+import useScrollToLoad from '../../../hooks/scrollToLoad'
 
 interface ListSearchResultBadgeProps {
     keyword: string

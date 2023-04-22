@@ -1,13 +1,12 @@
-import {useContext, useEffect, useState} from 'react'
+import React, { useContext, useEffect } from 'react'
 import CardBadgelet from '../../base/Cards/CardBadgelet/CardBadgelet'
-import solas, { Profile, Badgelet } from '../../../service/solas'
-import ListWrapper from '../../base/ListWrapper'
-import Empty from '../../base/Empty'
+import solas, { Profile, Badgelet  } from '../../../service/solas'
 import LangContext from '../../provider/LangProvider/LangContext'
-import useScrollToLoad from '../../../hooks/scrollToLoad'
 import useEvent, { EVENT } from '../../../hooks/globalEvent'
 import UserContext from '../../provider/UserProvider/UserContext'
-import {sortBy} from "lodash";
+import ListTitle from '../../base/ListTitle/ListTitle'
+import HorizontalList, { HorizontalListMethods } from '../../base/HorizontalList/HorizontalList'
+import './ListUserBadgelet.less'
 
 interface ListUserBadgeletProps {
     profile: Profile
@@ -16,53 +15,43 @@ interface ListUserBadgeletProps {
 function ListUserBadgelet (props: ListUserBadgeletProps) {
     const { lang } = useContext(LangContext)
     const { user } = useContext(UserContext)
-    const [badgelets, setBadgelets] = useState<Badgelet[]>([])
+
+    const listWrapperRef = React.createRef<HorizontalListMethods>()
+
     const getBadgelet = async (page: number) => {
         return await solas.queryBadgelet({
             show_hidden: user.id === props.profile.id ? 1: undefined,
             receiver_id: props.profile.id,
             page })
     }
-    const { isEmpty, list, ref, refresh } = useScrollToLoad ({ queryFunction: getBadgelet })
     const [needUpdate, _] = useEvent(EVENT.badgeletListUpdate)
 
     useEffect(() => {
         if (!needUpdate) return
-        refresh()
+        !!listWrapperRef.current && listWrapperRef.current!.refresh()
     }, [needUpdate])
 
     useEffect(() => {
-        refresh()
+        !!listWrapperRef.current && listWrapperRef.current!.refresh()
     }, [props.profile])
 
-    useEffect(() => {
-        if (list.length) {
-            let sortByTop:Badgelet[] = []
-            list.forEach(item => {
-                if (item.top) {
-                    sortByTop = [item, ...sortByTop]
-                } else {
-                    sortByTop = [...sortByTop, item]
-                }
-            })
-            setBadgelets(sortByTop)
-        }
-    }, [list])
-
     return (
-        <ListWrapper>
-            {   isEmpty ?
-                <Empty text={ lang['Empty_No_Badge'] } />
-                : false
-            }
-            {   badgelets.length ?
-                badgelets.map((item, index) => {
-                    return <CardBadgelet badgelet={ item } key={ index.toString() }/>
-                })
-                : false
-            }
-            <div ref={ref} className='page-bottom-marker'></div>
-        </ListWrapper>)
+        <div className='list-user-badgelet'>
+            <ListTitle
+                title={lang['Badgelet_List_Title']}
+                count={ 0 }
+                uint={lang['Badgelet_List_Unit']} />
+            <div className='list-user-badgelet-content'>
+                <HorizontalList
+                    item={ (itemData: Badgelet) => <CardBadgelet badgelet={ itemData } /> }
+                    space={ 12 }
+                    itemWidth={ 162 }
+                    itemHeight={ 184 }
+                    queryFunction={ getBadgelet }
+                />
+            </div>
+        </div>
+    )
 }
 
 export default ListUserBadgelet

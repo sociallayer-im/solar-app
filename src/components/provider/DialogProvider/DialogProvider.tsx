@@ -77,7 +77,7 @@ function DialogProvider (props: DialogProviderProps) {
                 const props = {
                     key: id.toString(),
                     size: openDialogProps.size || [320, 450],
-                    position: openDialogProps.position || 'center' as const,
+                    position: openDialogProps.position || undefined,
                     handleClose: close
                 }
 

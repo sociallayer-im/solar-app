@@ -1,11 +1,12 @@
 import {useEffect, useRef, useState} from 'react'
 import { useInView } from 'react-intersection-observer'
 
-interface useScrollToLoadProps {
-    queryFunction: (page: number) => any[] | Promise<any[]>
+interface useScrollToLoadProps<T> {
+    queryFunction: (page: number) => T[] | Promise<T[]>
+    immediate?: boolean
 }
 
-function useScrollToLoad (props: useScrollToLoadProps) {
+function useScrollToLoad<T> (props: useScrollToLoadProps<T>) {
     const [list, setList] = useState<any[]>([])
     const [page, setPage] = useState(0)
     const [loading, setLoading] = useState(false)
@@ -36,6 +37,12 @@ function useScrollToLoad (props: useScrollToLoadProps) {
             setLoading(false)
         }
     }
+
+    useEffect(() => {
+        if (props.immediate) {
+            query(true)
+        }
+    }, [props.immediate])
 
     useEffect(() => {
         if (page) {

@@ -11,7 +11,8 @@ const style = {
     wrapper: {
         display: 'flex',
         flexDirection: 'column' as const,
-        height: '185px',
+        width: '335px',
+        height: '210px',
         borderRadius: '15px',
         background: '#fff',
         boxShadow: '0 1.9878px 11.9268px rgb(0 0 0 / 10%)',
@@ -21,16 +22,7 @@ const style = {
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: '10px',
-        width: '100%',
         boxSizing: 'border-box' as const,
-        '@media (min-width: 850px)': {
-            minWidth: 'calc((850px - 10px) / 2)',
-            maxWidth: 'calc((850px - 10px) / 6)',
-            marginRight: '10px',
-            ':nth-child(2n)': {
-                marginRight: '0'
-            }
-        }
     },
     img:  {
         width: '90px',

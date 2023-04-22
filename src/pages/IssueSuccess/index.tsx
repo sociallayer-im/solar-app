@@ -12,7 +12,7 @@ import usePicture from '../../hooks/pictrue'
 import AppButton, { BTN_SIZE } from '../../components/base/AppButton/AppButton'
 import usePageHeight from '../../hooks/pageHeight'
 
-//AppSwiper deps
+//HorizontalList deps
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import 'swiper/css/pagination'

@@ -299,6 +299,10 @@ const langEN = {
   Home_Page_New_Title: 'Create a badge',
   Home_Page_New_Des: 'Join now to start creating badges, describing your achievements, and awarding them to deserving individuals.',
   Home_Page_New_Btn: 'Create your badge',
+
+  Badgelet_List_Title: 'Collected',
+  Badgelet_List_Unit: 'Badges',
+  Created_List_Title: 'Created'
 }
 
 export type LangConfig = typeof langEN

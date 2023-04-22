@@ -19,7 +19,7 @@ import DetailDes from '../atoms/DetailDes/DetailDes'
 import './DetailBadge.less'
 import SwiperPagination from '../../../base/SwiperPagination/SwiperPagination'
 
-//AppSwiper deps
+//HorizontalList deps
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react'
 import { Pagination } from 'swiper'
 import 'swiper/css'
