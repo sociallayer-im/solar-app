@@ -49,7 +49,8 @@ export const profiles: Profile[] = [
         username: 'zfd',
         followers: 2,
         following: 6,
-        is_group: null
+        is_group: null,
+        badge_count: 12,
     },
     {
         address: '0x7682Ba569E3823Ca1B7317017F5769F8Aa8842D4',
@@ -62,7 +63,8 @@ export const profiles: Profile[] = [
         username: 'jiang',
         followers: 5,
         following: 11,
-        is_group: null
+        is_group: null,
+        badge_count: 12,
     },
     {
         address: 'null',
@@ -75,7 +77,8 @@ export const profiles: Profile[] = [
         username: 'jiang',
         followers: 0,
         following: 0,
-        is_group: null
+        is_group: null,
+        badge_count: 12,
     }
 ]
 
