@@ -129,7 +129,7 @@ export interface Badge {
 
 export async function queryBadge (props: QueryBadgeProps): Promise<Badge[]> {
     const res = await fetch.get({
-       url: `${api}/badge/list`,
+        url: `${api}/badge/list`,
         data: props
     })
 
@@ -485,7 +485,7 @@ export async function setAvatar (props: SetAvatarProps): Promise<Profile> {
         throw new Error(res.data.message)
     }
 
-   return res.data.profile
+    return res.data.profile
 }
 
 export interface CreateBadgeProps {
