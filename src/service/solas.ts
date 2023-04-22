@@ -23,9 +23,10 @@ export interface Profile {
     twitter: string | null,
     email: string | null,
     username: string | null,
-    followers: number
-    following: number
-    is_group: boolean | null
+    followers: number,
+    following: number,
+    is_group: boolean | null,
+    badge_count: number,
 }
 
 export interface ProfileSimple {
@@ -128,7 +129,7 @@ export interface Badge {
 
 export async function queryBadge (props: QueryBadgeProps): Promise<Badge[]> {
     const res = await fetch.get({
-       url: `${api}/badge/list`,
+        url: `${api}/badge/list`,
         data: props
     })
 
@@ -484,7 +485,7 @@ export async function setAvatar (props: SetAvatarProps): Promise<Profile> {
         throw new Error(res.data.message)
     }
 
-   return res.data.profile
+    return res.data.profile
 }
 
 export interface CreateBadgeProps {
@@ -773,9 +774,71 @@ export interface SendInviteProps {
 }
 export async function sendInvite (props: SendInviteProps): Promise<Invite[]> {
     checkAuth(props)
+    const walletAddress: string[] = []
+    const socialLayerUsers: string[] = []
+    const domains: string[] = []
+    const emails: string[] = []
+    const socialLayerDomain = import.meta.env.VITE_SOLAS_DOMAIN
+
+    props.receivers.forEach(item => {
+        if (item.endsWith('.eth') || item.endsWith('.dot')) {
+            domains.push(item)
+        } else if (item.startsWith('0x')) {
+            walletAddress.push(item)
+        } else if (item.endsWith(socialLayerDomain)) {
+            socialLayerUsers.push(item)
+        } else if (item.match(/^\w+@\w+\.\w+$/i)) {
+            emails.push(item)
+        } else {
+            socialLayerUsers.push(item + socialLayerDomain)
+        }
+    })
+
+    console.log('walletAddress', walletAddress)
+    console.log('socialLayerUsers', socialLayerUsers)
+    console.log('domains', domains)
+    const domainToWalletAddress: any = []
+    domains.map((item) => {
+        return domainToWalletAddress.push(DDNSServer(item))
+    })
+
+    const domainOwnerAddress = await Promise.all(domainToWalletAddress)
+    domainOwnerAddress.forEach((item, index) => {
+        if (!item) throw new Error(`Domain ${domains[index]} is not exist`)
+    })
+
+
+    const handleError = (account: string) => {
+        throw new Error(`Invalid Account ${account}`)
+    }
+
+    const task: any = []
+    walletAddress.forEach((item) => {
+        task.push(getProfile({ address: item } ).catch(e => { handleError(item) }))
+    })
+    socialLayerUsers.map((item) => {
+        task.push(getProfile({ domain: item } ).catch(e => { handleError(item) }))
+    })
+    domainOwnerAddress.map((item) => {
+        task.push(getProfile({ address: item } ).catch(e => { handleError(item) }))
+    })
+    emails.map((item) => {
+        task.push(getProfile({ email: item } ).catch(e => { handleError(item) }))
+    })
+
+    const profiles = await Promise.all(task)
+    profiles.forEach((item, index) => {
+        if (!item)  {
+            handleError(domains[index])
+        }
+    })
+
     const res = await fetch.post({
         url: `${api}/group/send-invite`,
-        data:  props
+        data:  {
+            ...props,
+            receivers: [...walletAddress, ...socialLayerUsers, ...domainOwnerAddress, ...emails]
+        }
     })
 
     if (res.data.result === 'error') {
