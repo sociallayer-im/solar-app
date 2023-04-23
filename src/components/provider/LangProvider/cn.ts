@@ -236,13 +236,15 @@ const langCN: LangConfig = {
 
   Group_regist_confirm: '创建组织',
   Group_regist_owner: '组织拥有者',
+  Group_regist_confirm_dialog: '将会以这个域名创建组织: ',
   Group_regist_des: '徽章以组织的名义颁发给成员',
   Group_regist_title: '为你的组织设定一个独一无二的 Social layer 域名身份吧！',
 
-  Group_dissolve_des: '确定解散组织：',
-
   Group_setting_title: '设置',
-  Group_setting_dissolve: '解散组织',
+  Group_setting_dissolve: '冻结组织',
+  Group_freeze_dialog_title: '你正在冻结组织',
+  Group_freeze_Dialog_confirm: '冻结',
+  Group_freeze_Dialog_cancel: '取消',
 
   Group_relation_ship_member: '成员',
   Group_relation_ship_owner: '拥有者',

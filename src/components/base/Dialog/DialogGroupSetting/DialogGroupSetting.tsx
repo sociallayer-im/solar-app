@@ -5,6 +5,7 @@ import langContext from '../../../provider/LangProvider/LangContext'
 import UserContext from '../../../provider/UserProvider/UserContext'
 import solas, { Group } from '../../../../service/solas'
 import DialogsContext from '../../../provider/DialogProvider/DialogsContext'
+import { DialogConfirmProps } from '../DialogConfirm/DialogConfirm'
 import { useNavigate } from 'react-router-dom'
 
 export interface DialogGroupSettingProps {
@@ -16,7 +17,7 @@ export interface DialogGroupSettingProps {
 function DialogGroupSetting(props: DialogGroupSettingProps) {
     const { lang } = useContext(langContext)
     const { user } = useContext(UserContext)
-    const { showLoading, showToast } = useContext(DialogsContext)
+    const { showLoading, showToast, openConfirmDialog } = useContext(DialogsContext)
     const navigate= useNavigate()
 
     const handleDissolve = async () => {
@@ -37,6 +38,18 @@ function DialogGroupSetting(props: DialogGroupSettingProps) {
         }
      }
 
+     const showConfirmDialog = () => {
+        const dialogProps: DialogConfirmProps = {
+            title: lang['Group_freeze_dialog_title'],
+            confirmLabel: lang['Group_freeze_Dialog_confirm'],
+            cancelLabel: lang['Group_freeze_Dialog_cancel'],
+            onConfirm: (close: any) => { close(); handleDissolve() },
+            content: () => <div className='confirm-domain'><span>{props.group.domain}</span></div>
+        }
+
+        const dialog = openConfirmDialog(dialogProps)
+     }
+
     return (<div className='group-setting-dialog'>
        <div className='top-side'>
            <div className='list-header'>
@@ -47,7 +60,7 @@ function DialogGroupSetting(props: DialogGroupSettingProps) {
        </div>
         <div className='group-setting-menu'>
             <div className='center'>
-                <div className='group-setting-menu-item' onClick={ handleDissolve }>
+                <div className='group-setting-menu-item' onClick={ showConfirmDialog }>
                     { lang['Group_setting_dissolve'] }
                 </div>
             </div>

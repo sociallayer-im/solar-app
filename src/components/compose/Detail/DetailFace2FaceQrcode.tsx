@@ -28,7 +28,8 @@ function DetailFace2FaceQrcode(props: DetailFace2FaceQrcodeProps) {
             .replace('#2', presend?.badge.name || '')
             .replace('#3', link)
 
-        copy(description)
+        // copy(description)
+        copy(link)
         props.handleClose()
         showToast('Copied')
     }

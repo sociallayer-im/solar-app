@@ -15,6 +15,8 @@ function Dialog ({ position = '', ...props }: DialogProps) {
     const { children } = props
     const dialogContent = useRef<HTMLDivElement | null>(null)
     const [contentClassName, setContentClassName] = useState('dialog-content' + ' ' + position)
+    const [maxHeight, setMaxHeight] = useState(window.innerHeight + 'px')
+    const [height, setHeight] = useState(window.innerHeight + 'px')
 
     let sizeStyle = { width: 'auto', height: 'auto', maxWidth: 'initial', maxHeight: 'initial', minWidth:'initial',  minHeight: 'initial' }
 
@@ -33,10 +35,6 @@ function Dialog ({ position = '', ...props }: DialogProps) {
         sizeStyle.maxHeight =  props.minSize[1]
     }
 
-    if (position === 'bottom') {
-        sizeStyle.maxHeight = window.innerHeight + 'px'
-    }
-
     const close = () => {
         console.log('close dialog dialogContent', dialogContent)
         if (props.handleClose && dialogContent && dialogContent.current) {
@@ -48,17 +46,28 @@ function Dialog ({ position = '', ...props }: DialogProps) {
     }
 
     useEffect(() => {
-        console.log('close dialog dialogContent', dialogContent)
         if (position) {
             setTimeout(()=> {
                 if (dialogContent && dialogContent.current) {
                     dialogContent.current.className = contentClassName + ' active'
                 }
+
             }, 200)
         }
-    }, [])
 
-    const height = window.innerHeight
+        const resize = () => {
+            setHeight(window.innerHeight + 'px')
+            if (position === 'bottom') {
+                setMaxHeight(window.innerHeight + 'px')
+            }
+        }
+
+        resize()
+
+        window.addEventListener('resize', resize, false)
+
+        return () => { window.removeEventListener('resize', resize, false) }
+    }, [])
 
     return (<div data-testid='AppDialog' className='dialog' style={{height: `${height}px`}}>
         <div className={ `dialog-shell ${ props.noShell ? 'light': '' }` } onClick={ close }></div>

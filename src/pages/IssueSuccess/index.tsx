@@ -127,7 +127,8 @@ function IssueSuccessPage () {
             .replace('#2', info?.name || '')
             .replace('#3', shareUrl)
 
-        copy(link)
+        // copy(link)
+        copy(shareUrl)
     }
 
     const themes = [
