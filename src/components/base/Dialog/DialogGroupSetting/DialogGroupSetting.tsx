@@ -28,13 +28,13 @@ function DialogGroupSetting(props: DialogGroupSettingProps) {
                 auth_token: user.authToken || ''
             })
             unload()
-            showToast('Dissolve success')
+            showToast('Freeze success')
             props.handleClose()
             navigate(`/profile/${user.userName}`)
         } catch (e: any) {
-            console.log('[handleDissolve]: ', e)
+            console.log('[handleFreeze]: ', e)
             unload()
-            showToast(e.message || 'Dissolve fail')
+            showToast(e.message || 'Freeze fail')
         }
      }
 
