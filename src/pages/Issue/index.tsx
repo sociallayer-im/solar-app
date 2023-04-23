@@ -117,7 +117,8 @@ function Issue() {
                 .replace('#1',  user.domain!)
                 .replace('#2', badge?.name || '')
                 .replace('#3', link)
-            setFace2faceShareLink(description)
+            // setFace2faceShareLink(description)
+            setFace2faceShareLink(link)
         } catch (e: any) {
             console.log('[handleCreatePresend]: ', e)
             unload()

@@ -243,6 +243,9 @@ const langCN: LangConfig = {
 
   Group_setting_title: '设置',
   Group_setting_dissolve: '冻结组织',
+  Group_freeze_dialog_title: '你正在冻结组织',
+  Group_freeze_Dialog_confirm: '冻结',
+  Group_freeze_Dialog_cancel: '取消',
 
   Group_relation_ship_member: '成员',
   Group_relation_ship_owner: '拥有者',

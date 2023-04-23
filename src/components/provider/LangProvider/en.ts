@@ -243,6 +243,9 @@ const langEN = {
 
   Group_setting_title: 'Settings',
   Group_setting_dissolve: 'Freeze the Group',
+  Group_freeze_dialog_title: 'Your are freezing the Group',
+  Group_freeze_Dialog_confirm: 'Freeze',
+  Group_freeze_Dialog_cancel: 'Cancel',
 
   Group_relation_ship_member: 'Member',
   Group_relation_ship_owner: 'Owner',
