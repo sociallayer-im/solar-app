@@ -30,7 +30,7 @@ function RegistForm (props: RegistFormProps) {
 
     const showConfirm = () => {
         const props = {
-            title: lang['Regist_Dialog_Title'],
+            title: lang['Group_regist_confirm_dialog'],
             confirmLabel: lang['Regist_Dialog_Create'],
             cancelLabel: lang['Regist_Dialog_ModifyIt'],
             onConfirm: (close: any) => { close(); createGroup() },
