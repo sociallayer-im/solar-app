@@ -62,7 +62,9 @@ function DialogProvider (props: DialogProviderProps) {
         console.log('clean:', message)
         const copy = { ...dialogsGroup}
         copy.dialogs = []
-        setDialogsGroup(copy)
+        setTimeout(() => {
+            setDialogsGroup(copy)
+        }, 200)
     }
 
     const openDialog = (openDialogProps: OpenDialogProps ) => {

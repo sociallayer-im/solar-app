@@ -153,9 +153,9 @@ function DetailBadgelet(props: DetailBadgeletProps ) {
             </DetailScrollBox>
 
             <BtnGroup>
-                { !user.id && LoginBtn }
+                { !user.domain && LoginBtn }
 
-                { !!user.id
+                { !!user.domain
                     && user.id === badgelet.receiver.id
                     && badgelet.status === 'pending'
                     && ActionBtns }

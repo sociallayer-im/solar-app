@@ -60,7 +60,7 @@ function ReasonInput(props: ReasonInputProps) {
                    { lang['IssueBadge_linkbtn'] }
                </div>
            </div>
-           <div>{value.length}/200</div>
+           <div>{ value ? value.length : 0 }/200</div>
        </div>
     </div>)
 }

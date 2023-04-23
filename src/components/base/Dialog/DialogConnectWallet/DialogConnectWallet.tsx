@@ -1,10 +1,11 @@
 import {Connector, useAccount, useConnect, useSigner, useDisconnect } from 'wagmi'
 import './DialogConnectWallet.less'
-import { useContext } from 'react'
+import {useContext, useEffect} from 'react'
 import LangContext from '../../../provider/LangProvider/LangContext'
 import { setLastLoginType } from '../../../../utils/authStorage'
 import { useNavigate } from 'react-router-dom'
 import DialogsContext from '../../../provider/DialogProvider/DialogsContext'
+import UserContext from '../../../provider/UserProvider/UserContext'
 
 interface DialogConnectWalletProps {
     handleClose: (...rest: any[]) => any
@@ -17,7 +18,7 @@ function DialogConnectWallet (props: DialogConnectWalletProps) {
     const { isDisconnected } = useAccount()
     const navigate = useNavigate()
     const { clean } = useContext(DialogsContext)
-
+    const { user } = useContext(UserContext)
 
     const handleConnectWallet = (connector: Connector) => {
         if (isLoading && pendingConnector?.id === connector.id) return
@@ -29,7 +30,6 @@ function DialogConnectWallet (props: DialogConnectWalletProps) {
        setTimeout(() => {
            setLastLoginType('wallet')
            connect({ connector })
-           clean()
        },500)
     }
 
