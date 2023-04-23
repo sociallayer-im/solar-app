@@ -50,7 +50,7 @@ function GroupPanel(props: GroupPanelProps) {
             return
         }
         checkFollow()
-    }, [user.id])
+    }, [user.id, props.group.id])
 
 
     const showFollowInfo = () => {

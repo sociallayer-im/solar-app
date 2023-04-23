@@ -120,7 +120,7 @@ function DetailPresend (props: DetailPresendProps ) {
         const dialog = openDialog({
             content: (close: any) =>  <DetailFace2FaceQrcode presendId={ props.presend.id } handleClose={ close }/>,
             position: 'bottom',
-            size: ['100%', 'auto']
+            size: [460, 'auto']
         })
     }
 
