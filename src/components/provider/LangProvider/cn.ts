@@ -242,7 +242,7 @@ const langCN: LangConfig = {
   Group_dissolve_des: '确定解散组织：',
 
   Group_setting_title: '设置',
-  Group_setting_dissolve: '解散组织',
+  Group_setting_dissolve: '冻结组织',
 
   Group_relation_ship_member: '成员',
   Group_relation_ship_owner: '拥有者',

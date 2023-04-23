@@ -375,6 +375,7 @@ function DialogProvider (props: DialogProviderProps) {
                 const dialogProps = {
                     key: id.toString(),
                     size: ['100%', '100%'],
+                    handleClose: close
                 }
 
                 return (

@@ -242,7 +242,7 @@ const langEN = {
   Group_dissolve_des: 'Are you sure to dissolve group:',
 
   Group_setting_title: 'Settings',
-  Group_setting_dissolve: 'Dissolve the Group',
+  Group_setting_dissolve: 'Freeze the Group',
 
   Group_relation_ship_member: 'Member',
   Group_relation_ship_owner: 'Owner',
