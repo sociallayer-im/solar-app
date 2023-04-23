@@ -32,6 +32,7 @@ function ListUserMinted ({ userType = 'user',  ...props }: ListUserMintedProps) 
             itemWidth={ 162 }
             itemHeight={ 184 }
             queryFunction={ getBadge }
+            onRef={ listWrapperRef }
         />
     )
 }

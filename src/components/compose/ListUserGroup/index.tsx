@@ -45,6 +45,7 @@ function ListUserGroup (props: ListUserGroupProps) {
                 itemHeight={ 210 }
                 queryFunction={ getGroup }
                 endEnhancer={ isProfileOwner ? () => <CardCreateGroup /> : undefined }
+                onRef={ listWrapperRef }
             />
         </div>
     )

@@ -33,7 +33,7 @@ function ListUserBadgelet (props: ListUserBadgeletProps) {
 
     useEffect(() => {
         !!listWrapperRef.current && listWrapperRef.current!.refresh()
-    }, [props.profile])
+    }, [props.profile.id, listWrapperRef.current])
 
     return (
         <div className='list-user-badgelet'>
@@ -48,6 +48,7 @@ function ListUserBadgelet (props: ListUserBadgeletProps) {
                     itemWidth={ 162 }
                     itemHeight={ 184 }
                     queryFunction={ getBadgelet }
+                    onRef={ listWrapperRef }
                 />
             </div>
         </div>

@@ -86,7 +86,9 @@ function GroupPage () {
                 </div>
             </div>
             <div className='down-side'>
+                <ListUserBadgelet profile={profile!} />
                 <ListUserCreated userType='group' profile={ profile! } />
+                <ListGroupMember group={ profile }/>
             </div>
         </div>
         }

@@ -1,12 +1,16 @@
-import {useContext, useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import CardUser from '../../base/Cards/CardUser/CardUser'
 import solas, { Profile } from '../../../service/solas'
 import ListWrapper from '../../base/ListWrapper'
 import LangContext from '../../provider/LangProvider/LangContext'
 import UserContext from '../../provider/UserProvider/UserContext'
 import { styled } from 'baseui'
-import { Plus } from 'baseui/icon'
 import { useNavigate } from 'react-router-dom'
+import ListTitle from '../../base/ListTitle/ListTitle'
+import HorizontalList, { HorizontalListMethods}  from '../../base/HorizontalList/HorizontalList'
+import CardMember from '../../base/Cards/CardMember/CardMember'
+import './ListGroupMember.less'
+import CardInviteMember from '../../base/Cards/CardInviteMember/CardInviteMember'
 
 
 interface ListGroupMemberProps {
@@ -19,21 +23,27 @@ function ListGroupMember (props: ListGroupMemberProps) {
     const navigate = useNavigate()
     const [members, setMembers] = useState<Profile[]>([])
     const [owner, setOwner] = useState<Profile | null>(null)
+    const listWrapperRef = React.createRef<HorizontalListMethods>()
 
     useEffect(() => {
-        const getMember = async () => {
-            const members = await solas.getGroupMembers({
-                group_id: props.group.id})
-            setMembers(members)
-        }
-
-        const getOwner = async () => {
-            const owner = await solas.getProfile({ id: props.group.group_owner_id! })
-            setOwner(owner)
-        }
-        getMember()
         getOwner()
+        listWrapperRef.current?.refresh()
     }, [props.group])
+
+    const getOwner = async () => {
+        const owner = await solas.getProfile({ id: props.group.group_owner_id! })
+        setOwner(owner)
+    }
+
+    const getMember = async (page: number) => {
+        if (page > 1) return []
+
+        const members = await solas.getGroupMembers({
+            group_id: props.group.id
+        })
+        setMembers(members)
+        return members
+    }
 
     const OwnerMark = styled('div', () => {
         return {
@@ -42,40 +52,38 @@ function ListGroupMember (props: ListGroupMemberProps) {
         }
     })
 
-    const PlusIcon = styled('div', () => {
+    const PreEnhancerWrapper = styled('div', () => {
         return {
-            width: '28px',
-            height: '28px',
-            marginRight: '8px',
-            borderRadius: '50%',
-            background: 'rgb(241, 241, 241)',
-            display: "flex",
-            justifyContent: 'center',
-            alignItems: 'center'
+            display: 'flex',
+            flexFlow: 'row nowrap'
         }
     })
 
-    const InviteBtn = () => {
-        return <CardUser
-            onClick={ () => { navigate(`/invite-create/${props.group.id}`) } }
-            img={() => <PlusIcon><Plus /></PlusIcon>}
-            content={() => <b>Invite new members</b>}
-        />
+    const PreEnhancer = () => {
+        return <PreEnhancerWrapper>
+            <CardInviteMember groupId={props.group.id} />
+            {
+                !!owner && <CardMember isOwner profile={owner}/>
+            }
+        </PreEnhancerWrapper>
     }
 
-    return (
-        <ListWrapper>
-            { owner?.id === user.id && <InviteBtn /> }
-            { !!owner &&  <CardUser profile={owner} endEnhancer={() => <OwnerMark>Owner</OwnerMark>}/>}
-            {   members.length ?
-                members.map((item, index) => {
-                    return <CardUser
-                        profile={ item }
-                        key={ index.toString() }/>
-                })
-                : false
-            }
-        </ListWrapper>)
+    return <div className='list-group-member'>
+        <ListTitle
+            title={ lang['Group_detail_tabs_member'] }
+            uint={ lang['Group_detail_tabs_member'] }
+            count={ members.length }
+        />
+        <HorizontalList
+            item={(data: Profile) => <CardMember profile={data} /> }
+            space={12}
+            itemWidth={ 100 }
+            itemHeight={ 165 }
+            onRef={ listWrapperRef }
+            queryFunction={ getMember }
+            preEnhancer={ () => <PreEnhancer /> }
+        />
+    </div>
 }
 
 export default ListGroupMember

@@ -223,7 +223,7 @@ const langEN = {
   New_Year_3: 'Send you a badge, scan <br> the code to get',
   Save_Card: 'Save to album',
 
-  Group_invite_title: 'Invite new members',
+  Group_invite_title: 'Invite',
   Group_invite_badge_name: slotLang('Member of {groupName}'),
   Group_invite_message: 'Invitation Message',
   Group_invite_receiver: 'Receiver(s)',

@@ -13,12 +13,13 @@ export interface HorizontalList<T> {
     space: number,
     itemWidth: number
     itemHeight?: number
-    ref?: React.RefObject<HorizontalListMethods>
+    onRef?: React.RefObject<HorizontalListMethods>
     queryFunction?: (page: number) => Promise<T[]>
     sortFunction?: (list: T[]) => T[]
     emptyText?: string
     immediate?: boolean
     endEnhancer?: () => ReactNode
+    preEnhancer?: () => ReactNode
 }
 
 function HorizontalList<T>(props: HorizontalList<T>) {
@@ -35,7 +36,7 @@ function HorizontalList<T>(props: HorizontalList<T>) {
         setListData(props.sortFunction ? props.sortFunction(list) : list)
     }, [list])
 
-    useImperativeHandle(props.ref, () => {
+    useImperativeHandle(props.onRef, () => {
         // 需要将暴露的接口返回出去
         return { refresh }
     })
@@ -50,6 +51,14 @@ function HorizontalList<T>(props: HorizontalList<T>) {
                 freeMode={true}
                 style={{paddingLeft: '12px', paddingTop: '10px', height: props.itemHeight ? props.itemHeight + 10 + 'px' : 'auto'}}
                 slidesPerView={'auto'}>
+
+                {
+                    !!props.preEnhancer &&
+                    <SwiperSlide style={ { width: 'auto' } }>
+                        { props.preEnhancer() }
+                    </SwiperSlide>
+                }
+
                 {
                     listData.map((data: T, index) => {
                         return <SwiperSlide style={{width: props.itemWidth + 'px'}} key={index}>
@@ -57,6 +66,7 @@ function HorizontalList<T>(props: HorizontalList<T>) {
                         </SwiperSlide>
                     })
                 }
+
                 {
                     !!props.endEnhancer &&
                     <SwiperSlide style={ { width: 'auto' } }>

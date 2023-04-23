@@ -44,6 +44,7 @@ function ListUserPresend ({ userType = 'user',  ...props }: ListUserPresendProps
         itemWidth={ 162 }
         itemHeight={ 184 }
         queryFunction={ getPresend }
+        onRef={ listWrapperRef }
         />)
 }
 
