@@ -56,7 +56,7 @@ function ProfilePanel(props: ProfilePanelProps) {
         }
 
         checkFollow()
-    }, [user.id])
+    }, [user.id, profile.id])
 
     const DialogContent= styled('div', () => {
         return {

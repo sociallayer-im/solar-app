@@ -20,6 +20,12 @@ function DialogConnectWallet (props: DialogConnectWalletProps) {
     const { clean } = useContext(DialogsContext)
     const { user } = useContext(UserContext)
 
+    useEffect(() => {
+        if (user.id) {
+            props.handleClose()
+        }
+    }, [user.id])
+
     const handleConnectWallet = (connector: Connector) => {
         if (isLoading && pendingConnector?.id === connector.id) return
 
