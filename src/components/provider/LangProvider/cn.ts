@@ -34,7 +34,7 @@ const langCN: LangConfig = {
   Regist_Input_Error_Start: '不能以"-"开始',
   Regist_Input_Error_End: '不能以"-"结尾',
   Regist_Confirm: '确定',
-  Regist_Dialog_Title: '确定创建该域名？',
+  Regist_Dialog_Title: '你将以这个域名创建用户：',
   Regist_Dialog_ModifyIt: '修改一下',
   Regist_Dialog_Create: '使用',
   Regist_InUse: '该域名已被使用',

@@ -80,7 +80,7 @@ export default function AppInput(props: AppInputProps) {
 
     const errorStyle = {
         fontSize: '12px',
-        color: '#e35b50'
+        color: '#272928'
     }
 
     const clearBtnStyle = {
