@@ -50,7 +50,7 @@ function CardSearchDomain (props: CardSearchDomainProps) {
     const { defaultAvatar } = usePicture()
 
     const highLightText = props.keyword
-        ? props.profile?.domain!.replace(props.keyword, `<span class="highlight">${props.keyword}</span>`)
+        ? props.profile?.domain?.replace(props.keyword, `<span class="highlight">${props.keyword}</span>`)
         : props.profile.domain!
 
     return (<div data-testid='CardSearchDomain' className={ css(style.wrapper) } onClick={ () => { props.onClick ? props.onClick() : navigate(`/profile/${props.profile?.username}`) }}>

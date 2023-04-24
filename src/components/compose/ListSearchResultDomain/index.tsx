@@ -32,6 +32,7 @@ function ListSearchResultDomain (props: ListSearchResultDomainProps) {
             }
             {   list.length ?
                 list.map((item, index) => {
+                    console.log('item', item)
                     return <CardSearchDomain profile={ item } keyword={ props.keyword } key={index} />
                 })
                 : false
