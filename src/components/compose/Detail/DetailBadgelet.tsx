@@ -81,7 +81,7 @@ function DetailBadgelet(props: DetailBadgeletProps ) {
             unload()
             emitUpdate(badgelet)
             props.handleClose()
-            showToast('Reject success')
+            showToast('rejected')
         } catch (e: any) {
             unload()
             console.log('[handleAccept]: ', e)
