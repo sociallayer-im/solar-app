@@ -56,7 +56,7 @@ function CardSearchDomain (props: CardSearchDomainProps) {
     return (<div data-testid='CardSearchDomain' className={ css(style.wrapper) } onClick={ () => { props.onClick ? props.onClick() : navigate(`/profile/${props.profile?.username}`) }}>
                 <div className={css(style.leftSide)}>
                     <img className={ css(style.img) } src={ props.profile?.image_url || defaultAvatar(props.profile?.id)} alt=""/>
-                    <div className={ css(style.name) } dangerouslySetInnerHTML={{__html: highLightText}}></div>
+                    <div className={ css(style.name) } dangerouslySetInnerHTML={{__html: highLightText || ''}}></div>
                 </div>
                 <div></div>
             </div>)
