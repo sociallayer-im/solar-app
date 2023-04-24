@@ -49,9 +49,10 @@ function CardSearchDomain (props: CardSearchDomainProps) {
     const navigate = useNavigate()
     const { defaultAvatar } = usePicture()
 
+    const displayName = props.profile?.domain || props.profile?.email || props.profile?.address || ''
     const highLightText = props.keyword
-        ? props.profile?.domain?.replace(props.keyword, `<span class="highlight">${props.keyword}</span>`)
-        : props.profile.domain!
+        ? displayName.replace(props.keyword, `<span class="highlight">${props.keyword}</span>`)
+        : displayName
 
     return (<div data-testid='CardSearchDomain' className={ css(style.wrapper) } onClick={ () => { props.onClick ? props.onClick() : navigate(`/profile/${props.profile?.username}`) }}>
                 <div className={css(style.leftSide)}>
