@@ -23,6 +23,13 @@ const style = {
         justifyContent: 'center',
         marginBottom: '10px',
         boxSizing: 'border-box' as const,
+        transition: 'all 0.12s linear',
+        ':hover' : {
+            transform: 'translateY(-8px)'
+        },
+        ':active' : {
+            boxShadow: '0px 1.9878px 3px rgba(0, 0, 0, 0.1)'
+        }
     },
     img:  {
         width: '90px',
