@@ -8,17 +8,13 @@ import DialogsContext from '../../components/provider/DialogProvider/DialogsCont
 import ProfilePanel from '../../components/base/ProfilePanel/ProfilePanel'
 import AppButton, { BTN_SIZE } from '../../components/base/AppButton/AppButton'
 import LangContext from '../../components/provider/LangProvider/LangContext'
-import AppTabs from '../../components/base/AppTabs'
-import AppSubTabs from '../../components/base/AppSubTabs'
-import { Tab } from 'baseui/tabs'
-import ListUserMinted from '../../components/compose/ListUserMinted'
-import ListUserPresend from '../../components/compose/ListUserPresend'
 import ListUserBadgelet from '../../components/compose/ListUserBadgelet'
 import ListUserGroup from '../../components/compose/ListUserGroup'
 import UserContext from '../../components/provider/UserProvider/UserContext'
 import { useNavigate } from 'react-router-dom'
 import useIssueBadge from '../../hooks/useIssueBadge'
 import ListUserCreated from '../../components/compose/ListUserCreated/ListUserCreated'
+import BgProfile from '../../components/base/BgProfile/BgProfile'
 
 
 function ProfilePage () {
@@ -60,7 +56,8 @@ function ProfilePage () {
     return <Layout>
         { !!profile &&
             <div className='profile-page'>
-            <div className='up-side'>
+                <BgProfile profile={ profile }/>
+                <div className='up-side'>
                 <div className='center'>
                     <PageBack />
                     <div className='slot_1'>
