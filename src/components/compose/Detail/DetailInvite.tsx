@@ -78,7 +78,7 @@ function DetailInvite(props: DetailInviteProps ) {
 
             unload()
             props.handleClose()
-            showToast('Reject success')
+            showToast('rejected')
         } catch (e: any) {
             unload()
             console.log('[handleReject]: ', e)

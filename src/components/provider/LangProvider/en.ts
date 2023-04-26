@@ -34,7 +34,7 @@ const langEN = {
   Regist_Input_Error_End: 'domain cannot end with "-"',
   Regist_Input_Empty: 'This item cannot be empty',
   Regist_Confirm: 'Confirm',
-  Regist_Dialog_Title: 'Are you sure to create this domain?',
+  Regist_Dialog_Title: 'Your profile will be created with domain: ',
   Regist_Dialog_ModifyIt: 'Edit',
   Regist_Dialog_Create: 'Create',
   Regist_InUse: 'This domain name is already in use',
@@ -242,7 +242,7 @@ const langEN = {
 
   Group_setting_title: 'Settings',
   Group_setting_dissolve: 'Freeze the Group',
-  Group_freeze_dialog_title: 'Your are freezing the group',
+  Group_freeze_dialog_title: 'You are freezing the group: ',
   Group_freeze_Dialog_confirm: 'Freeze',
   Group_freeze_Dialog_cancel: 'Cancel',
 
