@@ -41,7 +41,7 @@ const langCN: LangConfig = {
 
   Profile_User_NotExist: '该用户不存在',
   Profile_User_MindBadge: '颁发徽章',
-  Profile_User_IssueBadge: '颁发徽章',
+  Profile_User_IssueBadge: '发送徽章給 ',
   Profile_User_Qrcode_download: '保存到相册',
   Profile_Tab_Received: '已收到',
   Profile_Tab_Minted: '已创建',
@@ -264,7 +264,7 @@ const langCN: LangConfig = {
   Relation_Ship_Action_Join: '加入',
   Relation_Ship_Action_Joined: '已加入',
   Relation_Ship_Action_Leave: '离开组织',
-  Relation_Ship_Action_Unfollow: '取消关注',
+  Relation_Ship_Action_Unfollow: '取消关注 ',
 
   Empty_Text: '没有数据~',
   Empty_No_Badge: '没有徽章~',
@@ -304,7 +304,11 @@ const langCN: LangConfig = {
 
   Badgelet_List_Title: '已收集',
   Badgelet_List_Unit: '徽章',
-  Created_List_Title: '已创建'
+  Created_List_Title: '已创建',
+
+  Dialog_Copy_Btn: '确定',
+  Dialog_Copy_Title: '复制成功',
+  Dialog_Copy_Message: '在浏览器中共享并打开链接。'
 }
 
 export default langCN

@@ -149,12 +149,9 @@ function ProfilePanel(props: ProfilePanelProps) {
             <div className='left-size'>
                 <div className='avatar'>
                     <img onClick={() => { editAvatar() } } src={ profile.image_url || defaultAvatar(profile.id) } alt=""/>
-                    <div className='qrcode-btn' onClick={showProfileQRcode}>
-                        <i className='icon icon-qrcode'></i>
-                    </div>
                 </div>
                 <div className='domain-bar'>
-                    <div className='domain'>{ profile.domain }</div>
+                    <div className='domain'>{ profile.username }</div>
                     { profile.address &&
                         <div className='show-wallet' onClick={ () => { showWallet() } }>
                             <i className='icon icon-wallet'></i>
@@ -163,6 +160,11 @@ function ProfilePanel(props: ProfilePanelProps) {
                     { profile.email && isProfileOwner() &&
                         <div className='show-email' onClick={ () => { showEmail() } }>
                             <i className='icon icon-email'></i>
+                        </div>
+                    }
+                    {
+                        <div className='qrcode-btn' onClick={showProfileQRcode}>
+                            <i className='icon icon-qrcode'></i>
                         </div>
                     }
                 </div>
@@ -177,10 +179,12 @@ function ProfilePanel(props: ProfilePanelProps) {
                     <StatefulPopover
                         placement={ PLACEMENT.bottomRight }
                         popoverMargin={ 0 }
-                        content={ ({ close }) => <MenuItem onClick={ () => { handleUnFollow() } }>{ lang['Relation_Ship_Action_Unfollow'] }</MenuItem> }>
+                        content={ ({ close }) => <MenuItem onClick={ () => { handleUnFollow() } }>{ lang['Relation_Ship_Action_Unfollow'] }{ profile.username }</MenuItem> }>
                         <div>
-                            <AppButton size={ BTN_SIZE.mini  } >
-                                { lang['Relation_Ship_Action_Followed'] }
+                            <AppButton
+                                size={ BTN_SIZE.mini }
+                                style={{ width: '37px', border: '1px solid #272928', marginRight: '12px'}}>
+                                <i className='icon-user-check'></i>
                             </AppButton>
                         </div>
                     </StatefulPopover>
@@ -189,9 +193,11 @@ function ProfilePanel(props: ProfilePanelProps) {
                 {
                     showFollowBtn &&
                     <AppButton
+                        style={{ backgroundColor: '#272928', color: '#fff', width: '94px'}}
                         onClick={ () => { handleFollow() } }
                         kind={ BTN_KIND.primary } size={ BTN_SIZE.mini }>
-                        { lang['Relation_Ship_Action_Follow'] }
+                        <i className='icon-user-plus'></i>
+                        <span>{ lang['Relation_Ship_Action_Follow'] }</span>
                     </AppButton>
                 }
             </div>

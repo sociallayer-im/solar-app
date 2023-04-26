@@ -41,7 +41,7 @@ const langEN = {
 
   Profile_User_NotExist: 'The user does not exist',
   Profile_User_MindBadge: 'Send a badge',
-  Profile_User_IssueBadge: 'Send a badge',
+  Profile_User_IssueBadge: 'Send a badge to ',
   Profile_User_Qrcode_download: 'Download',
   Profile_Tab_Received: 'Received',
   Profile_Tab_Minted: 'Created',
@@ -249,7 +249,7 @@ const langEN = {
   Group_relation_ship_member: 'Member',
   Group_relation_ship_owner: 'Owner',
 
-  Follow_detail_followed: 'Follower',
+  Follow_detail_followed: 'Followers',
   Follow_detail_following: 'Following',
   Follow_detail_groups: 'Groups',
   Follow_detail_btn_mint: 'Send A badge For Your Group',
@@ -264,7 +264,7 @@ const langEN = {
   Relation_Ship_Action_Join: 'Join',
   Relation_Ship_Action_Joined: 'Joined',
   Relation_Ship_Action_Leave: 'Leave group',
-  Relation_Ship_Action_Unfollow: 'Cancel Follow',
+  Relation_Ship_Action_Unfollow: 'Unfollow ',
 
   Empty_Text: 'No Data yet~',
   Empty_No_Badge: 'No badge yet~',
@@ -304,7 +304,11 @@ const langEN = {
 
   Badgelet_List_Title: 'Collected',
   Badgelet_List_Unit: 'Badges',
-  Created_List_Title: 'Created'
+  Created_List_Title: 'Created',
+
+  Dialog_Copy_Btn: 'Ok',
+  Dialog_Copy_Title: 'Copied successfully！',
+  Dialog_Copy_Message: 'Share and open the link in a browser.'
 }
 
 export type LangConfig = typeof langEN

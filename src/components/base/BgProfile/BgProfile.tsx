@@ -28,10 +28,11 @@ function BgProfile(props: BgProfileProps) {
 
     useEffect(() => {
         find()
-    }, [props.profile])
+    }, [props.profile.image_url])
 
     return (<div className='bg-profile'>
-        <div className='bg-profile-inner' style={{ backgroundImage: `url(${bg2})`}}></div>
+        {/*<div className='bg-profile-inner' style={{ backgroundImage: `url(${bg2})`}}></div>*/}
+        <div className='bg-profile-inner-2' style={{ backgroundImage: `url(/images/profile_bg.png)`}}></div>
     </div>)
 }
 
