@@ -308,7 +308,10 @@ const langEN = {
 
   Dialog_Copy_Btn: 'Ok',
   Dialog_Copy_Title: 'Copied successfully！',
-  Dialog_Copy_Message: 'Share and open the link in a browser.'
+  Dialog_Copy_Message: 'Share and open the link in a browser.',
+
+  Profile_Bio_More: 'More…',
+  Profile_Bio_Less: 'Less'
 }
 
 export type LangConfig = typeof langEN

@@ -80,34 +80,36 @@ function ProfilePage () {
     return <Layout>
         { !!profile &&
             <div className='profile-page'>
-                <BgProfile profile={ profile }/>
                 <div className='up-side'>
-                <div className='center'>
-                    <PageBack menu={ () => ProfileMenu() }
-                        />
-                    <div className='slot_1'>
-                        <ProfilePanel profile={ profile } />
-                    </div>
-                    <div className='slot_2'>
-                        <AppButton
-                            special kind={ BTN_KIND.primary }
-                            size={ BTN_SIZE.compact }
-                            onClick={ handleMintOrIssue }>
-                            <span className='icon-sendfasong'></span>
-                            { user.id === profile.id
-                                ? lang['Profile_User_MindBadge']
-                                : lang['Profile_User_IssueBadge'] + profile.username
-                            }
-                        </AppButton>
+                    <BgProfile profile={ profile }/>
+                    <div className='center'>
+                        <div className='top-side'>
+                            <PageBack menu={ () => ProfileMenu() } />
+                        </div>
+                        <div className='slot_1'>
+                            <ProfilePanel profile={ profile } />
+                        </div>
+                        <div className='slot_2'>
+                            <AppButton
+                                special kind={ BTN_KIND.primary }
+                                size={ BTN_SIZE.compact }
+                                onClick={ handleMintOrIssue }>
+                                <span className='icon-sendfasong'></span>
+                                { user.id === profile.id
+                                    ? lang['Profile_User_MindBadge']
+                                    : lang['Profile_User_IssueBadge'] + profile.username
+                                }
+                            </AppButton>
+                        </div>
                     </div>
                 </div>
+                <div className='down-side'>
+                    <div className='profile-user-name'>{ profile.username }</div>
+                    <ListUserBadgelet profile={ profile! } />
+                    <ListUserCreated profile={ profile! } />
+                    <ListUserGroup profile={ profile! } />
+                </div>
             </div>
-            <div className='down-side'>
-                <ListUserBadgelet profile={ profile! } />
-                <ListUserCreated profile={ profile! } />
-                <ListUserGroup profile={ profile! } />
-            </div>
-        </div>
         }
     </Layout>
 }

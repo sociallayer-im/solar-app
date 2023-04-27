@@ -12,6 +12,8 @@ import DialogFollowInfo from '../Dialog/DialogFollowInfo/DialogFollowInfo'
 import { StatefulPopover, PLACEMENT } from 'baseui/popover'
 import AppButton, { BTN_KIND, BTN_SIZE } from '../AppButton/AppButton'
 import MenuItem from '../MenuItem'
+import ProfileBio from '../ProfileBio/ProfileBio'
+import ProfileSocialMediaList from '../ProfileSocialMediaList/ProfileSocialMediaList'
 
 interface ProfilePanelProps {
     profile: Profile
@@ -35,7 +37,7 @@ function ProfilePanel(props: ProfilePanelProps) {
 
     useEffect(() => {
         setProfile(props.profile)
-    }, [props.profile])
+    }, [props.profile.id])
 
     useEffect(() => {
         if (!user.id) {
@@ -172,6 +174,16 @@ function ProfilePanel(props: ProfilePanelProps) {
                     <div><b>{ profile.followers }</b> { lang['Follow_detail_followed'] } </div>
                     <div><b>{ profile.following }</b> { lang['Follow_detail_following'] } </div>
                 </div>
+                { true &&
+                    <div className='profile-position'>
+                        <i className='icon-Outline' />
+                        <span>Beijing</span>
+                    </div>
+                }
+                { true &&
+                    <ProfileBio text={ JSON.stringify(props.profile) }/>
+                }
+                <ProfileSocialMediaList profile={ props.profile }/>
             </div>
             <div className='right-size'>
                 {

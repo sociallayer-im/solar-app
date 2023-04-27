@@ -3,6 +3,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import { Virtual } from 'swiper'
 import useScrollToLoad from '../../../hooks/scrollToLoad'
 import Empty from '../EmptySmall'
+import './HorizontalList.less'
 
 export interface HorizontalListMethods {
     refresh: () => void
@@ -31,6 +32,8 @@ function HorizontalList<T>(props: HorizontalList<T>) {
     })
 
     const [listData, setListData] = useState<T[]>(list)
+    const [showLeftGradient, setShowLeftGradient] = useState(false)
+    const [showRightGradient, setShowRightGradient] = useState(true)
 
     useEffect(() => {
         setListData(props.sortFunction ? props.sortFunction(list) : list)
@@ -44,39 +47,51 @@ function HorizontalList<T>(props: HorizontalList<T>) {
     return <>
         {isEmpty
             ? <Empty text={props.emptyText || 'No data'}/>
-            : <Swiper
-                data-testid='HorizontalList'
-                modules={[Virtual]}
-                spaceBetween={props.space}
-                freeMode={true}
-                style={{paddingLeft: '12px', paddingTop: '10px', height: props.itemHeight ? props.itemHeight + 10 + 'px' : 'auto'}}
-                slidesPerView={'auto'}>
-
+            : <div className='horizontal-list-swiper-wrapper'>
                 {
-                    !!props.preEnhancer &&
-                    <SwiperSlide style={ { width: 'auto' } }>
-                        { props.preEnhancer() }
-                    </SwiperSlide>
+                    showLeftGradient && <div className='left-size-gradient'></div>
                 }
+                <Swiper
+                    data-testid='HorizontalList'
+                    modules={[Virtual]}
+                    spaceBetween={props.space}
+                    freeMode={true}
+                    style={{paddingLeft: '12px', paddingTop: '10px', height: props.itemHeight ? props.itemHeight + 10 + 'px' : 'auto'}}
+                    slidesPerView={'auto'}
+                    onSlideChange={(swiper ) => {
+                        setShowRightGradient(!swiper.isEnd)
+                        setShowLeftGradient(!swiper.isBeginning)
+                    }}>
 
-                {
-                    listData.map((data: T, index) => {
-                        return <SwiperSlide style={{width: props.itemWidth + 'px'}} key={index}>
-                            {props.item(data)}
+                    {
+                        !!props.preEnhancer &&
+                        <SwiperSlide style={ { width: 'auto' } }>
+                            { props.preEnhancer() }
                         </SwiperSlide>
-                    })
-                }
+                    }
 
-                {
-                    !!props.endEnhancer &&
-                    <SwiperSlide style={ { width: 'auto' } }>
-                        { props.endEnhancer() }
+                    {
+                        listData.map((data: T, index) => {
+                            return <SwiperSlide style={{width: props.itemWidth + 'px'}} key={index}>
+                                {props.item(data)}
+                            </SwiperSlide>
+                        })
+                    }
+
+                    {
+                        !!props.endEnhancer &&
+                        <SwiperSlide style={ { width: 'auto' } }>
+                            { props.endEnhancer() }
+                        </SwiperSlide>
+                    }
+                    <SwiperSlide style={ {'maxWidth': '1px'} }>
+                        <div ref={ref}></div>
                     </SwiperSlide>
+                </Swiper>
+                {
+                    showRightGradient && <div className='right-size-gradient'></div>
                 }
-                <SwiperSlide style={ {'maxWidth': '1px'} }>
-                    <div ref={ref}></div>
-                </SwiperSlide>
-            </Swiper>
+            </div>
         }
     </>
 }

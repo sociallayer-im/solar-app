@@ -129,4 +129,7 @@
 .icon-setting:before {
   content: "\e921";
 }
+.icon-Outline:before {
+  content: "\e920";
+}
 

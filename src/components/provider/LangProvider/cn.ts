@@ -308,7 +308,10 @@ const langCN: LangConfig = {
 
   Dialog_Copy_Btn: '确定',
   Dialog_Copy_Title: '复制成功',
-  Dialog_Copy_Message: '在浏览器中共享并打开链接。'
+  Dialog_Copy_Message: '在浏览器中共享并打开链接。',
+
+  Profile_Bio_More: '更多…',
+  Profile_Bio_Less: '收起'
 }
 
 export default langCN
