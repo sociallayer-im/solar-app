@@ -8,18 +8,15 @@ import DialogsContext from '../../components/provider/DialogProvider/DialogsCont
 import GroupPanel from '../../components/base/GroupPanel/GroupPanel'
 import AppButton, { BTN_SIZE } from '../../components/base/AppButton/AppButton'
 import LangContext from '../../components/provider/LangProvider/LangContext'
-import AppTabs from '../../components/base/AppTabs'
-import AppSubTabs from '../../components/base/AppSubTabs'
-import { Tab } from 'baseui/tabs'
-import ListUserMinted from '../../components/compose/ListUserMinted'
-import ListUserPresend from '../../components/compose/ListUserPresend'
 import ListUserBadgelet from '../../components/compose/ListUserBadgelet'
-import ListGroupInvitep from '../../components/compose/ListGroupInvite'
 import ListGroupMember from '../../components/compose/ListGroupMember'
 import UserContext from '../../components/provider/UserProvider/UserContext'
 import { Overflow } from 'baseui/icon'
 import useIssueBadge from '../../hooks/useIssueBadge'
 import ListUserCreated from '../../components/compose/ListUserCreated/ListUserCreated'
+import BgProfile from '../../components/base/BgProfile/BgProfile'
+import {styled} from "baseui";
+import useCopy from "../../hooks/copy";
 
 
 function GroupPage () {
@@ -30,6 +27,7 @@ function GroupPage () {
     const { user } = useContext(UserContext)
     const [selectedTab, setSelectedTab] = useState('Minted')
     const startIssue = useIssueBadge({ groupName: groupname})
+    const { copyWithDialog } = useCopy()
 
     useEffect(() => {
         const getProfile  =  async function () {
@@ -66,26 +64,44 @@ function GroupPage () {
                 : ''
     }
 
+    const ShowDomain = styled('div', ({$theme}) => {
+        return {
+            color: '#272928'
+        }
+    })
+
+    const ProfileMenu = () => <div className='profile-setting'>
+        <ShowDomain onClick={ () => { copyWithDialog(profile?.domain || '', lang['Dialog_Copy_Message']) } }>{ profile?.domain }</ShowDomain>
+        { user.id === profile?.group_owner_id &&
+            <div className='profile-setting-btn'><i className='icon-setting'></i></div>
+        }
+    </div>
+
     return <Layout>
         { !!profile &&
             <div className='profile-page'>
             <div className='up-side'>
+                <BgProfile profile={ profile }/>
                 <div className='center'>
-                    <PageBack  menu={ groupOption } />
+                    <div className='top-side'>
+                        <PageBack  menu={ ProfileMenu } />
+                    </div>
                     <div className='slot_1'>
                         <GroupPanel group={ profile } />
                     </div>
                     <div className='slot_2'>
-                        <AppButton size={ BTN_SIZE.compact } onClick={ handleMintOrIssue }>
+                        <AppButton special size={ BTN_SIZE.compact } onClick={ handleMintOrIssue }>
+                            <span className='icon-sendfasong'></span>
                             { user.id === profile.group_owner_id
                                 ? lang['Follow_detail_btn_mint']
-                                : lang['Profile_User_IssueBadge']
+                                : lang['Profile_User_IssueBadge'] + profile.username
                             }
                         </AppButton>
                     </div>
                 </div>
             </div>
             <div className='down-side'>
+                <div className='profile-user-name'> { profile.username }</div>
                 <ListUserBadgelet profile={profile!} />
                 <ListUserCreated userType='group' profile={ profile! } />
                 <ListGroupMember group={ profile }/>

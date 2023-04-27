@@ -45,7 +45,7 @@ function HorizontalList<T>(props: HorizontalList<T>) {
     })
 
     return <>
-        {isEmpty
+        {isEmpty && !props.preEnhancer && !props.endEnhancer
             ? <Empty text={props.emptyText || 'No data'}/>
             : <div className='horizontal-list-swiper-wrapper'>
                 {

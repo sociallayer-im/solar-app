@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom'
 import useIssueBadge from '../../hooks/useIssueBadge'
 import ListUserCreated from '../../components/compose/ListUserCreated/ListUserCreated'
 import BgProfile from '../../components/base/BgProfile/BgProfile'
-import useEvent, {EVENT} from '../../hooks/globalEvent'
+import useEvent, { EVENT } from '../../hooks/globalEvent'
 import { styled } from 'baseui'
 import useCopy from '../../hooks/copy'
 

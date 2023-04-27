@@ -10,6 +10,9 @@ import DialogFollowInfo from '../Dialog/DialogFollowInfo/DialogFollowInfo'
 import { StatefulPopover, PLACEMENT } from 'baseui/popover'
 import AppButton, { BTN_KIND, BTN_SIZE } from '../AppButton/AppButton'
 import MenuItem from '../MenuItem'
+import ProfileBio from '../ProfileBio/ProfileBio'
+import ProfileSocialMediaList from '../ProfileSocialMediaList/ProfileSocialMediaList'
+import DialogProfileQRcode from "../Dialog/DialogProfileQRcode/DialogProfileQRcode";
 
 interface GroupPanelProps {
     group: Profile
@@ -83,6 +86,13 @@ function GroupPanel(props: GroupPanelProps) {
         }
     }
 
+    const showProfileQRcode = () => {
+        openDialog({
+            size:[316, 486],
+            content: (close: any) => <DialogProfileQRcode profile={props.group} />
+        })
+    }
+
 
     return (
         <div className='profile-panel'>
@@ -91,12 +101,19 @@ function GroupPanel(props: GroupPanelProps) {
                     <img src={ group.image_url || defaultAvatar(group.id) } alt=""/>
                 </div>
                 <div className='domain-bar'>
-                    <div className='domain'>{ group.domain }</div>
+                    <div className='domain'>{ group.username }</div>
+                    {
+                        <div className='qrcode-btn' onClick={showProfileQRcode}>
+                            <i className='icon icon-qrcode'></i>
+                        </div>
+                    }
                 </div>
                 <div className='follow' onClick={ showFollowInfo }>
                     <div><b>{ group.followers }</b> { lang['Follow_detail_followed'] } </div>
-                    <div><b>{ group.following }</b> { lang['Follow_detail_following'] } </div>
+                    <div> { lang['Group_detail_Join_Time'] } <b>{ group.following }</b></div>
                 </div>
+                <ProfileBio text={ JSON.stringify(props.group) } />
+                <ProfileSocialMediaList profile={props.group}/>
             </div>
             <div className='right-size'>
                 {

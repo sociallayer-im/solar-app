@@ -257,6 +257,7 @@ const langCN: LangConfig = {
   Group_detail_tabs_member: '成员',
   Group_detail_tabs_Event: '活动',
   Group_detail_tabs_Invite: '邀请',
+  Group_detail_Join_Time: '加入时间',
 
   Relation_Ship_Action_Follow: '关注',
   Relation_Ship_Action_Followed: '已关注',

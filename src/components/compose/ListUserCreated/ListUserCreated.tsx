@@ -41,10 +41,13 @@ function ListUserCreated (props: ListUserCreatedProps) {
                     <Tab title={lang['Profile_Tab_Presend']} key='presend'>
                         <ListUserPresend profile={ props.profile } />
                     </Tab>
+                { props.profile.is_group ?
                     <Tab title={lang['Group_detail_tabs_Invite']} key='invite'>
                         <ListGroupInvite
                             group={ props.profile }/>
                     </Tab>
+                    : <div />
+                }
                 </AppSubTabs>
             : <ListUserMinted userType={ props.userType } profile={ props.profile }/>
         }

@@ -257,6 +257,7 @@ const langEN = {
   Group_detail_tabs_member: 'Members',
   Group_detail_tabs_Event: 'Events',
   Group_detail_tabs_Invite: 'Invited',
+  Group_detail_Join_Time: 'Joined',
 
   Relation_Ship_Action_Follow: 'Follow',
   Relation_Ship_Action_Followed: 'Followed',
