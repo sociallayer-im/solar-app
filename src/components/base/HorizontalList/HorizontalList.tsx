@@ -4,6 +4,7 @@ import { Virtual } from 'swiper'
 import useScrollToLoad from '../../../hooks/scrollToLoad'
 import Empty from '../EmptySmall'
 import './HorizontalList.less'
+import Slider from './Slider'
 
 export interface HorizontalListMethods {
     refresh: () => void
@@ -32,8 +33,6 @@ function HorizontalList<T>(props: HorizontalList<T>) {
     })
 
     const [listData, setListData] = useState<T[]>(list)
-    const [showLeftGradient, setShowLeftGradient] = useState(false)
-    const [showRightGradient, setShowRightGradient] = useState(true)
 
     useEffect(() => {
         setListData(props.sortFunction ? props.sortFunction(list) : list)
@@ -48,20 +47,15 @@ function HorizontalList<T>(props: HorizontalList<T>) {
         {isEmpty && !props.preEnhancer && !props.endEnhancer
             ? <Empty text={props.emptyText || 'No data'}/>
             : <div className='horizontal-list-swiper-wrapper'>
-                {
-                    showLeftGradient && <div className='left-size-gradient'></div>
-                }
                 <Swiper
                     data-testid='HorizontalList'
                     modules={[Virtual]}
                     spaceBetween={props.space}
                     freeMode={true}
                     style={{paddingLeft: '12px', paddingTop: '10px', height: props.itemHeight ? props.itemHeight + 10 + 'px' : 'auto'}}
-                    slidesPerView={'auto'}
-                    onSlideChange={(swiper ) => {
-                        setShowRightGradient(!swiper.isEnd)
-                        setShowLeftGradient(!swiper.isBeginning)
-                    }}>
+                    slidesPerView={'auto'} >
+
+                    <Slider position='left' />
 
                     {
                         !!props.preEnhancer &&
@@ -87,10 +81,9 @@ function HorizontalList<T>(props: HorizontalList<T>) {
                     <SwiperSlide style={ {'maxWidth': '1px'} }>
                         <div ref={ref}></div>
                     </SwiperSlide>
+
+                    <Slider position='right' />
                 </Swiper>
-                {
-                    showRightGradient && <div className='right-size-gradient'></div>
-                }
             </div>
         }
     </>
