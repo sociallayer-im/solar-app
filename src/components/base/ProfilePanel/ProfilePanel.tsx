@@ -205,7 +205,7 @@ function ProfilePanel(props: ProfilePanelProps) {
                 {
                     showFollowBtn &&
                     <AppButton
-                        style={{ backgroundColor: '#272928', color: '#fff', width: '94px'}}
+                        style={{ backgroundColor: '#272928!important', color: '#fff', width: '94px'}}
                         onClick={ () => { handleFollow() } }
                         kind={ BTN_KIND.primary } size={ BTN_SIZE.mini }>
                         <i className='icon-user-plus'></i>

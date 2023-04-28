@@ -29,12 +29,14 @@ function Slider (props: SliderProps) {
     }
 
     useEffect(() => {
-        const a = setInterval(() => {
+        // 无法通过swiper的事件来判断，因为swiper的事件是在touchend之后触发的, 所以用定时器来判断
+        // 希望有更好的方法节约性能
+        const interval = setInterval(() => {
             checkHide()
         }, 600)
 
         return () => {
-            clearInterval(a)
+            clearInterval(interval)
         }
     }, [])
 
