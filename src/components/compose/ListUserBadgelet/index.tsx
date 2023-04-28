@@ -49,6 +49,16 @@ function ListUserBadgelet (props: ListUserBadgeletProps) {
                     itemHeight={ 184 }
                     queryFunction={ getBadgelet }
                     onRef={ listWrapperRef }
+                    sortFunction={(list) => {
+                        list.sort((a, b) => {
+                            if (b.top) return 1
+                            else {
+                                return -1
+                            }
+                        })
+                        console.log('list', list)
+                        return list
+                    }}
                 />
             </div>
         </div>

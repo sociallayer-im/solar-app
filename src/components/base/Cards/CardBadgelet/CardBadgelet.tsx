@@ -62,7 +62,7 @@ const style = {
         borderRadius: '50%',
         position: 'absolute' as const,
         background: 'rgba(0,0,0,0.3)',
-        top: '18px',
+        top: '26px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
