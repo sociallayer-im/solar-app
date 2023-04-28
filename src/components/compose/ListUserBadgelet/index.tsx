@@ -51,12 +51,8 @@ function ListUserBadgelet (props: ListUserBadgeletProps) {
                     onRef={ listWrapperRef }
                     sortFunction={(list) => {
                         list.sort((a, b) => {
-                            if (b.top) return 1
-                            else {
-                                return -1
-                            }
+                            return b.top ? 1 : -1
                         })
-                        console.log('list', list)
                         return list
                     }}
                 />
