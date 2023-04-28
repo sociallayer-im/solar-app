@@ -27,6 +27,7 @@ export interface Profile {
     following: number,
     is_group: boolean | null,
     badge_count: number,
+    status: 'active' | 'freezed'
 }
 
 export interface ProfileSimple {
@@ -630,6 +631,7 @@ export async function issueBatch (props: IssueBatchProps): Promise<Badgelet[]> {
     }
 
     const task: any = []
+    const link = [...walletAddress, ...socialLayerUsers, ...domainOwnerAddress, ...emails]
     walletAddress.forEach((item) => {
         task.push(getProfile({ address: item } ).catch(e => { handleError(item) }))
     })
@@ -646,7 +648,12 @@ export async function issueBatch (props: IssueBatchProps): Promise<Badgelet[]> {
     const profiles = await Promise.all(task)
     profiles.forEach((item, index) => {
         if (!item)  {
-            handleError(domains[index])
+            handleError(link[index])
+        }
+
+        console.log('item.status', item.status)
+        if (item.status === 'freezed') {
+            handleError(link[index])
         }
     })
 
@@ -660,7 +667,7 @@ export async function issueBatch (props: IssueBatchProps): Promise<Badgelet[]> {
         url: `${api}/badge/send`,
         data: {
             badge_id: props.badgeId,
-            receivers: [...walletAddress, ...socialLayerUsers, ...domainOwnerAddress, ...emails],
+            receivers: link,
             content: props.reason,
             subject_url: subjectUrl,
             auth_token: props.auth_token
