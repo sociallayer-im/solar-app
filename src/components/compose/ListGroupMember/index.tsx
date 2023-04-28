@@ -45,13 +45,6 @@ function ListGroupMember (props: ListGroupMemberProps) {
         return members
     }
 
-    const OwnerMark = styled('div', () => {
-        return {
-            fontSize: '14px',
-            marginRight: '8px'
-        }
-    })
-
     const PreEnhancerWrapper = styled('div', () => {
         return {
             display: 'flex',
@@ -61,7 +54,9 @@ function ListGroupMember (props: ListGroupMemberProps) {
 
     const PreEnhancer = () => {
         return <PreEnhancerWrapper>
-            <CardInviteMember groupId={props.group.id} />
+            {
+                user.id === props.group.group_owner_id && <CardInviteMember groupId={props.group.id} />
+            }
             {
                 !!owner && <CardMember isOwner profile={owner}/>
             }
