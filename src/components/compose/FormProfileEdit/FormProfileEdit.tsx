@@ -1,20 +1,25 @@
 import {useNavigate} from 'react-router-dom'
 import {useStyletron} from 'baseui'
-import {useContext, useEffect, useState} from 'react'
+import {useContext, useEffect, useImperativeHandle, useState} from 'react'
 import {Profile} from '../../../service/solas'
 import UploadAvatar from '../UploadAvatar/UploadAvatar'
 import usePicture from '../../../hooks/pictrue'
-import './ProfileEditForm.less'
+import './FormProfileEdit.less'
 import AppInput from '../../base/AppInput'
 import LangContext from '../../provider/LangProvider/LangContext'
 import AppTextArea from '../../base/AppTextArea/AppTextArea'
 import EditSocialMedia from '../EditSocialMedia/EditSocialMedia'
 
-interface ProfileEditFormProps {
+export interface ProfileEditFormProps {
+    profile: Profile
+    onRef?: any
+}
+
+export interface ProfileEditFormData{
     profile: Profile
 }
 
-function ProfileEditForm(props: ProfileEditFormProps) {
+function FormProfileEdit(props: ProfileEditFormProps) {
     const [css] = useStyletron()
     const navigate = useNavigate()
     const [a, seta] = useState('')
@@ -25,6 +30,12 @@ function ProfileEditForm(props: ProfileEditFormProps) {
     useEffect(() => {
 
     }, [])
+
+    useImperativeHandle(props.onRef, () => {
+        // 需要将暴露的接口返回出去
+        const a: ProfileEditFormData = { profile: newProfile }
+        return a
+    })
 
     const update = (key: keyof Profile, value: any) => {
         console.log(value)
@@ -121,4 +132,4 @@ function ProfileEditForm(props: ProfileEditFormProps) {
     </div>)
 }
 
-export default ProfileEditForm
+export default FormProfileEdit

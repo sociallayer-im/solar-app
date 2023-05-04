@@ -324,6 +324,7 @@ const langCN: LangConfig = {
   Profile_Edit_Social_Media_Edit: '编辑',
   Profile_Edit_Social_Media_Edit_Dialog_Title: '你的 ',
   Profile_Edit_Social_Confirm: '确定',
+  Profile_Edit_Save: '保存',
 }
 
 export default langCN

@@ -23,7 +23,7 @@ function ProfilePanel(props: ProfilePanelProps) {
     const { defaultAvatar } = usePicture()
     const { lang } = useContext(LangContext)
     const { user } = useContext(UserContext)
-    const { openConfirmDialog, openDialog, showAvatar, showLoading, showToast } = useContext(DialogsContext)
+    const { openDomainConfirmDialog, openDialog, showAvatar, showLoading, showToast } = useContext(DialogsContext)
     const [newProfile, _] = useEvent(EVENT.profileUpdate)
     const [profile, setProfile] = useState(props.profile)
     const [showFollowBtn, setShowFollowBtn] = useState(false)
@@ -69,7 +69,7 @@ function ProfilePanel(props: ProfilePanelProps) {
     })
 
     const showWallet = () => {
-        openConfirmDialog({
+        openDomainConfirmDialog({
             title: lang['Profile_Show_Wallet'],
             confirmLabel: lang['Profile_Show_Copy'],
             cancelLabel: lang['Profile_Show_Close'],
@@ -79,7 +79,7 @@ function ProfilePanel(props: ProfilePanelProps) {
     }
 
     const showEmail = () => {
-        openConfirmDialog({
+        openDomainConfirmDialog({
             title: lang['Profile_Show_Email'],
             confirmLabel: lang['Profile_Show_Copy'],
             cancelLabel: lang['Profile_Show_Close'],

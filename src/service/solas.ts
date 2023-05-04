@@ -1024,6 +1024,42 @@ export async function freezeGroup (props: freezeGroupProps) {
     }
 }
 
+export async function updateProfile (props: { data: Partial<Profile>, auth_token: string }) {
+    checkAuth(props)
+    const res = await fetch.post({
+        url: `${api}/profile/update`,
+        data: {...props.data, auth_token: props.auth_token }
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+
+    return res.data.profile
+}
+
+export interface VerifyTwitterProps {
+    auth_token: string
+    twitter_handle: string,
+    tweet_url: string
+}
+
+export async function verifyTwitter (props: VerifyTwitterProps) {
+    const res = await fetch.post(
+        {
+            url: `${api}/profile/submit_twitter_proof`,
+            data: props
+        }
+    )
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+
+    return res.data
+}
+
+
 
 export default {
     login,
@@ -1067,5 +1103,7 @@ export default {
     queryBadgeByHashTag,
     freezeGroup,
     queryGroupsUserCreated,
-    queryGroupsUserJoined
+    queryGroupsUserJoined,
+    updateProfile,
+    verifyTwitter
 }

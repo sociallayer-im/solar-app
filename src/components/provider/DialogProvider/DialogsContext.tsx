@@ -4,7 +4,7 @@ export interface DialogsContextType {
     openConnectWalletDialog: (...rest: any[]) => any
     showLoading: (...rest: any[]) => (() => any)
     showToast: (...rest: any[]) => any,
-    openConfirmDialog: (...rest: any[]) => any,
+    openDomainConfirmDialog: (...rest: any[]) => any,
     openDialog: (...rest: any[]) => any,
     showBadgelet: (...rest: any[]) => any,
     showPresend: (...rest: any[]) => any,
@@ -20,7 +20,7 @@ const DialogsContext  = createContext<DialogsContextType>({
     openConnectWalletDialog: () => {},
     showLoading: () => (() => {}),
     showToast: () => {},
-    openConfirmDialog: () => {},
+    openDomainConfirmDialog: () => {},
     openDialog: () => {},
     showBadgelet: () => {},
     showPresend: () => {},

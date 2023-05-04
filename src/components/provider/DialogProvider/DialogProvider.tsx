@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useState } from 'react'
 import { Badge, Badgelet, Invite, Presend, Profile, Group} from '../../../service/solas'
 import DialogsContext, { DialogsContextType } from './DialogsContext'
-import DialogConfirm, { DialogConfirmProps } from '../../base/Dialog/DialogConfirm/DialogConfirm'
+import DialogConfirm, { DialogConfirmProps } from '../../base/Dialog/DialogConfirmDomain/DialogConfirmDomain'
 import Dialog from '../../base/Dialog/Dialog'
 import Toast from '../../base/Toast'
 import DialogConnectWallet from '../../base/Dialog/DialogConnectWallet/DialogConnectWallet'
@@ -182,7 +182,7 @@ function DialogProvider (props: DialogProviderProps) {
             } catch (e) { }
     }
 
-    const openConfirmDialog = (props: DialogConfirmProps) => {
+    const openDomainConfirmDialog = (props: DialogConfirmProps) => {
         const id = genID()
         dialogsGroup.dialogs.push({
             id,
@@ -392,7 +392,7 @@ function DialogProvider (props: DialogProviderProps) {
         openConnectWalletDialog,
         showLoading,
         showToast,
-        openConfirmDialog,
+        openDomainConfirmDialog,
         openDialog,
         showBadgelet,
         showPresend,
