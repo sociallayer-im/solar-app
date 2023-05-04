@@ -1,7 +1,9 @@
 import { sha3 } from 'web3-utils'
-
-
-
+import chooseFile from '../utils/chooseFile'
+import solas from '../service/solas'
+import DialogsContext from '../components/provider/DialogProvider/DialogsContext'
+import {useContext} from 'react'
+import UserContext from '../components/provider/UserProvider/UserContext'
 
 function defaultAvatar (seed?: string | number | null) {
     const defAvatars = [
@@ -23,6 +25,50 @@ function defaultAvatar (seed?: string | number | null) {
 }
 
 
+
+
 export default function usePicture () {
-    return  { defaultAvatar }
+    const { showCropper, showLoading, showToast } = useContext(DialogsContext)
+    const { user } = useContext(UserContext)
+
+    const selectImage = async (confirm: (imageUrl: string) => any) => {
+        try {
+            const file = await chooseFile({ accepts: ['image/png', 'image/jpeg']})
+            const reader = new FileReader()
+            reader.readAsDataURL(file[0])
+            reader.onload = async (file)=> {
+                showCropper({ imgURL: reader.result as string, onConfirm: async (res: Blob, close: () => any) => {
+                        close()
+                        const unload = showLoading()
+                        try {
+                            const newImage = await solas.uploadImage({
+                                file: res,
+                                uploader: user.wallet || user.email || '',
+                                auth_token: user.authToken || ''
+                            })
+
+                            const preloadImage = new Image()
+                            preloadImage.src = newImage
+                            await new Promise((resolve, reject) => {
+                                preloadImage.onload = resolve
+                                preloadImage.onerror = reject
+                            })
+
+                            unload()
+                            confirm(newImage)
+                        } catch (e: any) {
+                            console.log('[selectFile]: ', e)
+                            unload()
+                            showToast(e.message|| 'Upload fail')
+                        }
+                    }
+                })
+            }
+        } catch (e: any) {
+            console.log('[selectFile]: ', e)
+            showToast(e.message || 'Upload fail')
+        }
+    }
+
+    return  { defaultAvatar, selectImage }
 }

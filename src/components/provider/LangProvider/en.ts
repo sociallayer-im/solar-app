@@ -312,7 +312,18 @@ const langEN = {
   Dialog_Copy_Message: 'Share and open the link in a browser.',
 
   Profile_Bio_More: 'More…',
-  Profile_Bio_Less: 'Less'
+  Profile_Bio_Less: 'Less',
+
+  Profile_Edit_Title: 'Edit Profile',
+  Profile_Edit_Avatar: 'Avatar',
+  Profile_Edit_Ncikname: 'Nick name',
+  Profile_Edit_Bio: 'Bio',
+  Profile_Edit_Bio_Placeholder: 'Set a bio',
+  Profile_Edit_Location: 'Location',
+  Profile_Edit_Social_Media: 'Social media',
+  Profile_Edit_Social_Media_Edit: 'Edit',
+  Profile_Edit_Social_Media_Edit_Dialog_Title: 'Your ',
+  Profile_Edit_Social_Confirm: 'Confirm',
 }
 
 export type LangConfig = typeof langEN

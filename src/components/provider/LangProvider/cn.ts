@@ -312,7 +312,18 @@ const langCN: LangConfig = {
   Dialog_Copy_Message: '在浏览器中共享并打开链接。',
 
   Profile_Bio_More: '更多…',
-  Profile_Bio_Less: '收起'
+  Profile_Bio_Less: '收起',
+
+  Profile_Edit_Title: '编辑资料',
+  Profile_Edit_Avatar: '头像',
+  Profile_Edit_Ncikname: '昵称',
+  Profile_Edit_Bio: '个人简介',
+  Profile_Edit_Bio_Placeholder: '介绍一下自己吧',
+  Profile_Edit_Location: '所在地',
+  Profile_Edit_Social_Media: '社交媒体',
+  Profile_Edit_Social_Media_Edit: '编辑',
+  Profile_Edit_Social_Media_Edit_Dialog_Title: '你的 ',
+  Profile_Edit_Social_Confirm: '确定',
 }
 
 export default langCN
