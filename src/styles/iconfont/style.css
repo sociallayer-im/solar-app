@@ -132,4 +132,14 @@
 .icon-Outline:before {
   content: "\e920";
 }
+.icon-discord:before {
+  content: "\e922";
+}
+.icon-ens:before {
+  content: "\e923";
+}
+.icon-web2:before {
+  content: "\e924";
+}
+
 

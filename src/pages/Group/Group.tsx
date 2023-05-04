@@ -16,7 +16,8 @@ import useIssueBadge from '../../hooks/useIssueBadge'
 import ListUserCreated from '../../components/compose/ListUserCreated/ListUserCreated'
 import BgProfile from '../../components/base/BgProfile/BgProfile'
 import {styled} from "baseui";
-import useCopy from "../../hooks/copy";
+import useCopy from '../../hooks/copy'
+import { useNavigate } from 'react-router-dom'
 
 
 function GroupPage () {
@@ -28,6 +29,7 @@ function GroupPage () {
     const [selectedTab, setSelectedTab] = useState('Minted')
     const startIssue = useIssueBadge({ groupName: groupname})
     const { copyWithDialog } = useCopy()
+    const navigate = useNavigate()
 
     useEffect(() => {
         const getProfile  =  async function () {
@@ -70,10 +72,14 @@ function GroupPage () {
         }
     })
 
+    const goToEditGroup = () => {
+        navigate(`/group-edit/${profile?.username}`)
+    }
+
     const ProfileMenu = () => <div className='profile-setting'>
         <ShowDomain onClick={ () => { copyWithDialog(profile?.domain || '', lang['Dialog_Copy_Message']) } }>{ profile?.domain }</ShowDomain>
         { user.id === profile?.group_owner_id &&
-            <div className='profile-setting-btn'><i className='icon-setting'></i></div>
+            <div className='profile-setting-btn' onClick={() => { goToEditGroup() } }><i className='icon-setting'></i></div>
         }
     </div>
 

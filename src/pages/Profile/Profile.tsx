@@ -70,10 +70,14 @@ function ProfilePage () {
        }
     })
 
+    const goToEditProfile = () => {
+        navigate(`/profile-edit/${profile?.username}`)
+    }
+
     const ProfileMenu = () => <div className='profile-setting'>
         <ShowDomain onClick={ () => { copyWithDialog(profile?.domain || '', lang['Dialog_Copy_Message']) } }>{ profile?.domain }</ShowDomain>
         { user.id === profile?.id &&
-            <div className='profile-setting-btn'><i className='icon-setting'></i></div>
+            <div className='profile-setting-btn' onClick={ () => { goToEditProfile() }} ><i className='icon-setting'></i></div>
         }
     </div>
 
@@ -84,7 +88,7 @@ function ProfilePage () {
                     <BgProfile profile={ profile }/>
                     <div className='center'>
                         <div className='top-side'>
-                            <PageBack menu={ () => ProfileMenu() } />
+                            <PageBack menu={ () => ProfileMenu() }/>
                         </div>
                         <div className='slot_1'>
                             <ProfilePanel profile={ profile } />

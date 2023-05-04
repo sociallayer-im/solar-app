@@ -174,13 +174,13 @@ function ProfilePanel(props: ProfilePanelProps) {
                     <div><b>{ profile.followers }</b> { lang['Follow_detail_followed'] } </div>
                     <div><b>{ profile.following }</b> { lang['Follow_detail_following'] } </div>
                 </div>
-                { true &&
+                { false &&
                     <div className='profile-position'>
                         <i className='icon-Outline' />
                         <span>Beijing</span>
                     </div>
                 }
-                { true &&
+                { false &&
                     <ProfileBio text={ JSON.stringify(props.profile) }/>
                 }
                 <ProfileSocialMediaList profile={ props.profile }/>

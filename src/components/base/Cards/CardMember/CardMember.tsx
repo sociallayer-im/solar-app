@@ -11,7 +11,7 @@ const style = {
         display: 'flex',
         flexDirection: 'column' as const,
         width: '100px',
-        height: '165px',
+        height: '125px',
         borderRadius: '15px',
         background: '#fff',
         boxShadow: '0 1.9878px 11.9268px rgb(0 0 0 / 10%)',

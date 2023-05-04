@@ -112,8 +112,8 @@ function GroupPanel(props: GroupPanelProps) {
                     <div><b>{ group.followers }</b> { lang['Follow_detail_followed'] } </div>
                     <div> { lang['Group_detail_Join_Time'] } <b>{ group.following }</b></div>
                 </div>
-                <ProfileBio text={ JSON.stringify(props.group) } />
-                <ProfileSocialMediaList profile={props.group}/>
+                { false && <ProfileBio text={ JSON.stringify(props.group) } />}
+                { false && <ProfileSocialMediaList profile={props.group}/> }
             </div>
             <div className='right-size'>
                 {

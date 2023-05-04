@@ -9,10 +9,10 @@ function ListTitle (props: ListTitleProps) {
 
     return (<div className='list-title'>
         <div className='label'>{ props.title }</div>
-        <div className='amount'>
-            { props.count }
-           <div> { props.uint } </div>
-        </div>
+        {/*<div className='amount'>*/}
+        {/*    { props.count }*/}
+        {/*   <div> { props.uint } </div>*/}
+        {/*</div>*/}
     </div>)
 }
 

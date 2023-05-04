@@ -45,31 +45,31 @@ function ProfileSocialMediaList(props: ProfileSocialMediaListProps) {
 
     }, [props.profile])
 
-    return (<div className={ active ? 'profile-social-media-list active' : 'profile-social-media-list'} onClick={() => { setActive(true)}}>
+    return (<div className={ 'profile-social-media-list active' } onClick={() => { setActive(true)}}>
         { !!props.profile.twitter &&
             <div className='list-item' >
                 <i className='icon-twitter'></i>
                 <a href={`https://twitter.com/${ props.profile.twitter }`} target='_blank'>@{props.profile.twitter }</a>
             </div>
         }
-        { !!props.profile.twitter &&
-            <div className='list-item' >
-                <i className='icon-tg'></i>
-                <a href={`https://twitter.com/${ props.profile.twitter }`} target='_blank'>@{ props.profile.twitter }</a>
-            </div>
-        }
-        { !!props.profile.twitter &&
-            <div className='list-item'>
-                <i className='icon-github'></i>
-                <a href={`https://twitter.com/${ props.profile.twitter }`} target='_blank'>@{ props.profile.twitter }</a>
-            </div>
-        }
-        { !!props.profile.twitter &&
-            <div className='list-item'>
-                <i className='icon-web'></i>
-                <a href={`https://twitter.com/${ props.profile.twitter }`} target='_blank'>@{ props.profile.twitter }</a>
-            </div>
-        }
+        {/*{ !!props.profile.twitter &&*/}
+        {/*    <div className='list-item' >*/}
+        {/*        <i className='icon-tg'></i>*/}
+        {/*        <a href={`https://twitter.com/${ props.profile.twitter }`} target='_blank'>@{ props.profile.twitter }</a>*/}
+        {/*    </div>*/}
+        {/*}*/}
+        {/*{ !!props.profile.twitter &&*/}
+        {/*    <div className='list-item'>*/}
+        {/*        <i className='icon-github'></i>*/}
+        {/*        <a href={`https://twitter.com/${ props.profile.twitter }`} target='_blank'>@{ props.profile.twitter }</a>*/}
+        {/*    </div>*/}
+        {/*}*/}
+        {/*{ !!props.profile.twitter &&*/}
+        {/*    <div className='list-item'>*/}
+        {/*        <i className='icon-web'></i>*/}
+        {/*        <a href={`https://twitter.com/${ props.profile.twitter }`} target='_blank'>@{ props.profile.twitter }</a>*/}
+        {/*    </div>*/}
+        {/*}*/}
     </div>)
 }
 
