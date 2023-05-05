@@ -93,10 +93,10 @@ function DialogManageMember(props: AddressListProps) {
             confirmBtnColor: '#F64F4F!important',
             content: '',
             title: selected.length > 1
-                ? `Are you sure to remove ${ selected.length } members from the group?`
-            : `Are you sure to remove ${ selected[0] } from the group?`,
-            confirmText: 'Remove',
-            cancelText: 'Cancel',
+                ? lang['Group_Member_Manage_Dialog_Confirm_Dialog_des']([selected[0].username])
+            : lang['Group_Member_Manage_Dialog_Confirm_Dialog_des']([selected[0].username]),
+            confirmText: lang['Group_Member_Manage_Dialog_Confirm_Dialog_Confirm'],
+            cancelText: lang['Group_Member_Manage_Dialog_Confirm_Dialog_Cancel'],
             onConfirm: async (close: any) => {
                 console.log('selected', selected)
                 const remove = await solas.leaveGroup({
@@ -118,7 +118,7 @@ function DialogManageMember(props: AddressListProps) {
        <div className='top-side'>
            <div className='list-header'>
                <div className='center'>
-                   <PageBack onClose={ () => { props.handleClose() } } title={'Member Management'}/>
+                   <PageBack onClose={ () => { props.handleClose() } } title={lang['Group_Member_Manage_Dialog_Title']}/>
                </div>
            </div>
            <div className='content'>
@@ -136,7 +136,7 @@ function DialogManageMember(props: AddressListProps) {
                         border: '1px solid #F64F4F',
                         color: '#F64F4F'
                     }}>
-                   { 'Remove from the group' }
+                   { lang['Group_Member_Manage_Dialog_Confirm_Btn'] }
                </AppButton>
            </div>
        </div>

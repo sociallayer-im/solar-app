@@ -330,6 +330,13 @@ const langEN = {
   Profile_Edit_Cancel: 'Cancel',
   Profile_Edit_Leave_Dialog_Title: 'Are you sure to leave?',
   Profile_Edit_Leave_Dialog_Des: 'You haven\'t saved your settings yet.',
+
+  Group_Member_Manage_Dialog_Title: 'Member Management',
+  Group_Member_Manage_Dialog_Confirm_Btn: 'Remove from the group',
+  Group_Member_Manage_Dialog_Confirm_Dialog_des: slotLang('Are you sure to remove ${1} from the group？'),
+  Group_Member_Manage_Dialog_Confirm_Dialog_Confirm: 'Remove',
+  Group_Member_Manage_Dialog_Confirm_Dialog_Cancel: 'Cancel',
+
 }
 
 export type LangConfig = typeof langEN

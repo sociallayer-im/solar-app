@@ -26,6 +26,7 @@ function GroupPanel(props: GroupPanelProps) {
     const [newProfile, _] = useEvent(EVENT.groupUpdate)
     const [group, setGroup] = useState(props.group)
     const [showUnFollowBtn, setShowUnFollowBtn] = useState(false)
+    const [showFollowBtn, setShowFollowBtn] = useState(false)
 
     const checkFollow  = async () => {
         const follower = await solas.getFollowers(props.group.id)
@@ -33,6 +34,7 @@ function GroupPanel(props: GroupPanelProps) {
             return item.id === user.id
         })
 
+        setShowFollowBtn(!isFollower && user.id !== props.group.id)
         setShowUnFollowBtn(!!isFollower)
         return !!isFollower
     }
@@ -93,6 +95,39 @@ function GroupPanel(props: GroupPanelProps) {
         })
     }
 
+    const handleUnFollow = async () => {
+        const unload = showLoading()
+        try {
+            const res = await solas.unfollow({
+                target_id: props.group.id,
+                auth_token: user.authToken || ''
+            })
+            unload()
+            setShowUnFollowBtn(false)
+            setShowFollowBtn(true)
+        } catch (e: any) {
+            unload()
+            console.log('[handleUnFollow]: ', e)
+            showToast(e.message || 'Unfollow fail')
+        }
+    }
+
+    const handleFollow = async () => {
+        const unload = showLoading()
+        try {
+            const res = await solas.follow({
+                target_id: props.group.id,
+                auth_token: user.authToken || ''
+            })
+            unload()
+            setShowUnFollowBtn(true)
+            setShowFollowBtn(false)
+        } catch (e: any) {
+            unload()
+            console.log('[handleFollow]: ', e)
+            showToast(e.message || 'Follow fail')
+        }
+    }
 
     return (
         <div className='profile-panel'>
@@ -111,7 +146,7 @@ function GroupPanel(props: GroupPanelProps) {
                 </div>
                 <div className='follow' onClick={ showFollowInfo }>
                     <div><b>{ group.followers }</b> { lang['Follow_detail_followed'] } </div>
-                    <div> { lang['Group_detail_Join_Time'] } <b>{ group.following }</b></div>
+                    {/*<div> { lang['Group_detail_Join_Time'] } <b>{ group.following }</b></div>*/}
                 </div>
                 { false && <ProfileBio text={ JSON.stringify(props.group) } />}
                 { false && <ProfileSocialMediaList profile={props.group}/> }
@@ -122,13 +157,26 @@ function GroupPanel(props: GroupPanelProps) {
                     <StatefulPopover
                         placement={ PLACEMENT.bottomRight }
                         popoverMargin={ 0 }
-                        content={ ({ close }) => <MenuItem onClick={ () => { handleUnJoin() } }>{ lang['Relation_Ship_Action_Leave'] }</MenuItem> }>
+                        content={ ({ close }) => <MenuItem onClick={ () => { handleUnFollow() } }>{ lang['Relation_Ship_Action_Unfollow'] }</MenuItem> }>
                         <div>
-                            <AppButton size={ BTN_SIZE.compact }>
-                                { lang['Relation_Ship_Action_Joined'] }
+                            <AppButton
+                                size={ BTN_SIZE.mini }
+                                style={{ width: '37px', border: '1px solid #272928', marginRight: '12px'}}>
+                                <i className='icon-user-check'></i>
                             </AppButton>
                         </div>
                     </StatefulPopover>
+                }
+
+                {
+                    showFollowBtn &&
+                    <AppButton
+                        style={{ backgroundColor: '#272928!important', color: '#fff', width: '94px'}}
+                        onClick={ () => { handleFollow() } }
+                        kind={ BTN_KIND.primary } size={ BTN_SIZE.mini }>
+                        <i className='icon-user-plus'></i>
+                        <span>{ lang['Relation_Ship_Action_Follow'] }</span>
+                    </AppButton>
                 }
             </div>
         </div>

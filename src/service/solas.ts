@@ -800,9 +800,6 @@ export async function sendInvite (props: SendInviteProps): Promise<Invite[]> {
         }
     })
 
-    console.log('walletAddress', walletAddress)
-    console.log('socialLayerUsers', socialLayerUsers)
-    console.log('domains', domains)
     const domainToWalletAddress: any = []
     domains.map((item) => {
         return domainToWalletAddress.push(DDNSServer(item))

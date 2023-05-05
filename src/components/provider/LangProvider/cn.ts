@@ -330,6 +330,12 @@ const langCN: LangConfig = {
   Profile_Edit_Cancel: '取消',
   Profile_Edit_Leave_Dialog_Title: '是否离开？',
   Profile_Edit_Leave_Dialog_Des: '你的修改将不会被保存。',
+
+  Group_Member_Manage_Dialog_Title: '管理群组成员',
+  Group_Member_Manage_Dialog_Confirm_Btn: '移除成员',
+  Group_Member_Manage_Dialog_Confirm_Dialog_des: slotLang('你确定要移除 {1} 吗？'),
+  Group_Member_Manage_Dialog_Confirm_Dialog_Confirm: '移除',
+  Group_Member_Manage_Dialog_Confirm_Dialog_Cancel: '取消',
 }
 
 export default langCN
