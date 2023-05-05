@@ -51,6 +51,7 @@ export const profiles: Profile[] = [
         following: 6,
         is_group: null,
         badge_count: 12,
+        status: 'active',
     },
     {
         address: '0x7682Ba569E3823Ca1B7317017F5769F8Aa8842D4',
@@ -65,6 +66,7 @@ export const profiles: Profile[] = [
         following: 11,
         is_group: null,
         badge_count: 12,
+        status: 'active',
     },
     {
         address: 'null',
@@ -79,6 +81,7 @@ export const profiles: Profile[] = [
         following: 0,
         is_group: null,
         badge_count: 12,
+        status: 'active',
     }
 ]
 
