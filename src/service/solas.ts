@@ -286,7 +286,6 @@ export interface QueryUserGroupProps {
     profile_id: number,
 }
 
-
 export async function queryGroupsUserJoined (props: QueryUserGroupProps): Promise<Group[]> {
     const res1 = await fetch.get({
         url: `${api}/group/my-groups`,

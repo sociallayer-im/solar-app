@@ -5,7 +5,7 @@ import langContext from '../../../provider/LangProvider/LangContext'
 import UserContext from '../../../provider/UserProvider/UserContext'
 import solas, { Group } from '../../../../service/solas'
 import DialogsContext from '../../../provider/DialogProvider/DialogsContext'
-import { DialogConfirmProps } from '../DialogConfirmDomain/DialogConfirmDomain'
+import { DialogConfirmDomainProps } from '../DialogConfirmDomain/DialogConfirmDomain'
 import { useNavigate } from 'react-router-dom'
 
 export interface DialogGroupSettingProps {
@@ -39,7 +39,7 @@ function DialogGroupSetting(props: DialogGroupSettingProps) {
      }
 
      const showConfirmDialog = () => {
-        const dialogProps: DialogConfirmProps = {
+        const dialogProps: DialogConfirmDomainProps = {
             title: lang['Group_freeze_dialog_title'],
             confirmLabel: lang['Group_freeze_Dialog_confirm'],
             cancelLabel: lang['Group_freeze_Dialog_cancel'],

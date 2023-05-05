@@ -11,7 +11,6 @@ import LangContext from '../../components/provider/LangProvider/LangContext'
 import ListUserBadgelet from '../../components/compose/ListUserBadgelet'
 import ListGroupMember from '../../components/compose/ListGroupMember'
 import UserContext from '../../components/provider/UserProvider/UserContext'
-import { Overflow } from 'baseui/icon'
 import useIssueBadge from '../../hooks/useIssueBadge'
 import ListUserCreated from '../../components/compose/ListUserCreated/ListUserCreated'
 import BgProfile from '../../components/base/BgProfile/BgProfile'
@@ -55,15 +54,6 @@ function GroupPage () {
         user.id === profile?.group_owner_id
             ? startIssue({ badges })
             : startIssue({ badges, to: profile?.domain || ''})
-    }
-
-    // 卸载组件
-
-    const groupOption = () => {
-        const style = { cursor: 'pointer' }
-        return user.id === profile?.group_owner_id
-                ? <Overflow size={22} onClick={ () => { showGroupSetting(profile) } } style={ style } />
-                : ''
     }
 
     const ShowDomain = styled('div', ({$theme}) => {

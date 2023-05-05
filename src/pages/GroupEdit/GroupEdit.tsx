@@ -117,7 +117,7 @@ function GroupEdit() {
             confirmTextColor: '#fff',
             cancelLabel: lang['Group_freeze_Dialog_cancel'],
             title: lang['Group_freeze_dialog_title'],
-            content: profile?.domain || '',
+            content: lang['Group_freeze_dialog_des'],
             onConfirm: async (close) => {
                 close()
                 const unload = showLoading()

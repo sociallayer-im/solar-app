@@ -242,7 +242,8 @@ const langEN = {
 
   Group_setting_title: 'Settings',
   Group_setting_dissolve: 'Freeze the Group',
-  Group_freeze_dialog_title: 'You are freezing the group: ',
+  Group_freeze_dialog_title: 'Are you sure you to freeze this group？',
+  Group_freeze_dialog_des: 'Once frozen, all information in this group will no longer be displayed and cannot be recovered. Badge award records can still be retrieved.',
   Group_freeze_Dialog_confirm: 'Freeze',
   Group_freeze_Dialog_cancel: 'Cancel',
 
