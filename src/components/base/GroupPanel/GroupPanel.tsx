@@ -102,6 +102,7 @@ function GroupPanel(props: GroupPanelProps) {
                 </div>
                 <div className='domain-bar'>
                     <div className='domain'>{ group.username }</div>
+                    <img src="/images/group_label.png" alt=""/>
                     {
                         <div className='qrcode-btn' onClick={showProfileQRcode}>
                             <i className='icon icon-qrcode'></i>
