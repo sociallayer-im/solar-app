@@ -325,6 +325,10 @@ const langCN: LangConfig = {
   Profile_Edit_Social_Media_Edit_Dialog_Title: '你的 ',
   Profile_Edit_Social_Confirm: '确定',
   Profile_Edit_Save: '保存',
+  Profile_Edit_Leave: '离开',
+  Profile_Edit_Cancel: '取消',
+  Profile_Edit_Leave_Dialog_Title: '是否离开？',
+  Profile_Edit_Leave_Dialog_Des: '你的修改将不会被保存。',
 }
 
 export default langCN

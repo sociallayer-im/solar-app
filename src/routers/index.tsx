@@ -15,6 +15,7 @@ import Invite from '../pages/Invite'
 import IssueSuccess from '../pages/IssueSuccess'
 import Search from '../pages/Search'
 import ProfileEdit from '../pages/ProfileEdit/ProfileEdit'
+import GroupEdit from '../pages/GroupEdit/GroupEdit'
 
 
 // lazy load
@@ -41,6 +42,7 @@ function AppRouter () {
                 <Route path="/profile/:username" element={<Profile />}></Route>
                 <Route path="/profile-edit/:username" element={<ProfileEdit />}></Route>
                 <Route path="/group/:groupname" element={<Group />}></Route>
+                <Route path="/group-edit/:groupname" element={<GroupEdit />}></Route>
                 <Route path="/login" element={<Login />}></Route>
                 <Route path="/regist" element={<Regist />}></Route>
                 <Route path="/create-group" element={<RegistGroup />}></Route>

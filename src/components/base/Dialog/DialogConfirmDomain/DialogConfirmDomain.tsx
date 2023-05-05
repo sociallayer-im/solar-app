@@ -2,7 +2,7 @@ import { ReactNode } from 'react'
 import AppButton, { BTN_KIND } from '../../AppButton/AppButton'
 import './DialogConfirmDomain.less'
 
-export interface DialogConfirmProps {
+export interface DialogConfirmDomainProps {
     confirmLabel?: string,
     cancelLabel?: string,
     title?: string
@@ -11,9 +11,9 @@ export interface DialogConfirmProps {
     onCancel?: (...props: any[]) => any
 }
 
-function DialogConfirmDomain (props: DialogConfirmProps) {
+function DialogConfirmDomain (props: DialogConfirmDomainProps) {
     return (
-        <div className='dialog-confirm'>
+        <div className='dialog-confirm-domain'>
             <div className='title'>{ props.title }</div>
             { props.content &&
                 <div className='content'>

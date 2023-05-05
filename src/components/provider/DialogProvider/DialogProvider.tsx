@@ -1,7 +1,8 @@
 import { ReactNode, useEffect, useState } from 'react'
 import { Badge, Badgelet, Invite, Presend, Profile, Group} from '../../../service/solas'
 import DialogsContext, { DialogsContextType } from './DialogsContext'
-import DialogConfirm, { DialogConfirmProps } from '../../base/Dialog/DialogConfirmDomain/DialogConfirmDomain'
+import DialogDomainConfirm, { DialogConfirmDomainProps } from '../../base/Dialog/DialogConfirmDomain/DialogConfirmDomain'
+import DialogConfirm, { DialogConfirmProps } from '../../base/Dialog/DialogConfirm/DialogConfirm'
 import Dialog from '../../base/Dialog/Dialog'
 import Toast from '../../base/Toast'
 import DialogConnectWallet from '../../base/Dialog/DialogConnectWallet/DialogConnectWallet'
@@ -182,7 +183,33 @@ function DialogProvider (props: DialogProviderProps) {
             } catch (e) { }
     }
 
-    const openDomainConfirmDialog = (props: DialogConfirmProps) => {
+    const openDomainConfirmDialog = (props: DialogConfirmDomainProps) => {
+        const id = genID()
+        dialogsGroup.dialogs.push({
+            id,
+            content: () => {
+                const close = () => {
+                    closeDialogByID(id)
+                }
+
+                const dialogProps = {
+                    key: id.toString(),
+                    size: [340, 'auto'],
+                    handleClose: close
+                }
+
+                return (
+                    <Dialog { ...dialogProps } >
+                        { (close) => <DialogDomainConfirm { ...props }
+                                                    onCancel={ ()=> { close(); props.onCancel &&  props.onCancel()} }/> }
+                    </Dialog>
+                )
+            }
+        })
+        setDialogsGroup({ ...dialogsGroup })
+    }
+
+    const openConfirmDialog = (props: DialogConfirmDomainProps) => {
         const id = genID()
         dialogsGroup.dialogs.push({
             id,
@@ -200,7 +227,7 @@ function DialogProvider (props: DialogProviderProps) {
                 return (
                     <Dialog { ...dialogProps } >
                         { (close) => <DialogConfirm { ...props }
-                                                    onCancel={ ()=> { close(); props.onCancel &&  props.onCancel()} }/> }
+                                                          onCancel={ ()=> { close(); props.onCancel &&  props.onCancel()} }/> }
                     </Dialog>
                 )
             }
@@ -401,7 +428,8 @@ function DialogProvider (props: DialogProviderProps) {
         showCropper,
         clean,
         showInvite,
-        showGroupSetting
+        showGroupSetting,
+        openConfirmDialog
     }
 
     return (

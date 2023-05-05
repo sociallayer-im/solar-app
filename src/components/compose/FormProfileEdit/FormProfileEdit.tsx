@@ -78,57 +78,59 @@ function FormProfileEdit(props: ProfileEditFormProps) {
         {/*        }}/>*/}
         {/*</div>*/}
 
-        <div className='input-area'>
-            <div className='input-area-title'>{lang['Profile_Edit_Social_Media']}</div>
-            <EditSocialMedia
-                title={'Twitter'}
-                icon={'icon-twitter'}
-                value={newProfile.twitter || ''}
-                onChange={(value) => {
-                    update('twitter', value)
-                }}
-            />
-            {/*<EditSocialMedia*/}
-            {/*    title={'Telegram'}*/}
-            {/*    icon={'icon-tg'}*/}
-            {/*    value={newProfile.twitter || ''}*/}
-            {/*    onChange={(value) => {*/}
-            {/*        update('twitter', value)*/}
-            {/*    }}*/}
-            {/*/>*/}
-            {/*<EditSocialMedia*/}
-            {/*    title={'Github'}*/}
-            {/*    icon={'icon-github'}*/}
-            {/*    value={newProfile.twitter || ''}*/}
-            {/*    onChange={(value) => {*/}
-            {/*        update('twitter', value)*/}
-            {/*    }}*/}
-            {/*/>*/}
-            {/*<EditSocialMedia*/}
-            {/*    title={'Link'}*/}
-            {/*    icon={'icon-web2'}*/}
-            {/*    value={newProfile.twitter || ''}*/}
-            {/*    onChange={(value) => {*/}
-            {/*        update('twitter', value)*/}
-            {/*    }}*/}
-            {/*/>*/}
-            {/*<EditSocialMedia*/}
-            {/*    title={'ENS'}*/}
-            {/*    icon={'icon-ens'}*/}
-            {/*    value={newProfile.twitter || ''}*/}
-            {/*    onChange={(value) => {*/}
-            {/*        update('twitter', value)*/}
-            {/*    }}*/}
-            {/*/>*/}
-            {/*<EditSocialMedia*/}
-            {/*    title={'Discord'}*/}
-            {/*    icon={'icon-discord'}*/}
-            {/*    value={newProfile.twitter || ''}*/}
-            {/*    onChange={(value) => {*/}
-            {/*        update('twitter', value)*/}
-            {/*    }}*/}
-            {/*/>*/}
-        </div>
+        { !props.profile.group_owner_id &&
+            <div className='input-area'>
+                <div className='input-area-title'>{lang['Profile_Edit_Social_Media']}</div>
+                <EditSocialMedia
+                    title={'Twitter'}
+                    icon={'icon-twitter'}
+                    value={newProfile.twitter || ''}
+                    onChange={(value) => {
+                        update('twitter', value)
+                    }}
+                />
+                {/*<EditSocialMedia*/}
+                {/*    title={'Telegram'}*/}
+                {/*    icon={'icon-tg'}*/}
+                {/*    value={newProfile.twitter || ''}*/}
+                {/*    onChange={(value) => {*/}
+                {/*        update('twitter', value)*/}
+                {/*    }}*/}
+                {/*/>*/}
+                {/*<EditSocialMedia*/}
+                {/*    title={'Github'}*/}
+                {/*    icon={'icon-github'}*/}
+                {/*    value={newProfile.twitter || ''}*/}
+                {/*    onChange={(value) => {*/}
+                {/*        update('twitter', value)*/}
+                {/*    }}*/}
+                {/*/>*/}
+                {/*<EditSocialMedia*/}
+                {/*    title={'Link'}*/}
+                {/*    icon={'icon-web2'}*/}
+                {/*    value={newProfile.twitter || ''}*/}
+                {/*    onChange={(value) => {*/}
+                {/*        update('twitter', value)*/}
+                {/*    }}*/}
+                {/*/>*/}
+                {/*<EditSocialMedia*/}
+                {/*    title={'ENS'}*/}
+                {/*    icon={'icon-ens'}*/}
+                {/*    value={newProfile.twitter || ''}*/}
+                {/*    onChange={(value) => {*/}
+                {/*        update('twitter', value)*/}
+                {/*    }}*/}
+                {/*/>*/}
+                {/*<EditSocialMedia*/}
+                {/*    title={'Discord'}*/}
+                {/*    icon={'icon-discord'}*/}
+                {/*    value={newProfile.twitter || ''}*/}
+                {/*    onChange={(value) => {*/}
+                {/*        update('twitter', value)*/}
+                {/*    }}*/}
+                {/*/>*/}
+            </div>
+        }
     </div>)
 }
 

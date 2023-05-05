@@ -324,7 +324,11 @@ const langEN = {
   Profile_Edit_Social_Media_Edit: 'Edit',
   Profile_Edit_Social_Media_Edit_Dialog_Title: 'Your ',
   Profile_Edit_Social_Confirm: 'Confirm',
-  Profile_Edit_Save: 'Save'
+  Profile_Edit_Save: 'Save',
+  Profile_Edit_Leave: 'Leave',
+  Profile_Edit_Cancel: 'Cancel',
+  Profile_Edit_Leave_Dialog_Title: 'Are you sure to leave?',
+  Profile_Edit_Leave_Dialog_Des: 'You haven\'t saved your settings yet.',
 }
 
 export type LangConfig = typeof langEN
