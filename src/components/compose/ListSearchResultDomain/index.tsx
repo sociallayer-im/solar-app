@@ -15,6 +15,8 @@ function ListSearchResultDomain (props: ListSearchResultDomainProps) {
     const { lang } = useContext(LangContext)
     const getInvite = async (page: number) => {
         if (!props.keyword) return []
+        // 搜索只有一页
+        if (page > 1) return []
         return await solas.searchDomain({ username: props.keyword.toLowerCase(), page })
     }
 

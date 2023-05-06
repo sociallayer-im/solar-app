@@ -24,7 +24,7 @@ function ReasonInput(props: ReasonInputProps) {
     }, [props.value])
 
     const addTag = () => {
-        const tags = value.match(/#[^\s]*/g)
+        const tags = value.match(/#[^\s(?!\p{P})]*/u)
         if (!tags) {
             mapInput(value ? value + ' #': '#')
         }
@@ -33,7 +33,7 @@ function ReasonInput(props: ReasonInputProps) {
     }
 
     const addLink = () => {
-        const link = value.match(/@[^\s]*/g)
+        const link = value.match(/@[^\s(?!\p{P})]*/u)
         if (!link) {
             mapInput(value ? value + ' @': '@')
         }

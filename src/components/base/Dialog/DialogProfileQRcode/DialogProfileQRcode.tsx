@@ -7,9 +7,11 @@ import QRcode from '../../QRcode'
 import usePicture from '../../../../hooks/pictrue'
 // import html2canvas from 'html2canvas'
 import DialogsContext from '../../../provider/DialogProvider/DialogsContext'
+import {useLocation} from "react-router-dom";
 
 export interface DialogProfileQRcodeProps {
     profile: Profile
+    handleClose: () => void
 }
 
 function DialogProfileQRcode (props: DialogProfileQRcodeProps) {
@@ -22,6 +24,7 @@ function DialogProfileQRcode (props: DialogProfileQRcodeProps) {
     const [saving, setSaving] = useState(false)
     const [bgLoading, setBgLoading] = useState(true)
     const bgURL = `/images/qrcode_bg/qrcode_bg_${langType}.png`
+    const { pathname } = useLocation()
 
     useEffect(() => {
         setBgLoading(true)
@@ -33,6 +36,13 @@ function DialogProfileQRcode (props: DialogProfileQRcodeProps) {
             unload()
         }
     }, [])
+
+    useEffect(() => {
+        console.log('pathname', pathname)
+        if (!pathname.includes(props.profile.username!)) {
+            props.handleClose()
+        }
+    }, [pathname])
 
     // const saveCard = () => {
     //     if (!card.current) return
