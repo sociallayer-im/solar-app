@@ -17,6 +17,7 @@ const Wrapper = styled('div', () => {
         justifyContent: 'center',
         background: '#F8F9F8',
         borderRadius: '16px',
+        userSelect: 'none',
     }
 })
 
