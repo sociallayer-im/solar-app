@@ -47,7 +47,7 @@ function ReasonInput(props: ReasonInputProps) {
             ref={ textarea }
             value={ value }
             className='editor textarea'
-            onChange={ (e) => { mapInput(e.target.value)} }/>
+            onChange={ (e) => { mapInput(e.target.value.trim())} }/>
 
        <div className='action-bar'>
            <div className='btns'>
