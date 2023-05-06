@@ -34,8 +34,12 @@ function Layout(props?: any) {
         }
 
         window.addEventListener('focusout', watchSoftKeyboard)
+        window.addEventListener('orientationchange', watchSoftKeyboard)
 
-        return () => { window.removeEventListener('focusout', watchSoftKeyboard) }
+        return () => {
+            window.removeEventListener('focusout', watchSoftKeyboard)
+            window.removeEventListener('orientationchange', watchSoftKeyboard)
+        }
     }, [])
 
     return (
