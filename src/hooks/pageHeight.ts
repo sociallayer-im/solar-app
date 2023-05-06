@@ -12,9 +12,11 @@ export const usePageHeight = () => {
         }
 
         window.addEventListener('resize', listener, false)
+        window.addEventListener('orientationchange', listener, false)
 
         return () => {
             window.removeEventListener('resize', listener, false)
+            window.removeEventListener('orientationchange', listener, false)
         }
     }, [])
 
