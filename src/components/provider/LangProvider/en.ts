@@ -41,7 +41,7 @@ const langEN = {
 
   Profile_User_NotExist: 'The user does not exist',
   Profile_User_MindBadge: 'Send a badge',
-  Profile_User_IssueBadge: 'Send a badge',
+  Profile_User_IssueBadge: 'Send a badge to',
   Profile_User_Qrcode_download: 'Download',
   Profile_Tab_Received: 'Received',
   Profile_Tab_Minted: 'Created',

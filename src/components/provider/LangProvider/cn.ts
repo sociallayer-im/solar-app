@@ -41,7 +41,7 @@ const langCN: LangConfig = {
 
   Profile_User_NotExist: '该用户不存在',
   Profile_User_MindBadge: '颁发徽章',
-  Profile_User_IssueBadge: '颁发徽章',
+  Profile_User_IssueBadge: '颁发徽章给',
   Profile_User_Qrcode_download: '保存到相册',
   Profile_Tab_Received: '已收到',
   Profile_Tab_Minted: '已创建',

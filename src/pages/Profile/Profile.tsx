@@ -69,7 +69,7 @@ function ProfilePage () {
                         <AppButton size={ BTN_SIZE.compact } onClick={ handleMintOrIssue }>
                             { user.userName === profile.username
                                 ? lang['Profile_User_MindBadge']
-                                : lang['Profile_User_IssueBadge']
+                                : lang['Profile_User_IssueBadge'] + ' ' +profile.username
                             }
                         </AppButton>
                     </div>

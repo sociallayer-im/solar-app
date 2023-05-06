@@ -78,7 +78,7 @@ function GroupPage () {
                         <AppButton size={ BTN_SIZE.compact } onClick={ handleMintOrIssue }>
                             { user.id === profile.group_owner_id
                                 ? lang['Follow_detail_btn_mint']
-                                : lang['Profile_User_IssueBadge']
+                                : lang['Profile_User_IssueBadge'] + ' ' + profile.username
                             }
                         </AppButton>
                     </div>
