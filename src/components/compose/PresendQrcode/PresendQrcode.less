@@ -21,6 +21,8 @@
     flex-flow: row nowrap;
     align-items: center;
     margin-top: 28px;
+    justify-content: center;
+    width: 100%;
 
     img {
       width: 64px;
@@ -31,6 +33,7 @@
 
     .sender-info {
       text-align: left;
+      max-width: 50%;
 
       .badge-name {
         font-weight: 600;
@@ -38,6 +41,9 @@
         line-height: 24px;
         color: #272928;
         white-space: nowrap;
+        width: 100%;
+        overflow : hidden;
+        text-overflow: ellipsis;
       }
 
       .des {
