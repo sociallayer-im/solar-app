@@ -19,7 +19,12 @@ const engine = new Styletron();
 
 const walletconnect = new WalletConnectConnector({
     chains: [mainnet, moonbeam],
-    options: {},
+    options: {
+        qrcode: true,
+        qrcodeModalOptions: {
+            registryUrl: '/wallets/wallets.json'
+        }
+    },
 })
 
 const inject = new InjectedConnector({
