@@ -56,6 +56,18 @@ const resolve = {
         {
             find: 'bn.js',
             replacement:'node_modules/bn.js/lib/bn.js'
+        },
+        {
+            find: 'tslib',
+            replacement: 'node_modules/tslib/tslib.js'
+        },
+        {
+            find: '@walletconnect/window-metadata',
+            replacement: 'node_modules/window-metadata/dist/cjs/index.js'
+        },
+        {
+            find: 'query-string',
+            replacement: 'node_modules/query-string/index.js'
         }
     ]
 }
@@ -65,10 +77,10 @@ const resolve = {
  * 所以只能在构建的时候加上
  */
 if (env === 'production') {
-    resolve.alias.push({
+    resolve.alias = [{
         find: 'buffer',
-        replacement:'node_modules/buffer/index.js'
-    })
+        replacement:'node_modules/buffer/index.js',
+    },...resolve.alias]
 }
 
 options.resolve = resolve
