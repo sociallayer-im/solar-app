@@ -38,6 +38,10 @@ export default defineConfig({
             {
                 find: 'bn.js',
                 replacement:'node_modules/bn.js/lib/bn.js'
+            },
+            {
+                find: 'buffer',
+                replacement:'node_modules/buffer/index.js'
             }
         ]
     }
