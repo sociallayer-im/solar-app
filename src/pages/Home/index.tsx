@@ -58,11 +58,13 @@ function Home () {
     },[])
 
     const start = async () => {
-        if (user.userName) {
+        if (user.userName && user.authToken) {
             const unload = showLoading()
             const badges = await solas.queryBadge({ sender_id: user.id!, page: 1 })
             unload()
             startIssueBadge({ badges })
+        } else if (!user.userName && user.authToken) {
+            navigate('/regist')
         } else {
             openConnectWalletDialog()
         }

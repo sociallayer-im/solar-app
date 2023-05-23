@@ -3,6 +3,7 @@ import { useStyletron, styled } from 'baseui'
 import LangContext from '../provider/LangProvider/LangContext'
 import {useState, useContext, useEffect, ReactNode} from 'react'
 import { ArrowLeft } from 'baseui/icon'
+import { PageBackContext } from '../provider/PageBackProvider'
 
 const Wrapper = styled('div', ({$theme}) => ({
     display: 'flex',
@@ -19,7 +20,8 @@ const BackBtn = styled('div', ({$theme}) => ({
     justifyContent: 'space-between',
     color: '#7b7c7b',
     fontSize: '14px',
-    cursor: "pointer"
+    cursor: "pointer",
+    userSelect: 'none'
 }))
 
 const Title = styled('div', ({$theme}) => ({
@@ -40,17 +42,19 @@ interface PageBackProp {
 }
 
 function PageBack (props: PageBackProp) {
-    const [css] = useStyletron()
     const navigate = useNavigate()
     const { lang } = useContext(LangContext)
+    const { back, cleanCurrentHistory } = useContext(PageBackContext)
 
     const handleBack = () => {
         if (props.to) {
+            // 指定了to属性，就跳转到指定的页面,而且清除当前页面的历史记录，防止用户点击返回按钮返回到当前页面
+            cleanCurrentHistory()
             props.historyReplace ? navigate(props.to, { replace: true }) : navigate(props.to)
         } else if (props.onClose) {
             props.onClose()
         } else {
-            window.history.back()
+            back()
         }
     }
 

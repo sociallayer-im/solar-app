@@ -44,11 +44,15 @@ function Issue() {
     }, [params])
 
     useEffect(() => {
-        console.log('[issue reason]:', state.reason)
-        const presetAcceptor = SearchParams.get('to')
-        if (presetAcceptor) {
-            setIssues([presetAcceptor, ''])
-            setIssueType('domain')
+        try {
+            console.log('[issue reason]:', state.reason)
+            const presetAcceptor = SearchParams.get('to')
+            if (presetAcceptor) {
+                setIssues([presetAcceptor, ''])
+                setIssueType('domain')
+            }
+        } catch (e) {
+            navigate('/error')
         }
     }, [])
 
@@ -148,7 +152,7 @@ function Issue() {
         <Layout>
             <div className='issue-page'>
                 <div className='issue-page-wrapper'>
-                    <PageBack title={ lang['IssueBadge_Title'] } to={`/profile/${user.userName}`}/>
+                    <PageBack title={ lang['IssueBadge_Title'] }  historyReplace  to={`/profile/${user.userName}`}/>
                     {  !!badge &&
                         <div className='issue-page-form'>
                             <IssueTypeTabs activeKey={issueType}
