@@ -33,7 +33,7 @@ function ReasonInput(props: ReasonInputProps) {
     }
 
     const addLink = () => {
-        const link = value.match(/@[^\s(?!\p{P})]*/u)
+        const link = value.match(/@[^@#\s.,。，]+/)
         if (!link) {
             mapInput(value ? value + ' @': '@')
         }

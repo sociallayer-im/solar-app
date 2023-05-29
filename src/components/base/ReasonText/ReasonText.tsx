@@ -19,7 +19,7 @@ function ReasonText(props: ReasonTextProps) {
             })
         }
 
-        const links = newShowText.match(/@[^\s(?!\p{P})]*/u)
+        const links = newShowText.match(/@[^@#\s.,。，]+/)
         if (links) {
             console.log('links', links)
             links.forEach(link => {
