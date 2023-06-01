@@ -11,11 +11,13 @@ function ReasonText(props: ReasonTextProps) {
 
     let newShowText = props.text
     if (newShowText) {
-        const tags = newShowText.match(/#[^\s(?!\p{P})]*/u)
+        const tags = newShowText.match(/#[^@#\s.,。，]+/g)
         console.log('tags', tags)
         if (tags) {
             tags.forEach(tag => {
-                newShowText = newShowText.replace(tag, `<a class="event" href="/event/${tag.replace('#', '')}" target="_blank">${tag}</a>`)
+                // 生成查找tag的正则表达式,且其前面不能是’>‘, 后面不能是'<',
+                const r = new RegExp(`(?!>)${tag}(?!<)`)
+                newShowText = newShowText.replace(r, `<a class="event" href="/event/${tag.replace('#', '')}" target="_blank">${tag}</a>`)
             })
         }
 

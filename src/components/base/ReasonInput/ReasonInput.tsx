@@ -24,10 +24,7 @@ function ReasonInput(props: ReasonInputProps) {
     }, [props.value])
 
     const addTag = () => {
-        const tags = value.match(/#[^\s(?!\p{P})]*/u)
-        if (!tags) {
-            mapInput(value ? value + ' #': '#')
-        }
+        mapInput(value ? value + ' #': '#')
 
         textarea!.current!.focus()
     }
