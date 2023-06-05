@@ -656,7 +656,7 @@ export async function issueBatch (props: IssueBatchProps): Promise<Badgelet[]> {
         }
     })
 
-    const subjectUrls = props.reason.match(/@[^\s]*/g)
+    const subjectUrls = props.reason.match(/@[^@#\s.,。，]+/)
     let subjectUrl = ''
     if (subjectUrls) {
         subjectUrl = subjectUrls[0].replace('@', '')

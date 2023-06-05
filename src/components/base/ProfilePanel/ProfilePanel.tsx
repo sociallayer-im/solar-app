@@ -91,7 +91,7 @@ function ProfilePanel(props: ProfilePanelProps) {
     const showProfileQRcode = () => {
         openDialog({
             size:[316, 486],
-            content: (close: any) => <DialogProfileQRcode profile={profile} />
+            content: (close: any) => <DialogProfileQRcode handleClose={ close } profile={profile} />
         })
     }
 

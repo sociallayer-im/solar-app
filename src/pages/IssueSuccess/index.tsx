@@ -11,6 +11,7 @@ import SendSuccessCard, { Info } from '../../components/compose/SendSuccessCard/
 import usePicture from '../../hooks/pictrue'
 import AppButton, { BTN_SIZE } from '../../components/base/AppButton/AppButton'
 import usePageHeight from '../../hooks/pageHeight'
+import DialogsContext from "../../components/provider/DialogProvider/DialogsContext";
 
 //HorizontalList deps
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -28,6 +29,7 @@ function IssueSuccessPage () {
     const { user } =  useContext(UserContext)
     const { defaultAvatar } =  usePicture()
     const { heightWithoutNav } = usePageHeight()
+    const { showToast } = useContext(DialogsContext)
 
     // presend成功传参
     const presendId = searchParams.get('presend')
@@ -129,6 +131,7 @@ function IssueSuccessPage () {
 
         // copy(link)
         copy(shareUrl)
+        showToast('Copied')
     }
 
     const themes = [

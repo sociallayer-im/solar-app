@@ -5,13 +5,22 @@ import langContext from '../../components/provider/LangProvider/LangContext'
 import RegistForm from '../../components/compose/FormRegist'
 import DialogsContext from '../../components/provider/DialogProvider/DialogsContext'
 import PageBack from '../../components/base/PageBack'
+import UserContext from "../../components/provider/UserProvider/UserContext";
 
 function ComponentName () {
     const { lang } = useContext(langContext)
     const { clean } = useContext(DialogsContext)
+    const { user, logOut } = useContext(UserContext)
 
     useEffect(() => {
         clean('regist')
+
+        // 离开页面后用户没完成注册将会自动退出登录
+        return () => {
+            if (user.authToken && !user.domain) {
+                logOut()
+            }
+        }
     }, [])
 
     return (

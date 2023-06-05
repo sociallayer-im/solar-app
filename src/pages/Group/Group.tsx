@@ -24,7 +24,7 @@ function GroupPage () {
     const [profile, setProfile] = useState<Profile | null>(null)
     const { showLoading, showGroupSetting } = useContext(DialogsContext)
     const { lang } = useContext(LangContext)
-    const { user } = useContext(UserContext)
+    const { user, logOut } = useContext(UserContext)
     const [selectedTab, setSelectedTab] = useState('Minted')
     const startIssue = useIssueBadge({ groupName: groupname})
     const { copyWithDialog } = useCopy()
@@ -47,6 +47,12 @@ function GroupPage () {
     },[groupname])
 
     const handleMintOrIssue = async () => {
+        // 处理用户登录后但是未注册域名的情况，即有authToken和钱包地址,但是没有domain和username的情况
+        if (user.wallet && user.authToken && !user.domain) {
+            navigate('/regist')
+            return
+        }
+
         const unload = showLoading()
         const badges = await solas.queryBadge({ group_id: profile!.id!, page: 1 })
         unload()

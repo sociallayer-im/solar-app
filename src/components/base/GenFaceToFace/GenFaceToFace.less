@@ -18,12 +18,24 @@
     font-size: 16px;
     line-height: 24px;
     color: #272928;
+    justify-content: center;
 
     img {
-      width: 24px;
+      min-width: 24px;
+      max-width: 24px;
       height: 24px;
       border-radius: 50%;
       margin-right: 8px;
+    }
+
+    span {
+      flex: 1;
+      max-width: 50%;
+      overflow : hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
     }
   }
 

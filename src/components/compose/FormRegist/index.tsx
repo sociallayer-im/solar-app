@@ -66,7 +66,7 @@ function RegistForm (props: RegistFormProps) {
                 window.localStorage.removeItem('fallback')
                 window.location.href = fallBack
             } else {
-                navigate(fallBack || `/profile/${domain}`)
+                navigate(`/profile/${domain}`)
             }
         } catch (e: any) {
             unload()

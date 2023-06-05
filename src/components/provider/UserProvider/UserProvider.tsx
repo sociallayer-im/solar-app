@@ -72,7 +72,12 @@ function UserProvider (props: UserProviderProps) {
             })
 
             if (!profileInfo || !profileInfo.domain) {
-                window.localStorage.setItem('fallback', window.location.href)
+                // 如果当前页面是’/login‘说明是邮箱登录，fallback已经在点击邮箱登录按钮的时候设置了:
+                // src/components/dialogs/ConnectWalletDialog/ConnectWalletDialog.tsx  42行
+
+                if (!window.location.href.includes('/login')) {
+                    window.localStorage.setItem('fallback', window.location.href)
+                }
                 clean()
                 setTimeout(() => {
                     navigate('/regist')

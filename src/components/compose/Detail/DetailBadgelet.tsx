@@ -11,15 +11,15 @@ import DetailCover from './atoms/DetailCover'
 import DetailName from './atoms/DetailName'
 import DetailDes from './atoms/DetailDes/DetailDes'
 import DetailArea from './atoms/DetailArea'
-import AppButton, { BTN_KIND } from '../../base/AppButton/AppButton'
+import AppButton, {BTN_KIND} from '../../base/AppButton/AppButton'
 import BtnGroup from '../../base/BtnGroup/BtnGroup'
-import solas, { Badgelet, ProfileSimple } from '../../../service/solas'
-import useEvent, { EVENT } from '../../../hooks/globalEvent'
+import solas, {Badgelet} from '../../../service/solas'
+import useEvent, {EVENT} from '../../../hooks/globalEvent'
 import ReasonText from '../../base/ReasonText/ReasonText'
 import DetailScrollBox from './atoms/DetailScrollBox/DetailScrollBox'
 import DetailCreator from './atoms/DetailCreator/DetailCreator'
 import useTime from '../../../hooks/formatTime'
-import { useNavigate } from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 
 
 export interface DetailBadgeletProps {
@@ -27,11 +27,11 @@ export interface DetailBadgeletProps {
     handleClose: () => void
 }
 
-function DetailBadgelet(props: DetailBadgeletProps ) {
-    const { lang } = useContext(LangContext)
-    const { user } = useContext(UserContext)
-    const { openConnectWalletDialog, showLoading, showToast } = useContext(DialogsContext)
-    const { defaultAvatar } = usePicture()
+function DetailBadgelet(props: DetailBadgeletProps) {
+    const {lang} = useContext(LangContext)
+    const {user} = useContext(UserContext)
+    const {openConnectWalletDialog, showLoading, showToast} = useContext(DialogsContext)
+    const {defaultAvatar} = usePicture()
     const [_1, emitUpdate] = useEvent(EVENT.badgeletListUpdate)
     const [needUpdate, _2] = useEvent(EVENT.badgeletDetailUpdate)
     const [badgelet, setBadgelet] = useState(props.badgelet)
@@ -40,7 +40,7 @@ function DetailBadgelet(props: DetailBadgeletProps ) {
     const navigate = useNavigate()
 
     const upDateBadgelet = async () => {
-        const newBadgelet = await solas.queryBadgeletDetail({ id: props.badgelet.id })
+        const newBadgelet = await solas.queryBadgeletDetail({id: props.badgelet.id})
         setBadgelet(newBadgelet)
     }
 
@@ -91,20 +91,26 @@ function DetailBadgelet(props: DetailBadgeletProps ) {
 
     const LoginBtn = <AppButton
         special
-        onClick={ () => { openConnectWalletDialog() } }
-        kind={ BTN_KIND.primary }>
-        { lang['BadgeDialog_Btn_Login'] }
+        onClick={() => {
+            openConnectWalletDialog()
+        }}
+        kind={BTN_KIND.primary}>
+        {lang['BadgeDialog_Btn_Login']}
     </AppButton>
 
-    const ActionBtns =  <>
+    const ActionBtns = <>
         <AppButton
             special
-            kind={ BTN_KIND.primary }
-            onClick={() => { handleAccept() }}>
-            { lang['BadgeDialog_Btn_Accept'] }
+            kind={BTN_KIND.primary}
+            onClick={() => {
+                handleAccept()
+            }}>
+            {lang['BadgeDialog_Btn_Accept']}
         </AppButton>
-        <AppButton onClick={ () => { handleReject() }} >
-            { lang['BadgeDialog_Btn_Reject'] }
+        <AppButton onClick={() => {
+            handleReject()
+        }}>
+            {lang['BadgeDialog_Btn_Reject']}
         </AppButton>
     </>
 
@@ -112,18 +118,18 @@ function DetailBadgelet(props: DetailBadgeletProps ) {
     return (
         <DetailWrapper>
             <DetailHeader
-                title={ lang['BadgeletDialog_title'] }
-                slotLeft={ badgelet.hide && <DetailBadgeletPrivateMark /> }
+                title={lang['BadgeletDialog_title']}
+                slotLeft={badgelet.hide && <DetailBadgeletPrivateMark/>}
                 slotRight={
                     badgelet.status !== 'pending' &&
                     isBadgeletOwner &&
-                    <DetailBadgeletMenu badgelet={ badgelet }/>
+                    <DetailBadgeletMenu badgelet={badgelet}/>
                 }
-                onClose={ props.handleClose }/>
+                onClose={props.handleClose}/>
 
-            <DetailCover src={ badgelet.badge.image_url }></DetailCover>
-            <DetailName> { badgelet.badge.name } </DetailName>
-            <DetailCreator isGroup={ !!badgelet.badge.group } profile={ badgelet.badge.group || badgelet.sender } />
+            <DetailCover src={badgelet.badge.image_url}></DetailCover>
+            <DetailName> {badgelet.badge.name} </DetailName>
+            <DetailCreator isGroup={!!badgelet.badge.group} profile={badgelet.badge.group || badgelet.sender}/>
 
 
             <DetailScrollBox style={{maxHeight: swiperMaxHeight - 60 + 'px', marginLeft: 0}}>
@@ -135,30 +141,35 @@ function DetailBadgelet(props: DetailBadgeletProps ) {
                 }
 
                 <DetailArea
-                    onClose={ props.handleClose }
-                    title={ lang['BadgeDialog_Label_Issuees'] }
-                    content={ badgelet.receiver.domain!.split('.')[0] }
-                    navigate={ `/profile/${badgelet.receiver.domain?.split('.')[0]}` }
-                    image={ badgelet.receiver.image_url || defaultAvatar(badgelet.receiver.id) } />
+                    onClose={props.handleClose}
+                    title={lang['BadgeDialog_Label_Issuees']}
+                    content={badgelet.receiver.domain
+                        ? badgelet.receiver.domain.split('.')[0]
+                        : ''
+                    }
+                    navigate={badgelet.receiver.domain
+                        ? `/profile/${badgelet.receiver.domain?.split('.')[0]}`
+                        : '#'}
+                    image={badgelet.receiver.image_url || defaultAvatar(badgelet.receiver.id)}/>
 
                 <DetailArea
-                    title={ lang['BadgeDialog_Label_Token'] }
-                    content={ badgelet.domain }
-                    link={ badgelet.chain_data ? `https://moonscan.io/tx/${badgelet.chain_data}` : undefined } />
+                    title={lang['BadgeDialog_Label_Token']}
+                    content={badgelet.domain}
+                    link={badgelet.chain_data ? `https://moonscan.io/tx/${badgelet.chain_data}` : undefined}/>
 
                 <DetailArea
-                    title={ lang['BadgeDialog_Label_Creat_Time'] }
-                    content={ formatTime(badgelet.created_at ) } />
+                    title={lang['BadgeDialog_Label_Creat_Time']}
+                    content={formatTime(badgelet.created_at)}/>
 
             </DetailScrollBox>
 
             <BtnGroup>
-                { !user.domain && LoginBtn }
+                {!user.domain && LoginBtn}
 
-                { !!user.domain
+                {!!user.domain
                     && user.id === badgelet.receiver.id
                     && badgelet.status === 'pending'
-                    && ActionBtns }
+                    && ActionBtns}
             </BtnGroup>
         </DetailWrapper>
     )

@@ -94,8 +94,13 @@ function DetailBadge (props: DetailBadgeProps ) {
                                         <DetailArea
                                             onClose={ props.handleClose }
                                             title={ lang['BadgeDialog_Label_Issuees'] }
-                                            content={ badgelet.receiver.domain?.split('.')[0] || '' }
-                                            navigate={ `/profile/${badgelet.receiver.domain?.split('.')[0]}` }
+                                            content={badgelet.receiver.domain
+                                                ? badgelet.receiver.domain.split('.')[0]
+                                                : ''
+                                            }
+                                            navigate={badgelet.receiver.domain
+                                                ? `/profile/${badgelet.receiver.domain?.split('.')[0]}`
+                                                : '#'}
                                             image={ badgelet.receiver.image_url || defaultAvatar(badgelet.receiver.id) } />
 
                                         <DetailArea

@@ -1,8 +1,7 @@
-import { useStyletron } from 'baseui'
-import { Profile } from '../../../../service/solas'
-import { useNavigate } from 'react-router-dom'
+import {useStyletron} from 'baseui'
+import {Profile} from '../../../../service/solas'
+import {useNavigate} from 'react-router-dom'
 import usePicture from '../../../../hooks/pictrue'
-import { ReactDOM, ReactNode } from 'react'
 
 const style = {
     wrapper: {
@@ -20,7 +19,7 @@ const style = {
         width: '100%',
         justifyContent: 'space-between'
     },
-    img:  {
+    img: {
         width: '28px',
         height: '28px',
         borderRadius: '50%',
@@ -44,23 +43,33 @@ export interface CardSearchDomainProps {
     onClick?: () => any
 }
 
-function CardSearchDomain (props: CardSearchDomainProps) {
+function CardSearchDomain(props: CardSearchDomainProps) {
     const [css] = useStyletron()
     const navigate = useNavigate()
-    const { defaultAvatar } = usePicture()
+    const {defaultAvatar} = usePicture()
+
+    const navigateToProfile = () => {
+        if (props.profile.is_group) {
+            navigate(`/group/${props.profile?.username}`)
+        } else {
+            navigate(`/profile/${props.profile?.username}`)
+        }
+    }
 
     const displayName = props.profile?.domain || props.profile?.email || props.profile?.address || ''
     const highLightText = props.keyword
         ? displayName.replace(props.keyword, `<span class="highlight">${props.keyword}</span>`)
         : displayName
 
-    return (<div data-testid='CardSearchDomain' className={ css(style.wrapper) } onClick={ () => { props.onClick ? props.onClick() : navigate(`/profile/${props.profile?.username}`) }}>
-                <div className={css(style.leftSide)}>
-                    <img className={ css(style.img) } src={ props.profile?.image_url || defaultAvatar(props.profile?.id)} alt=""/>
-                    <div className={ css(style.name) } dangerouslySetInnerHTML={{__html: highLightText || ''}}></div>
-                </div>
-                <div></div>
-            </div>)
+    return (<div data-testid='CardSearchDomain' className={css(style.wrapper)} onClick={() => {
+        props.onClick ? props.onClick() : navigateToProfile()
+    }}>
+        <div className={css(style.leftSide)}>
+            <img className={css(style.img)} src={props.profile?.image_url || defaultAvatar(props.profile?.id)} alt=""/>
+            <div className={css(style.name)} dangerouslySetInnerHTML={{__html: highLightText || ''}}></div>
+        </div>
+        <div></div>
+    </div>)
 }
 
 export default CardSearchDomain

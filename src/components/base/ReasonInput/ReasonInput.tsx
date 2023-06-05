@@ -24,18 +24,15 @@ function ReasonInput(props: ReasonInputProps) {
     }, [props.value])
 
     const addTag = () => {
-        const tags = value.match(/#[^\s]*/g)
-        if (!tags) {
-            mapInput(value + ' #')
-        }
+        mapInput(value ? value + ' #': '#')
 
         textarea!.current!.focus()
     }
 
     const addLink = () => {
-        const link = value.match(/@[^\s]*/g)
+        const link = value.match(/@[^@#\s.,。，]+/)
         if (!link) {
-            mapInput(value + ' @')
+            mapInput(value ? value + ' @': '@')
         }
 
         textarea!.current!.focus()
@@ -48,7 +45,6 @@ function ReasonInput(props: ReasonInputProps) {
             value={ value }
             className='editor textarea'
             onChange={ (e) => { mapInput(e.target.value.trim())} }/>
-
        <div className='action-bar'>
            <div className='btns'>
                <div className='btn' onClick={() => { addTag() }}>
