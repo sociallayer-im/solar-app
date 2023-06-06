@@ -346,6 +346,13 @@ const langEN = {
   Group_Member_Manage_Dialog_Confirm_Dialog_Confirm: 'Remove',
   Group_Member_Manage_Dialog_Confirm_Dialog_Cancel: 'Cancel',
 
+  Create_Point_Title: 'Create a point',
+  Create_Point_Symbol: 'Symbol',
+  Create_Point_Image: 'Image',
+  Create_Point_Name: 'Name',
+  Create_Point_Name_Placeholder: 'Fill in the name, eg. Knowledge Points',
+  Create_Point_Symbol_Placeholder: 'Fill in the symbol, eg. PT',
+  Create_Point_Des: 'Description (Optional)',
 }
 
 export type LangConfig = typeof langEN

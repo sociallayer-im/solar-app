@@ -345,6 +345,14 @@ const langCN: LangConfig = {
   Group_Member_Manage_Dialog_Confirm_Dialog_des: slotLang('你确定要移除 {1} 吗？'),
   Group_Member_Manage_Dialog_Confirm_Dialog_Confirm: '移除',
   Group_Member_Manage_Dialog_Confirm_Dialog_Cancel: '取消',
+
+  Create_Point_Title: '创建点数',
+  Create_Point_Symbol: '符号',
+  Create_Point_Image: '图片',
+  Create_Point_Name: '名称',
+  Create_Point_Name_Placeholder: '输入名称，例如：Knowledge Points',
+  Create_Point_Symbol_Placeholder: '输入符号，例如：PT',
+  Create_Point_Des: '描述(可选)',
 }
 
 export default langCN
