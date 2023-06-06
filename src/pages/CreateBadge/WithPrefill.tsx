@@ -62,7 +62,7 @@ function CreateBadgeWithPrefill(props: CreateBadgeWithPrefillProp) {
         if (presetAcceptor) {
             send(presetAcceptor)
         } else {
-            navigate( `/issue/${props.badgeId}`, { state: { reason: reason }})
+            navigate( `/issue-badge/${props.badgeId}`, { state: { reason: reason }})
         }
     }
 

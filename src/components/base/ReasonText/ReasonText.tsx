@@ -19,7 +19,7 @@ function ReasonText(props: ReasonTextProps) {
             const tagsD = Array.from(set)
             console.log('tagsD', tagsD)
             tagsD.forEach(tag => {
-                // 生成查找tag的正则表达式,且其前面不能是’>‘, 后面不能是'<',
+                // 查找tag的正则表达式,且其前面不能是’>‘, 后面不能是'<',
                 const r = new RegExp(`(?!>)${tag}`)
                 newShowText = newShowText.replace(r, `<a class="event" href="/event/${tag.replace('#', '')}" target="_blank">${tag}</a>`)
             })

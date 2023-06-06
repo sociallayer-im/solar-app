@@ -10,9 +10,9 @@ import Profile from '../pages/Profile/Profile'
 import Login from '../pages/Login'
 import Regist from '../pages/Regist'
 import CreateBadge from '../pages/CreateBadge'
-import Issue from '../pages/Issue'
+import IssueBadge from '../pages/IssueBadge'
 import Invite from '../pages/Invite'
-import IssueSuccess from '../pages/IssueSuccess'
+import IssueSuccess from '../pages/IssueBadgeSuccess'
 import Search from '../pages/Search'
 import ProfileEdit from '../pages/ProfileEdit/ProfileEdit'
 import GroupEdit from '../pages/GroupEdit/GroupEdit'
@@ -47,7 +47,7 @@ function AppRouter () {
                 <Route path="/regist" element={<Regist />}></Route>
                 <Route path="/create-group" element={<RegistGroup />}></Route>
                 <Route path="/create-badge" element={<CreateBadge />}></Route>
-                <Route path="/issue/:badgeId" element={<Issue />}></Route>
+                <Route path="/issue-badge/:badgeId" element={<IssueBadge />}></Route>
                 <Route path="/invite-create/:groupId" element={<Invite />}></Route>
                 <Route path="/issue-success" element={<IssueSuccess />}></Route>
                 <Route path="/badgelet/:badgeletId" element={<Home />}></Route>
