@@ -4,9 +4,9 @@ import solas, { Profile, Group } from '../../../service/solas'
 import LangContext from '../../provider/LangProvider/LangContext'
 import UserContext from '../../provider/UserProvider/UserContext'
 import ListTitle from '../../base/ListTitle/ListTitle'
-import HorizontalList, { HorizontalListMethods } from '../../base/HorizontalList/HorizontalList'
 import CardCreateGroup from '../../base/Cards/CardCreateGroup/CardCreateGroup'
 import './ListUserGroup.less'
+import ListUserAssets, {ListUserAssetsMethods} from "../../base/ListUserAssets/ListUserAssets";
 
 interface ListUserGroupProps {
     profile: Profile
@@ -15,7 +15,7 @@ interface ListUserGroupProps {
 function ListUserGroup (props: ListUserGroupProps) {
     const { lang } = useContext(LangContext)
     const { user } = useContext(UserContext)
-    const listWrapperRef = React.createRef<HorizontalListMethods>()
+    const listWrapperRef = React.createRef<ListUserAssetsMethods>()
     const [amount, setAmount] = useState(0)
     const getGroup = async (page: number) => {
         // 只有一页
@@ -38,13 +38,10 @@ function ListUserGroup (props: ListUserGroupProps) {
                 title={ lang['Profile_Tab_Groups'] }
                 uint={ lang['Profile_Tab_Groups'] }
                 count={ amount } />
-            <HorizontalList
-                item={(data: Group) => <CardGroup profile={props.profile} group={data} />}
-                space={12}
-                itemWidth={162}
-                itemHeight={ 210 }
-                queryFunction={ getGroup }
-                endEnhancer={ isProfileOwner ? () => <CardCreateGroup /> : undefined }
+            <ListUserAssets
+                child={(data, key) => <CardGroup profile={props.profile} group={data} key={key} />}
+                queryFcn={ getGroup }
+                preEnhancer={ isProfileOwner ? () => <CardCreateGroup /> : undefined }
                 onRef={ listWrapperRef }
             />
         </div>

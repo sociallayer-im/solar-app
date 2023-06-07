@@ -17,6 +17,9 @@ import BgProfile from '../../components/base/BgProfile/BgProfile'
 import {styled} from "baseui";
 import useCopy from '../../hooks/copy'
 import { useNavigate } from 'react-router-dom'
+import {Tabs, Tab} from "baseui/tabs";
+import ListUserRecognition from "../../components/compose/ListUserRecognition/ListUserRecognition";
+import ListUserPresend from "../../components/compose/ListUserPresend";
 
 
 function GroupPage () {
@@ -25,7 +28,7 @@ function GroupPage () {
     const { showLoading, showGroupSetting } = useContext(DialogsContext)
     const { lang } = useContext(LangContext)
     const { user, logOut } = useContext(UserContext)
-    const [selectedTab, setSelectedTab] = useState('Minted')
+    const [selectedTab, setSelectedTab] = useState('0')
     const startIssue = useIssueBadge({ groupName: groupname})
     const { copyWithDialog } = useCopy()
     const navigate = useNavigate()
@@ -103,10 +106,27 @@ function GroupPage () {
                 </div>
             </div>
             <div className='down-side'>
-                <div className='profile-user-name'> { profile.username }</div>
-                <ListUserBadgelet profile={profile!} />
-                <ListUserCreated userType='group' profile={ profile! } />
-                <ListGroupMember group={ profile }/>
+                <div className={'profile-tab'}>
+                    <Tabs
+                        renderAll
+                        activeKey={selectedTab}
+                        onChange={({ activeKey }) => {
+                            setSelectedTab(activeKey as any);
+                        }}>
+                        <Tab title={'Badge'}>
+                            <ListUserRecognition profile={profile} />
+                        </Tab>
+                        { user.id === profile.group_owner_id ?
+                            <Tab title="Presend">
+                                <ListUserPresend profile={profile} />
+                            </Tab>
+                            : <></>
+                        }
+                        <Tab title={'Member'}>
+                            <ListGroupMember group={ profile }/>
+                        </Tab>
+                    </Tabs>
+                </div>
             </div>
         </div>
         }

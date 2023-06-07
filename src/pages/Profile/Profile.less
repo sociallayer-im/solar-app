@@ -60,6 +60,38 @@
       color: #272928;
     }
   }
+
+  .profile-tab {
+    div[data-baseweb="tabs"] {
+      div[role="tablist"] {
+        display: block;
+        white-space: nowrap;
+        overflow: auto;
+        padding-left: 12px;
+        background: none;
+
+        &::-webkit-scrollbar {
+          display: none;
+        }
+
+        div[role="tab"] {
+          padding: 8px 16px;
+          border: 0;
+          border-radius: 8px;
+          display: inline-flex;
+
+          &[aria-selected="true"] {
+            background: #272928;
+            border-bottom: 2px solid #272928;
+            color: #fff;
+          }
+        }
+      }
+      div[role="tabpanel"] {
+        padding: 16px 12px;
+      }
+    }
+  }
 }
 
 @media (min-width: 450px) {
@@ -68,7 +100,7 @@
     flex-flow: row nowrap;
     align-items: flex-start;
     margin-top: 90px;
-    max-width: 1025px;
+    max-width: 942px;
     padding: 0 20px;
     margin-left: auto;
     margin-right: auto;
@@ -90,9 +122,9 @@
     }
 
     .down-side {
-        flex: 1;
-        min-width: 0;
-       padding-top: 0;
+      flex: 1;
+      min-width: 0;
+      padding-top: 0;
     }
   }
 }

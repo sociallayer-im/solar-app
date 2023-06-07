@@ -32,10 +32,10 @@ const style = {
         }
     },
     img:  {
-        width: '90px',
-        height: '90px',
+        width: '64px',
+        height: '64px',
         borderRadius: '50%',
-        marginBottom: '10px',
+        marginBottom: '8px',
         background: '#f5f8f6',
         display: 'flex',
         flexDirection: 'column' as const,
@@ -48,13 +48,13 @@ const style = {
         whiteSpace: 'nowrap' as const,
         overflow: 'hidden' as const,
         textOverflow: 'ellipsis' as const,
-        lineHeight: 'auto'
+        lineHeight: 'auto',
+        marginBottom: '20px'
     },
     des: {
         fontSize: '12px',
         color: '#c3c7c3',
         textAlign: 'center' as const,
-        whiteSpace: 'pre' as const,
         lineHeight: '16px'
     }
 }

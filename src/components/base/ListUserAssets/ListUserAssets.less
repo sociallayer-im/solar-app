@@ -1,0 +1,39 @@
+.user-assets-list {
+  width: calc(100% + 12px);
+
+  .list-content {
+    display: flex;
+    flex-flow: row wrap;
+
+    > div {
+      min-width: 162px;
+      margin-right: 12px;
+      flex: 1;
+
+      &:last-child {
+        margin-left: 12px
+      }
+    }
+  }
+
+  .list-action {
+    display: flex;
+    margin-top: 12px;
+    justify-content: center;
+
+    button {
+      display: inline-flex;
+      min-width: 126px;
+      width: auto;
+      background: #ECF2EE;
+    }
+  }
+
+  @media (min-width: 900px) {
+    .list-content {
+      > div {
+        max-width: 162px;
+      }
+    }
+  }
+}

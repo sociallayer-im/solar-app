@@ -6,7 +6,7 @@ import Empty from '../../base/Empty'
 import LangContext from '../../provider/LangProvider/LangContext'
 import UserContext from '../../provider/UserProvider/UserContext'
 import useEvent, { EVENT } from '../../../hooks/globalEvent'
-import HorizontalList, { HorizontalListMethods } from '../../base/HorizontalList/HorizontalList'
+import ListUserAssets , {ListUserAssetsMethods} from "../../base/ListUserAssets/ListUserAssets";
 
 interface ListUserPresendProps {
     profile: Profile,
@@ -16,7 +16,7 @@ interface ListUserPresendProps {
 function ListUserPresend ({ userType = 'user',  ...props }: ListUserPresendProps) {
     const { lang } = useContext(LangContext)
     const { user } = useContext(UserContext)
-    const listWrapperRef = React.createRef<HorizontalListMethods>()
+    const listWrapperRef = React.createRef<ListUserAssetsMethods>()
     const [newPresend, _] = useEvent(EVENT.presendListUpdate)
 
     const getPresend = async (page: number) => {
@@ -37,15 +37,11 @@ function ListUserPresend ({ userType = 'user',  ...props }: ListUserPresendProps
         }
     }, [newPresend])
 
-    return (
-        <HorizontalList
-        item={ (itemData: any) => <CardPresend presend={ itemData } /> }
-        space={ 12 }
-        itemWidth={ 162 }
-        itemHeight={ 184 }
-        queryFunction={ getPresend }
+    return <ListUserAssets
+        child={ (itemData, key) => <CardPresend presend={ itemData } key={key} /> }
+        queryFcn={ getPresend }
         onRef={ listWrapperRef }
-        />)
+        />
 }
 
 export default ListUserPresend

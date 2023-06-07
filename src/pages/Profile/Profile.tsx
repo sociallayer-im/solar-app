@@ -8,16 +8,17 @@ import DialogsContext from '../../components/provider/DialogProvider/DialogsCont
 import ProfilePanel from '../../components/base/ProfilePanel/ProfilePanel'
 import AppButton, {BTN_KIND, BTN_SIZE} from '../../components/base/AppButton/AppButton'
 import LangContext from '../../components/provider/LangProvider/LangContext'
-import ListUserBadgelet from '../../components/compose/ListUserBadgelet'
 import ListUserGroup from '../../components/compose/ListUserGroup'
+import ListUserPresend from '../../components/compose/ListUserPresend'
 import UserContext from '../../components/provider/UserProvider/UserContext'
 import { useNavigate } from 'react-router-dom'
 import useIssueBadge from '../../hooks/useIssueBadge'
-import ListUserCreated from '../../components/compose/ListUserCreated/ListUserCreated'
 import BgProfile from '../../components/base/BgProfile/BgProfile'
 import useEvent, { EVENT } from '../../hooks/globalEvent'
 import { styled } from 'baseui'
 import useCopy from '../../hooks/copy'
+import {Tabs, Tab} from "baseui/tabs";
+import ListUserRecognition from "../../components/compose/ListUserRecognition/ListUserRecognition";
 
 
 function ProfilePage () {
@@ -26,7 +27,7 @@ function ProfilePage () {
     const { showLoading } = useContext(DialogsContext)
     const { lang } = useContext(LangContext)
     const { user } = useContext(UserContext)
-    const [selectedTab, setSelectedTab] = useState('Received')
+    const [selectedTab, setSelectedTab] = useState('0')
     const navigate = useNavigate()
     const startIssue = useIssueBadge()
     const [newProfile, _] = useEvent(EVENT.profileUpdate)
@@ -114,10 +115,31 @@ function ProfilePage () {
                     </div>
                 </div>
                 <div className='down-side'>
-                    <div className='profile-user-name'>{ profile.username }</div>
-                    <ListUserBadgelet profile={ profile! } />
-                    <ListUserCreated profile={ profile! } />
-                    <ListUserGroup profile={ profile! } />
+                    <div className={'profile-tab'}>
+                        <Tabs
+                            renderAll
+                            activeKey={selectedTab}
+                            onChange={({ activeKey }) => {
+                            setSelectedTab(activeKey as any);
+                        }}>
+                            <Tab title="Badge">
+                                <ListUserRecognition profile={profile} />
+                            </Tab>
+                            { user.id === profile.id ?
+                                <Tab title="Presend">
+                                    <ListUserPresend profile={profile} />
+                                </Tab>
+                                : <></>
+                            }
+                            <Tab title="Group">
+                                <ListUserGroup profile={profile} />
+                            </Tab>
+                            <Tab title="Points">
+                                <div>Points</div>
+                            </Tab>
+                        </Tabs>
+                    </div>
+                    <div className='profile-user-name' style={{display: 'none'}}>{ profile.username }</div>
                 </div>
             </div>
         }

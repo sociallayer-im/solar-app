@@ -67,7 +67,8 @@ const style = {
         fontSize: '24px'
     },
     coverBg: {
-        width: '142px',
+        width: '100%',
+        minWidth: '142px',
         height: '132px',
         display: 'flex',
         alignItems: 'center',

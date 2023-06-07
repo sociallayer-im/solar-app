@@ -59,7 +59,6 @@ function useScrollToLoad<T> (props: useScrollToLoadProps<T>) {
     const refresh = () => {
         setIsEmpty(false)
         hasMore.current = true
-        setList([])
         setPage(0)
         setTimeout(() => {
             setPage(1)
