@@ -9,7 +9,7 @@ import solas, {Badge, Presend} from '../../service/solas'
 import DialogsContext from '../../components/provider/DialogProvider/DialogsContext'
 import UserContext from '../../components/provider/UserProvider/UserContext'
 import copy from '../../utils/copy'
-import IssueTypeSelector, {IssueTypeSelectorData, IssueType} from "../../components/compose/IssueTypeSelector/IssueTypeSelector";
+import IssueTypeSelectorBadge, {IssueTypeSelectorData, IssueType} from "../../components/compose/IssueTypeSelectorBadge/IssueTypeSelectorBadge";
 
 function Issue() {
     const {user} = useContext(UserContext)
@@ -113,7 +113,7 @@ function Issue() {
                         <div className={'title'}>Create Successfully</div>
                         <div className={'des'}>Your badge have been created</div>
                     </div>
-                    <IssueTypeSelector
+                    <IssueTypeSelectorBadge
                         initIssueType={initIssueType}
                         initIssues={initIssues}
                         onConfirm={handleCreate}

@@ -1,5 +1,5 @@
 import {useContext, useEffect, useState} from 'react'
-import './IssueTypeSelector.less'
+import './IssueTypeSelectorBadge.less'
 import Toggle from "../../base/Toggle/Toggle";
 import IssuesInput from "../../base/IssuesInput/IssuesInput";
 import AppButton from "../../base/AppButton/AppButton";
@@ -21,7 +21,7 @@ export interface IssueTypeSelectorProps {
     initPresendAmount?: string
 }
 
-function IssueTypeSelector(props: IssueTypeSelectorProps) {
+function IssueTypeSelectorBadge(props: IssueTypeSelectorProps) {
     const [issueType, setIssueType] = useState<'' | 'issue' | 'presend'>(props.initIssueType || '')
     const [presendAmount, setPresendAmount] = useState(props.initPresendAmount || '30')
     const [issues, setIssues] = useState<string[]>(props.initIssues || [''])
@@ -104,4 +104,4 @@ function IssueTypeSelector(props: IssueTypeSelectorProps) {
     </div>)
 }
 
-export default IssueTypeSelector
+export default IssueTypeSelectorBadge
