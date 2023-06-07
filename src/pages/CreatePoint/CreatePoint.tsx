@@ -61,7 +61,7 @@ function CreateBadge() {
                                     { `${name.length}/30` }
                                 </span>
                                 }
-                                placeholder={ lang['MintBadge_Name_Placeholder'] }
+                                placeholder={ lang['Create_Point_Name_Placeholder'] }
                                 onChange={ (e) => {setName(e.target.value.trim()) } } />
                         </div>
 
@@ -76,7 +76,7 @@ function CreateBadge() {
                                     { `${name.length}/10` }
                                 </span>
                                 }
-                                placeholder={ lang['MintBadge_Name_Placeholder'] }
+                                placeholder={ lang['Create_Point_Symbol_Placeholder'] }
                                 onChange={ (e) => {setSymbol(e.target.value.trim().toUpperCase()) } } />
                         </div>
 
