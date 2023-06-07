@@ -34,6 +34,7 @@ function CreateBadge() {
         console.log('name', name)
         console.log('symbol', symbol)
         console.log('creator', creator)
+        navigate('/issue-point/1')
     }
 
     return (

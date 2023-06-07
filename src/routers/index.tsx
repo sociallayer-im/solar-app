@@ -17,6 +17,7 @@ import Search from '../pages/Search'
 import ProfileEdit from '../pages/ProfileEdit/ProfileEdit'
 import GroupEdit from '../pages/GroupEdit/GroupEdit'
 import CreatePoint from "../pages/CreatePoint/CreatePoint";
+import IssuePoint from "../pages/IssuePoint";
 
 
 // lazy load
@@ -50,6 +51,7 @@ function AppRouter () {
                 <Route path="/create-badge" element={<CreateBadge />}></Route>
                 <Route path="/create-point" element={<CreatePoint />}></Route>
                 <Route path="/issue-badge/:badgeId" element={<IssueBadge />}></Route>
+                <Route path="/issue-point/:pointId" element={<IssuePoint />}></Route>
                 <Route path="/invite-create/:groupId" element={<Invite />}></Route>
                 <Route path="/issue-success" element={<IssueSuccess />}></Route>
                 <Route path="/badgelet/:badgeletId" element={<Home />}></Route>
