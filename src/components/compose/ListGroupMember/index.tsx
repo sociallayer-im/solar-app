@@ -16,6 +16,7 @@ import MenuItem from "../../base/MenuItem";
 import DialogsContext from "../../provider/DialogProvider/DialogsContext";
 import { Overflow } from 'baseui/icon'
 import DialogManageMember from '../../base/Dialog/DialogManageMember/DialogManageMember'
+import ListUserAssets, { ListUserAssetsMethods } from "../../base/ListUserAssets/ListUserAssets";
 
 
 interface ListGroupMemberProps {
@@ -28,7 +29,7 @@ function ListGroupMember (props: ListGroupMemberProps) {
     const navigate = useNavigate()
     const [members, setMembers] = useState<Profile[]>([])
     const [owner, setOwner] = useState<Profile | null>(null)
-    const listWrapperRef = React.createRef<HorizontalListMethods>()
+    const listWrapperRef = React.createRef<ListUserAssetsMethods>()
     const { showToast, showLoading, openConfirmDialog, openDialog } = useContext(DialogsContext)
     const [currUserJoinedGroup, setCurrUserJoinedGroup] = useState(false)
 
@@ -95,13 +96,6 @@ function ListGroupMember (props: ListGroupMemberProps) {
         })
     }
 
-    const PreEnhancerWrapper = styled('div', () => {
-        return {
-            display: 'flex',
-            flexFlow: 'row nowrap'
-        }
-    })
-
     const showMemberManageDialog = () => {
         const dialog = openDialog({
             content: (close: any) => <DialogManageMember
@@ -112,14 +106,14 @@ function ListGroupMember (props: ListGroupMemberProps) {
     }
 
     const PreEnhancer = () => {
-        return <PreEnhancerWrapper>
+        return <>
             {
                 user.id === props.group.group_owner_id && <CardInviteMember groupId={props.group.id} />
             }
             {
                 !!owner && <CardMember isOwner profile={owner}/>
             }
-        </PreEnhancerWrapper>
+        </>
     }
 
     const MemberAction = <StatefulPopover
@@ -129,7 +123,7 @@ function ListGroupMember (props: ListGroupMemberProps) {
         <div className='member-list-joined-label'>Joined</div>
     </StatefulPopover>
 
-    const OwnerAction = <div className='member-manage-btn' onClick={ showMemberManageDialog }><Overflow size={18}/></div>
+    const OwnerAction = <div className='member-list-joined-label' onClick={ showMemberManageDialog }><Overflow size={20}/></div>
 
     const Action = props.group.group_owner_id === user.id
         ? OwnerAction
@@ -138,19 +132,14 @@ function ListGroupMember (props: ListGroupMemberProps) {
             : <div></div>
 
     return <div className='list-group-member'>
-        <ListTitle
-            title={ lang['Group_detail_tabs_member'] }
-            uint={ lang['Group_detail_tabs_member'] }
-            count={ members.length }
-            action={ Action }
-        />
-        <HorizontalList
-            item={(data: Profile) => <CardMember profile={data} /> }
-            space={12}
-            itemWidth={ 100 }
-            itemHeight={ 165 }
+        <div className={'actions'}>
+            {Action}
+        </div>
+        <ListUserAssets
+            child={(data, key) => <CardMember profile={data} key={key} /> }
             onRef={ listWrapperRef }
-            queryFunction={ getMember }
+            queryFcn={ getMember }
+            compact
             preEnhancer={ () => <PreEnhancer /> }
         />
     </div>

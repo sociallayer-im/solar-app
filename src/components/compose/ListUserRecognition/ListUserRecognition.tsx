@@ -31,26 +31,21 @@ function ListUserRecognition(props: ListUserRecognitionProps) {
     }
 
     const getInvite = async (page: number) => {
-        const list = await solas.queryGroupInvites({
+        return await solas.queryGroupInvites({
             group_id: props.profile.id,
             page
         })
-
-        return [...list, ...list, ...list]
-
-        // return await solas.queryGroupInvites({
-        //     group_id: props.profile.id,
-        //     page
-        // })
     }
 
 
     const listWrapperRefBadge = React.createRef<ListUserAssetsMethods>()
     const listWrapperRefBadgeLet = React.createRef<ListUserAssetsMethods>()
+    const listWrapperRefInvite = React.createRef<ListUserAssetsMethods>()
 
     useEffect(() => {
         !!listWrapperRefBadge.current && listWrapperRefBadge.current!.refresh()
         !!listWrapperRefBadgeLet.current && listWrapperRefBadgeLet.current!.refresh()
+        !!listWrapperRefInvite.current && listWrapperRefInvite.current!.refresh()
     }, [props.profile])
 
     return (<div className={'list-user-recognition'}>
@@ -71,7 +66,7 @@ function ListUserRecognition(props: ListUserRecognitionProps) {
                 <div className={'list-title margin'}>Invite</div>
                 <ListUserAssets
                     queryFcn={getInvite}
-                    onRef={listWrapperRefBadge}
+                    onRef={listWrapperRefInvite}
                     child={(item, key) => <CardInvite
                         invite={item}
                         groupName={props.profile.username || ''}

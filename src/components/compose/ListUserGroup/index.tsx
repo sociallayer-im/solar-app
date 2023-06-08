@@ -34,10 +34,10 @@ function ListUserGroup (props: ListUserGroupProps) {
 
     return (
         <div className='list-user-group'>
-            <ListTitle
-                title={ lang['Profile_Tab_Groups'] }
-                uint={ lang['Profile_Tab_Groups'] }
-                count={ amount } />
+            {/*<ListTitle*/}
+            {/*    title={ lang['Profile_Tab_Groups'] }*/}
+            {/*    uint={ lang['Profile_Tab_Groups'] }*/}
+            {/*    count={ amount } />*/}
             <ListUserAssets
                 child={(data, key) => <CardGroup profile={props.profile} group={data} key={key} />}
                 queryFcn={ getGroup }

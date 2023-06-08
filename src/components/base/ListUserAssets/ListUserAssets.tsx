@@ -5,7 +5,7 @@ import Empty from "../EmptySmall";
 import AppButton from "../AppButton/AppButton";
 
 export interface ListUserAssetsMethods {
-    refresh: () => any
+    refresh: (msg?: string) => any
 }
 
 export interface ListUserAssetsProps<T> {
@@ -18,6 +18,7 @@ export interface ListUserAssetsProps<T> {
     immediate?: boolean
     endEnhancer?: () => ReactNode
     preEnhancer?: () => ReactNode
+    compact?: boolean
 }
 
 function ListUserAssets<T>(props: ListUserAssetsProps<T>) {
@@ -25,7 +26,7 @@ function ListUserAssets<T>(props: ListUserAssetsProps<T>) {
         queryFunction: props.queryFcn || function (page: number) {
             return Promise.resolve([])
         },
-        immediate: true
+        immediate: props.immediate
     })
 
     const [isPreview, setIsPreview] = useState<boolean>(true)
@@ -48,7 +49,7 @@ function ListUserAssets<T>(props: ListUserAssetsProps<T>) {
     return <>
         {isEmpty && !props.preEnhancer && !props.endEnhancer
             ? <Empty text={props.emptyText || 'No data'}/>
-            : <div className={'user-assets-list'}>
+            : <div className={props.compact ? 'user-assets-list compact' : 'user-assets-list'}>
                 <div className={'list-content'}>
                     { !!props.preEnhancer && props.preEnhancer()}
 

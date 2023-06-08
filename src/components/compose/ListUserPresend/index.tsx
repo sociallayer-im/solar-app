@@ -37,11 +37,13 @@ function ListUserPresend ({ userType = 'user',  ...props }: ListUserPresendProps
         }
     }, [newPresend])
 
-    return <ListUserAssets
-        child={ (itemData, key) => <CardPresend presend={ itemData } key={key} /> }
-        queryFcn={ getPresend }
-        onRef={ listWrapperRef }
+    return <div style={{marginTop: '16px'}}>
+        <ListUserAssets
+            child={ (itemData, key) => <CardPresend presend={ itemData } key={key} /> }
+            queryFcn={ getPresend }
+            onRef={ listWrapperRef }
         />
+    </div>
 }
 
 export default ListUserPresend

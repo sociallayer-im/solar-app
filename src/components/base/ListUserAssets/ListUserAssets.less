@@ -8,11 +8,8 @@
     > div {
       min-width: 162px;
       margin-right: 12px;
-      flex: 1;
-
-      &:last-child {
-        margin-left: 12px
-      }
+      flex-basis: 162px;
+      flex-grow: 1;
     }
   }
 
@@ -29,10 +26,27 @@
     }
   }
 
+  &.compact {
+    .list-content {
+      > div {
+        flex-basis: 106px;
+        min-width: 106px;
+      }
+    }
+  }
+
   @media (min-width: 900px) {
     .list-content {
       > div {
         max-width: 162px;
+      }
+    }
+
+    &.compact {
+      .list-content {
+        > div {
+          max-width: 118px;
+        }
       }
     }
   }
