@@ -91,7 +91,7 @@ function GroupPanel(props: GroupPanelProps) {
     const showProfileQRcode = () => {
         openDialog({
             size:[316, 486],
-            content: (close: any) => <DialogProfileQRcode profile={props.group} />
+            content: (close: any) => <DialogProfileQRcode handleClose={close} profile={props.group} />
         })
     }
 

@@ -41,29 +41,6 @@ function Issue() {
         }
     }, [params])
 
-    const handleCreatePresend = async (data: IssueTypeSelectorData) => {
-        if (!data.presendAmount) {
-            showToast('Please type in quantity')
-            return
-        }
-
-        const unload = showLoading()
-        try {
-            const presend = await solas.createPresend({
-                badge_id: badge?.id!,
-                message: state.reason || '',
-                counter: data.presendAmount,
-                auth_token: user.authToken || ''
-            })
-            unload()
-            navigate(`/issue-success?presend=${presend.id}`)
-        } catch (e: any) {
-            console.log('[handleCreatePresend]: ', e)
-            unload()
-            showToast(e.message || 'Create presend fail')
-        }
-    }
-
     const handleCreate = async (data: IssueTypeSelectorData) => {
         const checkedIssues = data.issues.filter(item => !!item)
         if (!checkedIssues.length) {
