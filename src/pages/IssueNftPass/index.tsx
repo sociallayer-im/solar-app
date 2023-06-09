@@ -2,14 +2,14 @@ import {useLocation, useNavigate, useParams, useSearchParams} from 'react-router
 import {useContext, useEffect, useState} from 'react'
 import Layout from '../../components/Layout/Layout'
 import PageBack from '../../components/base/PageBack'
-import './IssueBadge.less'
+import './IssueNftPass.less'
 import LangContext from '../../components/provider/LangProvider/LangContext'
 import AppButton, {BTN_KIND} from '../../components/base/AppButton/AppButton'
 import solas, {Badge, Presend} from '../../service/solas'
 import DialogsContext from '../../components/provider/DialogProvider/DialogsContext'
 import UserContext from '../../components/provider/UserProvider/UserContext'
 import copy from '../../utils/copy'
-import IssueTypeSelectorBadge, {IssueTypeSelectorData, IssueType} from "../../components/compose/IssueTypeSelectorBadge/IssueTypeSelectorBadge";
+import IssueTypeSelectorNftPass, {IssueTypeSelectorData, IssueType} from "../../components/compose/IssueTypeSelectorNftPass/IssueTypeSelectorNftPass";
 
 function Issue() {
     const {user} = useContext(UserContext)
@@ -32,39 +32,16 @@ function Issue() {
 
     useEffect(() => {
         async function getBadgeInfo() {
-            const badge = await solas.queryBadgeDetail({id: Number(params.badgeId)})
+            const badge = await solas.queryBadgeDetail({id: Number(params.nftpassId)})
             setBadge(badge)
         }
 
-        if (params.badgeId) {
+        if (params.nftpassId) {
             getBadgeInfo()
         }
     }, [params])
 
-    const handleCreatePresend = async (data: IssueTypeSelectorData) => {
-        if (!data.presendAmount) {
-            showToast('Please type in quantity')
-            return
-        }
-
-        const unload = showLoading()
-        try {
-            const presend = await solas.createPresend({
-                badge_id: badge?.id!,
-                message: state.reason || '',
-                counter: data.presendAmount,
-                auth_token: user.authToken || ''
-            })
-            unload()
-            navigate(`/issue-success?presend=${presend.id}`)
-        } catch (e: any) {
-            console.log('[handleCreatePresend]: ', e)
-            unload()
-            showToast(e.message || 'Create presend fail')
-        }
-    }
-
-    const handleCreateIssue = async (data: IssueTypeSelectorData) => {
+    const handleIssue = async (data: IssueTypeSelectorData) => {
         const checkedIssues = data.issues.filter(item => !!item)
         if (!checkedIssues.length) {
             showToast('Please type in issues')
@@ -75,14 +52,16 @@ function Issue() {
 
         const unload = showLoading()
         try {
-            const badgelets = await solas.issueBatch({
+            const nftpasslet = await solas.issueBatch({
                 badgeId: badge?.id!,
                 reason: state.reason || '',
                 issues: checkedIssues,
-                auth_token: user.authToken || ''
+                auth_token: user.authToken || '',
+                expires_at: data.expires_at || undefined,
+                starts_at: data.starts_at || undefined,
             })
             unload()
-            navigate(`/issue-success?badgelet=${badgelets[0].id}&amount=${badgelets.length}`)
+            navigate(`/issue-success?nftpasslet=${nftpasslet[0].id}`)
         } catch (e: any) {
             console.log('[handleCreateIssue]: ', e)
             unload()
@@ -90,35 +69,22 @@ function Issue() {
         }
     }
 
-    const handleCreate = async (data: IssueTypeSelectorData) => {
-        if (data.issueType === 'presend') {
-            handleCreatePresend(data)
-        }
-
-        if (data.issueType === 'issue') {
-            handleCreateIssue(data)
-        }
-    }
-
     const fallBackPath = badge?.group
         ? `/group/${ badge?.group.username}`
-        : user.userName
-            ? `/profile/${user.userName}`
-            : '/'
+        : `/profile/${user.userName}`
 
     return (
         <Layout>
-            <div className='issue-badge-page'>
+            <div className='issue-nftpass-page'>
                 <div className='issue-page-wrapper'>
                     <PageBack historyReplace to={fallBackPath}/>
                     <div className={'issue-text'}>
                         <div className={'title'}>Create Successfully</div>
                         <div className={'des'}>Your badge have been created</div>
                     </div>
-                    <IssueTypeSelectorBadge
-                        initIssueType={initIssueType}
+                    <IssueTypeSelectorNftPass
                         initIssues={initIssues}
-                        onConfirm={handleCreate}
+                        onConfirm={handleIssue}
                         onCancel={() => {
                             navigate(fallBackPath, {replace: true})
                         }}

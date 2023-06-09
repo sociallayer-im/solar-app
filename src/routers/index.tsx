@@ -18,6 +18,8 @@ import ProfileEdit from '../pages/ProfileEdit/ProfileEdit'
 import GroupEdit from '../pages/GroupEdit/GroupEdit'
 import CreatePoint from "../pages/CreatePoint/CreatePoint";
 import IssuePoint from "../pages/IssuePoint";
+import CreateNftPass from "../pages/CreateNftPass";
+import IssueNftPass from "../pages/IssueNftPass";
 
 
 // lazy load
@@ -50,12 +52,15 @@ function AppRouter () {
                 <Route path="/create-group" element={<RegistGroup />}></Route>
                 <Route path="/create-badge" element={<CreateBadge />}></Route>
                 <Route path="/create-point" element={<CreatePoint />}></Route>
+                <Route path="/create-nftpass" element={<CreateNftPass />}></Route>
                 <Route path="/issue-badge/:badgeId" element={<IssueBadge />}></Route>
                 <Route path="/issue-point/:pointId" element={<IssuePoint />}></Route>
+                <Route path="/issue-nftpass/:nftpassId" element={<IssueNftPass />}></Route>
                 <Route path="/invite-create/:groupId" element={<Invite />}></Route>
                 <Route path="/issue-success" element={<IssueSuccess />}></Route>
                 <Route path="/badgelet/:badgeletId" element={<Home />}></Route>
                 <Route path="/presend/:presendId" element={<Home />}></Route>
+                <Route path="/nftpasslet/:nftpassletId" element={<Home />}></Route>
                 <Route path="/invite/:groupId/:inviteId" element={<Home />}></Route>
                 <Route path="/search/:keyword" element={<Search />}></Route>
                 <Route path="/event/:tag" element={<Event />}></Route>

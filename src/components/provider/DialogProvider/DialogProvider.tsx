@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useState } from 'react'
-import { Badge, Badgelet, Invite, Presend, Profile, Group} from '../../../service/solas'
+import {Badge, Badgelet, Invite, Presend, Profile, Group, NftPass} from '../../../service/solas'
 import DialogsContext, { DialogsContextType } from './DialogsContext'
 import DialogDomainConfirm, { DialogConfirmDomainProps } from '../../base/Dialog/DialogConfirmDomain/DialogConfirmDomain'
 import DialogConfirm, { DialogConfirmProps } from '../../base/Dialog/DialogConfirm/DialogConfirm'
@@ -14,6 +14,8 @@ import DialogAvatar from '../../base/Dialog/DialogAvatar'
 import DialogCropper from '../../base/Dialog/DialogCropper/DialogCropper'
 import DetailInvite from '../../compose/Detail/DetailInvite'
 import DialogGroupSetting from '../../base/Dialog/DialogGroupSetting/DialogGroupSetting'
+import DetailNftpass from "../../compose/Detail/DetailNftpass/DetailNftpass";
+import DetailNftpasslet from "../../compose/Detail/DetailNftpasslet";
 
 export interface DialogProviderProps {
     children: ReactNode
@@ -261,6 +263,32 @@ function DialogProvider (props: DialogProviderProps) {
         setDialogsGroup({ ...dialogsGroup })
     }
 
+    const showNftpasslet = (props: Badgelet) => {
+        const id = genID()
+        dialogsGroup.dialogs.push({
+            id,
+            content: () => {
+                const close = () => {
+                    closeDialogByID(id)
+                }
+
+                const dialogProps = {
+                    key: id.toString(),
+                    size: [460, 'auto'],
+                    handleClose: close,
+                    position: 'bottom' as const
+                }
+
+                return (
+                    <Dialog { ...dialogProps } >
+                        { (close) => <DetailNftpasslet nftpasslet={ props } handleClose={ close } /> }
+                    </Dialog>
+                )
+            }
+        })
+        setDialogsGroup({ ...dialogsGroup })
+    }
+
     const showInvite = (props: Invite) => {
         const id = genID()
         dialogsGroup.dialogs.push({
@@ -332,6 +360,32 @@ function DialogProvider (props: DialogProviderProps) {
                 return (
                     <Dialog { ...dialogProps } >
                         { (close) => <DetailBadge badge={ props } handleClose={ close } /> }
+                    </Dialog>
+                )
+            }
+        })
+        setDialogsGroup({ ...dialogsGroup })
+    }
+
+    const showNftpass = (props: NftPass) => {
+        const id = genID()
+        dialogsGroup.dialogs.push({
+            id,
+            content: () => {
+                const close = () => {
+                    closeDialogByID(id)
+                }
+
+                const dialogProps = {
+                    key: id.toString(),
+                    size: [460, 'auto'],
+                    handleClose: close,
+                    position: 'bottom' as const
+                }
+
+                return (
+                    <Dialog { ...dialogProps } >
+                        { (close) => <DetailNftpass nftpass={ props } handleClose={ close } /> }
                     </Dialog>
                 )
             }
@@ -429,7 +483,9 @@ function DialogProvider (props: DialogProviderProps) {
         clean,
         showInvite,
         showGroupSetting,
-        openConfirmDialog
+        openConfirmDialog,
+        showNftpass,
+        showNftpasslet
     }
 
     return (

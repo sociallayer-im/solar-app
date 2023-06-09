@@ -11,9 +11,9 @@ import LangContext from '../../components/provider/LangProvider/LangContext'
 
 function Home () {
     const { user } = useContext( UserContext )
-    const { showBadgelet, showPresend, clean, openConnectWalletDialog, showInvite, showLoading } = useContext(DialogsContext)
+    const { showBadgelet, showPresend, clean, openConnectWalletDialog, showInvite, showLoading, showNftpasslet } = useContext(DialogsContext)
     const navigate = useNavigate()
-    const { badgeletId, presendId, groupId, inviteId } = useParams()
+    const { badgeletId, presendId, groupId, inviteId, nftpassletId } = useParams()
     const startIssueBadge = useIssueBadge()
     const { lang } = useContext(LangContext)
 
@@ -35,6 +35,11 @@ function Home () {
             showInvite(inviteDetail)
         }
 
+        async function showNftpassletDetail () {
+            const inviteDetail = await solas.queryBadgeletDetail({ id: Number(nftpassletId) })
+            showNftpasslet(inviteDetail)
+        }
+
         if (badgeletId) {
             clean('show badgelet detail')
             setTimeout(() => {
@@ -53,6 +58,13 @@ function Home () {
             clean('show invite detail')
             setTimeout(() => {
                 showInviteDetail()
+            }, 500)
+        }
+
+        if (nftpassletId) {
+            clean('show invite detail')
+            setTimeout(() => {
+                showNftpassletDetail()
             }, 500)
         }
     },[])

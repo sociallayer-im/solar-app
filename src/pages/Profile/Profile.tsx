@@ -19,6 +19,8 @@ import { styled } from 'baseui'
 import useCopy from '../../hooks/copy'
 import {Tabs, Tab} from "baseui/tabs";
 import ListUserRecognition from "../../components/compose/ListUserRecognition/ListUserRecognition";
+import AppSubTabs from "../../components/base/AppSubTabs";
+import ListUserNftpass from "../../components/compose/ListUserNftpass/ListUserNftpass";
 
 
 function ProfilePage () {
@@ -123,7 +125,14 @@ function ProfilePage () {
                             setSelectedTab(activeKey as any);
                         }}>
                             <Tab title="Badge">
-                                <ListUserRecognition profile={profile} />
+                                <AppSubTabs renderAll>
+                                    <Tab title="Recognition">
+                                        <ListUserRecognition profile={profile} />
+                                    </Tab>
+                                    <Tab title="NFT Pass">
+                                        <ListUserNftpass profile={profile} />
+                                    </Tab>
+                                </AppSubTabs>
                             </Tab>
                             { user.id === profile.id ?
                                 <Tab title="Presend">

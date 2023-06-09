@@ -13,11 +13,6 @@ import usePageHeight from '../../hooks/pageHeight'
 import DialogsContext from "../../components/provider/DialogProvider/DialogsContext";
 import ShareQrcode, { ShareQrcodeProp } from "../../components/compose/ShareQrcode/ShareQrcode";
 
-//HorizontalList deps
-import { Swiper, SwiperSlide } from 'swiper/react'
-import 'swiper/css'
-import 'swiper/css/pagination'
-
 function IssueSuccessPage () {
     const [searchParams, _] = useSearchParams()
     const [info, setInfo] = useState<ShareQrcodeProp | null>(null)
@@ -37,6 +32,9 @@ function IssueSuccessPage () {
     // 邀请成功传参
     const inviteId = searchParams.get('invite')
     const groupId = searchParams.get('group')
+
+    // nftpass 颁发成功传参
+    const nftpassletId = searchParams.get('nftpasslet')
 
     const issueType = inviteId
         ? 'invite'
@@ -89,6 +87,17 @@ function IssueSuccessPage () {
                     link: genShareLink(),
                 })
             }
+
+            if (nftpassletId) {
+                const badgeletDetail = await solas.queryBadgeletDetail({ id: Number(nftpassletId) })
+
+                setInfo({
+                    sender: badgeletDetail.sender,
+                    name: badgeletDetail.badge.name,
+                    cover: badgeletDetail.badge.image_url,
+                    link: genShareLink()
+                })
+            }
         }
 
         fetchInfo()
@@ -111,6 +120,10 @@ function IssueSuccessPage () {
 
         if (inviteId && groupId) {
             path = `${base}/invite/${groupId}/${inviteId}`
+        }
+
+        if (nftpassletId) {
+            path = `${base}/nftpasslet/${nftpassletId}`
         }
 
         return path

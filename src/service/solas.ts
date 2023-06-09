@@ -3,6 +3,8 @@ import fetch from '../utils/fetch'
 
 const api = import.meta.env.VITE_SOLAS_API
 
+export type BadgeType = 'badge' | 'nftpass' | 'nft' | 'private'
+
 interface AuthProp { auth_token: string }
 function checkAuth <K extends AuthProp> (props: K) {
     if (!props.auth_token) {
@@ -128,10 +130,28 @@ export interface Badge {
     counter: number,
 }
 
+export type NftPass = Badge
+export type NftPassWithBadgelets = BadgeWithBadgelets
+export type NftPasslet= Badgelet
+
+
 export async function queryBadge (props: QueryBadgeProps): Promise<Badge[]> {
     const res = await fetch.get({
         url: `${api}/badge/list`,
-        data: props
+        data: {...props, badge_type: 'badge'},
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+
+    return res.data.badges as Badge[]
+}
+
+export async function queryNftpass(props: QueryBadgeProps): Promise<NftPass[]> {
+    const res = await fetch.get({
+        url: `${api}/badge/list`,
+        data: {...props, badge_type: 'nftpass'},
     })
 
     if (res.data.result === 'error') {
@@ -255,7 +275,24 @@ export interface Badgelet {
 export async function queryBadgelet (props: QueryBadgeletProps): Promise<Badgelet[]> {
     const res = await fetch.get({
         url: `${api}/badgelet/list`,
-        data: props
+        data: {...props, badge_type: 'badge'}
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+
+    const list: Badgelet[] = res.data.badgelets
+
+    return list.filter(item => {
+        return item.status !== 'rejected'
+    })
+}
+
+export async function queryNftPasslet(props: QueryBadgeletProps): Promise<NftPasslet[]> {
+    const res = await fetch.get({
+        url: `${api}/badgelet/list`,
+        data: {...props, badge_type: 'nftpass'}
     })
 
     if (res.data.result === 'error') {
@@ -496,6 +533,7 @@ export interface CreateBadgeProps {
     auth_token: string,
     content?: string,
     group_id?: number,
+    badge_type?: string
 
 }
 
@@ -586,7 +624,9 @@ export interface IssueBatchProps {
     issues: string[],
     auth_token: string,
     reason: string,
-    badgeId: number
+    badgeId: number,
+    starts_at?: string,
+    expires_at?: string,
 }
 
 export async function issueBatch (props: IssueBatchProps): Promise<Badgelet[]> {
@@ -669,7 +709,9 @@ export async function issueBatch (props: IssueBatchProps): Promise<Badgelet[]> {
             receivers: link,
             content: props.reason,
             subject_url: subjectUrl,
-            auth_token: props.auth_token
+            auth_token: props.auth_token,
+            starts_at: props.starts_at || null,
+            expires_at: props.expires_at || null
         }
     })
 
