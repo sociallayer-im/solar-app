@@ -117,7 +117,7 @@ function GroupPage () {
                         }}>
                         <Tab title={'Badge'}>
                             <AppSubTabs renderAll>
-                                <Tab title="Recognition">
+                                <Tab title="Basic">
                                     <ListUserRecognition profile={profile} />
                                 </Tab>
                                 <Tab title="NFT Pass">

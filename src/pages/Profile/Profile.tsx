@@ -21,6 +21,7 @@ import {Tabs, Tab} from "baseui/tabs";
 import ListUserRecognition from "../../components/compose/ListUserRecognition/ListUserRecognition";
 import AppSubTabs from "../../components/base/AppSubTabs";
 import ListUserNftpass from "../../components/compose/ListUserNftpass/ListUserNftpass";
+import ListUserPoint from "../../components/compose/ListUserPoint/ListUserPoint";
 
 
 function ProfilePage () {
@@ -126,7 +127,7 @@ function ProfilePage () {
                         }}>
                             <Tab title="Badge">
                                 <AppSubTabs renderAll>
-                                    <Tab title="Recognition">
+                                    <Tab title="Basic">
                                         <ListUserRecognition profile={profile} />
                                     </Tab>
                                     <Tab title="NFT Pass">
@@ -144,7 +145,7 @@ function ProfilePage () {
                                 <ListUserGroup profile={profile} />
                             </Tab>
                             <Tab title="Points">
-                                <div>Points</div>
+                                <ListUserPoint profile={profile} />
                             </Tab>
                         </Tabs>
                     </div>

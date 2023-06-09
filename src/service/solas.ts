@@ -5,14 +5,17 @@ const api = import.meta.env.VITE_SOLAS_API
 
 export type BadgeType = 'badge' | 'nftpass' | 'nft' | 'private'
 
-interface AuthProp { auth_token: string }
-function checkAuth <K extends AuthProp> (props: K) {
+interface AuthProp {
+    auth_token: string
+}
+
+function checkAuth<K extends AuthProp>(props: K) {
     if (!props.auth_token) {
         throw new Error('Please login to continue')
     }
 }
 
-export async function login (signer: any) {
+export async function login(signer: any) {
     return await signInWithEthereum(signer)
 }
 
@@ -48,7 +51,7 @@ interface GetProfileProps {
     username?: string
 }
 
-export async function getProfile (props: GetProfileProps): Promise<Profile | null> {
+export async function getProfile(props: GetProfileProps): Promise<Profile | null> {
     const res: any = await fetch.get({
         url: `${api}/profile/get`,
         data: props
@@ -56,15 +59,17 @@ export async function getProfile (props: GetProfileProps): Promise<Profile | nul
 
     if (!res.data.profile) return null
 
-    return {...res.data.profile,
+    return {
+        ...res.data.profile,
         followers: res.data.followers_count,
-        following: res.data.followings_count } as Profile
+        following: res.data.followings_count
+    } as Profile
 }
 
-export async function requestEmailCode (email: string): Promise<void> {
+export async function requestEmailCode(email: string): Promise<void> {
     const res: any = await fetch.post({
         url: `${api}//profile/send_email`,
-        data: { email }
+        data: {email}
     })
     if (res.data.result === 'error') {
         throw new Error(res.data.message || 'Request fail')
@@ -76,10 +81,11 @@ export interface EmailLoginRes {
     id: number,
     email: string
 }
-export async function emailLogin (email: string, code: string): Promise<EmailLoginRes> {
+
+export async function emailLogin(email: string, code: string): Promise<EmailLoginRes> {
     const res = await fetch.post({
-        url:`${api}/profile/signin_with_email`,
-        data: { email, code }
+        url: `${api}/profile/signin_with_email`,
+        data: {email, code}
     })
     if (res.data.result === 'error') {
         throw new Error(res.data.message || 'Verify fail')
@@ -96,7 +102,7 @@ interface SolasRegistProps {
     username: string
 }
 
-export async function regist (props: SolasRegistProps ): Promise<Profile> {
+export async function regist(props: SolasRegistProps): Promise<Profile> {
     checkAuth(props)
     const res = await fetch.post({
         url: `${api}/profile/create`,
@@ -112,7 +118,7 @@ export async function regist (props: SolasRegistProps ): Promise<Profile> {
 
 interface QueryBadgeProps {
     sender_id?: number,
-    group_id?:number,
+    group_id?: number,
     page: number
 }
 
@@ -132,10 +138,10 @@ export interface Badge {
 
 export type NftPass = Badge
 export type NftPassWithBadgelets = BadgeWithBadgelets
-export type NftPasslet= Badgelet
+export type NftPasslet = Badgelet
 
 
-export async function queryBadge (props: QueryBadgeProps): Promise<Badge[]> {
+export async function queryBadge(props: QueryBadgeProps): Promise<Badge[]> {
     const res = await fetch.get({
         url: `${api}/badge/list`,
         data: {...props, badge_type: 'badge'},
@@ -169,7 +175,7 @@ export interface BadgeWithBadgelets extends Badge {
     badgelets: Badgelet[]
 }
 
-export async function queryBadgeDetail (props: QueryBadgeDetailProps): Promise<BadgeWithBadgelets> {
+export async function queryBadgeDetail(props: QueryBadgeDetailProps): Promise<BadgeWithBadgelets> {
     const res = await fetch.get({
         url: `${api}/badge/get`,
         data: {...props, with_badgelets: 1}
@@ -179,11 +185,11 @@ export async function queryBadgeDetail (props: QueryBadgeDetailProps): Promise<B
         throw new Error(res.data.message)
     }
 
-    res.data.badge.badgelets = res.data.badge.badgelets.filter((item:Badgelet) => {
+    res.data.badge.badgelets = res.data.badge.badgelets.filter((item: Badgelet) => {
         return !item.hide && item.status !== 'rejected'
     })
 
-    res.data.badge.badgelets.forEach((item:Badgelet) => {
+    res.data.badge.badgelets.forEach((item: Badgelet) => {
         item.sender = res.data.badge.sender
     })
 
@@ -212,10 +218,10 @@ export interface Presend {
 
 }
 
-export async function queryPresend (props: QueryPresendProps): Promise<Presend[]> {
+export async function queryPresend(props: QueryPresendProps): Promise<Presend[]> {
     const res = await fetch.get({
         url: `${api}/presend/list`,
-        data: { ...props }
+        data: {...props}
     })
 
     if (res.data.result === 'error') {
@@ -234,7 +240,7 @@ export interface QueryPresendDetailProps {
     auth_token?: string
 }
 
-export async function queryPresendDetail (props: QueryPresendDetailProps): Promise<PresendWithBadgelets> {
+export async function queryPresendDetail(props: QueryPresendDetailProps): Promise<PresendWithBadgelets> {
     const res = await fetch.get({
         url: `${api}/presend/get`,
         data: props
@@ -272,7 +278,7 @@ export interface Badgelet {
     created_at: string
 }
 
-export async function queryBadgelet (props: QueryBadgeletProps): Promise<Badgelet[]> {
+export async function queryBadgelet(props: QueryBadgeletProps): Promise<Badgelet[]> {
     const res = await fetch.get({
         url: `${api}/badgelet/list`,
         data: {...props, badge_type: 'badge'}
@@ -323,7 +329,7 @@ export interface QueryUserGroupProps {
     profile_id: number,
 }
 
-export async function queryGroupsUserJoined (props: QueryUserGroupProps): Promise<Group[]> {
+export async function queryGroupsUserJoined(props: QueryUserGroupProps): Promise<Group[]> {
     const res1 = await fetch.get({
         url: `${api}/group/my-groups`,
         data: props
@@ -342,7 +348,7 @@ export async function queryGroupsUserCreated(props: QueryUserGroupProps): Promis
 
     const res2 = await fetch.get({
         url: `${api}/group/list`,
-        data: { group_owner_id: props.profile_id}
+        data: {group_owner_id: props.profile_id}
     })
 
     if (res2.data.result === 'error') {
@@ -354,7 +360,7 @@ export async function queryGroupsUserCreated(props: QueryUserGroupProps): Promis
     })
 }
 
-export async function queryUserGroup (props: QueryUserGroupProps): Promise<Group[]> {
+export async function queryUserGroup(props: QueryUserGroupProps): Promise<Group[]> {
 
     const res1 = await queryGroupsUserJoined(props)
 
@@ -373,7 +379,7 @@ export async function queryUserGroup (props: QueryUserGroupProps): Promise<Group
     return Object.values(groupsDuplicateObj) as Group[]
 }
 
-export async function queryGroupDetail (groupId: number): Promise<Group> {
+export async function queryGroupDetail(groupId: number): Promise<Group> {
     const res = await fetch.get({
         url: `${api}/group/get`,
         data: {id: groupId}
@@ -387,7 +393,7 @@ export interface AcceptBadgeletProp {
     auth_token: string
 }
 
-export async function acceptBadgelet (props: AcceptBadgeletProp): Promise<void> {
+export async function acceptBadgelet(props: AcceptBadgeletProp): Promise<void> {
     checkAuth(props)
     const res = await fetch.post({
         url: `${api}/badge/accept`,
@@ -404,7 +410,7 @@ export interface RejectBadgeletProp {
     auth_token: string
 }
 
-export async function rejectBadgelet (props: RejectBadgeletProp): Promise<void> {
+export async function rejectBadgelet(props: RejectBadgeletProp): Promise<void> {
     checkAuth(props)
     const res = await fetch.post({
         url: `${api}/badge/reject`,
@@ -422,7 +428,7 @@ export interface AcceptPresendProps {
     auth_token: string
 }
 
-export async function acceptPresend (props: AcceptPresendProps) {
+export async function acceptPresend(props: AcceptPresendProps) {
     checkAuth(props)
     const res = await fetch.post({
         url: `${api}/presend/use`,
@@ -437,13 +443,14 @@ export async function acceptPresend (props: AcceptPresendProps) {
 }
 
 export type SetBadgeletStatusType = 'untop' | 'top' | 'hide' | 'unhide'
+
 export interface SetBadgeletStatusProps {
     type: SetBadgeletStatusType,
     id: number,
     auth_token: string
 }
 
-export async function setBadgeletStatus (props: SetBadgeletStatusProps) {
+export async function setBadgeletStatus(props: SetBadgeletStatusProps) {
     checkAuth(props)
     const res = await fetch.post({
         url: `${api}/badge/${props.type}`,
@@ -464,7 +471,7 @@ export interface QueryBadgeletDetailProps {
     id: number
 }
 
-export async function queryBadgeletDetail (props: QueryBadgeletDetailProps): Promise<Badgelet> {
+export async function queryBadgeletDetail(props: QueryBadgeletDetailProps): Promise<Badgelet> {
     const res = await fetch.get({
         url: `${api}/badgelet/get`,
         data: {
@@ -485,7 +492,7 @@ export interface UploadImageProps {
     auth_token: string
 }
 
-export async function uploadImage (props: UploadImageProps): Promise<string> {
+export async function uploadImage(props: UploadImageProps): Promise<string> {
     checkAuth(props)
     const randomName = Math.random().toString(36).slice(-8)
     const formData = new FormData()
@@ -496,7 +503,7 @@ export async function uploadImage (props: UploadImageProps): Promise<string> {
     const res = await fetch.post({
         url: `${api}/upload/image`,
         data: formData,
-        header: { 'Content-Type': 'multipart/form-data' }
+        header: {'Content-Type': 'multipart/form-data'}
     })
 
     if (res.data.result === 'error') {
@@ -511,7 +518,7 @@ export interface SetAvatarProps {
     auth_token: string
 }
 
-export async function setAvatar (props: SetAvatarProps): Promise<Profile> {
+export async function setAvatar(props: SetAvatarProps): Promise<Profile> {
     checkAuth(props)
     const res = await fetch.post({
         url: `${api}/profile/update`,
@@ -537,7 +544,7 @@ export interface CreateBadgeProps {
 
 }
 
-export async function createBadge (props: CreateBadgeProps): Promise<Badge> {
+export async function createBadge(props: CreateBadgeProps): Promise<Badge> {
     checkAuth(props)
     const res = await fetch.post({
         url: `${api}/badge/create`,
@@ -558,7 +565,7 @@ export interface CreatePresendProps {
     auth_token: string
 }
 
-export async function createPresend (props: CreatePresendProps) {
+export async function createPresend(props: CreatePresendProps) {
     checkAuth(props)
     props.counter = props.counter === 'Unlimited' ? 65535 : props.counter
     const res = await fetch.post({
@@ -577,7 +584,7 @@ export interface GetGroupMembersProps {
     group_id: number
 }
 
-export async function getGroupMembers (props: GetGroupMembersProps): Promise<Profile[]> {
+export async function getGroupMembers(props: GetGroupMembersProps): Promise<Profile[]> {
     const res = await fetch.get({
         url: `${api}/group/members`,
         data: props
@@ -590,7 +597,7 @@ export async function getGroupMembers (props: GetGroupMembersProps): Promise<Pro
     return res.data.members
 }
 
-export async function getFollowers (userId: number): Promise<Profile[]> {
+export async function getFollowers(userId: number): Promise<Profile[]> {
     const res = await fetch.get({
         url: `${api}/profile/followers`,
         data: {
@@ -605,7 +612,7 @@ export async function getFollowers (userId: number): Promise<Profile[]> {
     return res.data.profiles
 }
 
-export async function getFollowings (userId: number): Promise<Profile[]>{
+export async function getFollowings(userId: number): Promise<Profile[]> {
     const res = await fetch.get({
         url: `${api}/profile/followings`,
         data: {
@@ -629,7 +636,7 @@ export interface IssueBatchProps {
     expires_at?: string,
 }
 
-export async function issueBatch (props: IssueBatchProps): Promise<Badgelet[]> {
+export async function issueBatch(props: IssueBatchProps): Promise<Badgelet[]> {
     checkAuth(props)
     const walletAddress: string[] = []
     const socialLayerUsers: string[] = []
@@ -672,21 +679,29 @@ export async function issueBatch (props: IssueBatchProps): Promise<Badgelet[]> {
     const task: any = []
     const link = [...walletAddress, ...socialLayerUsers, ...domainOwnerAddress, ...emails]
     walletAddress.forEach((item) => {
-        task.push(getProfile({ address: item } ).catch(e => { handleError(item) }))
+        task.push(getProfile({address: item}).catch(e => {
+            handleError(item)
+        }))
     })
     socialLayerUsers.map((item) => {
-        task.push(getProfile({ domain: item } ).catch(e => { handleError(item) }))
+        task.push(getProfile({domain: item}).catch(e => {
+            handleError(item)
+        }))
     })
     domainOwnerAddress.map((item) => {
-        task.push(getProfile({ address: item } ).catch(e => { handleError(item) }))
+        task.push(getProfile({address: item}).catch(e => {
+            handleError(item)
+        }))
     })
     emails.map((item) => {
-        task.push(getProfile({ email: item } ).catch(e => { handleError(item) }))
+        task.push(getProfile({email: item}).catch(e => {
+            handleError(item)
+        }))
     })
 
     const profiles = await Promise.all(task)
     profiles.forEach((item, index) => {
-        if (!item)  {
+        if (!item) {
             handleError(link[index])
         }
 
@@ -722,7 +737,7 @@ export async function issueBatch (props: IssueBatchProps): Promise<Badgelet[]> {
     return res.data.badgelets
 }
 
-export async function DDNSServer (domain: string): Promise<string | null> {
+export async function DDNSServer(domain: string): Promise<string | null> {
     const res = await fetch.get({
         url: `https://api.ddns.so/name/${domain.toLowerCase()}`
     })
@@ -739,7 +754,7 @@ interface FollowProps {
     auth_token: string
 }
 
-export async function follow (props: FollowProps) {
+export async function follow(props: FollowProps) {
     checkAuth(props)
     const res = await fetch.post({
         url: `${api}/profile/follow`,
@@ -751,7 +766,7 @@ export async function follow (props: FollowProps) {
     }
 }
 
-export async function unfollow (props: FollowProps) {
+export async function unfollow(props: FollowProps) {
     checkAuth(props)
     const res = await fetch.post({
         url: `${api}/profile/unfollow`,
@@ -779,7 +794,7 @@ export interface QueryGroupInvitesProps {
     page: number
 }
 
-export async function queryGroupInvites (props: QueryGroupInvitesProps): Promise<Invite[]> {
+export async function queryGroupInvites(props: QueryGroupInvitesProps): Promise<Invite[]> {
     const res = await fetch.get({
         url: `${api}/group/group-invites`,
         data: props
@@ -789,7 +804,7 @@ export async function queryGroupInvites (props: QueryGroupInvitesProps): Promise
         throw new Error(res.data.message)
     }
 
-    return res.data.group_invites.filter((item:Invite) => {
+    return res.data.group_invites.filter((item: Invite) => {
         const now = Date.parse(new Date().toString())
         return Date.parse(new Date(item.expires_at).toString()) - now >= 0
     })
@@ -800,11 +815,11 @@ export interface CreateGroupProps {
     auth_token: string
 }
 
-export async function createGroup (props: CreateGroupProps): Promise<Group> {
+export async function createGroup(props: CreateGroupProps): Promise<Group> {
     checkAuth(props)
     const res = await fetch.post({
         url: `${api}/group/create`,
-        data:  props
+        data: props
     })
 
     if (res.data.result === 'error') {
@@ -820,7 +835,8 @@ export interface SendInviteProps {
     message: string,
     auth_token: string
 }
-export async function sendInvite (props: SendInviteProps): Promise<Invite[]> {
+
+export async function sendInvite(props: SendInviteProps): Promise<Invite[]> {
     checkAuth(props)
     const walletAddress: string[] = []
     const socialLayerUsers: string[] = []
@@ -859,28 +875,36 @@ export async function sendInvite (props: SendInviteProps): Promise<Invite[]> {
 
     const task: any = []
     walletAddress.forEach((item) => {
-        task.push(getProfile({ address: item } ).catch(e => { handleError(item) }))
+        task.push(getProfile({address: item}).catch(e => {
+            handleError(item)
+        }))
     })
     socialLayerUsers.map((item) => {
-        task.push(getProfile({ domain: item } ).catch(e => { handleError(item) }))
+        task.push(getProfile({domain: item}).catch(e => {
+            handleError(item)
+        }))
     })
     domainOwnerAddress.map((item) => {
-        task.push(getProfile({ address: item } ).catch(e => { handleError(item) }))
+        task.push(getProfile({address: item}).catch(e => {
+            handleError(item)
+        }))
     })
     emails.map((item) => {
-        task.push(getProfile({ email: item } ).catch(e => { handleError(item) }))
+        task.push(getProfile({email: item}).catch(e => {
+            handleError(item)
+        }))
     })
 
     const profiles = await Promise.all(task)
     profiles.forEach((item, index) => {
-        if (!item)  {
+        if (!item) {
             handleError(domains[index])
         }
     })
 
     const res = await fetch.post({
         url: `${api}/group/send-invite`,
-        data:  {
+        data: {
             ...props,
             receivers: [...walletAddress, ...socialLayerUsers, ...domainOwnerAddress, ...emails]
         }
@@ -898,10 +922,10 @@ export interface QueryInviteDetailProps {
     invite_id: number
 }
 
-export async function queryInviteDetail (props: QueryInviteDetailProps): Promise<Invite | null> {
+export async function queryInviteDetail(props: QueryInviteDetailProps): Promise<Invite | null> {
     const res = await fetch.get({
         url: `${api}/group/group-invites`,
-        data:  { group_id: props.group_id }
+        data: {group_id: props.group_id}
     })
 
     if (res.data.result === 'error') {
@@ -918,11 +942,11 @@ export interface AcceptInviteProps {
     auth_token: string
 }
 
-export async function acceptInvite (props: AcceptInviteProps) {
+export async function acceptInvite(props: AcceptInviteProps) {
     checkAuth(props)
     const res = await fetch.post({
         url: `${api}/group/accept-invite`,
-        data:  props
+        data: props
     })
 
     if (res.data.result === 'error') {
@@ -930,11 +954,11 @@ export async function acceptInvite (props: AcceptInviteProps) {
     }
 }
 
-export async function cancelInvite (props: AcceptInviteProps) {
+export async function cancelInvite(props: AcceptInviteProps) {
     checkAuth(props)
     const res = await fetch.post({
         url: `${api}/group/cancel-invite`,
-        data:  props
+        data: props
     })
 
     if (res.data.result === 'error') {
@@ -942,10 +966,10 @@ export async function cancelInvite (props: AcceptInviteProps) {
     }
 }
 
-export async function queryPendingInvite (receiverId: number):Promise<Invite[]> {
+export async function queryPendingInvite(receiverId: number): Promise<Invite[]> {
     const res = await fetch.get({
         url: `${api}/group/group-invites`,
-        data:  { receiver_id: receiverId, status: 'new' }
+        data: {receiver_id: receiverId, status: 'new'}
     })
 
     if (res.data.result === 'error') {
@@ -955,17 +979,17 @@ export async function queryPendingInvite (receiverId: number):Promise<Invite[]> 
     return res.data.group_invites
 }
 
-export  interface UpdateGroupProps {
+export interface UpdateGroupProps {
     id: number,
     image_url: string
     auth_token: string
 }
 
-export async function updateGroup (props: UpdateGroupProps) {
+export async function updateGroup(props: UpdateGroupProps) {
     checkAuth(props)
     const res = await fetch.post({
         url: `${api}/group/update`,
-        data:  props
+        data: props
     })
 
     if (res.data.result === 'error') {
@@ -981,11 +1005,11 @@ export interface LeaveGroupProps {
     auth_token: string
 }
 
-export async function leaveGroup (props: LeaveGroupProps) {
+export async function leaveGroup(props: LeaveGroupProps) {
     checkAuth(props)
     const res = await fetch.post({
         url: `${api}/group/remove-member`,
-        data:  props
+        data: props
     })
 
     if (res.data.result === 'error') {
@@ -998,10 +1022,10 @@ export interface SearchDomainProps {
     page: number
 }
 
-export async function searchDomain (props: SearchDomainProps): Promise<Profile[]> {
+export async function searchDomain(props: SearchDomainProps): Promise<Profile[]> {
     const res = await fetch.get({
         url: `${api}/profile/search`,
-        data:  props
+        data: props
     })
 
     return res.data.profiles
@@ -1011,10 +1035,11 @@ export interface SearchBadgeProps {
     title: string,
     page: number
 }
-export async function searchBadge (props: SearchBadgeProps): Promise<Badge[]>  {
+
+export async function searchBadge(props: SearchBadgeProps): Promise<Badge[]> {
     const res = await fetch.get({
         url: `${api}/badge/search`,
-        data:  props
+        data: props
     })
 
     if (res.data.result === 'error') {
@@ -1029,10 +1054,10 @@ export interface QueryBadgeByHashTagProps {
     page: number
 }
 
-export async function queryBadgeByHashTag (props: QueryBadgeByHashTagProps): Promise<Badgelet[]> {
+export async function queryBadgeByHashTag(props: QueryBadgeByHashTagProps): Promise<Badgelet[]> {
     const res = await fetch.get({
-        url:`${api}/badgelet/list`,
-        data:  props
+        url: `${api}/badgelet/list`,
+        data: props
     })
 
     if (res.data.result === 'error') {
@@ -1050,11 +1075,11 @@ export interface freezeGroupProps {
     auth_token: string
 }
 
-export async function freezeGroup (props: freezeGroupProps) {
+export async function freezeGroup(props: freezeGroupProps) {
     checkAuth(props)
     const res = await fetch.post({
-        url:`${api}/group/freeze`,
-        data:  props
+        url: `${api}/group/freeze`,
+        data: props
     })
 
     if (res.data.result === 'error') {
@@ -1062,11 +1087,11 @@ export async function freezeGroup (props: freezeGroupProps) {
     }
 }
 
-export async function updateProfile (props: { data: Partial<Profile>, auth_token: string }) {
+export async function updateProfile(props: { data: Partial<Profile>, auth_token: string }) {
     checkAuth(props)
     const res = await fetch.post({
         url: `${api}/profile/update`,
-        data: {...props.data, auth_token: props.auth_token }
+        data: {...props.data, auth_token: props.auth_token}
     })
 
     if (res.data.result === 'error') {
@@ -1082,7 +1107,7 @@ export interface VerifyTwitterProps {
     tweet_url: string
 }
 
-export async function verifyTwitter (props: VerifyTwitterProps) {
+export async function verifyTwitter(props: VerifyTwitterProps) {
     const res = await fetch.post(
         {
             url: `${api}/profile/submit_twitter_proof`,
@@ -1097,6 +1122,150 @@ export async function verifyTwitter (props: VerifyTwitterProps) {
     return res.data
 }
 
+export interface CreatePointProps {
+    name: string,
+    title: string,
+    auth_token: string,
+    content?: string,
+    token_id?: number,
+    metadata?: string,
+    point_type?: string,
+    image_url: string,
+    max_supply?: number,
+    group_id?: number
+}
+
+export interface Point {
+    content: string
+    created_at: string
+    domain: string
+    group: null | Group,
+    id: number
+    image_url: string
+    max_supply: number | null
+    metadata: null | string
+    name: string
+    point_type: null | string
+    sender: ProfileSimple
+    title: string
+    token_id: string
+    total_supply: number | null
+    point_items?: PointItem[]
+}
+
+export async function createPoint(props: CreatePointProps) {
+    const res = await fetch.post({
+        url: `${api}/point/create`,
+        data: props
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+
+    return res.data.point
+}
+
+export interface SendPointProps {
+    auth_token: string,
+    receivers: { receiver: string, value: number }[],
+    point_id: number,
+    value: number
+}
+
+export interface PointItem {
+    created_at: string
+    id: number
+    owner: ProfileSimple
+    point: Point
+    sender: ProfileSimple
+    status: 'sending' | 'accepted' | 'rejected'
+    value: number
+}
+
+export async function sendPoint(props: SendPointProps) {
+    const res = await fetch.post({
+        url: `${api}/point/send`,
+        data: props
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+
+    return res.data.point_items as PointItem[]
+}
+
+interface QueryPointProps {
+    sender_id?: number,
+    group_id?: number,
+}
+
+export async function queryPoint(props: QueryPointProps) {
+    const res = await fetch.get({
+        url: `${api}/point/list`,
+        data: props
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+    return res.data.points as Point[]
+}
+
+interface QueryPointItemProps {
+    status?: 'sending' | 'accepted' | 'rejected',
+    point_id?: number
+    sender_id?: number,
+    owner_id?: number,
+}
+
+export async function queryPointItems(props: QueryPointItemProps) {
+    const res = await fetch.get({
+        url: `${api}/point/list_item`,
+        data: props
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+    return res.data.point_items as PointItem[]
+}
+
+interface QueryPointDetail {
+    id: number
+}
+
+export async function queryPointDetail(props: QueryPointDetail) {
+    const res = await fetch.get({
+        url: `${api}/point/get`,
+        data: {
+            ...props,
+            // with_point_items: 1
+        }
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+
+    return res.data.point as Point
+}
+
+export async function queryPointItemDetail(props: QueryPointDetail) {
+    const res = await fetch.get({
+        url: `${api}/point/get_item`,
+        data: {
+            ...props,
+        }
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+
+    return res.data.point_item as PointItem
+}
 
 
 export default {
@@ -1143,5 +1312,9 @@ export default {
     queryGroupsUserCreated,
     queryGroupsUserJoined,
     updateProfile,
-    verifyTwitter
+    verifyTwitter,
+    sendPoint,
+    queryPointDetail,
+    queryPointItemDetail,
+    queryPointItems
 }

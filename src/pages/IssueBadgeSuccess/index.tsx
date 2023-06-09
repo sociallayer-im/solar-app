@@ -1,6 +1,6 @@
 import { useSearchParams } from 'react-router-dom'
 import { useState, useContext, useEffect } from 'react'
-import solas, { Group, Profile, ProfileSimple } from '../../service/solas'
+import solas, {Group, Profile, ProfileSimple, queryPointItemDetail} from '../../service/solas'
 import Layout from '../../components/Layout/Layout'
 import LangContext from '../../components/provider/LangProvider/LangContext'
 import './IssueBadgeSuccess.less'
@@ -36,11 +36,9 @@ function IssueSuccessPage () {
     // nftpass 颁发成功传参
     const nftpassletId = searchParams.get('nftpasslet')
 
-    const issueType = inviteId
-        ? 'invite'
-        : presendId
-            ? 'presend'
-            : 'badgelet'
+   // presend成功传参
+   const pointId = searchParams.get('point')
+   const pointitemId = searchParams.get('pointitem')
 
 
     useEffect(() => {
@@ -98,6 +96,19 @@ function IssueSuccessPage () {
                     link: genShareLink()
                 })
             }
+
+            if (pointId && pointitemId) {
+                const point = await solas.queryPointDetail({ id: Number(pointId) })
+                const pointItem = await solas.queryPointItemDetail({ id: Number(pointitemId) })
+
+                setInfo({
+                    sender: point.sender,
+                    name: point.title,
+                    cover: point.image_url,
+                    link: genShareLink(),
+                    points: pointItem.value
+                })
+            }
         }
 
         fetchInfo()
@@ -126,6 +137,10 @@ function IssueSuccessPage () {
             path = `${base}/nftpasslet/${nftpassletId}`
         }
 
+        if (pointId && pointitemId) {
+            path = `${base}/pointitem/${pointitemId}`
+        }
+
         return path
     }
 
@@ -143,13 +158,14 @@ function IssueSuccessPage () {
         showToast('Copied')
     }
 
+
     return (
         <Layout>
             <div className='send-badge-success' style={{minHeight: `${heightWithoutNav}px`}}>
                 <div className='center-box header'>
                     <PageBack backBtnLabel={ lang['Page_Back_Done'] }
                               title={ lang['IssueFinish_Title'] }
-                              to={`/profile/${user.userName}`} />
+                              to={user.userName ? `/profile/${user.userName}` : '/'} />
                 </div>
                 <div className='background'>
                     <div className='ball1'></div>

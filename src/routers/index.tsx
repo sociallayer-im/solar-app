@@ -16,7 +16,7 @@ import IssueSuccess from '../pages/IssueBadgeSuccess'
 import Search from '../pages/Search'
 import ProfileEdit from '../pages/ProfileEdit/ProfileEdit'
 import GroupEdit from '../pages/GroupEdit/GroupEdit'
-import CreatePoint from "../pages/CreatePoint/CreatePoint";
+import CreatePoint from "../pages/CreatePoint";
 import IssuePoint from "../pages/IssuePoint";
 import CreateNftPass from "../pages/CreateNftPass";
 import IssueNftPass from "../pages/IssueNftPass";

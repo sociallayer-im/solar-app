@@ -10,7 +10,6 @@ export type IssueType = '' | 'issue' | 'presend'
 
 export interface IssueTypeSelectorData {
     issues: string[],
-    issueType: IssueType,
     points: string
 }
 
@@ -58,21 +57,21 @@ function IssueTypeSelectorPoint(props: IssueTypeSelectorProps) {
             </div>
         </div>
 
-        <div className={'item'}>
-            <div className={'item-title'}>Expiry date</div>
-            <div className={'item-value'}>
-                { showDatePicker &&
-                    <div className={'date-select'}>
-                        <DatePicker value={expiry} onChange={({ date }) =>
-                            setExpiry((Array.isArray(date) ? date : [date]) as any)
-                        } />
-                    </div>
-                }
-                <Toggle checked={showDatePicker} onChange={e => {
-                    setShowDatePicker(!showDatePicker)
-                }}/>
-            </div>
-        </div>
+        {/*<div className={'item'}>*/}
+        {/*    <div className={'item-title'}>Expiry date</div>*/}
+        {/*    <div className={'item-value'}>*/}
+        {/*        { showDatePicker &&*/}
+        {/*            <div className={'date-select'}>*/}
+        {/*                <DatePicker value={expiry} onChange={({ date }) =>*/}
+        {/*                    setExpiry((Array.isArray(date) ? date : [date]) as any)*/}
+        {/*                } />*/}
+        {/*            </div>*/}
+        {/*        }*/}
+        {/*        <Toggle checked={showDatePicker} onChange={e => {*/}
+        {/*            setShowDatePicker(!showDatePicker)*/}
+        {/*        }}/>*/}
+        {/*    </div>*/}
+        {/*</div>*/}
 
         <div className={'item'}>
             <div className={'item-title'}>Select receivers</div>
@@ -90,7 +89,6 @@ function IssueTypeSelectorPoint(props: IssueTypeSelectorProps) {
                     props.onConfirm && props.onConfirm({
                         points,
                         issues,
-                        issueType
                     })
                 }}
                 size={'compact'}>{lang['IssueBadge_Mint']}</AppButton>
@@ -99,7 +97,6 @@ function IssueTypeSelectorPoint(props: IssueTypeSelectorProps) {
                     props.onCancel && props.onCancel({
                         points,
                         issues,
-                        issueType
                     })
                 }}
                 className={'send-later'}

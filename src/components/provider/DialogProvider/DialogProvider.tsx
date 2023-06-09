@@ -487,7 +487,7 @@ function DialogProvider (props: DialogProviderProps) {
         showNftpass,
         showNftpasslet
     }
-
+   // todo:  pint 详情弹窗
     return (
         <DialogsContext.Provider value={ contextValue }>
             { props.children }

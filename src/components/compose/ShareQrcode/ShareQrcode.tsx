@@ -12,6 +12,7 @@ export interface ShareQrcodeProp {
     link: string,
     limit?: number,
     expires?: string
+    points?: number
 
 }
 
@@ -23,7 +24,10 @@ function ShareQrcode(props: ShareQrcodeProp) {
         <div className='share-qrcode-card'>
             <div className='inner'>
                 <div className='card-header'>
-                    <img src={props.cover} alt=""/>
+                    <div className={'cover'}>
+                        <div className={'point'}>{props.points}</div>
+                        <img src={props.cover} alt=""/>
+                    </div>
                     <div className='sender-info'>
                         <div className='badge-name'>{lang['Presend_Qrcode_Badge']} {props.name}</div>
                         <div className='des'>{lang['Presend_Qrcode_Des']([props.sender.domain?.split('.')[0]])}</div>

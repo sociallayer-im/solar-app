@@ -4,12 +4,12 @@ import Layout from '../../components/Layout/Layout'
 import PageBack from '../../components/base/PageBack'
 import './IssuePoint.less'
 import LangContext from '../../components/provider/LangProvider/LangContext'
-import AppButton, {BTN_KIND} from '../../components/base/AppButton/AppButton'
-import solas, {Badge, Presend} from '../../service/solas'
+import solas, {Badge, sendPoint} from '../../service/solas'
 import DialogsContext from '../../components/provider/DialogProvider/DialogsContext'
 import UserContext from '../../components/provider/UserProvider/UserContext'
-import copy from '../../utils/copy'
-import IssueTypeSelectorPoint, {IssueTypeSelectorData, IssueType} from "../../components/compose/IssueTypeSelectorPoint/IssueTypeSelectorPoint";
+import IssueTypeSelectorPoint, {
+    IssueTypeSelectorData
+} from "../../components/compose/IssueTypeSelectorPoint/IssueTypeSelectorPoint";
 
 function Issue() {
     const {user} = useContext(UserContext)
@@ -23,7 +23,7 @@ function Issue() {
     // 处理预填接受者
     const presetAcceptor = SearchParams.get('to')
     const initIssueType = presetAcceptor ? 'issue' : ''
-    const initIssues = presetAcceptor ?[presetAcceptor, ''] : ['']
+    const initIssues = presetAcceptor ? [presetAcceptor, ''] : ['']
 
 
     state = state || {}
@@ -32,7 +32,7 @@ function Issue() {
 
     useEffect(() => {
         async function getBadgeInfo() {
-            const badge = await solas.queryBadgeDetail({id: Number(params.badgeId)})
+            const badge = await solas.queryBadgeDetail({id: Number(params.pointId)})
             setBadge(badge)
         }
 
@@ -48,15 +48,40 @@ function Issue() {
             return
         }
 
+        if (!data.points || data.points === '0' || Number(data.points) <= 0) {
+            showToast('Please type in points')
+            return
+        }
+
         console.log('checkedIssues', checkedIssues)
 
-        // const unload = showLoading()
-
+        const unload = showLoading()
+        try {
+            const pointItems = await sendPoint({
+                point_id: Number(params.pointId),
+                value: Number(data.points),
+                auth_token: user.authToken || '',
+                receivers: checkedIssues.map(item => {
+                    return {
+                        receiver: item,
+                        value: Number(data.points)
+                    }
+                })
+            })
+            navigate(`/issue-success?point=${params.pointId}&pointitem=${pointItems[0].id}`)
+        } catch (e: any) {
+            console.error(e)
+            showToast(e.message || 'Issue fail')
+        } finally {
+            unload()
+        }
     }
 
     const fallBackPath = badge?.group
-        ? `/group/${ badge?.group.username}`
-        : `/profile/${user.userName}`
+        ? `/group/${badge?.group.username}`
+        : user.userName ?
+            `/profile/${user.userName}`
+            : '/'
 
     return (
         <Layout>
