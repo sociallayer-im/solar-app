@@ -32,8 +32,6 @@ function useIssueBadge (useIssueBadgeProps?: UseIssueBadgeProp) {
             path = path + split(path) + `group=${groupDomain}`
         }
 
-        alert(path)
-
         if (to) {
             path = path + split(path) + `to=${to}`
         }
