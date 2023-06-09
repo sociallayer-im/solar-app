@@ -79,12 +79,14 @@ function DialogIssuePrefill(props: DialogIssuePrefillProps) {
                 </div>
             </>
             : <>
-                <div className='prefill-module'>
-                    <div className='prefill-module-title'>{lang['Badgebook_Dialog_Choose_Badge']}</div>
-                    <div className='prefill-module-items'>
-                        <AppSwiper items={badgeItems(props.badges)} space={6} itemWidth={68}/>
+                { props.badges.length > 0 &&
+                    <div className='prefill-module'>
+                        <div className='prefill-module-title'>{lang['Badgebook_Dialog_Choose_Badge']}</div>
+                        <div className='prefill-module-items'>
+                            <AppSwiper items={badgeItems(props.badges)} space={6} itemWidth={68}/>
+                        </div>
                     </div>
-                </div>
+                }
                 <div className='create-badge-btn' onClick={event => {
                     setShowCreateOption(true)
                 }}>

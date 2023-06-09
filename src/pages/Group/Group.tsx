@@ -20,6 +20,8 @@ import { useNavigate } from 'react-router-dom'
 import {Tabs, Tab} from "baseui/tabs";
 import ListUserRecognition from "../../components/compose/ListUserRecognition/ListUserRecognition";
 import ListUserPresend from "../../components/compose/ListUserPresend";
+import ListUserNftpass from "../../components/compose/ListUserNftpass/ListUserNftpass";
+import AppSubTabs from "../../components/base/AppSubTabs";
 
 
 function GroupPage () {
@@ -114,7 +116,14 @@ function GroupPage () {
                             setSelectedTab(activeKey as any);
                         }}>
                         <Tab title={'Badge'}>
-                            <ListUserRecognition profile={profile} />
+                            <AppSubTabs renderAll>
+                                <Tab title="Recognition">
+                                    <ListUserRecognition profile={profile} />
+                                </Tab>
+                                <Tab title="NFT Pass">
+                                    <ListUserNftpass profile={profile} />
+                                </Tab>
+                            </AppSubTabs>
                         </Tab>
                         { user.id === profile.group_owner_id ?
                             <Tab title="Presend">
