@@ -60,7 +60,7 @@ export async function getProfile (props: GetProfileProps): Promise<Profile | nul
 
 export async function requestEmailCode (email: string): Promise<void> {
     const res: any = await fetch.post({
-        url: `${api}//profile/send_email`,
+        url: `${api}/profile/send_email`,
         data: { email }
     })
     if (res.data.result === 'error') {
