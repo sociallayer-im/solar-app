@@ -12,6 +12,7 @@ async function get (options: FetchOptions) {
         options.data.auth_tokne = options.authToken
     }
 
+    console.log('request info: ', options.url, options.data)
     return await axios.get(options.url, {
         params: options.data
     })
@@ -22,6 +23,7 @@ async function post (options: FetchOptions) {
         options.data.auth_tokne = options.authToken
     }
 
+    console.log('request info: ', options.url, options.data)
     return await axios.post(options.url, options.data, {
         headers: options.header || {
             'Content-Type': 'application/json'

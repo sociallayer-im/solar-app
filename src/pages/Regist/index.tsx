@@ -6,14 +6,20 @@ import RegistForm from '../../components/compose/FormRegist'
 import DialogsContext from '../../components/provider/DialogProvider/DialogsContext'
 import PageBack from '../../components/base/PageBack'
 import UserContext from "../../components/provider/UserProvider/UserContext";
+import {useNavigate} from "react-router-dom";
 
 function ComponentName () {
     const { lang } = useContext(langContext)
     const { clean } = useContext(DialogsContext)
     const { user, logOut } = useContext(UserContext)
+    const navigate = useNavigate()
 
     useEffect(() => {
-        clean('regist')
+
+        // 如果用户已经注册过域名，将会跳转到用户的profile页面
+        if (user.domain) {
+            navigate(`/profile/${user.domain}`)
+        }
 
         // 离开页面后用户没完成注册将会自动退出登录
         return () => {
@@ -21,6 +27,12 @@ function ComponentName () {
                 logOut()
             }
         }
+    }, [user.domain])
+
+    useEffect(() => {
+        clean('regist')
+
+
     }, [])
 
     return (

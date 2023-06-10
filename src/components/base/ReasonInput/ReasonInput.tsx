@@ -30,11 +30,7 @@ function ReasonInput(props: ReasonInputProps) {
     }
 
     const addLink = () => {
-        const link = value.match(/@[^@#\s.,。，]+/)
-        if (!link) {
-            mapInput(value ? value + ' @': '@')
-        }
-
+        mapInput(value ? value + ' @': '@')
         textarea!.current!.focus()
     }
 

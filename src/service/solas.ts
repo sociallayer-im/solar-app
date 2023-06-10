@@ -68,8 +68,8 @@ export async function getProfile(props: GetProfileProps): Promise<Profile | null
 
 export async function requestEmailCode(email: string): Promise<void> {
     const res: any = await fetch.post({
-        url: `${api}//profile/send_email`,
-        data: {email}
+        url: `${api}/profile/send_email`,
+        data: { email }
     })
     if (res.data.result === 'error') {
         throw new Error(res.data.message || 'Request fail')
@@ -711,7 +711,7 @@ export async function issueBatch(props: IssueBatchProps): Promise<Badgelet[]> {
         }
     })
 
-    const subjectUrls = props.reason.match(/@[^@#\s.,。，]+/)
+    const subjectUrls = props.reason.match(/@[^\s]+/g)
     let subjectUrl = ''
     if (subjectUrls) {
         subjectUrl = subjectUrls[0].replace('@', '')
