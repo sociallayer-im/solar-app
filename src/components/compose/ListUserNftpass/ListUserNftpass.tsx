@@ -4,8 +4,8 @@ import ListUserAssets, {ListUserAssetsMethods} from "../../base/ListUserAssets/L
 import {Profile, queryNftpass, queryNftPasslet} from "../../../service/solas";
 import CardNftpass from "../../base/Cards/CardNftpass/CardNftpass";
 import UserContext from "../../provider/UserProvider/UserContext";
-import CardBadgelet from "../../base/Cards/CardBadgelet/CardBadgelet";
 import CardNftpasslet from "../../base/Cards/CardNftpasslet/CardNftpasslet";
+import LangContext from "../../provider/LangProvider/LangContext";
 
 interface ListUserNftpassProps {
     profile: Profile
@@ -13,6 +13,7 @@ interface ListUserNftpassProps {
 
 function ListUserNftpass(props: ListUserNftpassProps) {
     const {user} = useContext(UserContext)
+    const {lang} = useContext(LangContext)
 
     const getNftpass = async (page: number) => {
         const queryProps = props.profile.is_group
@@ -22,7 +23,7 @@ function ListUserNftpass(props: ListUserNftpassProps) {
         return await queryNftpass(queryProps)
     }
 
-    const getNftpasslet= async (page: number) => {
+    const getNftpasslet = async (page: number) => {
         return await queryNftPasslet({
             show_hidden: user.id === props.profile.id ? 1 : undefined,
             receiver_id: props.profile.id,
@@ -39,13 +40,13 @@ function ListUserNftpass(props: ListUserNftpassProps) {
     }, [props.profile])
 
     return (<div className={'list-user-nftpass'}>
-        <div className={'list-title'}>Collected</div>
+        <div className={'list-title'}>{lang['Badgelet_List_Title']}</div>
         <ListUserAssets
             queryFcn={getNftpasslet}
             onRef={listWrapperRefBadgeLet}
             child={(item, key) => <CardNftpasslet nftpasslet={item} key={key}/>}/>
 
-        <div className={'list-title margin'}>Created</div>
+        <div className={'list-title margin'}>{lang['Created_List_Title']}</div>
         <ListUserAssets
             queryFcn={getNftpass}
             onRef={listWrapperRefBadge}

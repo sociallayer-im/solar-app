@@ -32,10 +32,10 @@ function IssueTypeSelectorNftPass(props: IssueTypeSelectorNftPassProps) {
     const [expiresAt, setExpiresAt] = useState([new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000)]);
 
     return (<div className={'issue-type-select-point'}>
-        <div className={'title'}>Send the Points</div>
+        <div className={'title'}>{lang['Issue_Nft_Title']}</div>
 
         <div className={'item'}>
-            <div className={'item-title'}>Select receivers</div>
+            <div className={'item-title'}>{lang['IssueBadge_Address_List_Title']}</div>
         </div>
         <IssuesInput
             value={issues}
@@ -44,7 +44,7 @@ function IssueTypeSelectorNftPass(props: IssueTypeSelectorNftPassProps) {
             }}/>
 
         <div className={'item'}>
-            <div className={'item-title'}>Start date</div>
+            <div className={'item-title'}>{lang['Issue_Nft_Start']}</div>
             <div className={'item-value'}>
                 { showStartsAt &&
                     <div className={'date-select'}>
@@ -60,7 +60,7 @@ function IssueTypeSelectorNftPass(props: IssueTypeSelectorNftPassProps) {
         </div>
 
         <div className={'item'}>
-            <div className={'item-title'}>Expiry date</div>
+            <div className={'item-title'}>{lang['Issue_Nft_End']}</div>
             <div className={'item-value'}>
                 { showExpiresAt &&
                     <div className={'date-select'}>

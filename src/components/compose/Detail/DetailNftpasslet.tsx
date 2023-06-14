@@ -162,7 +162,7 @@ function DetailNftpasslet(props: DetailNftpassletProps) {
     return (
         <DetailWrapper>
             <DetailHeader
-                title={lang['BadgeletDialog_title']}
+                title={lang['NFT_Detail_title']}
                 slotLeft={nftpasslet.hide && <DetailBadgeletPrivateMark/>}
                 onClose={props.handleClose}/>
 
@@ -179,7 +179,7 @@ function DetailNftpasslet(props: DetailNftpassletProps) {
                         <DetailScrollBox style={{maxHeight: swiperMaxHeight - 60 + 'px', marginLeft: 0}}>
                             {
                                 !!nftpasslet.content &&
-                                <DetailDes>
+                                <DetailDes title={lang['NFT_Detail_title']}>
                                     <ReasonText text={nftpasslet.content}></ReasonText>
                                 </DetailDes>
                             }
@@ -223,7 +223,7 @@ function DetailNftpasslet(props: DetailNftpassletProps) {
                                     onClick={() => {
                                         setShowQrcode(true)
                                     }}>
-                                    {'Use the NFT Pass'}
+                                    { lang['NFT_Detail_use'] }
                                 </AppButton>
                             }
                         </BtnGroup>

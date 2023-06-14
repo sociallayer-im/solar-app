@@ -65,7 +65,7 @@ function DetailNftpass (props: DetailBadgeProps ) {
     const swiperMaxHeight = window.innerHeight - 320
     return (
         <DetailWrapper>
-            <DetailHeader title={ lang['BadgeletDialog_title'] } onClose={ props.handleClose }/>
+            <DetailHeader title={ lang['NFT_Detail_title'] } onClose={ props.handleClose }/>
             <DetailCover src={ props.nftpass.image_url }></DetailCover>
             <DetailName> { props.nftpass.name } </DetailName>
 
@@ -118,7 +118,7 @@ function DetailNftpass (props: DetailBadgeProps ) {
 
                 : <DetailScrollBox style={{maxHeight: swiperMaxHeight - 60 + 'px', marginLeft: 0}}>
                     { !! props.nftpass.content &&
-                        <DetailDes>
+                        <DetailDes title={lang['NFT_Detail_Des']}>
                             <ReasonText text={props.nftpass.content} />
                         </DetailDes>
                     }
@@ -138,7 +138,7 @@ function DetailNftpass (props: DetailBadgeProps ) {
                 { loginUserIsSender &&
                     <>
                         <AppButton size={ BTN_SIZE.compact } onClick={ () => {} } kind={ BTN_KIND.primary }>
-                            { 'Check In' }
+                            { lang['NFT_Detail_Check'] }
                         </AppButton>
                         <AppButton size={ BTN_SIZE.compact } onClick={ () => { handleIssue() } } kind={ 'secondary' }>
                             { lang['BadgeDialog_Btn_Issue'] }

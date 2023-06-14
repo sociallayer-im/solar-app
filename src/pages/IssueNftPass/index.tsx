@@ -19,16 +19,14 @@ function Issue() {
     const [SearchParams, _] = useSearchParams()
     const navigate = useNavigate()
     let {state} = useLocation()
+    const { lang } = useContext(LangContext)
 
     // 处理预填接受者
     const presetAcceptor = SearchParams.get('to')
-    const initIssueType = presetAcceptor ? 'issue' : ''
     const initIssues = presetAcceptor ?[presetAcceptor, ''] : ['']
 
 
     state = state || {}
-
-    const {lang} = useContext(LangContext)
 
     useEffect(() => {
         async function getBadgeInfo() {
@@ -79,8 +77,8 @@ function Issue() {
                 <div className='issue-page-wrapper'>
                     <PageBack historyReplace to={fallBackPath}/>
                     <div className={'issue-text'}>
-                        <div className={'title'}>Create Successfully</div>
-                        <div className={'des'}>Your badge have been created</div>
+                        <div className={'title'}>{lang['Create_Nft_success']}</div>
+                        <div className={'des'}>{lang['Create_Nft_success_des']}</div>
                     </div>
                     <IssueTypeSelectorNftPass
                         initIssues={initIssues}

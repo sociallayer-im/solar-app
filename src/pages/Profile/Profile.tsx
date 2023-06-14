@@ -125,26 +125,26 @@ function ProfilePage () {
                             onChange={({ activeKey }) => {
                             setSelectedTab(activeKey as any);
                         }}>
-                            <Tab title="Badge">
+                            <Tab title={lang['Profile_Tab_Received']}>
                                 <AppSubTabs renderAll>
-                                    <Tab title="Basic">
+                                    <Tab title={lang['Profile_Tab_Basic']}>
                                         <ListUserRecognition profile={profile} />
                                     </Tab>
-                                    <Tab title="NFT Pass">
+                                    <Tab title={lang['Profile_Tab_NFTPASS']}>
                                         <ListUserNftpass profile={profile} />
                                     </Tab>
                                 </AppSubTabs>
                             </Tab>
                             { user.id === profile.id ?
-                                <Tab title="Presend">
+                                <Tab title={lang['Profile_Tab_Presend']}>
                                     <ListUserPresend profile={profile} />
                                 </Tab>
                                 : <></>
                             }
-                            <Tab title="Group">
+                            <Tab title={lang['Profile_Tab_Groups']}>
                                 <ListUserGroup profile={profile} />
                             </Tab>
-                            <Tab title="Points">
+                            <Tab title={lang['Profile_Tab_Point']}>
                                 <ListUserPoint profile={profile} />
                             </Tab>
                         </Tabs>

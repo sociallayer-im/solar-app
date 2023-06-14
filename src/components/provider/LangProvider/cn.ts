@@ -43,7 +43,10 @@ const langCN: LangConfig = {
   Profile_User_MindBadge: '颁发徽章',
   Profile_User_IssueBadge: '发送徽章給 ',
   Profile_User_Qrcode_download: '保存到相册',
-  Profile_Tab_Received: '已收到',
+  Profile_Tab_Received: '徽章',
+  Profile_Tab_Point: '点数',
+  Profile_Tab_NFTPASS: 'NFT Pass',
+  Profile_Tab_Basic: '基础徽章',
   Profile_Tab_Minted: '已创建',
   Profile_Tab_Groups: '群组',
   Profile_Tab_Presend: '待接收',
@@ -353,6 +356,24 @@ const langCN: LangConfig = {
   Create_Point_Name_Placeholder: '输入名称，例如：Knowledge Points',
   Create_Point_Symbol_Placeholder: '输入符号，例如：PT',
   Create_Point_Des: '描述(可选)',
+
+  Create_NFT_Title: '创建 NFT Pass',
+  Create_NFT_Image: '图片',
+  Create_NFT_Name: '名称',
+  Create_NFT_Name_Placeholder: '输入名称',
+  Create_NFT_Name_Domain: '域名',
+  Create_NFT_Name_Des: '描述(可选)',
+
+  Create_Nft_success: '创建成功',
+  Create_Nft_success_des: '你的 NFT Pass 已经创建',
+  Issue_Nft_Title: '发送 NFT Pass',
+  Issue_Nft_Start: '开始时间',
+  Issue_Nft_End: '结束时间',
+
+  NFT_Detail_title: 'Nft Pass 详情',
+  NFT_Detail_Des: '描述',
+  NFT_Detail_Check: '签到',
+  NFT_Detail_use: '使用 NFT Pass',
 }
 
 export default langCN

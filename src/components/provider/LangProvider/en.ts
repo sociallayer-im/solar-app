@@ -43,10 +43,13 @@ const langEN = {
   Profile_User_MindBadge: 'Send a badge',
   Profile_User_IssueBadge: 'Send a badge to ',
   Profile_User_Qrcode_download: 'Download',
-  Profile_Tab_Received: 'Received',
+  Profile_Tab_Received: 'Badge',
+  Profile_Tab_Basic: 'Basic',
+  Profile_Tab_NFTPASS: 'NFT Pass',
   Profile_Tab_Minted: 'Created',
+  Profile_Tab_Point: 'Point',
   Profile_Tab_Groups: 'Groups',
-  Profile_Tab_Presend: 'Pending',
+  Profile_Tab_Presend: 'Presend',
   Profile_Show_Wallet: 'Your address is',
   Profile_Show_Email: 'Your email is',
   Profile_Show_Close: 'Close',
@@ -273,7 +276,7 @@ const langEN = {
 
   Empty_Text: 'No Data yet~',
   Empty_No_Badge: 'No badge yet~',
-  Empty_No_Present: 'No presned yet~',
+  Empty_No_Present: 'No presend yet~',
   Empty_No_Group: 'No group yet~',
   Empty_No_Invite: 'No invite yet~',
 
@@ -353,6 +356,24 @@ const langEN = {
   Create_Point_Name_Placeholder: 'Fill in the name, eg. Knowledge Points',
   Create_Point_Symbol_Placeholder: 'Fill in the symbol, eg. PT',
   Create_Point_Des: 'Description (Optional)',
+
+  Create_NFT_Title: 'Create a NFT Pass',
+  Create_NFT_Image: 'Image',
+  Create_NFT_Name: 'Name',
+  Create_NFT_Name_Placeholder: 'Fill in the name',
+  Create_NFT_Name_Domain: 'Domain',
+  Create_NFT_Name_Des: 'Description (Optional)',
+
+  Create_Nft_success: 'Create Successfully',
+  Create_Nft_success_des: 'Your NFT Pass have been created',
+  Issue_Nft_Title: 'Send NFT Pass',
+  Issue_Nft_Start: 'Start date',
+  Issue_Nft_End: 'Expiry date',
+
+  NFT_Detail_title: 'Nft Pass Details',
+  NFT_Detail_Des: 'Description',
+  NFT_Detail_Check: 'Check In',
+  NFT_Detail_use: 'Use the NFT Pass',
 }
 
 export type LangConfig = typeof langEN

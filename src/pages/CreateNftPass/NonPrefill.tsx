@@ -104,18 +104,18 @@ function CreateBadgeNonPrefill() {
         <Layout>
             <div className='create-badge-page'>
                 <div className='create-badge-page-wrapper'>
-                    <PageBack title={ 'Create a NFT Pass' }/>
+                    <PageBack title={ lang['Create_NFT_Title'] }/>
 
                     <div className='create-badge-page-form'>
                         <div className='input-area'>
-                            <div className='input-area-title'>{ 'Image' }</div>
+                            <div className='input-area-title'>{ lang['Create_NFT_Image'] }</div>
                             <UploadImage
                                 imageSelect={ cover }
                                 confirm={(coverUrl) => { setCover(coverUrl) } }/>
                         </div>
 
                         <div className='input-area'>
-                            <div className='input-area-title'>{ 'Name' }</div>
+                            <div className='input-area-title'>{lang['Create_NFT_Name']}</div>
                             <AppInput
                                 clearable
                                 maxLength={ 30 }
@@ -125,12 +125,12 @@ function CreateBadgeNonPrefill() {
                                     { `${badgeName.length}/30` }
                                 </span>
                                 }
-                                placeholder={ 'Naming your NFT Pass' }
+                                placeholder={ lang['Create_NFT_Name_Placeholder'] }
                                 onChange={ (e) => { setBadgeName(e.target.value) } } />
                         </div>
 
                         <div className='input-area'>
-                            <div className='input-area-title'>{ 'Domain' }</div>
+                            <div className='input-area-title'>{ lang['Create_NFT_Name_Domain'] }</div>
                             <AppInput
                                 clearable
                                 value={ domain }
@@ -142,7 +142,7 @@ function CreateBadgeNonPrefill() {
                         </div>
 
                         <div className='input-area'>
-                            <div className='input-area-title'>{ lang['IssueBadge_Reason'] }</div>
+                            <div className='input-area-title'>{ lang['Create_NFT_Name_Des'] }</div>
                             <ReasonInput value={reason}  onChange={ (value) => { setReason(value) }} />
                         </div>
 

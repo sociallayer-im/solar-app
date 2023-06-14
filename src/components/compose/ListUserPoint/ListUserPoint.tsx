@@ -1,13 +1,11 @@
 import React, {useContext, useEffect} from 'react'
 import './ListUserPoint.less'
 import ListUserAssets, {ListUserAssetsMethods} from "../../base/ListUserAssets/ListUserAssets";
-import {Profile, queryNftpass, queryNftPasslet, queryPoint, queryPointItems} from "../../../service/solas";
-import CardNftpass from "../../base/Cards/CardNftpass/CardNftpass";
+import {Profile, queryPoint, queryPointItems} from "../../../service/solas";
 import UserContext from "../../provider/UserProvider/UserContext";
-import CardBadgelet from "../../base/Cards/CardBadgelet/CardBadgelet";
-import CardNftpasslet from "../../base/Cards/CardNftpasslet/CardNftpasslet";
 import CardPoint from "../../base/Cards/CardPoint/CardPoint";
 import CardPointItem from "../../base/Cards/CardPointItem/CardPointItem";
+import LangContext from "../../provider/LangProvider/LangContext";
 
 interface ListUserPointProps {
     profile: Profile
@@ -15,6 +13,7 @@ interface ListUserPointProps {
 
 function ListUserPoint(props: ListUserPointProps) {
     const {user} = useContext(UserContext)
+    const {lang} = useContext(LangContext)
 
     const getPoint = async (page: number) => {
         if (page > 1) return []
@@ -25,7 +24,7 @@ function ListUserPoint(props: ListUserPointProps) {
         return await queryPoint(queryProps)
     }
 
-    const getPointItems= async (page: number) => {
+    const getPointItems = async (page: number) => {
         if (page > 1) return []
         return await queryPointItems({
             owner_id: props.profile.id,
@@ -41,13 +40,13 @@ function ListUserPoint(props: ListUserPointProps) {
     }, [props.profile])
 
     return (<div className={'list-user-point'}>
-        <div className={'list-title'}>Collected</div>
+        <div className={'list-title'}>{lang['Badgelet_List_Title']}</div>
         <ListUserAssets
             queryFcn={getPointItems}
             onRef={listWrapperRefBadgeLet}
             child={(item, key) => <CardPointItem pointitem={item} key={key}/>}/>
 
-        <div className={'list-title margin'}>Created</div>
+        <div className={'list-title margin'}>{lang['Created_List_Title']}</div>
         <ListUserAssets
             queryFcn={getPoint}
             onRef={listWrapperRefBadge}

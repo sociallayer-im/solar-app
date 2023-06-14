@@ -6,6 +6,7 @@ import CardBadge from "../../base/Cards/CardBadge/CardBadge";
 import UserContext from "../../provider/UserProvider/UserContext";
 import CardBadgelet from "../../base/Cards/CardBadgelet/CardBadgelet";
 import CardInvite from "../../base/Cards/CardInvite/CardInvite";
+import LangContext from "../../provider/LangProvider/LangContext";
 
 interface ListUserRecognitionProps {
     profile: Profile
@@ -13,6 +14,7 @@ interface ListUserRecognitionProps {
 
 function ListUserRecognition(props: ListUserRecognitionProps) {
     const {user} = useContext(UserContext)
+    const {lang} = useContext(LangContext)
 
     const getBadge = async (page: number) => {
         const queryProps = props.profile.is_group
@@ -49,13 +51,13 @@ function ListUserRecognition(props: ListUserRecognitionProps) {
     }, [props.profile])
 
     return (<div className={'list-user-recognition'}>
-        <div className={'list-title'}>Collected</div>
+        <div className={'list-title'}>{lang['Badgelet_List_Title']}</div>
         <ListUserAssets
             queryFcn={getBadgelet}
             onRef={listWrapperRefBadgeLet}
             child={(item, key) => <CardBadgelet badgelet={item} key={key}/>}/>
 
-        <div className={'list-title margin'}>Created</div>
+        <div className={'list-title margin'}>{lang['Created_List_Title']}</div>
         <ListUserAssets
             queryFcn={getBadge}
             onRef={listWrapperRefBadge}
