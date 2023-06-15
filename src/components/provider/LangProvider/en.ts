@@ -375,7 +375,12 @@ const langEN = {
   NFT_Detail_Check: 'Check In',
   NFT_Detail_use: 'Use the NFT Pass',
 
-  Point_Detail_Title: 'Point Detail'
+  Point_Detail_Title: 'Point Detail',
+
+  Create_Point_success: 'Create Successfully',
+  Create_Point_success_des: 'Your Points have been created',
+  Issue_Point_Title: 'Send Points',
+  Issue_Point_Point: 'Points',
 }
 
 export type LangConfig = typeof langEN

@@ -4,7 +4,7 @@ import Layout from '../../components/Layout/Layout'
 import PageBack from '../../components/base/PageBack'
 import './IssuePoint.less'
 import LangContext from '../../components/provider/LangProvider/LangContext'
-import solas, {Badge, sendPoint} from '../../service/solas'
+import solas, {Badge, getProfile, sendPoint} from '../../service/solas'
 import DialogsContext from '../../components/provider/DialogProvider/DialogsContext'
 import UserContext from '../../components/provider/UserProvider/UserContext'
 import IssueTypeSelectorPoint, {
@@ -19,6 +19,7 @@ function Issue() {
     const [SearchParams, _] = useSearchParams()
     const navigate = useNavigate()
     let {state} = useLocation()
+    const enhancer = import.meta.env.VITE_SOLAS_DOMAIN
 
     // 处理预填接受者
     const presetAcceptor = SearchParams.get('to')
@@ -56,12 +57,36 @@ function Issue() {
         console.log('checkedIssues', checkedIssues)
 
         const unload = showLoading()
+        let wallet: string[] = []
+        let domain: string[] = []
+        checkedIssues.forEach(e => {
+            if (e.startsWith('Ox')) {
+                wallet.push(e)
+            } else if (e.endsWith(enhancer)) {
+                domain.push(e)
+            } else {
+                domain.push(e + enhancer)
+            }
+        })
+
+        if (wallet.length) {
+            for(let i = 0 ;i< wallet.length; i++) {
+                const profile = await getProfile({address: wallet[i]})
+                if (!profile?.domain) {
+                    showToast('profile no exist')
+                    throw new Error('profile no exist: ' + wallet[i])
+                }
+
+                domain.push(profile?.domain)
+            }
+        }
+
         try {
             const pointItems = await sendPoint({
                 point_id: Number(params.pointId),
                 value: Number(data.points),
                 auth_token: user.authToken || '',
-                receivers: checkedIssues.map(item => {
+                receivers: domain.map((item) => {
                     return {
                         receiver: item,
                         value: Number(data.points)
@@ -89,8 +114,8 @@ function Issue() {
                 <div className='issue-page-wrapper'>
                     <PageBack historyReplace to={fallBackPath}/>
                     <div className={'issue-text'}>
-                        <div className={'title'}>Create Successfully</div>
-                        <div className={'des'}>Your Points have been created</div>
+                        <div className={'title'}>{lang['Create_Point_success']}</div>
+                        <div className={'des'}>{lang['Create_Point_success_des']}</div>
                     </div>
                     <IssueTypeSelectorPoint
                         initIssueType={initIssueType}

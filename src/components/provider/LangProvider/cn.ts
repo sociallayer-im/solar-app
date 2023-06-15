@@ -375,7 +375,12 @@ const langCN: LangConfig = {
   NFT_Detail_Check: '签到',
   NFT_Detail_use: '使用 NFT Pass',
 
-  Point_Detail_Title: '点数详情'
+  Point_Detail_Title: '点数详情',
+
+  Create_Point_success: '创建成功',
+  Create_Point_success_des: '你的点数已经创建',
+  Issue_Point_Title: '发送点数',
+  Issue_Point_Point: '点数',
 }
 
 export default langCN

@@ -1,10 +1,8 @@
-import {useContext, useEffect, useState} from 'react'
+import {useContext, useState} from 'react'
 import './IssueTypeSelectorPoint.less'
-import Toggle from "../../base/Toggle/Toggle";
 import IssuesInput from "../../base/IssuesInput/IssuesInput";
 import AppButton from "../../base/AppButton/AppButton";
 import LangContext from "../../provider/LangProvider/LangContext";
-import { DatePicker } from "baseui/datepicker";
 
 export type IssueType = '' | 'issue' | 'presend'
 
@@ -48,10 +46,10 @@ function IssueTypeSelectorPoint(props: IssueTypeSelectorProps) {
     }
 
     return (<div className={'issue-type-select-point'}>
-        <div className={'title'}>Send the Points</div>
+        <div className={'title'}>{lang['Issue_Point_Title']}</div>
 
         <div className={'item'}>
-            <div className={'item-title'}>Points</div>
+            <div className={'item-title'}>{lang['Issue_Point_Point']}</div>
             <div className={'item-value'}>
                 <input value={points} onChange={handlePointsChange}/>
             </div>
@@ -74,7 +72,7 @@ function IssueTypeSelectorPoint(props: IssueTypeSelectorProps) {
         {/*</div>*/}
 
         <div className={'item'}>
-            <div className={'item-title'}>Select receivers</div>
+            <div className={'item-title'}>{lang['IssueBadge_Address_List_Title']}</div>
         </div>
         <IssuesInput
             value={issues}
