@@ -6,6 +6,7 @@ import UserContext from "../../provider/UserProvider/UserContext";
 import CardPoint from "../../base/Cards/CardPoint/CardPoint";
 import CardPointItem from "../../base/Cards/CardPointItem/CardPointItem";
 import LangContext from "../../provider/LangProvider/LangContext";
+import useEvent, {EVENT} from "../../../hooks/globalEvent";
 
 interface ListUserPointProps {
     profile: Profile
@@ -14,6 +15,7 @@ interface ListUserPointProps {
 function ListUserPoint(props: ListUserPointProps) {
     const {user} = useContext(UserContext)
     const {lang} = useContext(LangContext)
+    const [newItem, _] = useEvent(EVENT.pointItemUpdate)
 
     const getPoint = async (page: number) => {
         if (page > 1) return []
@@ -37,7 +39,7 @@ function ListUserPoint(props: ListUserPointProps) {
     useEffect(() => {
         !!listWrapperRefBadge.current && listWrapperRefBadge.current!.refresh()
         !!listWrapperRefBadgeLet.current && listWrapperRefBadgeLet.current!.refresh()
-    }, [props.profile])
+    }, [props.profile, newItem])
 
     return (<div className={'list-user-point'}>
         <div className={'list-title'}>{lang['Badgelet_List_Title']}</div>

@@ -1267,6 +1267,41 @@ export async function queryPointItemDetail(props: QueryPointDetail) {
     return res.data.point_item as PointItem
 }
 
+export interface AcceptPointProp {
+    point_item_id: number
+    auth_token: string
+}
+
+export async function acceptPoint (props: AcceptPointProp) {
+    checkAuth(props)
+
+    const res: any = await fetch.post({
+        url: `${api}/point/accept`,
+        data: props
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message || 'Accept fail')
+    }
+
+    return res.data.point_item as PointItem
+}
+
+export async function rejectPoint (props: AcceptPointProp) {
+    checkAuth(props)
+
+    const res: any = await fetch.post({
+        url: `${api}/point/reject`,
+        data: props
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message || 'Reject fail')
+    }
+
+    return res.data.point_item as PointItem
+}
+
 
 export default {
     login,
@@ -1316,5 +1351,7 @@ export default {
     sendPoint,
     queryPointDetail,
     queryPointItemDetail,
-    queryPointItems
+    queryPointItems,
+    rejectPoint,
+    acceptPoint
 }
