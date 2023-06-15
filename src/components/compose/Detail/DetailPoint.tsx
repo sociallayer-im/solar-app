@@ -20,6 +20,7 @@ import DetailScrollBox from './atoms/DetailScrollBox/DetailScrollBox'
 import DetailCreator from './atoms/DetailCreator/DetailCreator'
 import useTime from '../../../hooks/formatTime'
 import {useNavigate} from 'react-router-dom'
+import PointCover from "./atoms/PointCover";
 
 
 export interface DetailBadgeletProps {
@@ -48,7 +49,7 @@ function DetailPoint(props: DetailBadgeletProps) {
             <DetailHeader
                 title={lang['Point_Detail_Title']}
                 onClose={props.handleClose}/>
-            <DetailCover src={point.image_url} />
+            <PointCover value={'Value'} src={point.image_url}/>
             <DetailName> {point.title} </DetailName>
             <DetailCreator isGroup={!!point.group} profile={point.group || point.sender}/>
             <DetailScrollBox style={{maxHeight: swiperMaxHeight - 60 + 'px', marginLeft: 0}}>
