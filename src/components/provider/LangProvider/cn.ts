@@ -374,6 +374,8 @@ const langCN: LangConfig = {
   NFT_Detail_Des: '描述',
   NFT_Detail_Check: '签到',
   NFT_Detail_use: '使用 NFT Pass',
+
+  Point_Detail_Title: '点数详情'
 }
 
 export default langCN

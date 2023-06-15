@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useState } from 'react'
-import {Badge, Badgelet, Invite, Presend, Profile, Group, NftPass} from '../../../service/solas'
+import {Badge, Badgelet, Invite, Presend, Profile, Group, NftPass, Point} from '../../../service/solas'
 import DialogsContext, { DialogsContextType } from './DialogsContext'
 import DialogDomainConfirm, { DialogConfirmDomainProps } from '../../base/Dialog/DialogConfirmDomain/DialogConfirmDomain'
 import DialogConfirm, { DialogConfirmProps } from '../../base/Dialog/DialogConfirm/DialogConfirm'
@@ -16,6 +16,7 @@ import DetailInvite from '../../compose/Detail/DetailInvite'
 import DialogGroupSetting from '../../base/Dialog/DialogGroupSetting/DialogGroupSetting'
 import DetailNftpass from "../../compose/Detail/DetailNftpass/DetailNftpass";
 import DetailNftpasslet from "../../compose/Detail/DetailNftpasslet";
+import DetailPoint from "../../compose/Detail/DetailPoint";
 
 export interface DialogProviderProps {
     children: ReactNode
@@ -263,6 +264,32 @@ function DialogProvider (props: DialogProviderProps) {
         setDialogsGroup({ ...dialogsGroup })
     }
 
+    const showPoint = (props: Point) => {
+        const id = genID()
+        dialogsGroup.dialogs.push({
+            id,
+            content: () => {
+                const close = () => {
+                    closeDialogByID(id)
+                }
+
+                const dialogProps = {
+                    key: id.toString(),
+                    size: [460, 'auto'],
+                    handleClose: close,
+                    position: 'bottom' as const
+                }
+
+                return (
+                    <Dialog { ...dialogProps } >
+                        { (close) => <DetailPoint point={ props } handleClose={ close } /> }
+                    </Dialog>
+                )
+            }
+        })
+        setDialogsGroup({ ...dialogsGroup })
+    }
+
     const showNftpasslet = (props: Badgelet) => {
         const id = genID()
         dialogsGroup.dialogs.push({
@@ -485,7 +512,8 @@ function DialogProvider (props: DialogProviderProps) {
         showGroupSetting,
         openConfirmDialog,
         showNftpass,
-        showNftpasslet
+        showNftpasslet,
+        showPoint
     }
    // todo:  pint 详情弹窗
     return (

@@ -22,6 +22,7 @@ import ListUserRecognition from "../../components/compose/ListUserRecognition/Li
 import ListUserPresend from "../../components/compose/ListUserPresend";
 import ListUserNftpass from "../../components/compose/ListUserNftpass/ListUserNftpass";
 import AppSubTabs from "../../components/base/AppSubTabs";
+import ListGroupInvite from "../../components/compose/ListGroupInvite";
 
 
 function GroupPage () {
@@ -115,23 +116,29 @@ function GroupPage () {
                         onChange={({ activeKey }) => {
                             setSelectedTab(activeKey as any);
                         }}>
-                        <Tab title={'Badge'}>
+                        <Tab title={lang['Profile_Tab_Received']}>
                             <AppSubTabs renderAll>
-                                <Tab title="Basic">
+                                <Tab title={lang['Profile_Tab_Basic']}>
                                     <ListUserRecognition profile={profile} />
                                 </Tab>
-                                <Tab title="NFT Pass">
+                                <Tab title={lang['Profile_Tab_NFTPASS']}>
                                     <ListUserNftpass profile={profile} />
                                 </Tab>
+                                { profile.group_owner_id === user.id ?
+                                    <Tab title={lang['Group_detail_tabs_Invite']}>
+                                        <ListGroupInvite group={profile} />
+                                    </Tab>
+                                    : <></>
+                                }
                             </AppSubTabs>
                         </Tab>
                         { user.id === profile.group_owner_id ?
-                            <Tab title="Presend">
+                            <Tab title={lang['Profile_Tab_Presend']}>
                                 <ListUserPresend profile={profile} />
                             </Tab>
                             : <></>
                         }
-                        <Tab title={'Member'}>
+                        <Tab title={lang['Group_detail_tabs_member']}>
                             <ListGroupMember group={ profile }/>
                         </Tab>
                     </Tabs>

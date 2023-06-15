@@ -124,7 +124,7 @@ function CreateBadge() {
                         </div>
 
                         <div className='input-area'>
-                            <div className='input-area-title'>{lang['IssueBadge_Reason']}</div>
+                            <div className='input-area-title'>{lang['Create_Point_Des']}</div>
                             <ReasonInput value={reason} onChange={(value) => {
                                 setReason(value)
                             }}/>

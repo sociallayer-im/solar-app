@@ -374,6 +374,8 @@ const langEN = {
   NFT_Detail_Des: 'Description',
   NFT_Detail_Check: 'Check In',
   NFT_Detail_use: 'Use the NFT Pass',
+
+  Point_Detail_Title: 'Point Detail'
 }
 
 export type LangConfig = typeof langEN

@@ -8,6 +8,7 @@ export interface DialogsContextType {
     openConfirmDialog: (...rest: any[]) => any,
     openDialog: (...rest: any[]) => any,
     showBadgelet: (...rest: any[]) => any,
+    showPoint: (...rest: any[]) => any,
     showNftpasslet: (...rest: any[]) => any,
     showPresend: (...rest: any[]) => any,
     showBadge: (...rest: any[]) => any
@@ -27,6 +28,7 @@ const DialogsContext  = createContext<DialogsContextType>({
     openConfirmDialog: () => {},
     openDialog: () => {},
     showBadgelet: () => {},
+    showPoint: () => {},
     showPresend: () => {},
     showBadge: () => {},
     showNftpass: () => {},

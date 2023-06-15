@@ -89,12 +89,12 @@ export interface CardBadgeletProps {
 
 function CardPoint(props: CardBadgeletProps) {
     const [css] = useStyletron()
-    const { showBadgelet } = useContext(DialogsContext)
+    const { showPoint } = useContext(DialogsContext)
     const { user } = useContext(UserContext)
 
     const isOwner = user.id === props.point.sender.id
 
-    return (<div className={ css(style.wrapper) } onClick={ () => { }}>
+    return (<div className={ css(style.wrapper) } onClick={ () => { showPoint(props.point) }}>
                 <div className={css(style.coverBg)}>
                     <img className={ css(style.img) } src={ props.point.image_url } alt=""/>
                 </div>

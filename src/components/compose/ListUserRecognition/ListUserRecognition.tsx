@@ -5,7 +5,6 @@ import solas, {Profile} from "../../../service/solas";
 import CardBadge from "../../base/Cards/CardBadge/CardBadge";
 import UserContext from "../../provider/UserProvider/UserContext";
 import CardBadgelet from "../../base/Cards/CardBadgelet/CardBadgelet";
-import CardInvite from "../../base/Cards/CardInvite/CardInvite";
 import LangContext from "../../provider/LangProvider/LangContext";
 
 interface ListUserRecognitionProps {
@@ -62,19 +61,6 @@ function ListUserRecognition(props: ListUserRecognitionProps) {
             queryFcn={getBadge}
             onRef={listWrapperRefBadge}
             child={(item, key) => <CardBadge badge={item} key={key}/>}/>
-
-        {props.profile.is_group && props.profile.group_owner_id === user.id &&
-            <>
-                <div className={'list-title margin'}>Invite</div>
-                <ListUserAssets
-                    queryFcn={getInvite}
-                    onRef={listWrapperRefInvite}
-                    child={(item, key) => <CardInvite
-                        invite={item}
-                        groupName={props.profile.username || ''}
-                        groupCover={props.profile.image_url || ''} key={key}/>}/>
-            </>
-        }
     </div>)
 }
 
