@@ -15,10 +15,6 @@ function DialogNftCheckIn(props: DialogNftCheckInProps) {
     const [canScan, setCanScan] = useState(true)
     const {showToast} = useContext(DialogsContext)
 
-    // useEffect(()=> {
-    //     setCanScan(true)
-    // }, [])
-
     const handleScanResult = (res: string) => {
         setCanScan(false)
         console.log('scan', res)
