@@ -4,7 +4,6 @@ import LangContext from "../../../provider/LangProvider/LangContext";
 import {useContext, useState} from "react";
 import ScanQrcode from "../../ScanQrcode/ScanQrcode";
 import DialogsContext from "../../../provider/DialogProvider/DialogsContext";
-import AppButton from "../../AppButton/AppButton";
 
 export interface DialogNftCheckInProps {
     handleClose: () => any
@@ -45,7 +44,9 @@ function DialogNftCheckIn(props: DialogNftCheckInProps) {
             <ScanQrcode enable={canScan} onResult={(res) => {
                 handleScanResult(res)
             }}/>
-            <div role={"button"} onClick={props.handleClose}><Delete  size={30}/></div>
+            {isMobile &&
+                <div role={"button"} onClick={props.handleClose}><Delete size={30}/></div>
+            }
         </div>
     </div>
 }
