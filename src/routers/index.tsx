@@ -42,29 +42,35 @@ function AppRouter () {
     return (
         <Suspense>
             <Routes>
-                <Route path="/" element={<Home />}></Route>
-                <Route path="/profile/:username" element={<Profile />}></Route>
-                <Route path="/profile-edit/:username" element={<ProfileEdit />}></Route>
-                <Route path="/group/:groupname" element={<Group />}></Route>
-                <Route path="/group-edit/:groupname" element={<GroupEdit />}></Route>
-                <Route path="/login" element={<Login />}></Route>
-                <Route path="/regist" element={<Regist />}></Route>
-                <Route path="/create-group" element={<RegistGroup />}></Route>
-                <Route path="/create-badge" element={<CreateBadge />}></Route>
-                <Route path="/create-point" element={<CreatePoint />}></Route>
-                <Route path="/create-nftpass" element={<CreateNftPass />}></Route>
-                <Route path="/issue-badge/:badgeId" element={<IssueBadge />}></Route>
-                <Route path="/issue-point/:pointId" element={<IssuePoint />}></Route>
-                <Route path="/issue-nftpass/:nftpassId" element={<IssueNftPass />}></Route>
-                <Route path="/invite-create/:groupId" element={<Invite />}></Route>
-                <Route path="/issue-success" element={<IssueSuccess />}></Route>
-                <Route path="/badgelet/:badgeletId" element={<Home />}></Route>
-                <Route path="/presend/:presendId" element={<Home />}></Route>
-                <Route path="/nftpasslet/:nftpassletId" element={<Home />}></Route>
-                <Route path="/invite/:groupId/:inviteId" element={<Home />}></Route>
-                <Route path="/search/:keyword" element={<Search />}></Route>
-                <Route path="/event/:tag" element={<Event />}></Route>
-                <Route path="*" element={<Error />}></Route>
+                <Route path="/" element={<Home />} />
+                <Route path="/profile/:username" element={<Profile />}/>
+                <Route path="/profile-edit/:username" element={<ProfileEdit />} />
+                <Route path="/group/:groupname" element={<Group />} />
+                <Route path="/group-edit/:groupname" element={<GroupEdit />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/regist" element={<Regist />} />
+                <Route path="/create-group" element={<RegistGroup />} />
+                <Route path="/create-badge" element={<CreateBadge />} />
+                <Route path="/create-point" element={<CreatePoint />} />
+                <Route path="/create-nftpass" element={<CreateNftPass />} />
+                <Route path="/issue-badge/:badgeId" element={<IssueBadge />} />
+                <Route path="/issue-point/:pointId" element={<IssuePoint />} />
+                <Route path="/issue-nftpass/:nftpassId" element={<IssueNftPass />} />
+                <Route path="/invite-create/:groupId" element={<Invite />} />
+                <Route path="/issue-success" element={<IssueSuccess />} />
+
+                <Route path="/badgelet/:badgeletId" element={<Home />} />
+                <Route path="/presend/:presendId" element={<Home />} />
+                <Route path="/invite/:groupId/:inviteId" element={<Home />} />
+
+                <Route path="/nftpasslet/:nftpassletId" element={<Home />} />
+                <Route path="/nftpass/:nftpassId" element={<Home />} />
+                <Route path="/point/:pointId" element={<Home />} />
+                <Route path="/pointItem/:pointItemId" element={<Home />} />
+
+                <Route path="/search/:keyword" element={<Search />} />
+                <Route path="/event/:tag" element={<Event />} />
+                <Route path="*" element={<Error />} />
             </Routes>
         </Suspense>
     )

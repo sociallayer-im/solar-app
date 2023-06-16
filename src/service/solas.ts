@@ -487,6 +487,21 @@ export async function queryBadgeletDetail(props: QueryBadgeletDetailProps): Prom
     return res.data.badgelet
 }
 
+export async function queryNftPassDetail(props: QueryBadgeletDetailProps): Promise<NftPass> {
+    const res = await fetch.get({
+        url: `${api}/badge/get`,
+        data: {
+            id: props.id,
+        }
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+
+    return res.data.badge as NftPass
+}
+
 export interface UploadImageProps {
     uploader: string,
     file: any,
@@ -1355,5 +1370,7 @@ export default {
     queryPointItems,
     rejectPoint,
     acceptPoint,
-    queryNftPasslet
+    queryNftPasslet,
+    queryNftpass,
+    queryNftPassDetail,
 }

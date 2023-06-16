@@ -19,6 +19,7 @@ import DetailDes from '../atoms/DetailDes/DetailDes'
 import './DetailNftpass.less'
 import SwiperPagination from '../../../base/SwiperPagination/SwiperPagination'
 import DialogsContext from "../../../provider/DialogProvider/DialogsContext";
+import useEvent, {EVENT} from "../../../../hooks/globalEvent";
 
 //HorizontalList deps
 import {Swiper, SwiperSlide} from 'swiper/react'
@@ -41,6 +42,7 @@ function DetailNftpass(props: DetailBadgeProps) {
     const swiper = useRef<any>(null)
     const formatTime = useTime()
     const swiperIndex = useRef(0)
+
 
     useEffect(() => {
         async function getItems() {

@@ -6,6 +6,7 @@ import CardNftpass from "../../base/Cards/CardNftpass/CardNftpass";
 import UserContext from "../../provider/UserProvider/UserContext";
 import CardNftpasslet from "../../base/Cards/CardNftpasslet/CardNftpasslet";
 import LangContext from "../../provider/LangProvider/LangContext";
+import useEvent, {EVENT} from "../../../hooks/globalEvent";
 
 interface ListUserNftpassProps {
     profile: Profile
@@ -14,6 +15,7 @@ interface ListUserNftpassProps {
 function ListUserNftpass(props: ListUserNftpassProps) {
     const {user} = useContext(UserContext)
     const {lang} = useContext(LangContext)
+    const [needUpdate, _] = useEvent(EVENT.nftpassItemUpdate)
 
     const getNftpass = async (page: number) => {
         const queryProps = props.profile.is_group
@@ -37,7 +39,7 @@ function ListUserNftpass(props: ListUserNftpassProps) {
     useEffect(() => {
         !!listWrapperRefBadge.current && listWrapperRefBadge.current!.refresh()
         !!listWrapperRefBadgeLet.current && listWrapperRefBadgeLet.current!.refresh()
-    }, [props.profile])
+    }, [props.profile, needUpdate])
 
     return (<div className={'list-user-nftpass'}>
         <div className={'list-title'}>{lang['Badgelet_List_Title']}</div>

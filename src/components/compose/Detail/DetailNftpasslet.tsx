@@ -1,11 +1,10 @@
 import LangContext from '../../provider/LangProvider/LangContext'
 import UserContext from '../../provider/UserProvider/UserContext'
 import DialogsContext from '../../provider/DialogProvider/DialogsContext'
-import {useContext, useEffect, useState} from 'react'
+import {useContext, useState} from 'react'
 import DetailWrapper from './atoms/DetailWrapper/DetailWrapper'
 import usePicture from '../../../hooks/pictrue'
 import DetailHeader from './atoms/DetailHeader'
-import DetailBadgeletMenu from './atoms/DetalBadgeletMenu'
 import DetailBadgeletPrivateMark from './atoms/DetailBadgeletPriviateMark'
 import DetailCover from './atoms/DetailCover'
 import DetailName from './atoms/DetailName'
@@ -75,8 +74,7 @@ function DetailNftpasslet(props: DetailNftpassletProps) {
     const {user} = useContext(UserContext)
     const {openConnectWalletDialog, showLoading, showToast} = useContext(DialogsContext)
     const {defaultAvatar} = usePicture()
-    const [_1, emitUpdate] = useEvent(EVENT.badgeletListUpdate)
-    const [needUpdate, _2] = useEvent(EVENT.badgeletDetailUpdate)
+    const [_, emitUpdate] = useEvent(EVENT.nftpassItemUpdate)
     const [nftpasslet, setNftpasslet] = useState(props.nftpasslet)
     const isOwner = user.id === props.nftpasslet.receiver.id
     const formatTime = useTime()
@@ -88,11 +86,6 @@ function DetailNftpasslet(props: DetailNftpassletProps) {
         setNftpasslet(newBadgelet)
     }
 
-    useEffect(() => {
-        if (needUpdate) {
-            upDateBadgelet()
-        }
-    }, [needUpdate])
 
     const handleAccept = async () => {
         const unload = showLoading()
@@ -223,13 +216,13 @@ function DetailNftpasslet(props: DetailNftpassletProps) {
                                     onClick={() => {
                                         setShowQrcode(true)
                                     }}>
-                                    { lang['NFT_Detail_use'] }
+                                    {lang['NFT_Detail_use']}
                                 </AppButton>
                             }
                         </BtnGroup>
                     </>
                     : <>
-                        <NftpassQrcode nftpasslet={props.nftpasslet} />
+                        <NftpassQrcode nftpasslet={props.nftpasslet}/>
                         <BtnGroup>
                             <AppButton
                                 kind={'secondary'}
