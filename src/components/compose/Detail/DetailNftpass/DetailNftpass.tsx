@@ -18,6 +18,7 @@ import ReasonText from '../../../base/ReasonText/ReasonText'
 import DetailDes from '../atoms/DetailDes/DetailDes'
 import './DetailNftpass.less'
 import SwiperPagination from '../../../base/SwiperPagination/SwiperPagination'
+import DialogsContext from "../../../provider/DialogProvider/DialogsContext";
 
 //HorizontalList deps
 import {Swiper, SwiperSlide} from 'swiper/react'
@@ -33,21 +34,22 @@ export interface DetailBadgeProps {
 function DetailNftpass(props: DetailBadgeProps) {
     const {lang} = useContext(LangContext)
     const {user} = useContext(UserContext)
+    const {showCheckIn} = useContext(DialogsContext)
     const {defaultAvatar} = usePicture()
     const navigate = useNavigate()
-    const [pointItems, setPointItems] = useState<NftPasslet[]>([])
+    const [nftPasslets, setNftPasslet] = useState<NftPasslet[]>([])
     const swiper = useRef<any>(null)
     const formatTime = useTime()
     const swiperIndex = useRef(0)
 
     useEffect(() => {
         async function getItems() {
-            const pointItems = await solas.queryNftPasslet({badge_id: props.nftpass.id, page: 1})
-            let pointItemsAccepted = pointItems.filter(item => {
+            const nftpassLets = await solas.queryNftPasslet({badge_id: props.nftpass.id, page: 1})
+            let nftpassLetsAccepted = nftpassLets.filter(item => {
                 return item.status === 'accepted'
             })
 
-            setPointItems(pointItemsAccepted)
+            setNftPasslet(nftpassLetsAccepted)
         }
 
         getItems()
@@ -69,7 +71,7 @@ function DetailNftpass(props: DetailBadgeProps) {
             <DetailCreator isGroup={!!props.nftpass.group}
                            profile={props.nftpass.group || props.nftpass.sender}></DetailCreator>
 
-            {pointItems.length > 0 ?
+            {nftPasslets.length > 0 ?
                 <div style={{width: '100%', overflow: 'hidden', maxHeight: swiperMaxHeight + 'px'}}>
                     <Swiper
                         ref={swiper}
@@ -78,27 +80,27 @@ function DetailNftpass(props: DetailBadgeProps) {
                         className='badge-detail-swiper'
                         onSlideChange={(swiper) => swiperIndex.current = swiper.activeIndex}
                         slidesPerView={'auto'}>
-                        <SwiperPagination total={pointItems.length} showNumber={3}/>
+                        <SwiperPagination total={nftPasslets.length} showNumber={3}/>
                         {
-                            pointItems.map((pointItem, index) =>
-                                <SwiperSlide className='badge-detail-swiper-slide' key={pointItem.id}>
+                            nftPasslets.map((nft, index) =>
+                                <SwiperSlide className='badge-detail-swiper-slide' key={nft.id}>
                                     <DetailScrollBox style={{maxHeight: swiperMaxHeight - 40 + 'px'}}>
-                                        {!!pointItem.content &&
+                                        {!!nft.content &&
                                             <DetailDes>
-                                                <ReasonText text={pointItem.content}/>
+                                                <ReasonText text={nft.content}/>
                                             </DetailDes>
                                         }
                                         <DetailArea
                                             onClose={props.handleClose}
                                             title={lang['BadgeDialog_Label_Issuees']}
-                                            content={pointItem.owner.domain
-                                                ? pointItem.owner.domain.split('.')[0]
+                                            content={nft.owner.domain
+                                                ? nft.owner.domain.split('.')[0]
                                                 : ''
                                             }
-                                            navigate={pointItem.owner.domain
-                                                ? `/profile/${pointItem.owner.domain?.split('.')[0]}`
+                                            navigate={nft.owner.domain
+                                                ? `/profile/${nft.owner.domain?.split('.')[0]}`
                                                 : '#'}
-                                            image={pointItem.owner.image_url || defaultAvatar(pointItem.owner.id)}/>
+                                            image={nft.owner.image_url || defaultAvatar(nft.owner.id)}/>
 
                                         <DetailArea
                                             title={lang['BadgeDialog_Label_Token']}
@@ -106,7 +108,7 @@ function DetailNftpass(props: DetailBadgeProps) {
 
                                         <DetailArea
                                             title={lang['BadgeDialog_Label_Creat_Time']}
-                                            content={formatTime(pointItem.created_at)}/>
+                                            content={formatTime(nft.created_at)}/>
                                     </DetailScrollBox>
                                 </SwiperSlide>
                             )
@@ -136,6 +138,7 @@ function DetailNftpass(props: DetailBadgeProps) {
                 {loginUserIsSender &&
                     <>
                         <AppButton size={BTN_SIZE.compact} onClick={() => {
+                            showCheckIn(props.nftpass.id)
                         }} kind={BTN_KIND.primary}>
                             {lang['NFT_Detail_Check']}
                         </AppButton>
