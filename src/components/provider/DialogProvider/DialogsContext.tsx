@@ -18,6 +18,7 @@ export interface DialogsContextType {
     showCropper: (...rest: any[]) => any,
     showInvite: (...rest: any[]) => any,
     showGroupSetting: (...rest: any[]) => any,
+    showCheckIn: (...rest: any[]) => any,
     clean: (msg?: string) => any
 }
 
@@ -39,6 +40,7 @@ const DialogsContext  = createContext<DialogsContextType>({
     showCropper: () => {},
     showInvite: () => {},
     showGroupSetting: () => {},
+    showCheckIn: () => {},
     clean: (msg?: string) => {}
 })
 

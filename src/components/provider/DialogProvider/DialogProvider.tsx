@@ -18,6 +18,7 @@ import DetailNftpass from "../../compose/Detail/DetailNftpass/DetailNftpass";
 import DetailNftpasslet from "../../compose/Detail/DetailNftpasslet";
 import DetailPoint from "../../compose/Detail/DetailPoint";
 import DetailPointItem from "../../compose/Detail/DetailPointItem";
+import DialogNftCheckIn from "../../base/Dialog/DialogNftCheckIn/DialogNftCheckIn";
 
 export interface DialogProviderProps {
     children: ReactNode
@@ -523,6 +524,31 @@ function DialogProvider (props: DialogProviderProps) {
         setDialogsGroup({ ...dialogsGroup })
     }
 
+    const showCheckIn = (nftpassId: number) => {
+        const id = genID()
+        dialogsGroup.dialogs.push({
+            id,
+            content: () => {
+                const close = () => {
+                    closeDialogByID(id)
+                }
+
+                const dialogProps = {
+                    key: id.toString(),
+                    size: ['100%', '100%'],
+                    handleClose: close
+                }
+
+                return (
+                    <Dialog { ...dialogProps } >
+                        { (close) => <DialogNftCheckIn nftPassId={nftpassId} handleClose={close} /> }
+                    </Dialog>
+                )
+            }
+        })
+        setDialogsGroup({ ...dialogsGroup })
+    }
+
     const contextValue: DialogsContextType = {
         openConnectWalletDialog,
         showLoading,
@@ -541,7 +567,8 @@ function DialogProvider (props: DialogProviderProps) {
         showNftpass,
         showNftpasslet,
         showPoint,
-        showPointItem
+        showPointItem,
+        showCheckIn
     }
    // todo:  pint 详情弹窗
     return (

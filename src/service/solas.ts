@@ -257,7 +257,8 @@ export interface QueryBadgeletProps {
     id?: number,
     receiver_id?: number,
     page: number,
-    show_hidden?: number
+    show_hidden?: number,
+    badge_id?:number
 }
 
 export interface Badgelet {
@@ -305,7 +306,7 @@ export async function queryNftPasslet(props: QueryBadgeletProps): Promise<NftPas
         throw new Error(res.data.message)
     }
 
-    const list: Badgelet[] = res.data.badgelets
+    const list: NftPasslet[] = res.data.badgelets
 
     return list.filter(item => {
         return item.status !== 'rejected'
@@ -1353,5 +1354,6 @@ export default {
     queryPointItemDetail,
     queryPointItems,
     rejectPoint,
-    acceptPoint
+    acceptPoint,
+    queryNftPasslet
 }
