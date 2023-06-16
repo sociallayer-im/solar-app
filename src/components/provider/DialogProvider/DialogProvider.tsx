@@ -526,6 +526,7 @@ function DialogProvider (props: DialogProviderProps) {
 
     const showCheckIn = (nftpassId: number) => {
         const id = genID()
+        const width = window.innerWidth
         dialogsGroup.dialogs.push({
             id,
             content: () => {
@@ -535,7 +536,7 @@ function DialogProvider (props: DialogProviderProps) {
 
                 const dialogProps = {
                     key: id.toString(),
-                    size: ['100%', '100%'],
+                    size: width < 500 ?  ['100%', '100%'] :  [500, 'auto'],
                     handleClose: close
                 }
 

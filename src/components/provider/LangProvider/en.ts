@@ -381,6 +381,8 @@ const langEN = {
   Create_Point_success_des: 'Your Points have been created',
   Issue_Point_Title: 'Send Points',
   Issue_Point_Point: 'Points',
+
+  Dialog_Check_In_Title: 'Check In'
 }
 
 export type LangConfig = typeof langEN

@@ -381,6 +381,8 @@ const langCN: LangConfig = {
   Create_Point_success_des: '你的点数已经创建',
   Issue_Point_Title: '发送点数',
   Issue_Point_Point: '点数',
+
+  Dialog_Check_In_Title: '签到'
 }
 
 export default langCN
