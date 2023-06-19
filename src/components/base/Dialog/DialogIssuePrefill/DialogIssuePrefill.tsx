@@ -53,28 +53,28 @@ function DialogIssuePrefill(props: DialogIssuePrefillProps) {
                 <div className='create-badge-btn' onClick={e => {
                     gotoCreateBadge('badge')
                 }}>
-                    <img src="/images/create_badge_icon.png" alt=""/>
+                    <img src="/images/badge_type/basic.png" alt=""/>
                     <div>
                         <div>{lang['Badgebook_Dialog_Recognition_Badge']}</div>
                         <div className={'des'}>{lang['Badgebook_Dialog_Recognition_Des']}</div>
                     </div>
                 </div>
                 <div className='create-badge-btn' onClick={e => {
-                    gotoCreateBadge('point')
-                }}>
-                    <img src="/images/create_badge_icon.png" alt=""/>
-                    <div>
-                        <div>{lang['Badgebook_Dialog_Points']} <span className={'new-mark'}>NEW</span></div>
-                        <div className={'des'}>{lang['Badgebook_Dialog_Points_Des']}</div>
-                    </div>
-                </div>
-                <div className='create-badge-btn' onClick={e => {
                     gotoCreateBadge('nftpass')
                 }}>
-                    <img src="/images/create_badge_icon.png" alt=""/>
+                    <img src="/images/badge_type/nftpass.png" alt=""/>
                     <div>
                         <div>{lang['Badgebook_Dialog_NFT_Pass']} <span className={'new-mark'}>NEW</span></div>
                         <div className={'des'}>{lang['Badgebook_Dialog_NFT_Pass_Des']}</div>
+                    </div>
+                </div>
+                <div className='create-badge-btn' onClick={e => {
+                    gotoCreateBadge('point')
+                }}>
+                    <img src="/images/badge_type/point.png" alt=""/>
+                    <div>
+                        <div>{lang['Badgebook_Dialog_Points']} <span className={'new-mark'}>NEW</span></div>
+                        <div className={'des'}>{lang['Badgebook_Dialog_Points_Des']}</div>
                     </div>
                 </div>
             </>

@@ -1,7 +1,7 @@
 import LangContext from '../../provider/LangProvider/LangContext'
 import UserContext from '../../provider/UserProvider/UserContext'
 import DialogsContext from '../../provider/DialogProvider/DialogsContext'
-import {useContext, useEffect, useState} from 'react'
+import {useContext, useEffect, useRef, useState} from 'react'
 import DetailWrapper from './atoms/DetailWrapper/DetailWrapper'
 import usePicture from '../../../hooks/pictrue'
 import DetailHeader from './atoms/DetailHeader'
@@ -19,6 +19,13 @@ import useTime from '../../../hooks/formatTime'
 import {useNavigate} from 'react-router-dom'
 import PointCover from "./atoms/PointCover";
 
+//HorizontalList deps
+import { Swiper, SwiperSlide, useSwiper } from 'swiper/react'
+import { Pagination } from 'swiper'
+import 'swiper/css'
+import 'swiper/css/pagination'
+import SwiperPagination from "../../base/SwiperPagination/SwiperPagination";
+
 
 export interface DetailBadgeletProps {
     pointItem: PointItem,
@@ -33,13 +40,22 @@ function DetailPointItem(props: DetailBadgeletProps) {
     const [_1, emitUpdate] = useEvent(EVENT.pointItemUpdate)
     const [needUpdate, _2] = useEvent(EVENT.pointItemListUpdate)
     const [pointItem, setPointItem] = useState(props.pointItem)
+    const [pointItemList, setPointItemList] = useState<PointItem[]>([])
     const isOwner = user.id === props.pointItem.owner.id
     const formatTime = useTime()
     const navigate = useNavigate()
+    const swiper = useRef<any>(null)
+    const swiperIndex = useRef(0)
+
 
     const upDateBadgelet = async () => {
         const newPointItem = await solas.queryPointItemDetail({id: props.pointItem.id})
         setPointItem(newPointItem)
+    }
+
+    const getItemsOfSamePoint = async () => {
+        const items = await solas.queryPointItems({point_id: props.pointItem.point.id})
+        setPointItemList(items)
     }
 
     useEffect(() => {
@@ -47,6 +63,12 @@ function DetailPointItem(props: DetailBadgeletProps) {
             upDateBadgelet()
         }
     }, [needUpdate])
+
+    useEffect(() => {
+        getItemsOfSamePoint()
+    },[])
+
+    // todo pointitem 详情
 
     const handleAccept = async () => {
         const unload = showLoading()
@@ -113,55 +135,71 @@ function DetailPointItem(props: DetailBadgeletProps) {
     </>
 
     const swiperMaxHeight = window.innerHeight - 320
-    console.log('props.pointItem', props.pointItem)
+    console.log('props.pointItem', pointItem)
     return (
         <DetailWrapper>
             <DetailHeader
                 title={lang['Point_Detail_Title']}
                 onClose={props.handleClose}/>
 
-            <PointCover value={props.pointItem.value} src={props.pointItem.point.image_url}/>
-            <DetailName> {props.pointItem.point.title} </DetailName>
-            <DetailCreator isGroup={!!props.pointItem.point.group}
-                           profile={props.pointItem.point.group || props.pointItem.sender}/>
+            <PointCover value={pointItem.value} src={pointItem.point.image_url}/>
+            <DetailName> {pointItem.point.title} </DetailName>
+            <DetailCreator isGroup={!!pointItem.point.group}
+                           profile={pointItem.point.group || pointItem.sender}/>
 
+            <div style={{width: '100%', overflow: 'hidden', maxHeight: swiperMaxHeight + 'px'}}>
+                <Swiper
+                    ref={ swiper }
+                    modules={ [Pagination] }
+                    spaceBetween={ 12 }
+                    className='badge-detail-swiper'
+                    onSlideChange={ (swiper) => swiperIndex.current = swiper.activeIndex }
+                    slidesPerView={'auto'}>
+                    <SwiperPagination total={ pointItemList.length } showNumber={3} />
+                    {
+                        pointItemList.map((item, index) =>
+                            <SwiperSlide className='badge-detail-swiper-slide' key={ item.id }>
+                                <DetailScrollBox style={{maxHeight: swiperMaxHeight - 60 + 'px', marginLeft: 0}}>
+                                    {
+                                        !!item.point.content &&
+                                        <DetailDes>
+                                            <ReasonText text={item.point.content}></ReasonText>
+                                        </DetailDes>
+                                    }
 
-            <DetailScrollBox style={{maxHeight: swiperMaxHeight - 60 + 'px', marginLeft: 0}}>
-                {
-                    !!props.pointItem.point.content &&
-                    <DetailDes>
-                        <ReasonText text={props.pointItem.point.content}></ReasonText>
-                    </DetailDes>
-                }
+                                    <DetailArea
+                                        title={lang['Profile_Tab_Point']}
+                                        content={item.value + ''}/>
 
-                <DetailArea
-                    title={lang['Profile_Tab_Point']}
-                    content={props.pointItem.value + ''}/>
+                                    <DetailArea
+                                        onClose={props.handleClose}
+                                        title={lang['BadgeDialog_Label_Issuees']}
+                                        content={item.owner.domain
+                                            ? item.owner.domain.split('.')[0]
+                                            : ''
+                                        }
+                                        navigate={item.owner.domain
+                                            ? `/profile/${item.owner.domain?.split('.')[0]}`
+                                            : '#'}
+                                        image={item.owner.image_url || defaultAvatar(item.owner.id)}/>
 
-                <DetailArea
-                    onClose={props.handleClose}
-                    title={lang['BadgeDialog_Label_Issuees']}
-                    content={props.pointItem.owner.domain
-                        ? props.pointItem.owner.domain.split('.')[0]
-                        : ''
+                                    <DetailArea
+                                        title={lang['BadgeDialog_Label_Creat_Time']}
+                                        content={formatTime(item.created_at)}/>
+
+                                </DetailScrollBox>
+                            </SwiperSlide>
+                        )
                     }
-                    navigate={props.pointItem.owner.domain
-                        ? `/profile/${props.pointItem.owner.domain?.split('.')[0]}`
-                        : '#'}
-                    image={props.pointItem.owner.image_url || defaultAvatar(props.pointItem.owner.id)}/>
+                </Swiper>
+            </div>
 
-
-                <DetailArea
-                    title={lang['BadgeDialog_Label_Creat_Time']}
-                    content={formatTime(props.pointItem.created_at)}/>
-
-            </DetailScrollBox>
 
             <BtnGroup>
                 {!user.domain && LoginBtn}
 
                 {!!user.domain
-                    && user.id === props.pointItem.owner.id
+                    && isOwner
                     && props.pointItem.status === 'sending'
                     && ActionBtns}
             </BtnGroup>
