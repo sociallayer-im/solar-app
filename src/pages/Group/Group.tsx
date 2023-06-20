@@ -23,6 +23,7 @@ import ListUserPresend from "../../components/compose/ListUserPresend";
 import ListUserNftpass from "../../components/compose/ListUserNftpass/ListUserNftpass";
 import AppSubTabs from "../../components/base/AppSubTabs";
 import ListGroupInvite from "../../components/compose/ListGroupInvite";
+import {useSearchParams} from "react-router-dom";
 
 
 function GroupPage () {
@@ -31,7 +32,8 @@ function GroupPage () {
     const { showLoading, showGroupSetting } = useContext(DialogsContext)
     const { lang } = useContext(LangContext)
     const { user, logOut } = useContext(UserContext)
-    const [selectedTab, setSelectedTab] = useState('0')
+    const [searchParams, setURLSearchParams] = useSearchParams()
+    const [selectedTab, setSelectedTab] = useState(searchParams.get('tab') || '0')
     const startIssue = useIssueBadge({ groupName: groupname})
     const { copyWithDialog } = useCopy()
     const navigate = useNavigate()
@@ -114,6 +116,7 @@ function GroupPage () {
                         renderAll
                         activeKey={selectedTab}
                         onChange={({ activeKey }) => {
+                            setURLSearchParams({ tab: activeKey as any })
                             setSelectedTab(activeKey as any);
                         }}>
                         <Tab title={lang['Profile_Tab_Received']}>

@@ -22,7 +22,7 @@ import ListUserRecognition from "../../components/compose/ListUserRecognition/Li
 import AppSubTabs from "../../components/base/AppSubTabs";
 import ListUserNftpass from "../../components/compose/ListUserNftpass/ListUserNftpass";
 import ListUserPoint from "../../components/compose/ListUserPoint/ListUserPoint";
-
+import {useSearchParams} from "react-router-dom";
 
 function ProfilePage () {
     const { username } = useParams()
@@ -30,7 +30,8 @@ function ProfilePage () {
     const { showLoading } = useContext(DialogsContext)
     const { lang } = useContext(LangContext)
     const { user } = useContext(UserContext)
-    const [selectedTab, setSelectedTab] = useState('0')
+    const [searchParams, setURLSearchParams] = useSearchParams()
+    const [selectedTab, setSelectedTab] = useState(searchParams.get('tab') || '0')
     const navigate = useNavigate()
     const startIssue = useIssueBadge()
     const [newProfile, _] = useEvent(EVENT.profileUpdate)
@@ -123,6 +124,7 @@ function ProfilePage () {
                             renderAll
                             activeKey={selectedTab}
                             onChange={({ activeKey }) => {
+                                setURLSearchParams({ tab: activeKey as any })
                             setSelectedTab(activeKey as any);
                         }}>
                             <Tab title={lang['Profile_Tab_Received']}>
