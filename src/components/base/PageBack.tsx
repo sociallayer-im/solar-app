@@ -9,7 +9,7 @@ const Wrapper = styled('div', ({$theme}) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingTop: '20px',
+    paddingTop: '16px',
     position: 'relative'
 }))
 
@@ -18,7 +18,7 @@ const BackBtn = styled('div', ({$theme}) => ({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    color: '#7b7c7b',
+    color: '#272928',
     fontSize: '14px',
     cursor: "pointer",
     userSelect: 'none'

@@ -1,6 +1,4 @@
-import {useNavigate} from 'react-router-dom'
-import {useStyletron} from 'baseui'
-import { useState, useContext, useEffect } from 'react'
+import {useEffect, useState} from 'react'
 import QRCode from 'qrcode'
 
 interface QRcodeProps {
@@ -11,8 +9,6 @@ interface QRcodeProps {
 }
 
 function QRcode(props: QRcodeProps) {
-    const [css] = useStyletron()
-    const navigate = useNavigate()
     const [dataUrl, setDataUrl] = useState('')
 
     useEffect(() => {
@@ -30,11 +26,13 @@ function QRcode(props: QRcodeProps) {
                 if (error) console.error('[app-qrcode]:' + JSON.stringify(error))
                 setDataUrl(url)
             })
-    }, [])
+    }, [props.text])
 
     return (
         <>
-        { dataUrl && <img className={props.className || ''} src={dataUrl} style={{ width: `${props.size[0]}px`, height: `${props.size[1]}px`, ...props.style }}   alt='' /> }
+            {dataUrl && <img className={props.className || ''} src={dataUrl}
+                             style={{width: `${props.size[0]}px`, height: `${props.size[1]}px`, ...props.style}}
+                             alt=''/>}
         </>
     )
 }

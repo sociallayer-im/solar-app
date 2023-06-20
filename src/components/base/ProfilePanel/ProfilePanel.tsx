@@ -12,6 +12,8 @@ import DialogFollowInfo from '../Dialog/DialogFollowInfo/DialogFollowInfo'
 import { StatefulPopover, PLACEMENT } from 'baseui/popover'
 import AppButton, { BTN_KIND, BTN_SIZE } from '../AppButton/AppButton'
 import MenuItem from '../MenuItem'
+import ProfileBio from '../ProfileBio/ProfileBio'
+import ProfileSocialMediaList from '../ProfileSocialMediaList/ProfileSocialMediaList'
 
 interface ProfilePanelProps {
     profile: Profile
@@ -21,7 +23,7 @@ function ProfilePanel(props: ProfilePanelProps) {
     const { defaultAvatar } = usePicture()
     const { lang } = useContext(LangContext)
     const { user } = useContext(UserContext)
-    const { openConfirmDialog, openDialog, showAvatar, showLoading, showToast } = useContext(DialogsContext)
+    const { openDomainConfirmDialog, openDialog, showAvatar, showLoading, showToast } = useContext(DialogsContext)
     const [newProfile, _] = useEvent(EVENT.profileUpdate)
     const [profile, setProfile] = useState(props.profile)
     const [showFollowBtn, setShowFollowBtn] = useState(false)
@@ -35,7 +37,7 @@ function ProfilePanel(props: ProfilePanelProps) {
 
     useEffect(() => {
         setProfile(props.profile)
-    }, [props.profile])
+    }, [props.profile.id])
 
     useEffect(() => {
         if (!user.id) {
@@ -67,7 +69,7 @@ function ProfilePanel(props: ProfilePanelProps) {
     })
 
     const showWallet = () => {
-        openConfirmDialog({
+        openDomainConfirmDialog({
             title: lang['Profile_Show_Wallet'],
             confirmLabel: lang['Profile_Show_Copy'],
             cancelLabel: lang['Profile_Show_Close'],
@@ -77,7 +79,7 @@ function ProfilePanel(props: ProfilePanelProps) {
     }
 
     const showEmail = () => {
-        openConfirmDialog({
+        openDomainConfirmDialog({
             title: lang['Profile_Show_Email'],
             confirmLabel: lang['Profile_Show_Copy'],
             cancelLabel: lang['Profile_Show_Close'],
@@ -149,12 +151,9 @@ function ProfilePanel(props: ProfilePanelProps) {
             <div className='left-size'>
                 <div className='avatar'>
                     <img onClick={() => { editAvatar() } } src={ profile.image_url || defaultAvatar(profile.id) } alt=""/>
-                    <div className='qrcode-btn' onClick={showProfileQRcode}>
-                        <i className='icon icon-qrcode'></i>
-                    </div>
                 </div>
                 <div className='domain-bar'>
-                    <div className='domain'>{ profile.domain }</div>
+                    <div className='domain'>{ profile.username }</div>
                     { profile.address &&
                         <div className='show-wallet' onClick={ () => { showWallet() } }>
                             <i className='icon icon-wallet'></i>
@@ -165,11 +164,26 @@ function ProfilePanel(props: ProfilePanelProps) {
                             <i className='icon icon-email'></i>
                         </div>
                     }
+                    {
+                        <div className='qrcode-btn' onClick={showProfileQRcode}>
+                            <i className='icon icon-qrcode'></i>
+                        </div>
+                    }
                 </div>
                 <div className='follow' onClick={ showFollowInfo }>
                     <div><b>{ profile.followers }</b> { lang['Follow_detail_followed'] } </div>
                     <div><b>{ profile.following }</b> { lang['Follow_detail_following'] } </div>
                 </div>
+                { false &&
+                    <div className='profile-position'>
+                        <i className='icon-Outline' />
+                        <span>Beijing</span>
+                    </div>
+                }
+                { false &&
+                    <ProfileBio text={ JSON.stringify(props.profile) }/>
+                }
+                <ProfileSocialMediaList profile={ props.profile }/>
             </div>
             <div className='right-size'>
                 {
@@ -177,10 +191,12 @@ function ProfilePanel(props: ProfilePanelProps) {
                     <StatefulPopover
                         placement={ PLACEMENT.bottomRight }
                         popoverMargin={ 0 }
-                        content={ ({ close }) => <MenuItem onClick={ () => { handleUnFollow() } }>{ lang['Relation_Ship_Action_Unfollow'] }</MenuItem> }>
+                        content={ ({ close }) => <MenuItem onClick={ () => { handleUnFollow() } }>{ lang['Relation_Ship_Action_Unfollow'] }{ profile.username }</MenuItem> }>
                         <div>
-                            <AppButton size={ BTN_SIZE.mini  } >
-                                { lang['Relation_Ship_Action_Followed'] }
+                            <AppButton
+                                size={ BTN_SIZE.mini }
+                                style={{ width: '37px', border: '1px solid #272928', marginRight: '12px'}}>
+                                <i className='icon-user-check'></i>
                             </AppButton>
                         </div>
                     </StatefulPopover>
@@ -189,9 +205,11 @@ function ProfilePanel(props: ProfilePanelProps) {
                 {
                     showFollowBtn &&
                     <AppButton
+                        style={{ backgroundColor: '#272928!important', color: '#fff', width: '94px'}}
                         onClick={ () => { handleFollow() } }
                         kind={ BTN_KIND.primary } size={ BTN_SIZE.mini }>
-                        { lang['Relation_Ship_Action_Follow'] }
+                        <i className='icon-user-plus'></i>
+                        <span>{ lang['Relation_Ship_Action_Follow'] }</span>
                     </AppButton>
                 }
             </div>

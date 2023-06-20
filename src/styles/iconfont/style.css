@@ -103,5 +103,43 @@
 .icon-profile:before {
   content: "\e918";
 }
+.icon-user-plus:before {
+  content: "\e919";
+  color: #fff;
+}
+.icon-user-check:before {
+  content: "\e91a";
+}
+.icon-sendfasong:before {
+  content: "\e91b";
+}
+.icon-web:before {
+  content: "\e91c";
+  color: #515151;
+}
+.icon-tg:before {
+  content: "\e91d";
+}
+.icon-twitter:before {
+  content: "\e91e";
+}
+.icon-github:before {
+  content: "\e91f";
+}
+.icon-setting:before {
+  content: "\e921";
+}
+.icon-Outline:before {
+  content: "\e920";
+}
+.icon-discord:before {
+  content: "\e922";
+}
+.icon-ens:before {
+  content: "\e923";
+}
+.icon-web2:before {
+  content: "\e924";
+}
 
 

@@ -40,8 +40,7 @@ function ReasonInput(props: ReasonInputProps) {
             ref={ textarea }
             value={ value }
             className='editor textarea'
-            onChange={ (e) => { mapInput(e.target.value) } }/>
-
+            onChange={ (e) => { mapInput(e.target.value)} }/>
        <div className='action-bar'>
            <div className='btns'>
                <div className='btn' onClick={() => { addTag() }}>

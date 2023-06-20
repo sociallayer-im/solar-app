@@ -1,17 +1,11 @@
 import { useNavigate } from 'react-router-dom'
 import { useStyletron } from 'baseui'
-import { useState, useContext, useEffect } from 'react'
+import { useContext } from 'react'
 import langContext from '../../../provider/LangProvider/LangContext'
 import './DialogPublicImage.less'
 import AppSwiper from '../../AppSwiper/AppSwiper'
 import { Delete } from 'baseui/icon'
 import DialogsContext from '../../../provider/DialogProvider/DialogsContext'
-import userContext from "../../../provider/UserProvider/UserContext";
-
-//AppSwiper deps
-import { Swiper, SwiperSlide } from 'swiper/react'
-import 'swiper/css'
-import 'swiper/css/pagination'
 import chooseFile from "../../../../utils/chooseFile";
 import solas from "../../../../service/solas";
 import UserContext from "../../../provider/UserProvider/UserContext";

@@ -18,6 +18,7 @@
     "query-string": "6.13.5"
   },
   "dependencies": {
+    "@zxing/library": "^0.20.0",
     "add": "^2.0.6",
     "axios": "^1.3.3",
     "baseui": "^12.2.0",

@@ -43,12 +43,13 @@ export default function AppButton (props: AppButtonProps) {
             style.paddingBottom = '12px'
         }
 
-        if (props.style) {
-            style = {...style, ...props.style}
-        }
 
         if (props.special) {
             style.background = 'linear-gradient(88.02deg, #BAFFAD -2.09%, #A1F4E6 62.09%, #80F8C0 97.29%)'
+        }
+
+        if (props.style) {
+            style = {...style, ...props.style}
         }
 
         return style

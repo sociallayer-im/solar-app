@@ -11,7 +11,8 @@ const style = {
     wrapper: {
         display: 'flex',
         flexDirection: 'column' as const,
-        height: '185px',
+        width: '335px',
+        height: '210px',
         borderRadius: '15px',
         background: '#fff',
         boxShadow: '0 1.9878px 11.9268px rgb(0 0 0 / 10%)',
@@ -21,22 +22,20 @@ const style = {
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: '10px',
-        width: '100%',
         boxSizing: 'border-box' as const,
-        '@media (min-width: 850px)': {
-            minWidth: 'calc((850px - 10px) / 2)',
-            maxWidth: 'calc((850px - 10px) / 6)',
-            marginRight: '10px',
-            ':nth-child(2n)': {
-                marginRight: '0'
-            }
+        transition: 'all 0.12s linear',
+        ':hover' : {
+            transform: 'translateY(-8px)'
+        },
+        ':active' : {
+            boxShadow: '0px 1.9878px 3px rgba(0, 0, 0, 0.1)'
         }
     },
     img:  {
-        width: '90px',
-        height: '90px',
+        width: '64px',
+        height: '64px',
         borderRadius: '50%',
-        marginBottom: '10px',
+        marginBottom: '8px',
         background: '#f5f8f6',
         display: 'flex',
         flexDirection: 'column' as const,
@@ -49,13 +48,13 @@ const style = {
         whiteSpace: 'nowrap' as const,
         overflow: 'hidden' as const,
         textOverflow: 'ellipsis' as const,
-        lineHeight: 'auto'
+        lineHeight: 'auto',
+        marginBottom: '20px'
     },
     des: {
         fontSize: '12px',
         color: '#c3c7c3',
         textAlign: 'center' as const,
-        whiteSpace: 'pre' as const,
         lineHeight: '16px'
     }
 }

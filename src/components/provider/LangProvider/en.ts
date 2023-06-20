@@ -41,12 +41,15 @@ const langEN = {
 
   Profile_User_NotExist: 'The user does not exist',
   Profile_User_MindBadge: 'Send a badge',
-  Profile_User_IssueBadge: 'Send a badge to',
+  Profile_User_IssueBadge: 'Send a badge to ',
   Profile_User_Qrcode_download: 'Download',
-  Profile_Tab_Received: 'Received',
+  Profile_Tab_Received: 'Badge',
+  Profile_Tab_Basic: 'Basic',
+  Profile_Tab_NFTPASS: 'NFT Pass',
   Profile_Tab_Minted: 'Created',
+  Profile_Tab_Point: 'Point',
   Profile_Tab_Groups: 'Groups',
-  Profile_Tab_Presend: 'Pending',
+  Profile_Tab_Presend: 'Presend',
   Profile_Show_Wallet: 'Your address is',
   Profile_Show_Email: 'Your email is',
   Profile_Show_Close: 'Close',
@@ -105,6 +108,7 @@ const langEN = {
   IssueBadge_GoToIssue: 'Go to Send',
   IssueBadge_Issuesing: 'Sending',
   IssueBadge_Mint: 'Send',
+  IssueBadge_Mint_later: 'Send later',
   IssueBadge_Sendwithlink: 'By link',
   IssueBadge_By_QRcode: 'By QR Code',
   IssueBadge_Sendwithdomain: 'By name',
@@ -114,11 +118,13 @@ const langEN = {
   IssueBadge_Input_Error: 'Invalid domain, wallet address or username.',
   IssueBadge_Input_Des: 'Input the domain/wallet/email address of the badge that receiver can receive the badge.',
 
-  IssueFinish_Title: 'Sent Successfully',
+  IssueFinish_Title: 'Share',
+  IssueFinish_Share_By_Qrcode: 'Share by QRcode',
+  IssueFinish_Share_By_Link: 'Share by Link',
   IssueFinish_CopyLink: 'Copy link',
   IssueFinish_Screenshot: 'Please take a screenshot for sharing',
   IssueFinish_Screenshot_Or: 'or',
-  IssueFinish_share: '#1 has sent you an NFT badge: #2. Go and get it!\n #3 \n It is recommended to use metamask or imToken browser to access the website.',
+  IssueFinish_share: '#1 has sent you an NFT badge: #2. Go and get it! \n It is recommended to use metamask or imToken browser to access the website.\n #3',
   IssueFinish_Share_Card_text_1: 'sent you a badge',
   IssueFinish_Share_Card_text_2: 'Send by @Social Layer',
 
@@ -223,7 +229,7 @@ const langEN = {
   New_Year_3: 'Send you a badge, scan <br> the code to get',
   Save_Card: 'Save to album',
 
-  Group_invite_title: 'Invite new members',
+  Group_invite_title: 'Invite',
   Group_invite_badge_name: slotLang('Member of {groupName}'),
   Group_invite_message: 'Invitation Message',
   Group_invite_receiver: 'Receiver(s)',
@@ -242,14 +248,15 @@ const langEN = {
 
   Group_setting_title: 'Settings',
   Group_setting_dissolve: 'Freeze the Group',
-  Group_freeze_dialog_title: 'You are freezing the group: ',
+  Group_freeze_dialog_title: 'Are you sure you to freeze this group？',
+  Group_freeze_dialog_des: 'Once frozen, all information in this group will no longer be displayed and cannot be recovered. Badge award records can still be retrieved.',
   Group_freeze_Dialog_confirm: 'Freeze',
   Group_freeze_Dialog_cancel: 'Cancel',
 
   Group_relation_ship_member: 'Member',
   Group_relation_ship_owner: 'Owner',
 
-  Follow_detail_followed: 'Follower',
+  Follow_detail_followed: 'Followers',
   Follow_detail_following: 'Following',
   Follow_detail_groups: 'Groups',
   Follow_detail_btn_mint: 'Send A badge For Your Group',
@@ -257,6 +264,7 @@ const langEN = {
   Group_detail_tabs_member: 'Members',
   Group_detail_tabs_Event: 'Events',
   Group_detail_tabs_Invite: 'Invited',
+  Group_detail_Join_Time: 'Joined',
 
   Relation_Ship_Action_Follow: 'Follow',
   Relation_Ship_Action_Followed: 'Followed',
@@ -264,11 +272,11 @@ const langEN = {
   Relation_Ship_Action_Join: 'Join',
   Relation_Ship_Action_Joined: 'Joined',
   Relation_Ship_Action_Leave: 'Leave group',
-  Relation_Ship_Action_Unfollow: 'Cancel Follow',
+  Relation_Ship_Action_Unfollow: 'Unfollow ',
 
   Empty_Text: 'No Data yet~',
   Empty_No_Badge: 'No badge yet~',
-  Empty_No_Present: 'No presned yet~',
+  Empty_No_Present: 'No presend yet~',
   Empty_No_Group: 'No group yet~',
   Empty_No_Invite: 'No invite yet~',
 
@@ -280,6 +288,12 @@ const langEN = {
   Badgebook_Dialog_Choose_Badge: 'Choose from Created',
   Badgebook_Dialog_Choose_Draft: 'Choose from Draft',
   Badgebook_Dialog_Cetate_Badge: 'Create a new badge',
+  Badgebook_Dialog_Recognition_Badge: 'Basic Badge',
+  Badgebook_Dialog_Recognition_Des: 'Basic badge, evaluation of others',
+  Badgebook_Dialog_Points: 'Points',
+  Badgebook_Dialog_Points_Des: 'Create points systems in groups',
+  Badgebook_Dialog_NFT_Pass: 'NFT Pass',
+  Badgebook_Dialog_NFT_Pass_Des: 'Given by the groups to the person',
 
   Dialog_Public_Image_Title: 'Choose a image for badge',
   Dialog_Public_Image_UploadBtn: 'Upload a image',
@@ -301,6 +315,74 @@ const langEN = {
   Home_Page_New_Title: 'Create a badge',
   Home_Page_New_Des: 'Join now to start creating badges, describing your achievements, and awarding them to deserving individuals.',
   Home_Page_New_Btn: 'Create your badge',
+
+  Badgelet_List_Title: 'Collected',
+  Badgelet_List_Unit: 'Badges',
+  Created_List_Title: 'Created',
+
+  Dialog_Copy_Btn: 'Ok',
+  Dialog_Copy_Title: 'Copied successfully！',
+  Dialog_Copy_Message: 'Share and open the link in a browser.',
+
+  Profile_Bio_More: 'More…',
+  Profile_Bio_Less: 'Less',
+
+  Profile_Edit_Title: 'Edit Profile',
+  Profile_Edit_Avatar: 'Avatar',
+  Profile_Edit_Ncikname: 'Nick name',
+  Profile_Edit_Bio: 'Bio',
+  Profile_Edit_Bio_Placeholder: 'Set a bio',
+  Profile_Edit_Location: 'Location',
+  Profile_Edit_Social_Media: 'Social media',
+  Profile_Edit_Social_Media_Edit: 'Edit',
+  Profile_Edit_Social_Media_Edit_Dialog_Title: 'Your ',
+  Profile_Edit_Social_Confirm: 'Confirm',
+  Profile_Edit_Save: 'Save',
+  Profile_Edit_Leave: 'Leave',
+  Profile_Edit_Cancel: 'Cancel',
+  Profile_Edit_Leave_Dialog_Title: 'Are you sure to leave?',
+  Profile_Edit_Leave_Dialog_Des: 'You haven\'t saved your settings yet.',
+
+  Group_Member_Manage_Dialog_Title: 'Member Management',
+  Group_Member_Manage_Dialog_Confirm_Btn: 'Remove from the group',
+  Group_Member_Manage_Dialog_Confirm_Dialog_des: slotLang('Are you sure to remove ${1} from the group？'),
+  Group_Member_Manage_Dialog_Confirm_Dialog_Confirm: 'Remove',
+  Group_Member_Manage_Dialog_Confirm_Dialog_Cancel: 'Cancel',
+
+  Create_Point_Title: 'Create a point',
+  Create_Point_Symbol: 'Symbol',
+  Create_Point_Image: 'Image',
+  Create_Point_Name: 'Name',
+  Create_Point_Name_Placeholder: 'Fill in the name, eg. Knowledge Points',
+  Create_Point_Symbol_Placeholder: 'Fill in the symbol, eg. PT',
+  Create_Point_Des: 'Description (Optional)',
+
+  Create_NFT_Title: 'Create a NFT Pass',
+  Create_NFT_Image: 'Image',
+  Create_NFT_Name: 'Name',
+  Create_NFT_Name_Placeholder: 'Fill in the name',
+  Create_NFT_Name_Domain: 'Domain',
+  Create_NFT_Name_Des: 'Description (Optional)',
+
+  Create_Nft_success: 'Create Successfully',
+  Create_Nft_success_des: 'Your NFT Pass have been created',
+  Issue_Nft_Title: 'Send NFT Pass',
+  Issue_Nft_Start: 'Start date',
+  Issue_Nft_End: 'Expiry date',
+
+  NFT_Detail_title: 'Nft Pass Details',
+  NFT_Detail_Des: 'Description',
+  NFT_Detail_Check: 'Check In',
+  NFT_Detail_use: 'Use the NFT Pass',
+
+  Point_Detail_Title: 'Point Detail',
+
+  Create_Point_success: 'Create Successfully',
+  Create_Point_success_des: 'Your Points have been created',
+  Issue_Point_Title: 'Send Points',
+  Issue_Point_Point: 'Points',
+
+  Dialog_Check_In_Title: 'Check In'
 }
 
 export type LangConfig = typeof langEN

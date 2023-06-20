@@ -10,7 +10,8 @@ const style = {
     wrapper: {
         display: 'flex',
         flexDirection: 'column' as const,
-        height: '185px',
+        height: '210px',
+        width: '162px',
         borderRadius: '15px',
         background: '#fff',
         boxShadow: '0 1.9878px 11.9268px rgb(0 0 0 / 10%)',
@@ -20,22 +21,20 @@ const style = {
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: '10px',
-        width: '100%',
         boxSizing: 'border-box' as const,
-        '@media (min-width: 850px)': {
-            minWidth: 'calc((850px - 10px) / 2)',
-            maxWidth: 'calc((850px - 10px) / 6)',
-            marginRight: '10px',
-            ':nth-child(2n)': {
-                marginRight: '0'
-            }
+        transition: 'all 0.12s linear',
+        ':hover' : {
+            transform: 'translateY(-8px)'
+        },
+        ':active' : {
+            boxShadow: '0px 1.9878px 3px rgba(0, 0, 0, 0.1)'
         }
     },
     img:  {
-        width: '90px',
-        height: '90px',
-        borderRadius: '50%',
-        marginBottom: '10px'
+        width: '64px',
+        height: '64px',
+        borderRadius: '16px',
+        marginBottom: '8px'
     },
     name: {
         fontWeight: 600,
@@ -43,11 +42,17 @@ const style = {
         whiteSpace: 'nowrap' as const,
         overflow: 'hidden' as const,
         textOverflow: 'ellipsis' as const,
-        lineHeight: 'auto'
+        lineHeight: 'auto',
+        fontSize: '16px'
     },
     des: {
+        padding: '6px 12px',
         fontSize: '14px',
-        color: '#c3c7c3'
+        color: '#272928',
+        lineHeight: '16px',
+        background: '#F8F9F8',
+        borderRadius: '31px',
+        marginTop: '38px'
     }
 }
 

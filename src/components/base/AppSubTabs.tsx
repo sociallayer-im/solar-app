@@ -13,36 +13,31 @@ function AppSubTabs (props: AppTabsProps) {
 
     const tabStyle = ({$active, $disabled, $theme}: any) => {
         const defaultStyle = {
-            color: $active ? '#272928' : '#7b7c7b',
+            color: '#272928',
             fontWeight: $active ? 600 : 'normal',
-            height: '32px',
+            height: '34px',
             lineHeight: '32px',
-            borderRadius: '32px',
-            paddingLeft: '15px',
-            paddingRight: '15px',
-            backgroundColor: $active ? '#befde7' : '#ecf2ee',
-            fontSize: '14px',
+            borderRadius: '8px',
+            paddingLeft: '12px',
+            paddingRight: '12px',
+            backgroundColor:'none',
+            fontSize: '12px',
             paddingTop: '0',
             paddingBottom: '0',
-            borderBottom: '0',
-            position: 'relative',
-            ':hover': $disabled
-                ? {}
-                : {
-                    color: '#272928',
-                },
-            ':focus': $disabled
-                ? {}
-                : {
-                    color: '#272928',
-                },
+            borderTopWidth: '1px',
+            borderLeftWidth: '1px',
+            borderRightWidth: '1px',
+            borderBottomWidth: '1px!important',
+            borderStyle: 'solid',
+            borderColor: $active ? '#272928' : '#EDEDED',
+            position: 'relative'
         }
 
         return {...defaultStyle, ...props.styleOverrides?.Tab}
     }
 
     const TabBarStyle = () => {
-        const defaultStyle = { paddingTop: 0, backgroundColor: 'none', paddingBottom: 0, paddingLeft: '0', marginLeft: '-5px' }
+        const defaultStyle = { paddingTop: 0, backgroundColor: 'none', paddingBottom: 0, paddingLeft: '12px', marginLeft: '-5px' }
         return {...defaultStyle, ...props.styleOverrides?.TabBar}
     }
 

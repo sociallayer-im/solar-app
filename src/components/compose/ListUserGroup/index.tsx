@@ -1,12 +1,12 @@
-import {useContext, useEffect} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import CardGroup from '../../base/Cards/CardGroup/CardGroup'
 import solas, { Profile, Group } from '../../../service/solas'
-import ListWrapper from '../../base/ListWrapper'
-import Empty from '../../base/Empty'
 import LangContext from '../../provider/LangProvider/LangContext'
-import useScrollToLoad from '../../../hooks/scrollToLoad'
-import CardCreateGroup from '../../base/Cards/CardCreateGroup/CardCreateGroup'
 import UserContext from '../../provider/UserProvider/UserContext'
+import ListTitle from '../../base/ListTitle/ListTitle'
+import CardCreateGroup from '../../base/Cards/CardCreateGroup/CardCreateGroup'
+import './ListUserGroup.less'
+import ListUserAssets, {ListUserAssetsMethods} from "../../base/ListUserAssets/ListUserAssets";
 
 interface ListUserGroupProps {
     profile: Profile
@@ -15,32 +15,37 @@ interface ListUserGroupProps {
 function ListUserGroup (props: ListUserGroupProps) {
     const { lang } = useContext(LangContext)
     const { user } = useContext(UserContext)
+    const listWrapperRef = React.createRef<ListUserAssetsMethods>()
+    const [amount, setAmount] = useState(0)
     const getGroup = async (page: number) => {
+        // 只有一页
         if (page > 1) return []
 
-        return await solas.queryUserGroup({ profile_id: props.profile.id })
+        const res = await solas.queryUserGroup({ profile_id: props.profile.id })
+        setAmount(res.length)
+        return res
     }
 
-    const { isEmpty, list, ref, refresh } = useScrollToLoad ({ queryFunction: getGroup })
-
     useEffect(() => {
-        refresh()
-    }, [props.profile])
+        !!listWrapperRef.current && listWrapperRef.current!.refresh()
+    }, [props.profile, listWrapperRef.current])
 
     const isProfileOwner = user.id === props.profile.id
 
     return (
-        <ListWrapper>
-            { isEmpty && !isProfileOwner && <Empty text={lang['Empty_No_Group']} /> }
-            { isProfileOwner && <CardCreateGroup /> }
-            {
-                list.map((item, index) => <CardGroup
-                    profile={ props.profile }
-                    group={ item }
-                    key={ item.id.toString() } />)
-            }
-            <div ref={ ref }></div>
-        </ListWrapper>)
+        <div className='list-user-group'>
+            {/*<ListTitle*/}
+            {/*    title={ lang['Profile_Tab_Groups'] }*/}
+            {/*    uint={ lang['Profile_Tab_Groups'] }*/}
+            {/*    count={ amount } />*/}
+            <ListUserAssets
+                child={(data, key) => <CardGroup profile={props.profile} group={data} key={key} />}
+                queryFcn={ getGroup }
+                preEnhancer={ isProfileOwner ? () => <CardCreateGroup /> : undefined }
+                onRef={ listWrapperRef }
+            />
+        </div>
+    )
 }
 
 export default ListUserGroup

@@ -1,12 +1,22 @@
-import {useContext, useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import CardUser from '../../base/Cards/CardUser/CardUser'
 import solas, { Profile } from '../../../service/solas'
 import ListWrapper from '../../base/ListWrapper'
 import LangContext from '../../provider/LangProvider/LangContext'
 import UserContext from '../../provider/UserProvider/UserContext'
 import { styled } from 'baseui'
-import { Plus } from 'baseui/icon'
 import { useNavigate } from 'react-router-dom'
+import ListTitle from '../../base/ListTitle/ListTitle'
+import HorizontalList, { HorizontalListMethods}  from '../../base/HorizontalList/HorizontalList'
+import CardMember from '../../base/Cards/CardMember/CardMember'
+import './ListGroupMember.less'
+import CardInviteMember from '../../base/Cards/CardInviteMember/CardInviteMember'
+import { StatefulPopover, PLACEMENT } from 'baseui/popover'
+import MenuItem from "../../base/MenuItem";
+import DialogsContext from "../../provider/DialogProvider/DialogsContext";
+import { Overflow } from 'baseui/icon'
+import DialogManageMember from '../../base/Dialog/DialogManageMember/DialogManageMember'
+import ListUserAssets, { ListUserAssetsMethods } from "../../base/ListUserAssets/ListUserAssets";
 
 
 interface ListGroupMemberProps {
@@ -19,63 +29,120 @@ function ListGroupMember (props: ListGroupMemberProps) {
     const navigate = useNavigate()
     const [members, setMembers] = useState<Profile[]>([])
     const [owner, setOwner] = useState<Profile | null>(null)
+    const listWrapperRef = React.createRef<ListUserAssetsMethods>()
+    const { showToast, showLoading, openConfirmDialog, openDialog } = useContext(DialogsContext)
+    const [currUserJoinedGroup, setCurrUserJoinedGroup] = useState(false)
 
     useEffect(() => {
-        const getMember = async () => {
-            const members = await solas.getGroupMembers({
-                group_id: props.group.id})
-            setMembers(members)
-        }
-
-        const getOwner = async () => {
-            const owner = await solas.getProfile({ id: props.group.group_owner_id! })
-            setOwner(owner)
-        }
-        getMember()
         getOwner()
-    }, [props.group])
+        listWrapperRef.current?.refresh()
+    }, [props.group, user.id])
 
-    const OwnerMark = styled('div', () => {
-        return {
-            fontSize: '14px',
-            marginRight: '8px'
-        }
-    })
-
-    const PlusIcon = styled('div', () => {
-        return {
-            width: '28px',
-            height: '28px',
-            marginRight: '8px',
-            borderRadius: '50%',
-            background: 'rgb(241, 241, 241)',
-            display: "flex",
-            justifyContent: 'center',
-            alignItems: 'center'
-        }
-    })
-
-    const InviteBtn = () => {
-        return <CardUser
-            onClick={ () => { navigate(`/invite-create/${props.group.id}`) } }
-            img={() => <PlusIcon><Plus /></PlusIcon>}
-            content={() => <b>Invite new members</b>}
-        />
+    const getOwner = async () => {
+        const owner = await solas.getProfile({ id: props.group.group_owner_id! })
+        setOwner(owner)
+        await checkUserJoinedGroup()
     }
 
-    return (
-        <ListWrapper>
-            { owner?.id === user.id && <InviteBtn /> }
-            { !!owner &&  <CardUser profile={owner} endEnhancer={() => <OwnerMark>Owner</OwnerMark>}/>}
-            {   members.length ?
-                members.map((item, index) => {
-                    return <CardUser
-                        profile={ item }
-                        key={ index.toString() }/>
-                })
-                : false
+    const checkUserJoinedGroup = async () => {
+        if (!user.id) return
+        const userJoinedGroups = await solas.queryGroupsUserJoined({
+            profile_id: user.id!,
+        })
+        if (userJoinedGroups && userJoinedGroups.length) {
+            const target = userJoinedGroups.find((group) => {
+                return group.id === props.group.id
+            })
+            setCurrUserJoinedGroup(!!target)
+        }
+    }
+
+    const getMember = async (page: number) => {
+        if (page > 1) return []
+
+        const members = await solas.getGroupMembers({
+            group_id: props.group.id
+        })
+        setMembers(members)
+        return members
+    }
+
+    const leaveGroup = async () => {
+        const unload = showLoading()
+        try {
+            const res = await solas.leaveGroup({
+                group_id: props.group.id,
+                auth_token: user.authToken || '',
+                profile_id: user.id!
+            })
+            unload()
+            showToast('You have left the group')
+        } catch (e: any) {
+            unload()
+            console.log('[handleUnJoin]: ', e)
+            showToast(e.message || 'Unjoin fail')
+        }
+    }
+
+    const showLeaveGroupConfirm = () => {
+        openConfirmDialog({
+            confirmText: 'Leave',
+            cancelText: 'Cancel',
+            confirmBtnColor: '#F64F4F!important',
+            confirmTextColor: '#fff!important',
+            title: 'Are you sure to leave the group?',
+            content: '',
+            onConfirm: (close: any) => { close(); leaveGroup() }
+        })
+    }
+
+    const showMemberManageDialog = () => {
+        const dialog = openDialog({
+            content: (close: any) => <DialogManageMember
+                groupId={props.group.id}
+                handleClose={close}/>,
+            size: ['100%', '100%']
+        })
+    }
+
+    const PreEnhancer = () => {
+        return <>
+            {
+                user.id === props.group.group_owner_id && <CardInviteMember groupId={props.group.id} />
             }
-        </ListWrapper>)
+            {
+                !!owner && <CardMember isOwner profile={owner}/>
+            }
+        </>
+    }
+
+    const MemberAction = <StatefulPopover
+        placement={ PLACEMENT.bottom }
+        popoverMargin={ 0 }
+        content={ ({ close }) => <MenuItem onClick={ () => { showLeaveGroupConfirm(); close()} }>{ lang['Relation_Ship_Action_Leave'] }</MenuItem> }>
+        <div className='member-list-joined-label'>Joined</div>
+    </StatefulPopover>
+
+    const OwnerAction = <div className='member-list-joined-label' onClick={ showMemberManageDialog }><Overflow size={20}/></div>
+
+    const Action = props.group.group_owner_id === user.id
+        ? OwnerAction
+        : currUserJoinedGroup
+            ? MemberAction
+            : <div></div>
+
+    return <div className='list-group-member'>
+        <div className={'actions'}>
+            {Action}
+        </div>
+        <ListUserAssets
+            child={(data, key) => <CardMember profile={data} key={key} /> }
+            onRef={ listWrapperRef }
+            queryFcn={ getMember }
+            compact
+            preEnhancer={ () => <PreEnhancer /> }
+        />
+    </div>
 }
 
 export default ListGroupMember

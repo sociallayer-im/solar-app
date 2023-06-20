@@ -89,7 +89,7 @@ function CreateBadgeNonPrefill() {
                 unload()
                 navigate(`/issue-success?badgelet=${badgelets[0].id}`)
             } else {
-                navigate(`/issue/${newBadge.id}`, { state: { reason: reason } })
+                navigate(`/issue-badge/${newBadge.id}`, { state: { reason: reason } })
             }
             unload()
         } catch (e: any) {

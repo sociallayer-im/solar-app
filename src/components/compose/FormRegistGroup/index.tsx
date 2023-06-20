@@ -24,7 +24,7 @@ function RegistForm (props: RegistFormProps) {
     const [css] = useStyletron()
     const domainEndEnhancer = import.meta.env.VITE_SOLAS_DOMAIN
     const { verifyDomain } = useVerify()
-    const { openConfirmDialog, showLoading, showToast } = useContext(DialogsContext)
+    const { openDomainConfirmDialog, showLoading, showToast } = useContext(DialogsContext)
     const { user } = useContext(UserContext)
     const navigate = useNavigate()
 
@@ -37,7 +37,7 @@ function RegistForm (props: RegistFormProps) {
             content: () => <div className='confirm-domain'><span>{domain}{domainEndEnhancer}</span></div>
         }
 
-        openConfirmDialog(props)
+        openDomainConfirmDialog(props)
     }
 
     const createGroup = async () => {

@@ -2,6 +2,7 @@
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
+  position: relative;
 
   .avatar {
     width: 60px;
@@ -42,10 +43,16 @@
     align-items: center;
     margin-bottom: 10px;
 
+    > img {
+      width: 48px;
+      height: 18px;
+      margin: 0 4px;
+    }
+
     .domain {
-      font-size: 16px;
       font-weight: 600;
-      line-height: 24px;
+      font-size: 20px;
+      line-height: 28px;
     }
 
     .show-wallet {
@@ -64,6 +71,19 @@
     .show-email {
       .show-wallet;
       font-size: 14px;
+    }
+
+    .qrcode-btn {
+      color: #7b7c7b;
+      padding: 0 9px;
+      border-radius: 8px;
+      background-color: #f8f9f8;
+      margin-left: 4px;
+      cursor: pointer;
+      height: 20px;
+      display: inline-flex;
+      flex-flow: column nowrap;
+      justify-content: center;
     }
   }
 
@@ -85,9 +105,44 @@
   }
 
   .right-size {
-    min-width: 127px;
-    padding-top: 10px;
+    padding-top: 15px;
     position: absolute;
     right: 0px;
+  }
+
+  .icon-user-plus {
+    margin-right: 12px;
+    font-size: 16px;
+  }
+
+  .icon-user-check {
+    font-size: 16px;
+  }
+
+  .social-media-list {
+    display: flex;
+    flex-flow: row nowrap;
+    margin-top: 10px;
+
+    > a {
+      color: #272928;
+      text-decoration: none;
+      font-size: 18px;
+      outline: none;
+    }
+  }
+
+  .profile-position {
+    margin-top: 22px;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    color: #272928;
+    font-size: 12px;
+
+    > i {
+      font-size: 16px;
+      margin-right: 4px;
+    }
   }
 }

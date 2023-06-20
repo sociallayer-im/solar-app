@@ -1,12 +1,12 @@
-import {useContext, useEffect} from 'react'
+import React, {useContext, useEffect} from 'react'
 import CardPresend from '../../base/Cards/CardPresend/CardPresend'
 import solas, { Profile } from '../../../service/solas'
 import ListWrapper from '../../base/ListWrapper'
 import Empty from '../../base/Empty'
 import LangContext from '../../provider/LangProvider/LangContext'
-import useScrollToLoad from '../../../hooks/scrollToLoad'
 import UserContext from '../../provider/UserProvider/UserContext'
 import useEvent, { EVENT } from '../../../hooks/globalEvent'
+import ListUserAssets , {ListUserAssetsMethods} from "../../base/ListUserAssets/ListUserAssets";
 
 interface ListUserPresendProps {
     profile: Profile,
@@ -16,6 +16,7 @@ interface ListUserPresendProps {
 function ListUserPresend ({ userType = 'user',  ...props }: ListUserPresendProps) {
     const { lang } = useContext(LangContext)
     const { user } = useContext(UserContext)
+    const listWrapperRef = React.createRef<ListUserAssetsMethods>()
     const [newPresend, _] = useEvent(EVENT.presendListUpdate)
 
     const getPresend = async (page: number) => {
@@ -26,31 +27,23 @@ function ListUserPresend ({ userType = 'user',  ...props }: ListUserPresendProps
         return await solas.queryPresend(queryProps)
     }
 
-    const { isEmpty, list, ref, refresh } = useScrollToLoad ({ queryFunction: getPresend })
-
     useEffect(() => {
-        refresh()
+        !!listWrapperRef.current && listWrapperRef.current!.refresh()
     }, [props.profile])
 
     useEffect(() => {
         if (newPresend) {
-            refresh()
+          !!newPresend && !!listWrapperRef.current && listWrapperRef.current!.refresh()
         }
     }, [newPresend])
 
-    return (
-        <ListWrapper>
-            { isEmpty ?
-                <Empty text={ lang['Empty_No_Badge'] } />
-                : false
-            }
-            {
-                list.map((item, index) => {
-                    return <CardPresend presend={ item } key={ index.toString() }/>
-                })
-            }
-            <div ref={ ref }></div>
-        </ListWrapper>)
+    return <div style={{marginTop: '16px'}}>
+        <ListUserAssets
+            child={ (itemData, key) => <CardPresend presend={ itemData } key={key} /> }
+            queryFcn={ getPresend }
+            onRef={ listWrapperRef }
+        />
+    </div>
 }
 
 export default ListUserPresend

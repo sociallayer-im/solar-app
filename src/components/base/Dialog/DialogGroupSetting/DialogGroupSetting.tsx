@@ -5,7 +5,7 @@ import langContext from '../../../provider/LangProvider/LangContext'
 import UserContext from '../../../provider/UserProvider/UserContext'
 import solas, { Group } from '../../../../service/solas'
 import DialogsContext from '../../../provider/DialogProvider/DialogsContext'
-import { DialogConfirmProps } from '../DialogConfirm/DialogConfirm'
+import { DialogConfirmDomainProps } from '../DialogConfirmDomain/DialogConfirmDomain'
 import { useNavigate } from 'react-router-dom'
 
 export interface DialogGroupSettingProps {
@@ -17,7 +17,7 @@ export interface DialogGroupSettingProps {
 function DialogGroupSetting(props: DialogGroupSettingProps) {
     const { lang } = useContext(langContext)
     const { user } = useContext(UserContext)
-    const { showLoading, showToast, openConfirmDialog } = useContext(DialogsContext)
+    const { showLoading, showToast, openDomainConfirmDialog } = useContext(DialogsContext)
     const navigate= useNavigate()
 
     const handleDissolve = async () => {
@@ -39,7 +39,7 @@ function DialogGroupSetting(props: DialogGroupSettingProps) {
      }
 
      const showConfirmDialog = () => {
-        const dialogProps: DialogConfirmProps = {
+        const dialogProps: DialogConfirmDomainProps = {
             title: lang['Group_freeze_dialog_title'],
             confirmLabel: lang['Group_freeze_Dialog_confirm'],
             cancelLabel: lang['Group_freeze_Dialog_cancel'],
@@ -47,7 +47,7 @@ function DialogGroupSetting(props: DialogGroupSettingProps) {
             content: () => <div className='confirm-domain'><span>{props.group.domain}</span></div>
         }
 
-        const dialog = openConfirmDialog(dialogProps)
+        const dialog = openDomainConfirmDialog(dialogProps)
      }
 
     return (<div className='group-setting-dialog'>

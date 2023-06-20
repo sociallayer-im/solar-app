@@ -21,14 +21,16 @@ function useIssueBadge (useIssueBadgeProps?: UseIssueBadgeProp) {
     const navigate = useNavigate()
 
     function toIssuePage (props: BadgeBookDialogRes, to?: string) {
-        let path = '/create-badge'
+        let path = `/create-${props.type}`
+
+        const split = (path: string) => {
+            return  path.includes('?') ? '&' : '?'
+        }
 
         if (useIssueBadgeProps && useIssueBadgeProps.groupName) {
             const groupDomain = useIssueBadgeProps.groupName + import.meta.env.VITE_SOLAS_DOMAIN
-            path = `/create-badge?group=${groupDomain}`
+            path = path + split(path) + `group=${groupDomain}`
         }
-
-        const split = (path: string) => path.includes('?') ? '&' : '?'
 
         if (to) {
             path = path + split(path) + `to=${to}`
@@ -46,8 +48,10 @@ function useIssueBadge (useIssueBadgeProps?: UseIssueBadgeProp) {
     }
 
     return (props: StartIssueBadgeProps) => {
-        if (!user.id) { toIssuePage({}, props.to); return }
-        if (!props.badges.length) {toIssuePage({}, props.to); return;}
+        // 没有登录或者没有徽章，直接跳转到徽章发行页面
+        // if (!user.id) { toIssuePage({type:'badge'}, props.to); return }
+        // if (!props.badges.length) {toIssuePage({type:'badge'}, props.to); return;}
+
 
         openDialog({
             content: (close: any) => <DialogIssuePrefill

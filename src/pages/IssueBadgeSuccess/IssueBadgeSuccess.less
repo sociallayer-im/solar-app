@@ -1,4 +1,4 @@
-.send-success {
+.send-badge-success {
   position: relative;
   overflow: auto;
   padding-bottom: 30px;
@@ -62,38 +62,43 @@
   }
 
   .cards {
-    height: 456px;
+    height: auto;
+    width: 335px;
     z-index: 2;
     position: relative;
-  }
+    margin: 0 auto 22px auto;
 
-  .actions {
-    z-index: 2;
-    position: relative;
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: center;
-    justify-content: center;
-    margin-top: 36px;
-
-    .text1 {
+    .title {
       font-style: normal;
       font-weight: 600;
       font-size: 14px;
       line-height: 22px;
       color: #272928;
+      margin-bottom: 5px;
     }
 
-    .text2 {
-      font-weight: 400;
-      font-size: 14px;
-      line-height: 22px;
-      color: #272928;
-    }
+    .link-content {
+      padding: 14px;
+      box-sizing: border-box;
+      background: rgba(245, 245, 245, 0.6);
+      border: 1px solid #FFFFFF;
+      backdrop-filter: blur(10px);
+      border-radius: 8px;
+      white-space: break-spaces;
 
-    button {
-      i {
-        margin-right: 12px;
+      .copy-link-btn {
+        text-align: center;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 22px;
+        color: #272928;
+        margin-top: 9px;
+        cursor: pointer;
+
+        i {
+          margin-right: 5px;
+        }
       }
     }
   }

@@ -8,18 +8,21 @@ import DialogsContext from '../../components/provider/DialogProvider/DialogsCont
 import GroupPanel from '../../components/base/GroupPanel/GroupPanel'
 import AppButton, { BTN_SIZE } from '../../components/base/AppButton/AppButton'
 import LangContext from '../../components/provider/LangProvider/LangContext'
-import AppTabs from '../../components/base/AppTabs'
-import AppSubTabs from '../../components/base/AppSubTabs'
-import { Tab } from 'baseui/tabs'
-import ListUserMinted from '../../components/compose/ListUserMinted'
-import ListUserPresend from '../../components/compose/ListUserPresend'
 import ListUserBadgelet from '../../components/compose/ListUserBadgelet'
-import ListGroupInvitep from '../../components/compose/ListGroupInvite'
 import ListGroupMember from '../../components/compose/ListGroupMember'
 import UserContext from '../../components/provider/UserProvider/UserContext'
-import { Overflow } from 'baseui/icon'
 import useIssueBadge from '../../hooks/useIssueBadge'
+import ListUserCreated from '../../components/compose/ListUserCreated/ListUserCreated'
+import BgProfile from '../../components/base/BgProfile/BgProfile'
+import {styled} from "baseui";
+import useCopy from '../../hooks/copy'
 import { useNavigate } from 'react-router-dom'
+import {Tabs, Tab} from "baseui/tabs";
+import ListUserRecognition from "../../components/compose/ListUserRecognition/ListUserRecognition";
+import ListUserPresend from "../../components/compose/ListUserPresend";
+import ListUserNftpass from "../../components/compose/ListUserNftpass/ListUserNftpass";
+import AppSubTabs from "../../components/base/AppSubTabs";
+import ListGroupInvite from "../../components/compose/ListGroupInvite";
 
 
 function GroupPage () {
@@ -28,8 +31,9 @@ function GroupPage () {
     const { showLoading, showGroupSetting } = useContext(DialogsContext)
     const { lang } = useContext(LangContext)
     const { user, logOut } = useContext(UserContext)
-    const [selectedTab, setSelectedTab] = useState('Minted')
+    const [selectedTab, setSelectedTab] = useState('0')
     const startIssue = useIssueBadge({ groupName: groupname})
+    const { copyWithDialog } = useCopy()
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -64,58 +68,81 @@ function GroupPage () {
             : startIssue({ badges, to: profile?.domain || ''})
     }
 
-    // 卸载组件
+    const ShowDomain = styled('div', ({$theme}) => {
+        return {
+            color: '#272928'
+        }
+    })
 
-    const groupOption = () => {
-        const style = { cursor: 'pointer' }
-        return user.id === profile?.group_owner_id
-                ? <Overflow size={22} onClick={ () => { showGroupSetting(profile) } } style={ style } />
-                : ''
+    const goToEditGroup = () => {
+        navigate(`/group-edit/${profile?.username}`)
     }
+
+    const ProfileMenu = () => <div className='profile-setting'>
+        <ShowDomain onClick={ () => { copyWithDialog(profile?.domain || '', lang['Dialog_Copy_Message']) } }>{ profile?.domain }</ShowDomain>
+        { user.id === profile?.group_owner_id &&
+            <div className='profile-setting-btn' onClick={() => { goToEditGroup() } }><i className='icon-setting'></i></div>
+        }
+    </div>
 
     return <Layout>
         { !!profile &&
             <div className='profile-page'>
             <div className='up-side'>
+                <BgProfile profile={ profile }/>
                 <div className='center'>
-                    <PageBack  menu={ groupOption } />
+                    <div className='top-side'>
+                        <PageBack  menu={ ProfileMenu } />
+                    </div>
                     <div className='slot_1'>
                         <GroupPanel group={ profile } />
                     </div>
                     <div className='slot_2'>
-                        <AppButton size={ BTN_SIZE.compact } onClick={ handleMintOrIssue }>
+                        <AppButton special size={ BTN_SIZE.compact } onClick={ handleMintOrIssue }>
+                            <span className='icon-sendfasong'></span>
                             { user.id === profile.group_owner_id
                                 ? lang['Follow_detail_btn_mint']
-                                : lang['Profile_User_IssueBadge'] + ' ' + profile.username
+                                : lang['Profile_User_IssueBadge'] + profile.username
                             }
                         </AppButton>
                     </div>
                 </div>
             </div>
             <div className='down-side'>
-                <AppTabs initialState={ { activeKey: selectedTab } }>
-                    <Tab key='Minted' title={ lang['Profile_Tab_Minted'] }>
-                        <AppSubTabs>
-                            <Tab key='Minted' title={ lang['Profile_Tab_Minted'] }>
-                                <ListUserMinted userType='group' profile={ profile! } />
+                <div className={'profile-tab'}>
+                    <Tabs
+                        renderAll
+                        activeKey={selectedTab}
+                        onChange={({ activeKey }) => {
+                            setSelectedTab(activeKey as any);
+                        }}>
+                        <Tab title={lang['Profile_Tab_Received']}>
+                            <AppSubTabs renderAll>
+                                <Tab title={lang['Profile_Tab_Basic']}>
+                                    <ListUserRecognition profile={profile} />
+                                </Tab>
+                                <Tab title={lang['Profile_Tab_NFTPASS']}>
+                                    <ListUserNftpass profile={profile} />
+                                </Tab>
+                                { profile.group_owner_id === user.id ?
+                                    <Tab title={lang['Group_detail_tabs_Invite']}>
+                                        <ListGroupInvite group={profile} />
+                                    </Tab>
+                                    : <></>
+                                }
+                            </AppSubTabs>
+                        </Tab>
+                        { user.id === profile.group_owner_id ?
+                            <Tab title={lang['Profile_Tab_Presend']}>
+                                <ListUserPresend profile={profile} />
                             </Tab>
-                            <Tab key='Invite' title={ lang['Group_detail_tabs_Invite'] }>
-                                <ListGroupInvitep group={ profile! } />
-                            </Tab>
-                            { user.id === profile.group_owner_id ?
-                                <Tab key='Presend' title={ lang['Profile_Tab_Presend'] }>
-                                    <ListUserPresend userType='group' profile={ profile! } />
-                                </Tab> : <></>
-                             }
-                        </AppSubTabs>
-                    </Tab>
-                    <Tab key='Received' title={ lang['Profile_Tab_Received'] }>
-                        <ListUserBadgelet profile={ profile! } />
-                    </Tab>
-                    <Tab key='Members' title={ lang['Group_detail_tabs_member'] }>
-                        <ListGroupMember group={ profile! } />
-                    </Tab>
-                </AppTabs>
+                            : <></>
+                        }
+                        <Tab title={lang['Group_detail_tabs_member']}>
+                            <ListGroupMember group={ profile }/>
+                        </Tab>
+                    </Tabs>
+                </div>
             </div>
         </div>
         }

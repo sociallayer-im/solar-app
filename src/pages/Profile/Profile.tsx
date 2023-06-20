@@ -6,18 +6,22 @@ import { useContext, useEffect, useState } from 'react'
 import solas, { Profile } from '../../service/solas'
 import DialogsContext from '../../components/provider/DialogProvider/DialogsContext'
 import ProfilePanel from '../../components/base/ProfilePanel/ProfilePanel'
-import AppButton, { BTN_SIZE } from '../../components/base/AppButton/AppButton'
+import AppButton, {BTN_KIND, BTN_SIZE} from '../../components/base/AppButton/AppButton'
 import LangContext from '../../components/provider/LangProvider/LangContext'
-import AppTabs from '../../components/base/AppTabs'
-import AppSubTabs from '../../components/base/AppSubTabs'
-import { Tab } from 'baseui/tabs'
-import ListUserMinted from '../../components/compose/ListUserMinted'
-import ListUserPresend from '../../components/compose/ListUserPresend'
-import ListUserBadgelet from '../../components/compose/ListUserBadgelet'
 import ListUserGroup from '../../components/compose/ListUserGroup'
+import ListUserPresend from '../../components/compose/ListUserPresend'
 import UserContext from '../../components/provider/UserProvider/UserContext'
 import { useNavigate } from 'react-router-dom'
 import useIssueBadge from '../../hooks/useIssueBadge'
+import BgProfile from '../../components/base/BgProfile/BgProfile'
+import useEvent, { EVENT } from '../../hooks/globalEvent'
+import { styled } from 'baseui'
+import useCopy from '../../hooks/copy'
+import {Tabs, Tab} from "baseui/tabs";
+import ListUserRecognition from "../../components/compose/ListUserRecognition/ListUserRecognition";
+import AppSubTabs from "../../components/base/AppSubTabs";
+import ListUserNftpass from "../../components/compose/ListUserNftpass/ListUserNftpass";
+import ListUserPoint from "../../components/compose/ListUserPoint/ListUserPoint";
 
 
 function ProfilePage () {
@@ -26,9 +30,17 @@ function ProfilePage () {
     const { showLoading } = useContext(DialogsContext)
     const { lang } = useContext(LangContext)
     const { user } = useContext(UserContext)
-    const [selectedTab, setSelectedTab] = useState('Received')
+    const [selectedTab, setSelectedTab] = useState('0')
     const navigate = useNavigate()
     const startIssue = useIssueBadge()
+    const [newProfile, _] = useEvent(EVENT.profileUpdate)
+    const { copyWithDialog } = useCopy()
+
+    useEffect(() => {
+        if (newProfile && newProfile.id === profile?.id) {
+            setProfile(newProfile)
+        }
+    }, [newProfile])
 
     useEffect(() => {
         const getProfile  =  async function () {
@@ -62,49 +74,84 @@ function ProfilePage () {
             : startIssue({ badges, to: profile?.domain || ''})
     }
 
+    const ShowDomain = styled('div', ({$theme}) => {
+       return {
+           color: '#272928'
+       }
+    })
+
+    const goToEditProfile = () => {
+        navigate(`/profile-edit/${profile?.username}`)
+    }
+
+    const ProfileMenu = () => <div className='profile-setting'>
+        <ShowDomain onClick={ () => { copyWithDialog(profile?.domain || '', lang['Dialog_Copy_Message']) } }>{ profile?.domain }</ShowDomain>
+        { user.id === profile?.id &&
+            <div className='profile-setting-btn' onClick={ () => { goToEditProfile() }} ><i className='icon-setting'></i></div>
+        }
+    </div>
+
     return <Layout>
         { !!profile &&
             <div className='profile-page'>
-            <div className='up-side'>
-                <div className='center'>
-                    <PageBack />
-                    <div className='slot_1'>
-                        <ProfilePanel profile={ profile } />
-                    </div>
-                    <div className='slot_2'>
-                        <AppButton size={ BTN_SIZE.compact } onClick={ handleMintOrIssue }>
-                            { user.userName === profile.username
-                                ? lang['Profile_User_MindBadge']
-                                : lang['Profile_User_IssueBadge'] + ' ' +profile.username
-                            }
-                        </AppButton>
+                <div className='up-side'>
+                    <BgProfile profile={ profile }/>
+                    <div className='center'>
+                        <div className='top-side'>
+                            <PageBack menu={ () => ProfileMenu() }/>
+                        </div>
+                        <div className='slot_1'>
+                            <ProfilePanel profile={ profile } />
+                        </div>
+                        <div className='slot_2'>
+                            <AppButton
+                                special kind={ BTN_KIND.primary }
+                                size={ BTN_SIZE.compact }
+                                onClick={ handleMintOrIssue }>
+                                <span className='icon-sendfasong'></span>
+                                { user.id === profile.id
+                                    ? lang['Profile_User_MindBadge']
+                                    : lang['Profile_User_IssueBadge'] + profile.username
+                                }
+                            </AppButton>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div className='down-side'>
-                <AppTabs initialState={ { activeKey: selectedTab } }>
-                    <Tab key='Received' title={ lang['Profile_Tab_Received'] }>
-                        <ListUserBadgelet profile={ profile! } />
-                    </Tab>
-                    <Tab key='Minted' title={ lang['Profile_Tab_Minted'] }>
-                        <AppSubTabs>
-                            <Tab key='Minted' title={ lang['Profile_Tab_Minted'] }>
-                                <ListUserMinted profile={ profile! } />
+                <div className='down-side'>
+                    <div className={'profile-tab'}>
+                        <Tabs
+                            renderAll
+                            activeKey={selectedTab}
+                            onChange={({ activeKey }) => {
+                            setSelectedTab(activeKey as any);
+                        }}>
+                            <Tab title={lang['Profile_Tab_Received']}>
+                                <AppSubTabs renderAll>
+                                    <Tab title={lang['Profile_Tab_Basic']}>
+                                        <ListUserRecognition profile={profile} />
+                                    </Tab>
+                                    <Tab title={lang['Profile_Tab_NFTPASS']}>
+                                        <ListUserNftpass profile={profile} />
+                                    </Tab>
+                                </AppSubTabs>
                             </Tab>
-                            { user.id === profile.id
-                                ? <Tab key='Presend' title={ lang['Profile_Tab_Presend'] }>
-                                    <ListUserPresend profile={ profile! } />
-                                 </Tab>
+                            { user.id === profile.id ?
+                                <Tab title={lang['Profile_Tab_Presend']}>
+                                    <ListUserPresend profile={profile} />
+                                </Tab>
                                 : <></>
                             }
-                        </AppSubTabs>
-                    </Tab>
-                    <Tab key='Groups' title={ lang['Profile_Tab_Groups'] }>
-                        <ListUserGroup profile={ profile! } />
-                    </Tab>
-                </AppTabs>
+                            <Tab title={lang['Profile_Tab_Groups']}>
+                                <ListUserGroup profile={profile} />
+                            </Tab>
+                            <Tab title={lang['Profile_Tab_Point']}>
+                                <ListUserPoint profile={profile} />
+                            </Tab>
+                        </Tabs>
+                    </div>
+                    <div className='profile-user-name' style={{display: 'none'}}>{ profile.username }</div>
+                </div>
             </div>
-        </div>
         }
     </Layout>
 }
