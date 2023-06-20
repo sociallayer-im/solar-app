@@ -49,7 +49,7 @@ const langEN = {
   Profile_Tab_Minted: 'Created',
   Profile_Tab_Point: 'Point',
   Profile_Tab_Groups: 'Groups',
-  Profile_Tab_Presend: 'Presend',
+  Profile_Tab_Presend: 'Sending',
   Profile_Show_Wallet: 'Your address is',
   Profile_Show_Email: 'Your email is',
   Profile_Show_Close: 'Close',
@@ -76,7 +76,7 @@ const langEN = {
   BadgeDialog_Label_Creat_Time: 'Create time',
 
   BadgeletDialog_title: 'Badge Details',
-  BadgeletDialog_presend_title: 'Presend Details',
+  BadgeletDialog_presend_title: 'Sending Details',
   BadgeletDialog_invite_title: 'Invite Details',
   BadgeletDialog_Reason: 'Reason',
 
@@ -276,7 +276,7 @@ const langEN = {
 
   Empty_Text: 'No Data yet~',
   Empty_No_Badge: 'No badge yet~',
-  Empty_No_Present: 'No presend yet~',
+  Empty_No_Present: 'No Sending yet~',
   Empty_No_Group: 'No group yet~',
   Empty_No_Invite: 'No invite yet~',
 

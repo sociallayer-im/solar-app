@@ -1142,13 +1142,14 @@ export interface CreatePointProps {
     name: string,
     title: string,
     auth_token: string,
+    sym: string
     content?: string,
     token_id?: number,
     metadata?: string,
     point_type?: string,
     image_url: string,
     max_supply?: number,
-    group_id?: number
+    group_id?: number,
 }
 
 export interface Point {
@@ -1165,8 +1166,10 @@ export interface Point {
     sender: ProfileSimple
     title: string
     token_id: string
+    sym: string
     total_supply: number | null
-    point_items?: PointItem[]
+    point_items?: PointItem[],
+
 }
 
 export async function createPoint(props: CreatePointProps) {

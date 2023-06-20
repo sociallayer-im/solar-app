@@ -21,6 +21,8 @@ function CreateBadge() {
     const [domain, setDomain] = useState('')
     const [nameError, setNameError] = useState('')
     const [domainError, setDomainError] = useState('')
+    const [symbol, setSymbol] = useState('')
+    const [symbolError, setSymbolError] = useState('')
     const [reason, setReason] = useState('')
     const [creator, setCreator] = useState<Group | Profile | null>(null)
     const {user} = useContext(UserContext)
@@ -56,6 +58,11 @@ function CreateBadge() {
             return
         }
 
+        if (!symbol) {
+            setSymbolError('please input a symbol')
+            return
+        }
+
         const unload = showLoading()
         try {
             const newPoint = await createPoint({
@@ -64,7 +71,8 @@ function CreateBadge() {
                 content: reason,
                 image_url: cover,
                 auth_token: user.authToken || '',
-                group_id: creator?.is_group ? creator.id : undefined
+                group_id: creator?.is_group ? creator.id : undefined,
+                sym: symbol
             })
             navigate(`/issue-point/${newPoint.id}`)
         } catch (e: any) {
@@ -105,6 +113,18 @@ function CreateBadge() {
                                 placeholder={lang['Create_Point_Name_Placeholder']}
                                 onChange={(e) => {
                                     setName(e.target.value.trim())
+                                }}/>
+                        </div>
+
+                        <div className='input-area'>
+                            <div className='input-area-title'>{lang['Create_Point_Symbol']}</div>
+                            <AppInput
+                                clearable
+                                value={symbol}
+                                errorMsg={symbolError}
+                                placeholder={lang['Create_Point_Symbol_Placeholder']}
+                                onChange={(e) => {
+                                    setSymbol(e.target.value.toLowerCase())
                                 }}/>
                         </div>
 

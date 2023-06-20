@@ -172,6 +172,10 @@ function DetailPointItem(props: DetailBadgeletProps) {
                                         content={item.value + ''}/>
 
                                     <DetailArea
+                                        title={lang['Create_Point_Symbol']}
+                                        content={pointItem.point.sym ? pointItem.point.sym.toUpperCase() : '--'}/>
+
+                                    <DetailArea
                                         onClose={props.handleClose}
                                         title={lang['BadgeDialog_Label_Issuees']}
                                         content={item.owner.domain
