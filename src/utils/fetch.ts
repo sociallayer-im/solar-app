@@ -12,10 +12,18 @@ async function get (options: FetchOptions) {
         options.data.auth_tokne = options.authToken
     }
 
-    console.log('request info: ', options.url, options.data)
-    return await axios.get(options.url, {
+    const before = Date.now()
+    const res = await axios.get(options.url, {
         params: options.data
     })
+    const after = Date.now()
+    const duration = after - before
+    console.log(`request time: ${duration}, url: ${options.url}, data: ${JSON.stringify(options.data)}`)
+    if (duration > 1000) {
+        console.error(`fetch duration: ${duration}, url: ${options.url}, data: ${JSON.stringify(options.data)}`)
+    }
+
+    return  res
 }
 
 async function post (options: FetchOptions) {
@@ -23,12 +31,20 @@ async function post (options: FetchOptions) {
         options.data.auth_tokne = options.authToken
     }
 
-    console.log('request info: ', options.url, options.data)
-    return await axios.post(options.url, options.data, {
+    const before = Date.now()
+    const res = axios.post(options.url, options.data, {
         headers: options.header || {
             'Content-Type': 'application/json'
         }}
     )
+    const after = Date.now()
+    const duration = after - before
+    console.log(`request time: ${duration}, url: ${options.url}, data: ${JSON.stringify(options.data)}`)
+    if (duration > 1000) {
+        console.error(`fetch duration: ${duration}, url: ${options.url}, data: ${JSON.stringify(options.data)}`)
+    }
+
+    return res
 }
 
 export default { get, post }
