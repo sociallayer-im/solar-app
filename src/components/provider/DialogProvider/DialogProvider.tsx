@@ -1,5 +1,16 @@
 import { ReactNode, useEffect, useState } from 'react'
-import {Badge, Badgelet, Invite, Presend, Profile, Group, NftPass, Point, PointItem} from '../../../service/solas'
+import {
+    Badge,
+    Badgelet,
+    Invite,
+    Presend,
+    Profile,
+    Group,
+    NftPass,
+    Point,
+    PointItem,
+    NftPasslet
+} from '../../../service/solas'
 import DialogsContext, { DialogsContextType } from './DialogsContext'
 import DialogDomainConfirm, { DialogConfirmDomainProps } from '../../base/Dialog/DialogConfirmDomain/DialogConfirmDomain'
 import DialogConfirm, { DialogConfirmProps } from '../../base/Dialog/DialogConfirm/DialogConfirm'
@@ -318,7 +329,7 @@ function DialogProvider (props: DialogProviderProps) {
         setDialogsGroup({ ...dialogsGroup })
     }
 
-    const showNftpasslet = (props: Badgelet) => {
+    const showNftpasslet = (props: NftPasslet) => {
         const id = genID()
         dialogsGroup.dialogs.push({
             id,

@@ -61,6 +61,10 @@ function DetailPoint(props: DetailBadgeletProps) {
                 }
 
                 <DetailArea
+                    title={lang['Create_Point_Symbol']}
+                    content={point.sym ? point.sym.toUpperCase() : '--'}/>
+
+                <DetailArea
                     title={lang['BadgeDialog_Label_Creat_Time']}
                     content={formatTime(point.created_at)}/>
 

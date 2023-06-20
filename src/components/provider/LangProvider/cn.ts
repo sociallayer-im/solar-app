@@ -49,7 +49,7 @@ const langCN: LangConfig = {
   Profile_Tab_Basic: '基础徽章',
   Profile_Tab_Minted: '已创建',
   Profile_Tab_Groups: '群组',
-  Profile_Tab_Presend: '待接收',
+  Profile_Tab_Presend: '发送中',
   Profile_Show_Wallet: '你的钱包地址',
   Profile_Show_Email: '你的邮箱',
   Profile_Show_Close: '关闭',
@@ -76,7 +76,7 @@ const langCN: LangConfig = {
   BadgeDialog_Label_Creat_Time: '创建时间',
 
   BadgeletDialog_title: '徽章详情',
-  BadgeletDialog_presend_title: '预发送详情',
+  BadgeletDialog_presend_title: '发送中详情',
   BadgeletDialog_invite_title: '邀请详情',
   BadgeletDialog_Reason: '颁发理由',
 
@@ -276,7 +276,7 @@ const langCN: LangConfig = {
 
   Empty_Text: '没有数据~',
   Empty_No_Badge: '没有徽章~',
-  Empty_No_Present: '没有预发送~',
+  Empty_No_Present: '没有发送中~',
   Empty_No_Group: '没有群组~',
   Empty_No_Invite: '没有邀请~',
 
@@ -374,6 +374,8 @@ const langCN: LangConfig = {
   NFT_Detail_Des: '描述',
   NFT_Detail_Check: '签到',
   NFT_Detail_use: '使用 NFT Pass',
+  NFT_Detail_Expiration: '有效期',
+  NFT_Detail_Unavailable: '不在有效期内',
 
   Point_Detail_Title: '点数详情',
 

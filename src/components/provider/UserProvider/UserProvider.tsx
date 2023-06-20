@@ -46,7 +46,7 @@ function UserProvider (props: UserProviderProps) {
     const { address, isConnecting, isDisconnected } = useAccount()
     const { disconnect } = useDisconnect()
     const { data } = useSigner()
-    const { showToast, clean } = useContext(DialogsContext)
+    const { showToast, clean, showLoading } = useContext(DialogsContext)
     const navigate = useNavigate()
     const [newProfile, _] = useEvent(EVENT.profileUpdate)
 
@@ -150,6 +150,7 @@ function UserProvider (props: UserProviderProps) {
 
         let authToken = AuthStorage.getAuth(address)
         if (!authToken) {
+            const unloading = showLoading()
             try {
                 authToken = await solas.login(data)
                 console.log('New token: ', authToken)
@@ -158,6 +159,8 @@ function UserProvider (props: UserProviderProps) {
                 showToast('Login fail', 3000)
                 logOut()
                 return
+            } finally {
+                unloading()
             }
         }
 

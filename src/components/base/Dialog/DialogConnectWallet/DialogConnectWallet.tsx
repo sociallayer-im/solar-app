@@ -1,6 +1,6 @@
 import {Connector, useAccount, useConnect, useSigner, useDisconnect } from 'wagmi'
 import './DialogConnectWallet.less'
-import {useContext, useEffect} from 'react'
+import {useContext, useEffect, useRef} from 'react'
 import LangContext from '../../../provider/LangProvider/LangContext'
 import { setLastLoginType } from '../../../../utils/authStorage'
 import { useNavigate } from 'react-router-dom'
@@ -12,19 +12,37 @@ interface DialogConnectWalletProps {
 }
 
 function DialogConnectWallet (props: DialogConnectWalletProps) {
-    const { connect, connectors, error, isLoading, pendingConnector } = useConnect()
+    const unloading_1 = useRef<any>(null)
+    const { connect, connectors, error, isLoading, pendingConnector } = useConnect({
+        onSettled: () => {
+            if (unloading_1) {
+                unloading_1.current?.()
+                unloading_1.current = null
+            }
+        }
+    })
     const { disconnect } = useDisconnect()
     const { lang } = useContext(LangContext)
     const { isDisconnected } = useAccount()
     const navigate = useNavigate()
-    const { clean } = useContext(DialogsContext)
+    const { clean, showLoading } = useContext(DialogsContext)
     const { user } = useContext(UserContext)
+
 
     useEffect(() => {
         if (user.id) {
             props.handleClose()
         }
     }, [user.id])
+
+    useEffect(() => {
+        if (isLoading) {
+            unloading_1.current = showLoading()
+        } else {
+            unloading_1.current?.()
+            unloading_1.current = null
+        }
+    }, [isLoading])
 
     const handleConnectWallet = (connector: Connector) => {
         if (isLoading && pendingConnector?.id === connector.id) return
@@ -48,7 +66,7 @@ function DialogConnectWallet (props: DialogConnectWalletProps) {
     return (
         <div className='dialog-connect-wallet'>
             {connectors.map((connector) => (
-                <div className={ !connector.ready  ? 'connect-item disable': 'connect-item' }
+                <div className={ !connector.ready ? 'connect-item disable': 'connect-item' }
                     key={connector.id}
                     onClick={() => handleConnectWallet(connector)}>
                     <img src={ `/images/${connector.name.toLowerCase()}.png` } alt={connector.name} />
