@@ -374,6 +374,8 @@ const langCN: LangConfig = {
   NFT_Detail_Des: '描述',
   NFT_Detail_Check: '签到',
   NFT_Detail_use: '使用 NFT Pass',
+  NFT_Detail_Expiration: '有效期',
+  NFT_Detail_Unavailable: '不在有效期内',
 
   Point_Detail_Title: '点数详情',
 

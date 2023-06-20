@@ -81,12 +81,6 @@ function DetailNftpasslet(props: DetailNftpassletProps) {
     const navigate = useNavigate()
     const [showQrcode, setShowQrcode] = useState(false)
 
-    const upDateBadgelet = async () => {
-        const newBadgelet = await solas.queryBadgeletDetail({id: props.nftpasslet.id})
-        setNftpasslet(newBadgelet)
-    }
-
-
     const handleAccept = async () => {
         const unload = showLoading()
         try {
@@ -151,6 +145,30 @@ function DetailNftpasslet(props: DetailNftpassletProps) {
         </AppButton>
     </>
 
+    const formatExpiration = (crateTime: string, start: null | string, end: null | string) => {
+        let res = 'Unlimited'
+        if (start && end) {
+            res = `${formatTime(start)} - ${formatTime(end)}`
+        }
+
+        if (!start && end) {
+            res = `${formatTime(crateTime)} -- ${formatTime(end)}`
+        }
+
+        if (start && !end) {
+            res = `Available after ${formatTime(start)}`
+        }
+
+        return res
+    }
+
+    const checkAvailable = () => {
+        const now = new Date().getTime()
+        const start = nftpasslet.starts_at ? new Date(nftpasslet.starts_at).getTime() : null
+        const end = nftpasslet.expires_at ? new Date(nftpasslet.expires_at).getTime() : null
+        return !start || now >= start && (!end || now <= end)
+    }
+
     const swiperMaxHeight = window.innerHeight - 320
     return (
         <DetailWrapper>
@@ -198,6 +216,10 @@ function DetailNftpasslet(props: DetailNftpassletProps) {
                                 title={lang['BadgeDialog_Label_Creat_Time']}
                                 content={formatTime(nftpasslet.created_at)}/>
 
+                            <DetailArea
+                                title={lang['NFT_Detail_Expiration']}
+                                content={formatExpiration(nftpasslet.created_at, nftpasslet.starts_at, nftpasslet.expires_at)}/>
+
                         </DetailScrollBox>
                         <BtnGroup>
                             {!user.domain && LoginBtn}
@@ -210,14 +232,19 @@ function DetailNftpasslet(props: DetailNftpassletProps) {
                             {!!user.domain
                                 && user.id === nftpasslet.receiver.id
                                 && nftpasslet.status === 'accepted'
-                                && <AppButton
-                                    special
-                                    kind={BTN_KIND.primary}
-                                    onClick={() => {
-                                        setShowQrcode(true)
-                                    }}>
-                                    {lang['NFT_Detail_use']}
-                                </AppButton>
+                                && (
+                                    checkAvailable() ? <AppButton
+                                            special
+                                            kind={BTN_KIND.primary}
+                                            onClick={() => {
+                                                setShowQrcode(true)
+                                            }}>
+                                            {lang['NFT_Detail_use']}
+                                        </AppButton>
+                                        : <AppButton kind={BTN_KIND.secondary} disabled={true}>
+                                            {lang['NFT_Detail_Unavailable']}
+                                        </AppButton>
+                                )
                             }
                         </BtnGroup>
                     </>

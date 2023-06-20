@@ -374,6 +374,8 @@ const langEN = {
   NFT_Detail_Des: 'Description',
   NFT_Detail_Check: 'Check In',
   NFT_Detail_use: 'Use the NFT Pass',
+  NFT_Detail_Expiration: 'Expiration Date',
+  NFT_Detail_Unavailable: 'Not in the validity period',
 
   Point_Detail_Title: 'Point Detail',
 

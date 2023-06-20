@@ -138,7 +138,10 @@ export interface Badge {
 
 export type NftPass = Badge
 export type NftPassWithBadgelets = BadgeWithBadgelets
-export type NftPasslet = Badgelet
+export interface NftPasslet extends Badgelet {
+    starts_at: null | string,
+    expires_at: null | string,
+}
 
 
 export async function queryBadge(props: QueryBadgeProps): Promise<Badge[]> {
