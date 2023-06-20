@@ -54,7 +54,7 @@ function DetailPointItem(props: DetailBadgeletProps) {
     }
 
     const getItemsOfSamePoint = async () => {
-        const items = await solas.queryPointItems({point_id: props.pointItem.point.id})
+        const items = await solas.queryPointItems({point_id: props.pointItem.point.id, owner_id: props.pointItem.owner.id})
         setPointItemList(items)
     }
 
