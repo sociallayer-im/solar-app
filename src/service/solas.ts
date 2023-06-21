@@ -580,7 +580,7 @@ export async function createBadge(props: CreateBadgeProps): Promise<Badge> {
 export interface CreatePresendProps {
     badge_id: number,
     message: string,
-    counter: number | string,
+    counter: number | string | null,
     auth_token: string
 }
 

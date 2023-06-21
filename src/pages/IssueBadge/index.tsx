@@ -4,12 +4,12 @@ import Layout from '../../components/Layout/Layout'
 import PageBack from '../../components/base/PageBack'
 import './IssueBadge.less'
 import LangContext from '../../components/provider/LangProvider/LangContext'
-import AppButton, {BTN_KIND} from '../../components/base/AppButton/AppButton'
-import solas, {Badge, Presend} from '../../service/solas'
+import solas, {Badge} from '../../service/solas'
 import DialogsContext from '../../components/provider/DialogProvider/DialogsContext'
 import UserContext from '../../components/provider/UserProvider/UserContext'
-import copy from '../../utils/copy'
-import IssueTypeSelectorBadge, {IssueTypeSelectorData, IssueType} from "../../components/compose/IssueTypeSelectorBadge/IssueTypeSelectorBadge";
+import IssueTypeSelectorBadge, {
+    IssueTypeSelectorData
+} from "../../components/compose/IssueTypeSelectorBadge/IssueTypeSelectorBadge";
 
 function Issue() {
     const {user} = useContext(UserContext)
@@ -22,8 +22,8 @@ function Issue() {
 
     // 处理预填接受者
     const presetAcceptor = SearchParams.get('to')
-    const initIssueType = presetAcceptor ? 'issue' : ''
-    const initIssues = presetAcceptor ?[presetAcceptor, ''] : ['']
+    const initIssueType = presetAcceptor ? 'issue' : 'unset'
+    const initIssues = presetAcceptor ? [presetAcceptor, ''] : ['']
 
 
     state = state || {}
@@ -43,8 +43,11 @@ function Issue() {
 
     const handleCreatePresend = async (data: IssueTypeSelectorData) => {
         if (!data.presendAmount) {
-            showToast('Please type in quantity')
-            return
+            data.presendAmount = null
+        }
+
+        if (data.presendAmount === '0') {
+            data.presendAmount = null
         }
 
         const unload = showLoading()
@@ -52,7 +55,7 @@ function Issue() {
             const presend = await solas.createPresend({
                 badge_id: badge?.id!,
                 message: state.reason || '',
-                counter: data.presendAmount,
+                counter: data.presendAmount ? Number(data.presendAmount) : null,
                 auth_token: user.authToken || ''
             })
             unload()
@@ -98,10 +101,16 @@ function Issue() {
         if (data.issueType === 'issue') {
             handleCreateIssue(data)
         }
+
+        if (data.issueType === 'unset') {
+            const _data = {...data}
+            _data.presendAmount = null
+            handleCreatePresend(data)
+        }
     }
 
     const fallBackPath = badge?.group
-        ? `/group/${ badge?.group.username}`
+        ? `/group/${badge?.group.username}`
         : user.userName
             ? `/profile/${user.userName}`
             : '/'

@@ -5,12 +5,12 @@ import IssuesInput from "../../base/IssuesInput/IssuesInput";
 import AppButton from "../../base/AppButton/AppButton";
 import LangContext from "../../provider/LangProvider/LangContext";
 
-export type IssueType = '' | 'issue' | 'presend'
+export type IssueType = 'unset' | 'issue' | 'presend'
 
 export interface IssueTypeSelectorData {
     issues: string[],
     issueType: IssueType,
-    presendAmount: string
+    presendAmount: string | null
 }
 
 export interface IssueTypeSelectorProps {
@@ -22,8 +22,8 @@ export interface IssueTypeSelectorProps {
 }
 
 function IssueTypeSelectorBadge(props: IssueTypeSelectorProps) {
-    const [issueType, setIssueType] = useState<'' | 'issue' | 'presend'>(props.initIssueType || '')
-    const [presendAmount, setPresendAmount] = useState(props.initPresendAmount || '30')
+    const [issueType, setIssueType] = useState<IssueType>(props.initIssueType || 'unset')
+    const [presendAmount, setPresendAmount] = useState(props.initPresendAmount || '0')
     const [issues, setIssues] = useState<string[]>(props.initIssues || [''])
     const {lang} = useContext(LangContext)
 
@@ -47,14 +47,12 @@ function IssueTypeSelectorBadge(props: IssueTypeSelectorProps) {
 
     return (<div className={'issue-type-select'}>
         <div className={'title'}>Send the badge</div>
-        {(issueType === '' || issueType === 'issue') &&
-            <div className={'item'}>
-                <div className={'item-title'}>Select receivers</div>
-                <Toggle checked={issueType === 'issue'} onChange={e => {
-                    setIssueType(issueType === 'issue' ? '' : 'issue')
-                }}/>
-            </div>
-        }
+        <div className={'item'}>
+            <div className={'item-title'}>Select receivers</div>
+            <Toggle checked={issueType === 'issue'} onChange={e => {
+                setIssueType(issueType === 'issue' ? 'unset' : 'issue')
+            }}/>
+        </div>
 
         {
             issueType === 'issue' &&
@@ -65,19 +63,21 @@ function IssueTypeSelectorBadge(props: IssueTypeSelectorProps) {
                 }}/>
         }
 
-        {(issueType === '' || issueType === 'presend') &&
-            <div className={'item'}>
-                <div className={'item-title'}>Badge amount</div>
-                <div className={'item-value'}>
-                    {issueType === 'presend' &&
-                        <input value={presendAmount} onChange={handlePresendAmountChange}/>
-                    }
-                    <Toggle checked={issueType === 'presend'} onChange={e => {
-                        setIssueType(issueType === 'presend' ? '' : 'presend')
-                    }}/>
-                </div>
+        <div className={'item'}>
+            <div className={'item-title'}>Badge amount</div>
+            <div className={'item-value'}>
+                {issueType === 'presend' &&
+                    <input value={presendAmount} onChange={handlePresendAmountChange}/>
+                }
+                {issueType === 'unset' &&
+                    <div className={'unlimited'}>Unlimited</div>
+                }
+
+                <Toggle checked={issueType === 'presend'} onChange={e => {
+                    setIssueType(issueType === 'presend' ? 'unset' : 'presend')
+                }}/>
             </div>
-        }
+        </div>
 
         <div className={'actions'}>
             <AppButton
