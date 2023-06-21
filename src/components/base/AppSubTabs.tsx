@@ -1,6 +1,6 @@
-import { StatefulTabs, StatefulTabsProps } from 'baseui/tabs'
+import { StatefulTabs, StatefulTabsProps, Tabs, TabsProps } from 'baseui/tabs'
 
-interface AppTabsProps extends Partial<StatefulTabsProps> {
+interface AppTabsProps extends Partial<TabsProps> {
     styleOverrides?: {
         Tab?: any
         TabContent?: any
@@ -47,7 +47,7 @@ function AppSubTabs (props: AppTabsProps) {
     }
 
     return (
-        <StatefulTabs
+        <Tabs
             { ...rest }
             overrides={{
                 TabBar: {
@@ -57,7 +57,7 @@ function AppSubTabs (props: AppTabsProps) {
                 TabContent: { style: TabContentStyle }
             }}>
             { children }
-        </StatefulTabs>
+        </Tabs>
     )
 }
 
