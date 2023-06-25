@@ -74,6 +74,8 @@ const langEN = {
   BadgeDialog_Label_action_untop: 'UnSet to Top',
   BadgeDialog_Label_hide_tip: 'Only visible to yourself',
   BadgeDialog_Label_Creat_Time: 'Create time',
+  BadgeDialog_Label_Private: 'Badge Type',
+  BadgeDialog_Label_Private_text: 'Private',
 
   BadgeletDialog_title: 'Badge Details',
   BadgeletDialog_presend_title: 'Sending Details',
@@ -292,6 +294,8 @@ const langEN = {
   Badgebook_Dialog_Recognition_Des: 'Basic badge, evaluation of others',
   Badgebook_Dialog_Points: 'Points',
   Badgebook_Dialog_Points_Des: 'Create points systems in groups',
+  Badgebook_Dialog_Privacy: 'Privacy Badge',
+  Badgebook_Dialog_Privacy_Des: 'Only receivers can see the badge',
   Badgebook_Dialog_NFT_Pass: 'NFT Pass',
   Badgebook_Dialog_NFT_Pass_Des: 'Given by the groups to the person',
 
@@ -384,7 +388,11 @@ const langEN = {
   Issue_Point_Title: 'Send Points',
   Issue_Point_Point: 'Points',
 
-  Dialog_Check_In_Title: 'Check In'
+  Dialog_Check_In_Title: 'Check In',
+
+  Create_Privacy_Title: 'Create a privacy badge',
+  Create_Privacy_Tips: 'Only you and the owner can view the badge, others can only see the creator and owner of the badge.',
+
 }
 
 export type LangConfig = typeof langEN

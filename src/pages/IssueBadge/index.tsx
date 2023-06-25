@@ -8,6 +8,7 @@ import solas, {Badge} from '../../service/solas'
 import DialogsContext from '../../components/provider/DialogProvider/DialogsContext'
 import UserContext from '../../components/provider/UserProvider/UserContext'
 import IssueTypeSelectorBadge, {
+    IssueType,
     IssueTypeSelectorData
 } from "../../components/compose/IssueTypeSelectorBadge/IssueTypeSelectorBadge";
 
@@ -22,7 +23,7 @@ function Issue() {
 
     // 处理预填接受者
     const presetAcceptor = SearchParams.get('to')
-    const initIssueType = presetAcceptor ? 'issue' : 'unset'
+    const [initIssueType, setInitIssueType] = useState<IssueType>(presetAcceptor ? 'issue' : 'unset')
     const initIssues = presetAcceptor ? [presetAcceptor, ''] : ['']
 
 
@@ -33,6 +34,11 @@ function Issue() {
     useEffect(() => {
         async function getBadgeInfo() {
             const badge = await solas.queryBadgeDetail({id: Number(params.badgeId)})
+
+            // nftpass 和 private badge 只能 issue
+            if (badge.badge_type ==='nftpass' || badge.badge_type === 'private') {
+                setInitIssueType('issue')
+            }
             setBadge(badge)
         }
 
@@ -102,7 +108,7 @@ function Issue() {
             handleCreateIssue(data)
         }
 
-        if (data.issueType === 'unset') {
+        if (data.issueType === 'unset' && (badge?.badge_type === 'badge' || data.issueType === null)) {
             const _data = {...data}
             _data.presendAmount = null
             handleCreatePresend(data)
@@ -125,6 +131,7 @@ function Issue() {
                         <div className={'des'}>Your badge have been created</div>
                     </div>
                     <IssueTypeSelectorBadge
+                        presendDisable={ badge?.badge_type && badge?.badge_type !== 'badge'}
                         initIssueType={initIssueType}
                         initIssues={initIssues}
                         onConfirm={handleCreate}

@@ -18,6 +18,7 @@ export interface IssueTypeSelectorProps {
     onCancel?: (value: IssueTypeSelectorData) => any
     initIssueType?: IssueType
     initIssues?: string[]
+    presendDisable?: boolean
     initPresendAmount?: string
 }
 
@@ -45,6 +46,10 @@ function IssueTypeSelectorBadge(props: IssueTypeSelectorProps) {
         }
     }
 
+    useEffect(() => {
+        setIssueType(props.initIssueType || 'unset')
+    },[props.initIssueType])
+
     return (<div className={'issue-type-select'}>
         <div className={'title'}>Send the badge</div>
         <div className={'item'}>
@@ -63,21 +68,25 @@ function IssueTypeSelectorBadge(props: IssueTypeSelectorProps) {
                 }}/>
         }
 
-        <div className={'item'}>
-            <div className={'item-title'}>Badge amount</div>
-            <div className={'item-value'}>
-                {issueType === 'presend' &&
-                    <input value={presendAmount} onChange={handlePresendAmountChange}/>
-                }
-                {issueType === 'unset' &&
-                    <div className={'unlimited'}>Unlimited</div>
-                }
+        {!props.presendDisable &&
+            <div className={'item'}>
+                <div className={'item-title'}>Badge amount</div>
+                <div className={'item-value'}>
+                    {issueType === 'presend' &&
+                        <input value={presendAmount} onChange={handlePresendAmountChange}/>
+                    }
+                    {issueType === 'unset' &&
+                        <div className={'unlimited'}>Unlimited</div>
+                    }
 
-                <Toggle checked={issueType === 'presend'} onChange={e => {
-                    setIssueType(issueType === 'presend' ? 'unset' : 'presend')
-                }}/>
+                    <Toggle checked={issueType === 'presend'} onChange={e => {
+                        setIssueType(issueType === 'presend' ? 'unset' : 'presend')
+                    }}/>
+                </div>
             </div>
-        </div>
+        }
+
+
 
         <div className={'actions'}>
             <AppButton

@@ -74,6 +74,8 @@ const langCN: LangConfig = {
   BadgeDialog_Label_action_untop: '取消置顶',
   BadgeDialog_Label_hide_tip: '仅本人可见',
   BadgeDialog_Label_Creat_Time: '创建时间',
+  BadgeDialog_Label_Private: '徽章类型',
+  BadgeDialog_Label_Private_text: '私密',
 
   BadgeletDialog_title: '徽章详情',
   BadgeletDialog_presend_title: '发送中详情',
@@ -288,10 +290,12 @@ const langCN: LangConfig = {
   Badgebook_Dialog_Choose_Badge: '从已经颁发的徽章中选择',
   Badgebook_Dialog_Choose_Draft: '从保存的草稿中选择',
   Badgebook_Dialog_Cetate_Badge: '创建新的徽章',
-  Badgebook_Dialog_Recognition_Badge: 'Basic Badge',
+  Badgebook_Dialog_Recognition_Badge: '基础徽章',
   Badgebook_Dialog_Recognition_Des: 'Basic badge, evaluation of others',
-  Badgebook_Dialog_Points: 'Points',
+  Badgebook_Dialog_Points: '点数',
   Badgebook_Dialog_Points_Des: 'Create points systems in groups',
+  Badgebook_Dialog_Privacy: '私密徽章',
+  Badgebook_Dialog_Privacy_Des: '私密徽章，只有接收者自己可见',
   Badgebook_Dialog_NFT_Pass: 'NFT Pass',
   Badgebook_Dialog_NFT_Pass_Des: 'Given by the groups to the person',
 
@@ -384,7 +388,10 @@ const langCN: LangConfig = {
   Issue_Point_Title: '发送点数',
   Issue_Point_Point: '点数',
 
-  Dialog_Check_In_Title: '签到'
+  Dialog_Check_In_Title: '签到',
+
+  Create_Privacy_Title: '创建私密徽章',
+  Create_Privacy_Tips: '只有你和接受者可以看到这个徽章的详情，其他人只能看到发送者和接收者',
 }
 
 export default langCN

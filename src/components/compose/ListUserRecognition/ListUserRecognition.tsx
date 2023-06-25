@@ -6,6 +6,7 @@ import CardBadge from "../../base/Cards/CardBadge/CardBadge";
 import UserContext from "../../provider/UserProvider/UserContext";
 import CardBadgelet from "../../base/Cards/CardBadgelet/CardBadgelet";
 import LangContext from "../../provider/LangProvider/LangContext";
+import useEvent, {EVENT} from "../../../hooks/globalEvent";
 
 interface ListUserRecognitionProps {
     profile: Profile
@@ -20,14 +21,29 @@ function ListUserRecognition(props: ListUserRecognitionProps) {
             ? {group_id: props.profile.id, page}
             : {sender_id: props.profile.id, page}
 
-        return await solas.queryBadge(queryProps)
+        const publicBadge =  await solas.queryBadge(queryProps)
+        const privateBadge =  await solas.queryPrivateBadge(queryProps)
+
+        return [...publicBadge, ...privateBadge].sort((a, b) => {
+            return b.id - a.id
+        })
     }
 
     const getBadgelet = async (page: number) => {
-        return await solas.queryBadgelet({
+        const publicBadgelet =  await solas.queryBadgelet({
             show_hidden: user.id === props.profile.id ? 1 : undefined,
             receiver_id: props.profile.id,
             page
+        })
+
+        const privateBadgelet =  await solas.queryPrivacyBadgelet({
+            show_hidden: user.id === props.profile.id ? 1 : undefined,
+            receiver_id: props.profile.id,
+            page
+        })
+
+        return [...publicBadgelet, ...privateBadgelet].sort((a, b) => {
+            return b.id - a.id
         })
     }
 
@@ -38,6 +54,7 @@ function ListUserRecognition(props: ListUserRecognitionProps) {
         })
     }
 
+    const [needUpdate, _] = useEvent(EVENT.badgeletListUpdate)
 
     const listWrapperRefBadge = React.createRef<ListUserAssetsMethods>()
     const listWrapperRefBadgeLet = React.createRef<ListUserAssetsMethods>()
@@ -47,7 +64,7 @@ function ListUserRecognition(props: ListUserRecognitionProps) {
         !!listWrapperRefBadge.current && listWrapperRefBadge.current!.refresh()
         !!listWrapperRefBadgeLet.current && listWrapperRefBadgeLet.current!.refresh()
         !!listWrapperRefInvite.current && listWrapperRefInvite.current!.refresh()
-    }, [props.profile])
+    }, [props.profile, needUpdate])
 
     return (<div className={'list-user-recognition'}>
         <div className={'list-title'}>{lang['Badgelet_List_Title']}</div>

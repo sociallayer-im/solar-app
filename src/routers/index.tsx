@@ -20,6 +20,7 @@ import CreatePoint from "../pages/CreatePoint";
 import IssuePoint from "../pages/IssuePoint";
 import CreateNftPass from "../pages/CreateNftPass";
 import IssueNftPass from "../pages/IssueNftPass";
+import CreatePrivacy from "../pages/CreatePrivacy";
 
 
 // lazy load
@@ -49,10 +50,13 @@ function AppRouter () {
                 <Route path="/group-edit/:groupname" element={<GroupEdit />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/regist" element={<Regist />} />
+
                 <Route path="/create-group" element={<RegistGroup />} />
                 <Route path="/create-badge" element={<CreateBadge />} />
                 <Route path="/create-point" element={<CreatePoint />} />
                 <Route path="/create-nftpass" element={<CreateNftPass />} />
+                <Route path="/create-private" element={<CreatePrivacy />} />
+
                 <Route path="/issue-badge/:badgeId" element={<IssueBadge />} />
                 <Route path="/issue-point/:pointId" element={<IssuePoint />} />
                 <Route path="/issue-nftpass/:nftpassId" element={<IssueNftPass />} />

@@ -2,7 +2,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useState, useContext, useEffect } from 'react'
 import Layout from '../../components/Layout/Layout'
 import PageBack from '../../components/base/PageBack'
-import './CreateBadge.less'
+import './CreatePrivacy.less'
 import LangContext from '../../components/provider/LangProvider/LangContext'
 import UploadImage from '../../components/compose/UploadImage/UploadImage'
 import AppInput from '../../components/base/AppInput'
@@ -77,7 +77,7 @@ function CreateBadgeNonPrefill() {
                 auth_token: user.authToken || '',
                 content: reason || '',
                 group_id:  groupId || undefined,
-                badge_type: 'badge'
+                badge_type: 'private'
             })
 
             if (presetAcceptor) {
@@ -102,11 +102,12 @@ function CreateBadgeNonPrefill() {
 
     return (
         <Layout>
-            <div className='create-badge-page'>
+            <div className='create-private-page'>
                 <div className='create-badge-page-wrapper'>
-                    <PageBack title={ lang['MintBadge_Title'] }/>
+                    <PageBack title={ lang['Create_Privacy_Title'] }/>
 
                     <div className='create-badge-page-form'>
+                        <div className={'form-tips'}>{lang['Create_Privacy_Tips']}</div>
                         <div className='input-area'>
                             <div className='input-area-title'>{ lang['MintBadge_Upload'] }</div>
                             <UploadImage

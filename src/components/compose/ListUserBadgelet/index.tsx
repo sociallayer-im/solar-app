@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react'
 import CardBadgelet from '../../base/Cards/CardBadgelet/CardBadgelet'
-import solas, { Profile, Badgelet  } from '../../../service/solas'
+import solas, {Profile, Badgelet, queryPrivacyBadgelet} from '../../../service/solas'
 import LangContext from '../../provider/LangProvider/LangContext'
 import useEvent, { EVENT } from '../../../hooks/globalEvent'
 import UserContext from '../../provider/UserProvider/UserContext'
@@ -19,10 +19,19 @@ function ListUserBadgelet (props: ListUserBadgeletProps) {
     const listWrapperRef = React.createRef<HorizontalListMethods>()
 
     const getBadgelet = async (page: number) => {
-        return await solas.queryBadgelet({
+        const publicBadgelets = await solas.queryBadgelet({
             show_hidden: user.id === props.profile.id ? 1: undefined,
             receiver_id: props.profile.id,
             page })
+
+        const privateBadgelets = await solas.queryPrivacyBadgelet({
+            show_hidden: user.id === props.profile.id ? 1: undefined,
+            receiver_id: props.profile.id,
+            page })
+
+        return [...publicBadgelets, ...privateBadgelets].sort((a, b) => {
+            return b.id - a.id
+        })
     }
     const [needUpdate, _] = useEvent(EVENT.badgeletListUpdate)
 

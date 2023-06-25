@@ -134,6 +134,7 @@ export interface Badge {
     group?: Group | null,
     content: string,
     counter: number,
+    badge_type: BadgeType,
 }
 
 export type NftPass = Badge
@@ -148,6 +149,19 @@ export async function queryBadge(props: QueryBadgeProps): Promise<Badge[]> {
     const res = await fetch.get({
         url: `${api}/badge/list`,
         data: {...props, badge_type: 'badge'},
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+
+    return res.data.badges as Badge[]
+}
+
+export async function queryPrivateBadge(props: QueryBadgeProps): Promise<Badge[]> {
+    const res = await fetch.get({
+        url: `${api}/badge/list`,
+        data: {...props, badge_type: 'private'},
     })
 
     if (res.data.result === 'error') {
@@ -286,6 +300,23 @@ export async function queryBadgelet(props: QueryBadgeletProps): Promise<Badgelet
     const res = await fetch.get({
         url: `${api}/badgelet/list`,
         data: {...props, badge_type: 'badge'}
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+
+    const list: Badgelet[] = res.data.badgelets
+
+    return list.filter(item => {
+        return item.status !== 'rejected'
+    })
+}
+
+export async function queryPrivacyBadgelet(props: QueryBadgeletProps): Promise<Badgelet[]> {
+    const res = await fetch.get({
+        url: `${api}/badgelet/list`,
+        data: {...props, badge_type: 'private'}
     })
 
     if (res.data.result === 'error') {
@@ -565,6 +596,10 @@ export interface CreateBadgeProps {
 
 export async function createBadge(props: CreateBadgeProps): Promise<Badge> {
     checkAuth(props)
+    if (!props.badge_type) {
+        props.badge_type = 'badge'
+    }
+
     const res = await fetch.post({
         url: `${api}/badge/create`,
         data: props
@@ -1379,4 +1414,6 @@ export default {
     queryNftPasslet,
     queryNftpass,
     queryNftPassDetail,
+    queryPrivacyBadgelet,
+    queryPrivateBadge
 }

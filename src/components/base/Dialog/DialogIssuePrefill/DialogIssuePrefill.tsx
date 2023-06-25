@@ -5,7 +5,7 @@ import {Delete} from 'baseui/icon'
 import LangContext from '../../../provider/LangProvider/LangContext'
 import {Badge} from '../../../../service/solas'
 
-export type CreateType = 'badge' | 'point' | 'nftpass' | 'privacy' | 'gift'
+export type CreateType = 'badge' | 'point' | 'nftpass' | 'private' | 'gift'
 
 export interface BadgeBookDialogRes {
     badgeId?: number
@@ -75,6 +75,15 @@ function DialogIssuePrefill(props: DialogIssuePrefillProps) {
                     <div>
                         <div>{lang['Badgebook_Dialog_Points']} <span className={'new-mark'}>NEW</span></div>
                         <div className={'des'}>{lang['Badgebook_Dialog_Points_Des']}</div>
+                    </div>
+                </div>
+                <div className='create-badge-btn' onClick={e => {
+                    gotoCreateBadge('private')
+                }}>
+                    <img src="/images/create_badge_icon.png" alt=""/>
+                    <div>
+                        <div>{lang['Badgebook_Dialog_Privacy']} <span className={'new-mark'}>NEW</span></div>
+                        <div className={'des'}>{lang['Badgebook_Dialog_Privacy_Des']}</div>
                     </div>
                 </div>
             </>
