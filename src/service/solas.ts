@@ -1,5 +1,6 @@
 import {signInWithEthereum} from './SIWE'
 import fetch from '../utils/fetch'
+import {s} from "msw/lib/glossary-de6278a9";
 
 const api = import.meta.env.VITE_SOLAS_API
 
@@ -1359,6 +1360,64 @@ export async function rejectPoint (props: AcceptPointProp) {
     return res.data.point_item as PointItem
 }
 
+export interface CheckInProps {
+    badgelet_id: number
+    auth_token: string
+}
+
+export interface CheckInSimple {
+    id: number,
+    badgelet_id: number,
+    profile_id: number,
+    created_at: string,
+    memo: null | string
+}
+
+export async function checkIn (props: CheckInProps): Promise<CheckInSimple> {
+    checkAuth(props)
+
+    const res: any = await fetch.post({
+        url: `${api}/badgelet/checkin`,
+        data: props
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message || 'Check in fail')
+    }
+
+    return res.data.checkin as CheckInSimple
+}
+
+export interface QueryCheckInListProps {
+    profile_id?: number,
+    badgelet_id?:number,
+    badge_id?:number
+}
+
+export interface CheckIn {
+    id: number,
+    badgelet: Badgelet,
+    badge: Badge,
+    created_at: string,
+    memo: null | string,
+    profile: ProfileSimple
+}
+
+export async function queryCheckInList (props: QueryCheckInListProps): Promise<CheckIn[]> {
+    const res: any = await fetch.get({
+        url: `${api}/badgelet/checkin_list`,
+        data: props
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message || 'Check in fail')
+    }
+
+    return res.data.checkins.sort((a: any, b: any) => {
+        return b.id - a.id
+    }) as CheckIn[]
+}
+
 
 export default {
     login,
@@ -1415,5 +1474,7 @@ export default {
     queryNftpass,
     queryNftPassDetail,
     queryPrivacyBadgelet,
-    queryPrivateBadge
+    queryPrivateBadge,
+    checkIn,
+    queryCheckInList
 }

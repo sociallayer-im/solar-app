@@ -375,9 +375,11 @@ const langCN: LangConfig = {
   Issue_Nft_End: '结束时间',
 
   NFT_Detail_title: 'Nft Pass 详情',
+  NFT_Detail_checkin_title: '签到记录',
   NFT_Detail_Des: '描述',
   NFT_Detail_Check: '签到',
   NFT_Detail_use: '使用 NFT Pass',
+  NFT_Detail_show_record_btn: '查看记录',
   NFT_Detail_Expiration: '有效期',
   NFT_Detail_Unavailable: '不在有效期内',
 

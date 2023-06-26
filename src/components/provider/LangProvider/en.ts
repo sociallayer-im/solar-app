@@ -375,9 +375,11 @@ const langEN = {
   Issue_Nft_End: 'Expiry date',
 
   NFT_Detail_title: 'Nft Pass Details',
+  NFT_Detail_checkin_title: 'Check In Records',
   NFT_Detail_Des: 'Description',
   NFT_Detail_Check: 'Check In',
   NFT_Detail_use: 'Use the NFT Pass',
+  NFT_Detail_show_record_btn: 'View Records',
   NFT_Detail_Expiration: 'Expiration Date',
   NFT_Detail_Unavailable: 'Not in the validity period',
 
