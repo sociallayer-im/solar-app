@@ -57,7 +57,14 @@ function DetailBadge(props: DetailBadgeProps) {
     }, [])
 
     const handleIssue = async () => {
-        navigate(`/create-badge?badge=${props.badge.id}`)
+        if (props.badge.badge_type === 'private') {
+            navigate(`/create-private?private=${props.badge.id}`)
+        } else if (props.badge.badge_type === 'gift') {
+            navigate(`/create-gift?gift=${props.badge.id}`)
+        } else {
+            navigate(`/create-badge?badge=${props.badge.id}`)
+        }
+
         props.handleClose()
     }
 
@@ -73,14 +80,14 @@ function DetailBadge(props: DetailBadgeProps) {
                     <DetailCover src={'/public/images/badge_private.png'}></DetailCover>
                     <DetailName> 🔒 </DetailName>
                     <DetailCreator isGroup={!!props.badge.group}
-                                   profile={props.badge.group || props.badge.sender} />
+                                   profile={props.badge.group || props.badge.sender}/>
                     <DetailScrollBox style={{maxHeight: swiperMaxHeight - 40 + 'px'}}>
                         <DetailArea
                             title={lang['BadgeDialog_Label_Creat_Time']}
-                            content={formatTime(props.badge.created_at)} />
+                            content={formatTime(props.badge.created_at)}/>
                         <DetailArea
                             title={lang['BadgeDialog_Label_Private']}
-                            content={lang['BadgeDialog_Label_Private_text']} />
+                            content={lang['BadgeDialog_Label_Private_text']}/>
                     </DetailScrollBox>
                 </>
                 : <>
@@ -88,7 +95,7 @@ function DetailBadge(props: DetailBadgeProps) {
 
                     <DetailName> {props.badge.name} </DetailName>
                     <DetailCreator isGroup={!!props.badge.group}
-                                   profile={props.badge.group || props.badge.sender} />
+                                   profile={props.badge.group || props.badge.sender}/>
 
                     {
                         badgelets.length > 0 ?

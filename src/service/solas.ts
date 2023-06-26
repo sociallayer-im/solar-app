@@ -4,7 +4,7 @@ import {s} from "msw/lib/glossary-de6278a9";
 
 const api = import.meta.env.VITE_SOLAS_API
 
-export type BadgeType = 'badge' | 'nftpass' | 'nft' | 'private'
+export type BadgeType = 'badge' | 'nftpass' | 'nft' | 'private' | 'gift'
 
 interface AuthProp {
     auth_token: string
