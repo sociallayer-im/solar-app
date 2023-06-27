@@ -51,9 +51,7 @@ function DialogNftCheckIn(props: DialogNftCheckInProps) {
     }
 
     const getRecord = async () => {
-        // todo 删掉
         const list = await solas.queryCheckInList({badge_id: props.nftPassId})
-        // const list = await solas.queryCheckInList({badgelet_id: 1049, profile_id: 1})
         setRecords(list)
     }
 

@@ -298,6 +298,8 @@ const langCN: LangConfig = {
   Badgebook_Dialog_Privacy_Des: '私密徽章，只有接收者自己可见',
   Badgebook_Dialog_NFT_Pass: 'NFT Pass',
   Badgebook_Dialog_NFT_Pass_Des: 'Given by the groups to the person',
+  Badgebook_Dialog_Gift: '礼物卡',
+  Badgebook_Dialog_Gift_Des: 'Send badge with benefits',
 
   Dialog_Public_Image_Title: '选择一张徽章图片',
   Dialog_Public_Image_UploadBtn: '上传图片',
@@ -307,12 +309,13 @@ const langCN: LangConfig = {
   Cropper_Dialog_Title: '编辑图片',
   Cropper_Dialog_Btn: '应用',
 
-  Presend_Qrcode_Badge: '徽章：',
-  Presend_Qrcode_Des: slotLang('{1} 给你发送徽章。'),
+  Presend_Qrcode_Badge: '徽章',
+  Presend_Qrcode_Des: slotLang('{1} 给你发送{2}。'),
   Presend_Qrcode_Recommended: '推荐使用',
   Presend_Qrcode_Scan: '扫描二维码',
   Presend_Qrcode_Limit: slotLang('限制 {1} 人'),
   Presend_Qrcode_Time: slotLang('有效期至: {1}'),
+  Presend_Qrcode_Time_2: slotLang('生效时间: {1}'),
   Presend_Qrcode_Expired: '这个徽章已经过期了',
   Presend_Qrcode_Regen: '你可以重新生成二维码',
 
@@ -394,6 +397,14 @@ const langCN: LangConfig = {
 
   Create_Privacy_Title: '创建私密徽章',
   Create_Privacy_Tips: '只有你和接受者可以看到这个徽章的详情，其他人只能看到发送者和接收者',
+
+  Create_Gift_Title: '创建礼物卡',
+  Create_Gift_Benefits: '福利',
+
+  Selector_issue_type_gift: '发送礼物卡',
+  Selector_issue_type_gift_times: '权益次数',
+  Create_gift_success: '创建成功',
+  Create_gift_success_des: '你的礼物卡已经创建',
 }
 
 export default langCN

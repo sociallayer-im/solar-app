@@ -21,6 +21,7 @@ import ListUserRecognition from "../../components/compose/ListUserRecognition/Li
 import AppSubTabs from "../../components/base/AppSubTabs";
 import ListUserNftpass from "../../components/compose/ListUserNftpass/ListUserNftpass";
 import ListUserPoint from "../../components/compose/ListUserPoint/ListUserPoint";
+import ListUserGift from "../../components/compose/ListUserGift/ListUserGift";
 
 function ProfilePage() {
     const {username} = useParams()
@@ -158,6 +159,9 @@ function ProfilePage() {
                                     </Tab>
                                     <Tab title={lang['Profile_Tab_NFTPASS']}>
                                         <ListUserNftpass profile={profile}/>
+                                    </Tab>
+                                    <Tab title={lang['Badgebook_Dialog_Gift']}>
+                                        <ListUserGift profile={profile}/>
                                     </Tab>
                                 </AppSubTabs>
                             </Tab>

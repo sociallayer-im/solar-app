@@ -582,7 +582,7 @@ function DialogProvider (props: DialogProviderProps) {
         showPointItem,
         showCheckIn
     }
-   // todo:  pint 详情弹窗
+
     return (
         <DialogsContext.Provider value={ contextValue }>
             { props.children }

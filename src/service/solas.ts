@@ -117,9 +117,10 @@ export async function regist(props: SolasRegistProps): Promise<Profile> {
     return res.data.profile as Profile
 }
 
-interface QueryBadgeProps {
+export interface QueryBadgeProps {
     sender_id?: number,
     group_id?: number,
+    badge_type?: BadgeType,
     page: number
 }
 
@@ -141,15 +142,15 @@ export interface Badge {
 export type NftPass = Badge
 export type NftPassWithBadgelets = BadgeWithBadgelets
 export interface NftPasslet extends Badgelet {
-    starts_at: null | string,
-    expires_at: null | string,
+
 }
 
-
 export async function queryBadge(props: QueryBadgeProps): Promise<Badge[]> {
+    props.badge_type = props.badge_type || 'badge'
+
     const res = await fetch.get({
         url: `${api}/badge/list`,
-        data: {...props, badge_type: 'badge'},
+        data: props,
     })
 
     if (res.data.result === 'error') {
@@ -276,7 +277,8 @@ export interface QueryBadgeletProps {
     receiver_id?: number,
     page: number,
     show_hidden?: number,
-    badge_id?:number
+    badge_id?:number,
+    badge_type?: BadgeType,
 }
 
 export interface Badgelet {
@@ -294,13 +296,17 @@ export interface Badgelet {
     badge: Badge,
     chain_data: string | null
     group: Group | null
-    created_at: string
+    created_at: string,
+    starts_at?: null | string,
+    expires_at?: null | string,
 }
 
 export async function queryBadgelet(props: QueryBadgeletProps): Promise<Badgelet[]> {
+    props.badge_type = props.badge_type || 'badge'
+
     const res = await fetch.get({
         url: `${api}/badgelet/list`,
-        data: {...props, badge_type: 'badge'}
+        data: props
     })
 
     if (res.data.result === 'error') {
@@ -591,15 +597,13 @@ export interface CreateBadgeProps {
     auth_token: string,
     content?: string,
     group_id?: number,
-    badge_type?: string
-
+    badge_type?: string,
+    value?: number,
 }
 
 export async function createBadge(props: CreateBadgeProps): Promise<Badge> {
     checkAuth(props)
-    if (!props.badge_type) {
-        props.badge_type = 'badge'
-    }
+    props.badge_type = props.badge_type ||'badge'
 
     const res = await fetch.post({
         url: `${api}/badge/create`,
@@ -689,6 +693,7 @@ export interface IssueBatchProps {
     badgeId: number,
     starts_at?: string,
     expires_at?: string,
+    value?: number | null
 }
 
 export async function issueBatch(props: IssueBatchProps): Promise<Badgelet[]> {
@@ -781,7 +786,8 @@ export async function issueBatch(props: IssueBatchProps): Promise<Badgelet[]> {
             subject_url: subjectUrl,
             auth_token: props.auth_token,
             starts_at: props.starts_at || null,
-            expires_at: props.expires_at || null
+            expires_at: props.expires_at || null,
+            value: props.value
         }
     })
 

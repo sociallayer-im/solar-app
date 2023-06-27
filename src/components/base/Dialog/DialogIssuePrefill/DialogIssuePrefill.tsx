@@ -86,6 +86,15 @@ function DialogIssuePrefill(props: DialogIssuePrefillProps) {
                         <div className={'des'}>{lang['Badgebook_Dialog_Privacy_Des']}</div>
                     </div>
                 </div>
+                <div className='create-badge-btn' onClick={e => {
+                    gotoCreateBadge('gift')
+                }}>
+                    <img src="/images/create_badge_icon.png" alt=""/>
+                    <div>
+                        <div>{lang['Badgebook_Dialog_Gift']} <span className={'new-mark'}>NEW</span></div>
+                        <div className={'des'}>{lang['Badgebook_Dialog_Gift_Des']}</div>
+                    </div>
+                </div>
             </>
             : <>
                 { props.badges.length > 0 &&

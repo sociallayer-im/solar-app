@@ -298,6 +298,8 @@ const langEN = {
   Badgebook_Dialog_Privacy_Des: 'Only receivers can see the badge',
   Badgebook_Dialog_NFT_Pass: 'NFT Pass',
   Badgebook_Dialog_NFT_Pass_Des: 'Given by the groups to the person',
+  Badgebook_Dialog_Gift: 'Gift Card',
+  Badgebook_Dialog_Gift_Des: 'Send badge with benefits',
 
   Dialog_Public_Image_Title: 'Choose a image for badge',
   Dialog_Public_Image_UploadBtn: 'Upload a image',
@@ -307,12 +309,13 @@ const langEN = {
   Cropper_Dialog_Title: 'Edit image',
   Cropper_Dialog_Btn: 'Apply',
 
-  Presend_Qrcode_Badge: 'badge:',
-  Presend_Qrcode_Des: slotLang('{1} sent you a badge.'),
+  Presend_Qrcode_Badge: 'badge',
+  Presend_Qrcode_Des: slotLang('{1} sent you a {2}.'),
   Presend_Qrcode_Recommended : 'Recommended',
   Presend_Qrcode_Scan: 'Scan the QR Code',
   Presend_Qrcode_Limit: slotLang('Limited to {1} person'),
   Presend_Qrcode_Time: slotLang('Expiry time : {1}'),
+  Presend_Qrcode_Time_2: slotLang('Starts time : {1}'),
   Presend_Qrcode_Expired: 'The badge is no longer valid',
   Presend_Qrcode_Regen: 'Regenerate the QR code',
 
@@ -395,6 +398,13 @@ const langEN = {
   Create_Privacy_Title: 'Create a privacy badge',
   Create_Privacy_Tips: 'Only you and the owner can view the badge, others can only see the creator and owner of the badge.',
 
+  Create_Gift_Title: 'Create a Gift card',
+  Create_Gift_Benefits: 'Benefits',
+
+  Selector_issue_type_gift: 'Send the Gift card',
+  Selector_issue_type_gift_times: 'Amount of benefits',
+  Create_gift_success: 'Create Successfully',
+  Create_gift_success_des: 'Your Gift card have been created',
 }
 
 export type LangConfig = typeof langEN
