@@ -3,7 +3,8 @@ import {useEffect, createContext, useRef} from 'react'
 
 export const PageBackContext = createContext({
     back: ():any => {},
-    cleanCurrentHistory: ():any => {}
+    cleanCurrentHistory: ():any => {},
+    history: [] as string[]
 })
 
 interface PageBacProviderProps {
@@ -34,7 +35,7 @@ function PageBacProvider(props: PageBacProviderProps) {
         history.current.pop()
     }
 
-    return (<PageBackContext.Provider value={{back, cleanCurrentHistory}}>
+    return (<PageBackContext.Provider value={{back, cleanCurrentHistory, history: history.current}}>
         {props.children}
     </PageBackContext.Provider>)
 }
