@@ -293,15 +293,15 @@ const langCN: LangConfig = {
   Badgebook_Dialog_Choose_Draft: '从保存的草稿中选择',
   Badgebook_Dialog_Cetate_Badge: '创建新的徽章',
   Badgebook_Dialog_Recognition_Badge: '基础徽章',
-  Badgebook_Dialog_Recognition_Des: 'Basic badge, evaluation of others',
+  Badgebook_Dialog_Recognition_Des: '基础徽章, 用于对他人的评价',
   Badgebook_Dialog_Points: '点数',
-  Badgebook_Dialog_Points_Des: 'Create points systems in groups',
+  Badgebook_Dialog_Points_Des: '创建组织积分系统',
   Badgebook_Dialog_Privacy: '私密徽章',
   Badgebook_Dialog_Privacy_Des: '私密徽章，只有接收者自己可见',
   Badgebook_Dialog_NFT_Pass: 'NFT Pass',
-  Badgebook_Dialog_NFT_Pass_Des: 'Given by the groups to the person',
+  Badgebook_Dialog_NFT_Pass_Des: '由团体给予个人',
   Badgebook_Dialog_Gift: '礼物卡',
-  Badgebook_Dialog_Gift_Des: 'Send badge with benefits',
+  Badgebook_Dialog_Gift_Des: '发送带福利的徽章',
 
   Dialog_Public_Image_Title: '选择一张徽章图片',
   Dialog_Public_Image_UploadBtn: '上传图片',
@@ -416,6 +416,12 @@ const langCN: LangConfig = {
   Gift_Checked_Title: '成功核销',
   Gift_Checked_Des: '你已经成功核销了这张礼物卡',
   Gift_Checked_Btn: slotLang('再次使用 (剩余 {1} 次)'),
+
+  Create_Badge_Success_Title: '创建成功',
+  Create_Badge_Success_Des: '你的徽章已经创建',
+
+  Selector_issue_type_badge: '发送徽章',
+  Selector_issue_type_amount: '徽章数量',
 }
 
 export default langCN

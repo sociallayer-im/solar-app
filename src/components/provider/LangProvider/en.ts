@@ -417,6 +417,12 @@ const langEN = {
   Gift_Checked_Des: 'Your benefits have been used.',
   Gift_Checked_Btn: slotLang('Use again (Remaining {1} times)'),
 
+  Create_Badge_Success_Title: 'Create Successfully',
+  Create_Badge_Success_Des: 'Your badge have been created',
+
+  Selector_issue_type_badge: 'Send the badge',
+  Selector_issue_type_amount: 'Badge amount',
+
 }
 
 export type LangConfig = typeof langEN

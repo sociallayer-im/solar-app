@@ -127,8 +127,8 @@ function Issue() {
                 <div className='issue-page-wrapper'>
                     <PageBack historyReplace to={fallBackPath}/>
                     <div className={'issue-text'}>
-                        <div className={'title'}>Create Successfully</div>
-                        <div className={'des'}>Your badge have been created</div>
+                        <div className={'title'}>{lang['Create_Badge_Success_Title']}</div>
+                        <div className={'des'}>{lang['Create_Badge_Success_Des']}</div>
                     </div>
                     <IssueTypeSelectorBadge
                         presendDisable={ badge?.badge_type && badge?.badge_type !== 'badge'}

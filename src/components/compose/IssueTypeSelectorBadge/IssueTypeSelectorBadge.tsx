@@ -51,9 +51,9 @@ function IssueTypeSelectorBadge(props: IssueTypeSelectorProps) {
     },[props.initIssueType])
 
     return (<div className={'issue-type-select'}>
-        <div className={'title'}>Send the badge</div>
+        <div className={'title'}>{lang['Selector_issue_type_badge']}</div>
         <div className={'item'}>
-            <div className={'item-title'}>Select receivers</div>
+            <div className={'item-title'}>{lang['IssueBadge_Address_List_Title']}</div>
             <Toggle checked={issueType === 'issue'} onChange={e => {
                 setIssueType(issueType === 'issue' ? 'unset' : 'issue')
             }}/>
@@ -70,7 +70,7 @@ function IssueTypeSelectorBadge(props: IssueTypeSelectorProps) {
 
         {!props.presendDisable &&
             <div className={'item'}>
-                <div className={'item-title'}>Badge amount</div>
+                <div className={'item-title'}>{lang['Selector_issue_type_amount']}</div>
                 <div className={'item-value'}>
                     {issueType === 'presend' &&
                         <input value={presendAmount} onChange={handlePresendAmountChange}/>

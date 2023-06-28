@@ -83,7 +83,7 @@ function IssueTypeSelectorGift(props: IssueTypeSelectorProps) {
         </div>
 
         <div className={'item'}>
-            <div className={'item-title'}>Select receivers</div>
+            <div className={'item-title'}>{lang['IssueBadge_Address_List_Title']}</div>
         </div>
 
         <IssuesInput
