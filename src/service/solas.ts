@@ -302,6 +302,25 @@ export interface Badgelet {
     value?: null | number,
 }
 
+export async function queryAllTypeBadgelet(props: QueryBadgeletProps): Promise<Badgelet[]> {
+
+    const res = await fetch.get({
+        url: `${api}/badgelet/list`,
+        data: {...props, badge_type: undefined}
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+
+    const list: Badgelet[] = res.data.badgelets
+
+    return list.filter(item => {
+        return item.status !== 'rejected'
+    })
+}
+
+
 export async function queryBadgelet(props: QueryBadgeletProps): Promise<Badgelet[]> {
     props.badge_type = props.badge_type || 'badge'
 
@@ -1498,5 +1517,6 @@ export default {
     queryPrivacyBadgelet,
     queryPrivateBadge,
     checkIn,
-    queryCheckInList
+    queryCheckInList,
+    queryAllTypeBadgelet
 }

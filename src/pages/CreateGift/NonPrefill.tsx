@@ -88,7 +88,7 @@ function CreateBadgeNonPrefill() {
                     auth_token: user.authToken || ''
                 })
                 unload()
-                navigate(`/issue-success?badgelet=${badgelets[0].id}`)
+                navigate(`/issue-success?giftitem=${badgelets[0].id}`)
             } else {
                 navigate(`/issue-gift/${newBadge.id}`, { state: { reason: reason } })
             }

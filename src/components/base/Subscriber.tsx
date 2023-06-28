@@ -1,18 +1,18 @@
-import { useContext, useEffect, useRef } from 'react'
+import {useContext, useEffect, useRef} from 'react'
 import UserContext from '../provider/UserProvider/UserContext'
 import DialogsContext from '../provider/DialogProvider/DialogsContext'
-import solas, {queryPendingInvite} from '../../service/solas'
+import solas from '../../service/solas'
 
 const Pusher = (window as any).Pusher
 let pusher: any = null
 if (Pusher) {
     Pusher.logToConsole = true
-    pusher = new Pusher('f88b7452d706ba1a2494', { cluster: 'ap3' } )
+    pusher = new Pusher('f88b7452d706ba1a2494', {cluster: 'ap3'})
 }
 
-function Subscriber () {
-    const { user } = useContext(UserContext)
-    const { showBadgelet, showInvite } = useContext(DialogsContext)
+function Subscriber() {
+    const {user} = useContext(UserContext)
+    const {showBadgelet, showInvite, showNftpasslet, showGiftItem} = useContext(DialogsContext)
     const SubscriptionDomain = useRef('')
 
     // 实时接受badgelet
@@ -29,33 +29,49 @@ function Subscriber () {
         SubscriptionDomain.current = user.domain
         channel.bind('send_badge', async (data: any) => {
             const badgeletId = data.message
-            const badgelet = await solas.queryBadgeletDetail({ id: Number(badgeletId) })
+            const badgelet = await solas.queryBadgeletDetail({id: Number(badgeletId)})
             showBadgelet(badgelet)
         })
 
-    }, [ user.domain ])
+    }, [user.domain])
 
     useEffect(() => {
         if (!user.id || !user.domain) return
 
-        async function showPendingBadgelets () {
-            const badgelets = await solas.queryBadgelet({ receiver_id: user.id!, page: 1 })
+        async function showPendingBadgelets() {
+            const badgelets = await solas.queryAllTypeBadgelet({receiver_id: user.id!, page: 1})
             const pendingBadgelets = badgelets.filter((item) => item.status === 'pending')
             pendingBadgelets.forEach((item) => {
-                showBadgelet(item)
+                if (!item.badge.badge_type || item.badge.badge_type === 'badge') {
+                    showBadgelet(item)
+                }
+
+                if (item.badge.badge_type === 'gift') {
+                    showGiftItem(item)
+                }
+
+                if (item.badge.badge_type === 'nftpass') {
+                    showNftpasslet(item)
+                }
+
+                if (item.badge.badge_type === 'private') {
+                    showBadgelet(item)
+                }
             })
         }
+
         showPendingBadgelets()
 
 
-        async function showPendingInvite () {
+        async function showPendingInvite() {
             const invites = await solas.queryPendingInvite(user.id!)
             invites.forEach((item) => {
                 showInvite(item)
             })
         }
+
         showPendingInvite()
-    }, [ user.id, user.domain ])
+    }, [user.id, user.domain])
 
     return (<></>)
 }

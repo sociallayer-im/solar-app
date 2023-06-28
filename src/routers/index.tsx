@@ -76,6 +76,7 @@ function AppRouter () {
                 <Route path="/point/:pointId" element={<Home />} />
                 <Route path="/pointItem/:pointItemId" element={<Home />} />
                 <Route path="/gift/:giftId" element={<Home />} />
+                <Route path="/giftitem/:giftitemId" element={<Home />} />
 
                 <Route path="/search/:keyword" element={<Search />} />
                 <Route path="/event/:tag" element={<Event />} />

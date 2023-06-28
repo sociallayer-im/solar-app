@@ -62,7 +62,7 @@ function Issue() {
                 expires_at: data.expires_at || undefined,
             })
             unload()
-            navigate(`/issue-success?gift=${badgelets[0].id}`)
+            navigate(`/issue-success?giftitem=${badgelets[0].id}`)
         } catch (e: any) {
             console.log('[handleCreateIssue]: ', e)
             unload()

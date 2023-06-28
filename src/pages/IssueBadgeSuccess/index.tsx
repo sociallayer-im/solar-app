@@ -40,7 +40,7 @@ function IssueSuccessPage() {
     const pointitemId = searchParams.get('pointitem')
 
     // gift成功传参
-    const giftId = searchParams.get('gift')
+    const giftItemId = searchParams.get('giftitem')
 
 
     useEffect(() => {
@@ -122,18 +122,16 @@ function IssueSuccessPage() {
                 })
             }
 
-            if (giftId) {
-                const badgeletDetail = await solas.queryBadgeletDetail({id: Number(giftId)})
+            if (giftItemId) {
+                const badgeletDetail = await solas.queryBadgeletDetail({id: Number(giftItemId)})
 
                 setInfo({
                     sender: badgeletDetail.sender,
                     name: badgeletDetail.badge.name,
                     cover: badgeletDetail.badge.image_url,
                     link: genShareLink(),
-                    // start: badgeletDetail.starts_at || undefined,
-                    // expires: badgeletDetail.expires_at || undefined,
-                    start: '2023-06-27T02:23:09.101Z',
-                    expires: '2023-06-27T02:23:09.101Z',
+                    start: badgeletDetail.starts_at || undefined,
+                    expires: badgeletDetail.expires_at || undefined,
                     title: lang['Badgebook_Dialog_Gift'],
                 })
             }
@@ -169,8 +167,8 @@ function IssueSuccessPage() {
             path = `${base}/pointitem/${pointitemId}`
         }
 
-        if (giftId) {
-            path = `${base}/gift/${giftId}`
+        if (giftItemId) {
+            path = `${base}/giftitem/${giftItemId}`
         }
 
         return path

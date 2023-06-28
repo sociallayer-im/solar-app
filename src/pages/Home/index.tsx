@@ -21,10 +21,12 @@ function Home() {
         showNftpasslet,
         showNftpass,
         showPoint,
-        showPointItem
+        showPointItem,
+        showGift,
+        showGiftItem
     } = useContext(DialogsContext)
     const navigate = useNavigate()
-    const {badgeletId, presendId, groupId, inviteId, nftpassletId, nftpassId, pointId, pointItemId} = useParams()
+    const {badgeletId, presendId, groupId, inviteId, nftpassletId, nftpassId, pointId, pointItemId, giftId, giftitemId} = useParams()
     const startIssueBadge = useIssueBadge()
     const {lang} = useContext(LangContext)
 
@@ -64,6 +66,16 @@ function Home() {
         async function showPointItemDetail() {
             const item = await solas.queryPointItemDetail({id: Number(pointItemId)})
             showPointItem(item)
+        }
+
+        async function showGiftDetail() {
+            const item = await solas.queryBadgeDetail({id: Number(giftId)})
+            showGift(item)
+        }
+
+        async function showGiftItemDetail() {
+            const item = await solas.queryBadgeletDetail({id: Number(giftitemId)})
+            showGiftItem(item)
         }
 
         if (badgeletId) {
@@ -108,6 +120,18 @@ function Home() {
         if (pointItemId) {
             setTimeout(() => {
                 showPointItemDetail()
+            }, 500)
+        }
+
+        if (giftId) {
+            setTimeout(() => {
+                showGiftDetail()
+            }, 500)
+        }
+
+        if (giftitemId) {
+            setTimeout(() => {
+                showGiftItemDetail()
             }, 500)
         }
     }, [])

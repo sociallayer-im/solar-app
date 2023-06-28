@@ -75,7 +75,7 @@ function DetailGiftItem(props: DetailNftpassletProps) {
     const {user} = useContext(UserContext)
     const {openConnectWalletDialog, showLoading, showToast} = useContext(DialogsContext)
     const {defaultAvatar} = usePicture()
-    const [_, emitUpdate] = useEvent(EVENT.nftpassItemUpdate)
+    const [_, emitUpdate] = useEvent(EVENT.giftItemUpdate)
     const [nftpasslet, setNftpasslet] = useState(props.giftItem)
     const isOwner = user.id === props.giftItem.receiver.id
     const formatTime = useTime()
