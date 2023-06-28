@@ -35,7 +35,7 @@ export interface DetailBadgeProps {
 function DetailNftpass(props: DetailBadgeProps) {
     const {lang} = useContext(LangContext)
     const {user} = useContext(UserContext)
-    const {showCheckIn} = useContext(DialogsContext)
+    const {showNftCheckIn} = useContext(DialogsContext)
     const {defaultAvatar} = usePicture()
     const navigate = useNavigate()
     const [nftPasslets, setNftPasslet] = useState<NftPasslet[]>([])
@@ -140,7 +140,7 @@ function DetailNftpass(props: DetailBadgeProps) {
                 {loginUserIsSender &&
                     <>
                         <AppButton size={BTN_SIZE.compact} onClick={() => {
-                            showCheckIn(props.nftpass.id)
+                            showNftCheckIn(props.nftpass.id)
                         }} kind={BTN_KIND.primary}>
                             {lang['NFT_Detail_Check']}
                         </AppButton>

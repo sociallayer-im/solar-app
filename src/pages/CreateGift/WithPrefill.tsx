@@ -75,7 +75,7 @@ function CreateBadgeWithPrefill(props: CreateBadgeWithPrefillProp) {
                         <DetailPrefillBadge badge={preFillBadge} />
                         <div className='create-badge-page-form'>
                             <div className='input-area'>
-                                <div className='input-area-title'>{ lang['IssueBadge_Reason'] }</div>
+                                <div className='input-area-title'>{ lang['Create_Gift_Benefits'] }</div>
                                 <ReasonInput value={ reason }  onChange={ (value) => { setReason(value) }} />
                             </div>
 

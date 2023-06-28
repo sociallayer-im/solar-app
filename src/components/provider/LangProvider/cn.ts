@@ -76,10 +76,12 @@ const langCN: LangConfig = {
   BadgeDialog_Label_Creat_Time: '创建时间',
   BadgeDialog_Label_Private: '徽章类型',
   BadgeDialog_Label_Private_text: '私密',
+  BadgeDialog_Label_gift_text: '礼物卡',
 
   BadgeletDialog_title: '徽章详情',
   BadgeletDialog_presend_title: '发送中详情',
   BadgeletDialog_invite_title: '邀请详情',
+  BadgeletDialog_gift_title: '礼物卡详情',
   BadgeletDialog_Reason: '颁发理由',
 
   MintBadge_Title: '创建徽章',
@@ -405,6 +407,15 @@ const langCN: LangConfig = {
   Selector_issue_type_gift_times: '权益次数',
   Create_gift_success: '创建成功',
   Create_gift_success_des: '你的礼物卡已经创建',
+
+  Gift_detail_check_btn: '核销',
+  Gift_Detail_use: '使用',
+  Gift_Detail_amount: '剩余次数',
+  Gift_Detail_check_remain: slotLang('使用成功，还剩下 {1} 次'),
+
+  Gift_Checked_Title: '成功核销',
+  Gift_Checked_Des: '你已经成功核销了这张礼物卡',
+  Gift_Checked_Btn: slotLang('再次使用 (剩余 {1} 次)'),
 }
 
 export default langCN

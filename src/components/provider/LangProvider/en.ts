@@ -76,10 +76,12 @@ const langEN = {
   BadgeDialog_Label_Creat_Time: 'Create time',
   BadgeDialog_Label_Private: 'Badge Type',
   BadgeDialog_Label_Private_text: 'Private',
+  BadgeDialog_Label_gift_text: 'Gift card',
 
   BadgeletDialog_title: 'Badge Details',
   BadgeletDialog_presend_title: 'Sending Details',
   BadgeletDialog_invite_title: 'Invite Details',
+  BadgeletDialog_gift_title: 'Gift card Details',
   BadgeletDialog_Reason: 'Reason',
 
   MintBadge_Title: 'Send a badge',
@@ -405,6 +407,16 @@ const langEN = {
   Selector_issue_type_gift_times: 'Amount of benefits',
   Create_gift_success: 'Create Successfully',
   Create_gift_success_des: 'Your Gift card have been created',
+
+  Gift_detail_check_btn: 'Check',
+  Gift_Detail_use: 'Use',
+  Gift_Detail_amount: 'Times Remaining',
+  Gift_Detail_check_remain: slotLang('Checked! Remaining {1} Times'),
+
+  Gift_Checked_Title: 'Checked Successfully',
+  Gift_Checked_Des: 'Your benefits have been used.',
+  Gift_Checked_Btn: slotLang('Use again (Remaining {1} times)'),
+
 }
 
 export type LangConfig = typeof langEN

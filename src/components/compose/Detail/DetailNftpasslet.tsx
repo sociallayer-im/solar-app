@@ -75,7 +75,7 @@ function DetailNftpasslet(props: DetailNftpassletProps) {
     const {user} = useContext(UserContext)
     const {openConnectWalletDialog, showLoading, showToast} = useContext(DialogsContext)
     const {defaultAvatar} = usePicture()
-    const [_, emitUpdate] = useEvent(EVENT.nftpassItemUpdate)
+    const [_, emitUpdate] = useEvent(EVENT.giftItemUpdate)
     const [nftpasslet, setNftpasslet] = useState(props.nftpasslet)
     const isOwner = user.id === props.nftpasslet.receiver.id
     const formatTime = useTime()
@@ -231,7 +231,7 @@ function DetailNftpasslet(props: DetailNftpassletProps) {
                         <DetailScrollBox style={{maxHeight: swiperMaxHeight - 60 + 'px', marginLeft: 0}}>
                             {
                                 !!nftpasslet.content &&
-                                <DetailDes title={lang['NFT_Detail_title']}>
+                                <DetailDes title={lang['NFT_Detail_Des']}>
                                     <ReasonText text={nftpasslet.content}></ReasonText>
                                 </DetailDes>
                             }
@@ -259,7 +259,7 @@ function DetailNftpasslet(props: DetailNftpassletProps) {
 
                             <DetailArea
                                 title={lang['NFT_Detail_Expiration']}
-                                content={formatExpiration(nftpasslet.created_at, nftpasslet.starts_at, nftpasslet.expires_at)}/>
+                                content={formatExpiration(nftpasslet.created_at, nftpasslet.starts_at || null, nftpasslet.expires_at || null)}/>
 
                         </DetailScrollBox>
                         <BtnGroup>
@@ -288,13 +288,14 @@ function DetailNftpasslet(props: DetailNftpassletProps) {
                                                     {lang['NFT_Detail_Unavailable']}
                                                 </AppButton>
                                         }
-                                        <AppButton
+                                        { checkAvailable() && <AppButton
                                             kind={'secondary'}
                                             onClick={() => {
                                                 setShowRecord(true)
                                             }}>
                                             {lang['NFT_Detail_show_record_btn']}
                                         </AppButton>
+                                        }
                                     </>
                                 )
                             }

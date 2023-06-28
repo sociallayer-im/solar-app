@@ -17,8 +17,11 @@ export interface DialogsContextType {
     showAvatar: (...rest: any[]) => any
     showCropper: (...rest: any[]) => any,
     showInvite: (...rest: any[]) => any,
+    showGift: (...rest: any[]) => any,
+    showGiftItem: (...rest: any[]) => any,
     showGroupSetting: (...rest: any[]) => any,
-    showCheckIn: (...rest: any[]) => any,
+    showNftCheckIn: (...rest: any[]) => any,
+    showGiftCheckIn: (...rest: any[]) => any,
     clean: (msg?: string) => any
 }
 
@@ -34,13 +37,16 @@ const DialogsContext  = createContext<DialogsContextType>({
     showPoint: () => {},
     showPresend: () => {},
     showBadge: () => {},
+    showGift: () => {},
+    showGiftItem: () => {},
     showNftpass: () => {},
     showNftpasslet: () => {},
     showAvatar: () => {},
     showCropper: () => {},
     showInvite: () => {},
     showGroupSetting: () => {},
-    showCheckIn: () => {},
+    showNftCheckIn: () => {},
+    showGiftCheckIn: () => {},
     clean: (msg?: string) => {}
 })
 

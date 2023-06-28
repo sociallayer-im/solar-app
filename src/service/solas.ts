@@ -299,6 +299,7 @@ export interface Badgelet {
     created_at: string,
     starts_at?: null | string,
     expires_at?: null | string,
+    value?: null | number,
 }
 
 export async function queryBadgelet(props: QueryBadgeletProps): Promise<Badgelet[]> {
@@ -1392,6 +1393,21 @@ export async function checkIn (props: CheckInProps): Promise<CheckInSimple> {
     }
 
     return res.data.checkin as CheckInSimple
+}
+
+export async function consume (props: CheckInProps): Promise<Badgelet> {
+    checkAuth(props)
+
+    const res: any = await fetch.post({
+        url: `${api}/badgelet/consume`,
+        data: {...props, delta: 1}
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message || 'Check in fail')
+    }
+
+    return res.data.badgelet as Badgelet
 }
 
 export interface QueryCheckInListProps {

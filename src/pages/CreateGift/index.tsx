@@ -4,7 +4,7 @@ import CreateBadgeWithPrefill from './WithPrefill'
 
 function CreateBadge() {
     const [searchParams, _] = useSearchParams()
-    const prefillBadgeId = searchParams.get('badge')
+    const prefillBadgeId = searchParams.get('gift')
     return  <>
         { prefillBadgeId
             ? <CreateBadgeWithPrefill badgeId={ Number(prefillBadgeId) } />

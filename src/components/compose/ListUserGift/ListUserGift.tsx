@@ -33,7 +33,7 @@ function ListUserGift(props: ListUserRecognitionProps) {
         })
     }
 
-    const [needUpdate, _] = useEvent(EVENT.badgeletListUpdate)
+    const [needUpdate, _] = useEvent(EVENT.giftItemUpdate)
 
     const listWrapperRefBadge = React.createRef<ListUserAssetsMethods>()
     const listWrapperRefBadgeLet = React.createRef<ListUserAssetsMethods>()

@@ -87,13 +87,21 @@ export interface CardBadgeletProps {
 
 function CardBadgelet(props: CardBadgeletProps) {
     const [css] = useStyletron()
-    const {showBadgelet} = useContext(DialogsContext)
+    const {showBadgelet, showGiftItem} = useContext(DialogsContext)
     const {user} = useContext(UserContext)
 
     const isOwner = user.id === props.badgelet.receiver.id
 
+    const showDialog = () => {
+        if (props.badgelet.badge.badge_type === 'gift') {
+            showGiftItem(props.badgelet)
+        } else {
+            showBadgelet(props.badgelet)
+        }
+    }
+
     return (<div data-testid='CardBadgelet' className={css(style.wrapper)} onClick={() => {
-        showBadgelet(props.badgelet)
+        showDialog()
     }}>
         {
             (props.badgelet.badge.badge_type === 'private' && !isOwner) ?

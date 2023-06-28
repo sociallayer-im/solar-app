@@ -86,10 +86,20 @@ export interface CardBadgeProps {
 
 function CardBadge (props: CardBadgeProps) {
     const [css] = useStyletron()
-    const { showBadge } = useContext(DialogsContext)
+    const { showBadge, showGift, showNftpass } = useContext(DialogsContext)
     const {user} = useContext(UserContext)
 
-    return (<div data-testid='CardBadge' className={ css(style.wrapper) } onClick={() => { showBadge(props.badge) }}>
+    const showDialog = () => {
+        if (props.badge.badge_type === 'nftpass') {
+            showNftpass(props.badge)
+        } else if (props.badge.badge_type === 'gift') {
+            showGift(props.badge)
+        } else {
+            showBadge(props.badge)
+        }
+    }
+
+    return (<div data-testid='CardBadge' className={ css(style.wrapper) } onClick={() => { showDialog() }}>
         {
             (props.badge.badge_type === 'private' && props.badge.sender.id !== user.id) ?
                 <>

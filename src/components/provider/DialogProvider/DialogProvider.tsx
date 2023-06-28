@@ -30,6 +30,9 @@ import DetailNftpasslet from "../../compose/Detail/DetailNftpasslet";
 import DetailPoint from "../../compose/Detail/DetailPoint";
 import DetailPointItem from "../../compose/Detail/DetailPointItem";
 import DialogNftCheckIn from "../../base/Dialog/DialogNftCheckIn/DialogNftCheckIn";
+import DetailGift from "../../compose/Detail/DetailGift/DetailGift";
+import DialogGiftCheckIn from "../../base/Dialog/DialogGiftCheckIn/DialogGiftCheckIn";
+import DetailGiftItem from "../../compose/Detail/DetailGiftItem/DetailGiftItem";
 
 export interface DialogProviderProps {
     children: ReactNode
@@ -355,6 +358,32 @@ function DialogProvider (props: DialogProviderProps) {
         setDialogsGroup({ ...dialogsGroup })
     }
 
+    const showGiftItem = (props: NftPasslet) => {
+        const id = genID()
+        dialogsGroup.dialogs.push({
+            id,
+            content: () => {
+                const close = () => {
+                    closeDialogByID(id)
+                }
+
+                const dialogProps = {
+                    key: id.toString(),
+                    size: [460, 'auto'],
+                    handleClose: close,
+                    position: 'bottom' as const
+                }
+
+                return (
+                    <Dialog { ...dialogProps } >
+                        { (close) => <DetailGiftItem giftItem={ props } handleClose={ close } /> }
+                    </Dialog>
+                )
+            }
+        })
+        setDialogsGroup({ ...dialogsGroup })
+    }
+
     const showInvite = (props: Invite) => {
         const id = genID()
         dialogsGroup.dialogs.push({
@@ -426,6 +455,32 @@ function DialogProvider (props: DialogProviderProps) {
                 return (
                     <Dialog { ...dialogProps } >
                         { (close) => <DetailBadge badge={ props } handleClose={ close } /> }
+                    </Dialog>
+                )
+            }
+        })
+        setDialogsGroup({ ...dialogsGroup })
+    }
+
+    const showGift = (props: Badge) => {
+        const id = genID()
+        dialogsGroup.dialogs.push({
+            id,
+            content: () => {
+                const close = () => {
+                    closeDialogByID(id)
+                }
+
+                const dialogProps = {
+                    key: id.toString(),
+                    size: [460, 'auto'],
+                    handleClose: close,
+                    position: 'bottom' as const
+                }
+
+                return (
+                    <Dialog { ...dialogProps } >
+                        { (close) => <DetailGift badge={ props } handleClose={ close } /> }
                     </Dialog>
                 )
             }
@@ -535,7 +590,7 @@ function DialogProvider (props: DialogProviderProps) {
         setDialogsGroup({ ...dialogsGroup })
     }
 
-    const showCheckIn = (nftpassId: number) => {
+    const showNftCheckIn = (nftpassId: number) => {
         const id = genID()
         const width = window.innerWidth
         dialogsGroup.dialogs.push({
@@ -554,6 +609,32 @@ function DialogProvider (props: DialogProviderProps) {
                 return (
                     <Dialog { ...dialogProps } >
                         { (close) => <DialogNftCheckIn nftPassId={nftpassId} handleClose={close} /> }
+                    </Dialog>
+                )
+            }
+        })
+        setDialogsGroup({ ...dialogsGroup })
+    }
+
+    const showGiftCheckIn = (giftId: number) => {
+        const id = genID()
+        const width = window.innerWidth
+        dialogsGroup.dialogs.push({
+            id,
+            content: () => {
+                const close = () => {
+                    closeDialogByID(id)
+                }
+
+                const dialogProps = {
+                    key: id.toString(),
+                    size: width < 768 ?  ['100%', '100%'] :  [500, 'auto'],
+                    handleClose: close
+                }
+
+                return (
+                    <Dialog { ...dialogProps } >
+                        { (close) => <DialogGiftCheckIn giftId={giftId} handleClose={close} /> }
                     </Dialog>
                 )
             }
@@ -580,7 +661,10 @@ function DialogProvider (props: DialogProviderProps) {
         showNftpasslet,
         showPoint,
         showPointItem,
-        showCheckIn
+        showNftCheckIn,
+        showGift,
+        showGiftCheckIn,
+        showGiftItem
     }
 
     return (

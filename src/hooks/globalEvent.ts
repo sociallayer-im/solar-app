@@ -11,6 +11,7 @@ export enum EVENT {
     pointItemUpdate = 'pointItemUpdate',
     badgeletDetailUpdate = 'badgeletDetailUpdate',
     nftpassItemUpdate = 'nftpassItemUpdate',
+    giftItemUpdate = 'giftItemUpdate',
 }
 
 export default function useEvent (eventName: EVENT) {
