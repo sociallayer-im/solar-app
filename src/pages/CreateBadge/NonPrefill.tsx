@@ -76,7 +76,8 @@ function CreateBadgeNonPrefill() {
                 image_url: cover,
                 auth_token: user.authToken || '',
                 content: reason || '',
-                group_id:  groupId || undefined
+                group_id:  groupId || undefined,
+                badge_type: 'badge'
             })
 
             if (presetAcceptor) {

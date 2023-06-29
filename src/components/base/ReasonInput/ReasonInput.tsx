@@ -1,4 +1,4 @@
-import {useState, useContext, useRef, useEffect} from 'react'
+import {useState, useContext, useRef, useEffect, forwardRef} from 'react'
 import LangContext from '../../provider/LangProvider/LangContext'
 import './ReasonInput.less'
 import ReasonText from '../ReasonText/ReasonText'
@@ -10,10 +10,12 @@ export interface ReasonInputProps {
 
 function ReasonInput(props: ReasonInputProps) {
     const [value, setValue] = useState(props.value || '')
-    const textarea = useRef<HTMLTextAreaElement | null>(null)
     const { lang } = useContext(LangContext)
+    const showTextDom = useRef<HTMLDivElement | null>(null)
+    const editTextDom = useRef<HTMLTextAreaElement | null>(null)
 
     const mapInput = (value: string) => {
+        scroll()
         const newString = value.substr(0, 200)
         setValue(newString)
         props.onChange(newString)
@@ -26,18 +28,32 @@ function ReasonInput(props: ReasonInputProps) {
     const addTag = () => {
         mapInput(value ? value + ' #': '#')
 
-        textarea!.current!.focus()
+        editTextDom!.current!.focus()
     }
 
     const addLink = () => {
         mapInput(value ? value + ' @': '@')
-        textarea!.current!.focus()
+        editTextDom!.current!.focus()
     }
 
+    const scroll = () => {
+        showTextDom.current!.scrollTop = editTextDom.current!.scrollTop
+    }
+
+    useEffect(() => {
+        if (showTextDom.current && editTextDom.current) {
+            editTextDom.current?.addEventListener('scroll', scroll, false)
+        }
+
+        return () => {
+            editTextDom.current?.removeEventListener('scroll', scroll, false)
+        }
+    }, [showTextDom.current, editTextDom.current])
+
     return (<div className='reason-input'>
-        <ReasonText text={ value } className={'editor'} />
+        <ReasonText ref={showTextDom} text={ value } className={'editor'} />
         <textarea
-            ref={ textarea }
+            ref={ editTextDom }
             value={ value }
             className='editor textarea'
             onChange={ (e) => { mapInput(e.target.value)} }/>

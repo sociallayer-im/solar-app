@@ -6,6 +6,7 @@ import CardBadge from "../../base/Cards/CardBadge/CardBadge";
 import UserContext from "../../provider/UserProvider/UserContext";
 import CardBadgelet from "../../base/Cards/CardBadgelet/CardBadgelet";
 import LangContext from "../../provider/LangProvider/LangContext";
+import useEvent, {EVENT} from "../../../hooks/globalEvent";
 
 interface ListUserRecognitionProps {
     profile: Profile
@@ -31,23 +32,14 @@ function ListUserRecognition(props: ListUserRecognitionProps) {
         })
     }
 
-    const getInvite = async (page: number) => {
-        return await solas.queryGroupInvites({
-            group_id: props.profile.id,
-            page
-        })
-    }
-
-
+    const [needUpdate, _] = useEvent(EVENT.badgeletListUpdate)
     const listWrapperRefBadge = React.createRef<ListUserAssetsMethods>()
     const listWrapperRefBadgeLet = React.createRef<ListUserAssetsMethods>()
-    const listWrapperRefInvite = React.createRef<ListUserAssetsMethods>()
 
     useEffect(() => {
         !!listWrapperRefBadge.current && listWrapperRefBadge.current!.refresh()
         !!listWrapperRefBadgeLet.current && listWrapperRefBadgeLet.current!.refresh()
-        !!listWrapperRefInvite.current && listWrapperRefInvite.current!.refresh()
-    }, [props.profile])
+    }, [props.profile, needUpdate])
 
     return (<div className={'list-user-recognition'}>
         <div className={'list-title'}>{lang['Badgelet_List_Title']}</div>
