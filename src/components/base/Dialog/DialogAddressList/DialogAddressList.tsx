@@ -62,12 +62,14 @@ function DialogAddressList(props: AddressListProps) {
     const [followersEmpty, setFollowersEmpty] = useState(false)
     const [followingsEmpty, setFollowingsEmpty] = useState(false)
     const [groupsMemberEmpty, setGroupsMemberEmpty] = useState(false)
+    const [groupSubTab, setGroupSubTab] = useState('0')
 
     const getMember = async (groupId: number) => {
         setGroupsMemberEmpty(false)
         setTimeout(async () => {
             setGroupsMember([])
             const members = await solas.getGroupMembers({ group_id: groupId })
+            setGroupSubTab(groupId + '')
             setGroupsMember(members)
             setGroupsMemberEmpty(!members.length)
         }, 100)
@@ -98,7 +100,9 @@ function DialogAddressList(props: AddressListProps) {
                 const groups = await solas.queryUserGroup({ profile_id: user.id! })
                 setGroups(groups)
 
+
                 if (groups[0]) {
+                    setGroupSubTab(groups[0].id + '')
                     getMember(groups[0].id)
                 }
             } catch (e: any) {
@@ -138,12 +142,16 @@ function DialogAddressList(props: AddressListProps) {
                        { !groups.length && <Empty text={'no data'} /> }
                        { !!groups.length &&
                            <AppSubTabs
+                               activeKey={ groupSubTab }
                                styleOverrides={ overridesSubTab }
-                               onChange={({ activeKey }) => { getMember(Number(activeKey))}} >
+                               onChange={({ activeKey }) => {
+                                   getMember(Number(activeKey))
+                               }
+                           } >
                                {
                                    groups.map((item, index) => {
                                        return  (
-                                           <Tab key={ item.id } title={ item.username } >
+                                           <Tab key={ item.id + '' } title={ item.username } >
                                                { groupsMember.length
                                                    ? <AddressList selected={ selected } data= { groupsMember } onClick={(domain) => { addAddress(domain)} } />
                                                    : groupsMemberEmpty ? <Empty text={'no data'} /> : ''

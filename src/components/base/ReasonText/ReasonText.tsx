@@ -1,15 +1,18 @@
-import React from 'react'
+import React, {forwardRef} from 'react'
 import './ReasonText.less'
 
 
 export interface ReasonTextProps extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
     text: string,
-    className?: string
+    className?: string,
 }
 
-function ReasonText(props: ReasonTextProps) {
-
+const ReasonText = forwardRef(function (props: ReasonTextProps, ref: any) {
     let newShowText = props.text
+    if (newShowText.endsWith('\n')) {
+        newShowText = newShowText + '<br/>'
+    }
+
     if (newShowText) {
         const tags = newShowText.match(/#[^\s\p{P}]+/gu)
 
@@ -49,7 +52,11 @@ function ReasonText(props: ReasonTextProps) {
         }
     }
 
-    return (<div className={(props.className || '') + ' showText'} dangerouslySetInnerHTML={{__html: newShowText }} />)
+    return (<div className={(props.className || '') + ' showText'} dangerouslySetInnerHTML={{__html: newShowText }} ref={ref}/>)
 }
+)
 
-export default ReasonText
+export default forwardRef((props: ReasonTextProps, ref) => {
+    const p = {...props, ref: ref}
+    return <ReasonText {...p} />
+})

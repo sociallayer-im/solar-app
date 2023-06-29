@@ -47,23 +47,13 @@ function ListUserRecognition(props: ListUserRecognitionProps) {
         })
     }
 
-    const getInvite = async (page: number) => {
-        return await solas.queryGroupInvites({
-            group_id: props.profile.id,
-            page
-        })
-    }
-
     const [needUpdate, _] = useEvent(EVENT.badgeletListUpdate)
-
     const listWrapperRefBadge = React.createRef<ListUserAssetsMethods>()
     const listWrapperRefBadgeLet = React.createRef<ListUserAssetsMethods>()
-    const listWrapperRefInvite = React.createRef<ListUserAssetsMethods>()
 
     useEffect(() => {
         !!listWrapperRefBadge.current && listWrapperRefBadge.current!.refresh()
         !!listWrapperRefBadgeLet.current && listWrapperRefBadgeLet.current!.refresh()
-        !!listWrapperRefInvite.current && listWrapperRefInvite.current!.refresh()
     }, [props.profile, needUpdate])
 
     return (<div className={'list-user-recognition'}>
