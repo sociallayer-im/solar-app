@@ -104,7 +104,7 @@ function CardBadge (props: CardBadgeProps) {
             (props.badge.badge_type === 'private' && props.badge.sender.id !== user.id) ?
                 <>
                     <div className={ css(style.coverBg) }>
-                        <img className={ css(style.img) } src={ '/public/images/badge_private.png'} alt=""/>
+                        <img className={ css(style.img) } src={ '/images/badge_private.png'} alt=""/>
                     </div>
                     <div className={ css(style.name) }>🔒</div>
                 </>

@@ -107,7 +107,7 @@ function CardBadgelet(props: CardBadgeletProps) {
             (props.badgelet.badge.badge_type === 'private' && !isOwner) ?
                 <>
                     <div className={css(style.coverBg)}>
-                        <img className={css(style.img)} src={'/public/images/badge_private.png'} alt=""/>
+                        <img className={css(style.img)} src={'/images/badge_private.png'} alt=""/>
                     </div>
                     {props.badgelet.hide && <div className={css(style.hideMark)}><i className='icon-lock'></i></div>}
                     <div className={css(style.name)}>🔒</div>

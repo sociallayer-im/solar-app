@@ -129,7 +129,7 @@ function DetailBadgelet(props: DetailBadgeletProps) {
 
             {(badgelet.badge.badge_type === 'private' && !isBadgeletOwner) ?
                 <>
-                    <DetailCover src={'/public/images/badge_private.png'} />
+                    <DetailCover src={'/images/badge_private.png'} />
                     <DetailName> 🔒 </DetailName>
                     <DetailCreator isGroup={!!badgelet.badge.group} profile={badgelet.badge.group || badgelet.sender}/>
                     <DetailScrollBox style={{maxHeight: swiperMaxHeight - 60 + 'px', marginLeft: 0}}>

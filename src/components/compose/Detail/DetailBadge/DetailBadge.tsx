@@ -77,7 +77,7 @@ function DetailBadge(props: DetailBadgeProps) {
 
             {(props.badge.badge_type === 'private' && !loginUserIsSender) ?
                 <>
-                    <DetailCover src={'/public/images/badge_private.png'}></DetailCover>
+                    <DetailCover src={'/images/badge_private.png'}></DetailCover>
                     <DetailName> 🔒 </DetailName>
                     <DetailCreator isGroup={!!props.badge.group}
                                    profile={props.badge.group || props.badge.sender}/>
