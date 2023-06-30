@@ -300,6 +300,7 @@ export interface Badgelet {
     starts_at?: null | string,
     expires_at?: null | string,
     value?: null | number,
+    last_consumed_at: null | string,
 }
 
 export async function queryAllTypeBadgelet(props: QueryBadgeletProps): Promise<Badgelet[]> {

@@ -416,6 +416,9 @@ const langEN = {
   Gift_Checked_Title: 'Checked Successfully',
   Gift_Checked_Des: 'Your benefits have been used.',
   Gift_Checked_Btn: slotLang('Use again (Remaining {1} times)'),
+  Gift_Checked_show_remain: slotLang('Remaining {1} times'),
+  Gift_Checked_show_receiver: 'receiver',
+  Gift_Checked_show_last_consume: 'last consume: ',
 
   Create_Badge_Success_Title: 'Create Successfully',
   Create_Badge_Success_Des: 'Your badge have been created',

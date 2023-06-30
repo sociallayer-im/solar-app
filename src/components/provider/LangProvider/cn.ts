@@ -416,6 +416,9 @@ const langCN: LangConfig = {
   Gift_Checked_Title: '成功核销',
   Gift_Checked_Des: '你已经成功核销了这张礼物卡',
   Gift_Checked_Btn: slotLang('再次使用 (剩余 {1} 次)'),
+  Gift_Checked_show_remain: slotLang('剩余 {1} 次'),
+  Gift_Checked_show_receiver: '接收者',
+  Gift_Checked_show_last_consume: '上次消费: ',
 
   Create_Badge_Success_Title: '创建成功',
   Create_Badge_Success_Des: '你的徽章已经创建',

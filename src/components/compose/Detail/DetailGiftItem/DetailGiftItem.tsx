@@ -204,7 +204,13 @@ function DetailGiftItem(props: DetailNftpassletProps) {
             <DetailHeader
                 title={lang['BadgeletDialog_gift_title']}
                 slotLeft={nftpasslet.hide && <DetailBadgeletPrivateMark/>}
-                onClose={props.handleClose}/>
+                onClose={() => {
+                    if (showQrcode) {
+                        setShowQrcode(false)
+                    } else {
+                        props.handleClose()
+                    }
+                }}/>
 
             {!showChecked && <>
                 <DetailCover src={nftpasslet.badge.image_url}></DetailCover>
@@ -217,18 +223,20 @@ function DetailGiftItem(props: DetailNftpassletProps) {
                                   profile={nftpasslet.badge.group || nftpasslet.sender}/>
             }
 
-            {showQrcode && !showChecked && <>
+            {showQrcode && !showChecked && <div className={'use-gift'}>
                 <NftpassQrcode nftpasslet={props.giftItem}/>
-                <BtnGroup>
-                    <AppButton
-                        kind={'secondary'}
-                        onClick={() => {
-                            setShowQrcode(false)
-                        }}>
-                        {'Close'}
-                    </AppButton>
-                </BtnGroup>
-            </>}
+                <div className={'owner'}>{lang['Gift_Checked_show_receiver']}: {props.giftItem.receiver.domain?.split('.')[0]}</div>
+                <div className={'profit'}>{props.giftItem.content}</div>
+                <div className='time'>
+                    <i className='icon-clock'></i>
+                    <span>{lang['Gift_Checked_show_remain']([props.giftItem.value])}</span>
+                </div>
+                { !!props.giftItem.last_consumed_at &&
+                    <div className='time'>
+                        <span>{lang['Gift_Checked_show_last_consume']}{formatTime(props.giftItem.last_consumed_at)}</span>
+                    </div>
+                }
+            </div>}
 
             {!showQrcode && !showChecked && <>
                 <DetailScrollBox style={{maxHeight: swiperMaxHeight - 60 + 'px', marginLeft: 0}}>
@@ -258,7 +266,7 @@ function DetailGiftItem(props: DetailNftpassletProps) {
 
                     <DetailArea
                         title={lang['Gift_Detail_amount']}
-                        content={(nftpasslet.value || '').toString()}/>
+                        content={(nftpasslet.value || '0').toString()}/>
 
                     <DetailArea
                         title={lang['BadgeDialog_Label_Creat_Time']}
@@ -283,14 +291,17 @@ function DetailGiftItem(props: DetailNftpassletProps) {
                         && (
                             <>
                                 {
-                                    checkAvailable() ? <AppButton
-                                            special
-                                            kind={BTN_KIND.primary}
-                                            onClick={() => {
-                                                setShowQrcode(true)
-                                            }}>
-                                            {lang['Gift_Detail_use']}
-                                        </AppButton>
+                                    checkAvailable() ?
+                                        nftpasslet.value ?
+                                            <AppButton
+                                                special
+                                                kind={BTN_KIND.primary}
+                                                onClick={() => {
+                                                    setShowQrcode(true)
+                                                }}>
+                                                {lang['Gift_Detail_use']}
+                                            </AppButton>
+                                            : <></>
                                         : <AppButton kind={BTN_KIND.secondary} disabled={true}>
                                             {lang['NFT_Detail_Unavailable']}
                                         </AppButton>
