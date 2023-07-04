@@ -57,12 +57,8 @@ function IssueSuccessPage() {
             }
 
             if (presendId) {
-                const presendDetail = await solas.queryPresendDetail({
-                    id: Number(presendId),
-                    auth_token: user.authToken || ''
-                })
-                const sender = await solas.getProfile({id: presendDetail.sender_id})
-
+                const presendDetail = await solas.queryPresendDetail({ id: Number(presendId), auth_token: user.authToken || '' })
+                const sender = presendDetail.badge.sender
                 setInfo({
                     name: presendDetail.badge.name,
                     cover: presendDetail.badge.image_url,
@@ -175,13 +171,13 @@ function IssueSuccessPage() {
     }
 
     useEffect(() => {
-        const shareUrl = genShareLink()
+        const shareUrl = info?.link || ''
         const text = lang['IssueFinish_share']
             .replace('#1', user.domain!)
             .replace('#2', info?.name || '')
             .replace('#3', shareUrl)
         setLinkContent(text)
-    }, [info])
+    }, [info?.link])
 
     const handleCopy = () => {
         copy(linkContent)
