@@ -80,7 +80,7 @@ function DialogIssuePrefill(props: DialogIssuePrefillProps) {
                 <div className='create-badge-btn' onClick={e => {
                     gotoCreateBadge('private')
                 }}>
-                    <img src="/images/create_badge_icon.png" alt=""/>
+                    <img src="/images/badge_type/private.png" alt=""/>
                     <div>
                         <div>{lang['Badgebook_Dialog_Privacy']} <span className={'new-mark'}>NEW</span></div>
                         <div className={'des'}>{lang['Badgebook_Dialog_Privacy_Des']}</div>
@@ -89,7 +89,7 @@ function DialogIssuePrefill(props: DialogIssuePrefillProps) {
                 <div className='create-badge-btn' onClick={e => {
                     gotoCreateBadge('gift')
                 }}>
-                    <img src="/images/create_badge_icon.png" alt=""/>
+                    <img src="/images/badge_type/gift.png" alt=""/>
                     <div>
                         <div>{lang['Badgebook_Dialog_Gift']} <span className={'new-mark'}>NEW</span></div>
                         <div className={'des'}>{lang['Badgebook_Dialog_Gift_Des']}</div>
