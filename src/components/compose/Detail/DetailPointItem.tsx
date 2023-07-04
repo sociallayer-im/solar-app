@@ -68,8 +68,6 @@ function DetailPointItem(props: DetailBadgeletProps) {
         getItemsOfSamePoint()
     },[])
 
-    // todo pointitem 详情
-
     const handleAccept = async () => {
         const unload = showLoading()
         try {

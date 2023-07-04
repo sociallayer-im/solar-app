@@ -74,10 +74,14 @@ const langCN: LangConfig = {
   BadgeDialog_Label_action_untop: '取消置顶',
   BadgeDialog_Label_hide_tip: '仅本人可见',
   BadgeDialog_Label_Creat_Time: '创建时间',
+  BadgeDialog_Label_Private: '徽章类型',
+  BadgeDialog_Label_Private_text: '私密',
+  BadgeDialog_Label_gift_text: '礼物卡',
 
   BadgeletDialog_title: '徽章详情',
   BadgeletDialog_presend_title: '发送中详情',
   BadgeletDialog_invite_title: '邀请详情',
+  BadgeletDialog_gift_title: '礼物卡详情',
   BadgeletDialog_Reason: '颁发理由',
 
   MintBadge_Title: '创建徽章',
@@ -288,12 +292,16 @@ const langCN: LangConfig = {
   Badgebook_Dialog_Choose_Badge: '从已经颁发的徽章中选择',
   Badgebook_Dialog_Choose_Draft: '从保存的草稿中选择',
   Badgebook_Dialog_Cetate_Badge: '创建新的徽章',
-  Badgebook_Dialog_Recognition_Badge: 'Basic Badge',
-  Badgebook_Dialog_Recognition_Des: 'Basic badge, evaluation of others',
-  Badgebook_Dialog_Points: 'Points',
-  Badgebook_Dialog_Points_Des: 'Create points systems in groups',
+  Badgebook_Dialog_Recognition_Badge: '基础徽章',
+  Badgebook_Dialog_Recognition_Des: '基础徽章, 用于对他人的评价',
+  Badgebook_Dialog_Points: '点数',
+  Badgebook_Dialog_Points_Des: '创建组织积分系统',
+  Badgebook_Dialog_Privacy: '私密徽章',
+  Badgebook_Dialog_Privacy_Des: '私密徽章，只有接收者自己可见',
   Badgebook_Dialog_NFT_Pass: 'NFT Pass',
-  Badgebook_Dialog_NFT_Pass_Des: 'Given by the groups to the person',
+  Badgebook_Dialog_NFT_Pass_Des: '由团体给予个人',
+  Badgebook_Dialog_Gift: '礼物卡',
+  Badgebook_Dialog_Gift_Des: '发送带福利的徽章',
 
   Dialog_Public_Image_Title: '选择一张徽章图片',
   Dialog_Public_Image_UploadBtn: '上传图片',
@@ -303,12 +311,13 @@ const langCN: LangConfig = {
   Cropper_Dialog_Title: '编辑图片',
   Cropper_Dialog_Btn: '应用',
 
-  Presend_Qrcode_Badge: '徽章：',
-  Presend_Qrcode_Des: slotLang('{1} 给你发送徽章。'),
+  Presend_Qrcode_Badge: '徽章',
+  Presend_Qrcode_Des: slotLang('{1} 给你发送{2}。'),
   Presend_Qrcode_Recommended: '推荐使用',
   Presend_Qrcode_Scan: '扫描二维码',
   Presend_Qrcode_Limit: slotLang('限制 {1} 人'),
   Presend_Qrcode_Time: slotLang('有效期至: {1}'),
+  Presend_Qrcode_Time_2: slotLang('生效时间: {1}'),
   Presend_Qrcode_Expired: '这个徽章已经过期了',
   Presend_Qrcode_Regen: '你可以重新生成二维码',
 
@@ -371,9 +380,11 @@ const langCN: LangConfig = {
   Issue_Nft_End: '结束时间',
 
   NFT_Detail_title: 'Nft Pass 详情',
+  NFT_Detail_checkin_title: '签到记录',
   NFT_Detail_Des: '描述',
   NFT_Detail_Check: '签到',
   NFT_Detail_use: '使用 NFT Pass',
+  NFT_Detail_show_record_btn: '查看记录',
   NFT_Detail_Expiration: '有效期',
   NFT_Detail_Unavailable: '不在有效期内',
 
@@ -384,7 +395,36 @@ const langCN: LangConfig = {
   Issue_Point_Title: '发送点数',
   Issue_Point_Point: '点数',
 
-  Dialog_Check_In_Title: '签到'
+  Dialog_Check_In_Title: '签到',
+
+  Create_Privacy_Title: '创建私密徽章',
+  Create_Privacy_Tips: '只有你和接受者可以看到这个徽章的详情，其他人只能看到发送者和接收者',
+
+  Create_Gift_Title: '创建礼物卡',
+  Create_Gift_Benefits: '福利',
+
+  Selector_issue_type_gift: '发送礼物卡',
+  Selector_issue_type_gift_times: '权益次数',
+  Create_gift_success: '创建成功',
+  Create_gift_success_des: '你的礼物卡已经创建',
+
+  Gift_detail_check_btn: '核销',
+  Gift_Detail_use: '使用',
+  Gift_Detail_amount: '剩余次数',
+  Gift_Detail_check_remain: slotLang('使用成功，还剩下 {1} 次'),
+
+  Gift_Checked_Title: '成功核销',
+  Gift_Checked_Des: '你已经成功核销了这张礼物卡',
+  Gift_Checked_Btn: slotLang('再次使用 (剩余 {1} 次)'),
+  Gift_Checked_show_remain: slotLang('剩余 {1} 次'),
+  Gift_Checked_show_receiver: '接收者',
+  Gift_Checked_show_last_consume: '上次消费: ',
+
+  Create_Badge_Success_Title: '创建成功',
+  Create_Badge_Success_Des: '你的徽章已经创建',
+
+  Selector_issue_type_badge: '发送徽章',
+  Selector_issue_type_amount: '徽章数量',
 }
 
 export default langCN

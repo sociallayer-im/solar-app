@@ -1,27 +1,33 @@
 import {useContext, useEffect, useState} from 'react'
-import './IssueTypeSelectorNftPass.less'
+import './IssueTypeSelectorGift.less'
 import Toggle from "../../base/Toggle/Toggle";
 import IssuesInput from "../../base/IssuesInput/IssuesInput";
 import AppButton from "../../base/AppButton/AppButton";
 import LangContext from "../../provider/LangProvider/LangContext";
-import { DatePicker } from "baseui/datepicker";
+import {DatePicker} from "baseui/datepicker";
 
-
-export type IssueType = '' | 'issue' | 'presend'
+export type IssueType = 'issue'
 
 export interface IssueTypeSelectorData {
     issues: string[],
+    value: string
     starts_at : string | null
-    expires_at  : string | null
+    expires_at  : string  | null
 }
 
-export interface IssueTypeSelectorNftPassProps {
+export interface IssueTypeSelectorProps {
     onConfirm?: (value: IssueTypeSelectorData) => any
     onCancel?: (value: IssueTypeSelectorData) => any
+    initIssueType?: IssueType
     initIssues?: string[]
+    presendDisable?: boolean
+    initPresendAmount?: string
 }
 
-function IssueTypeSelectorNftPass(props: IssueTypeSelectorNftPassProps) {
+function IssueTypeSelectorGift(props: IssueTypeSelectorProps) {
+    const [issueType, setIssueType] = useState<IssueType>('issue')
+    const [presendAmount, setPresendAmount] = useState(props.initPresendAmount || '0')
+    const [value, setValue] = useState('1')
     const [issues, setIssues] = useState<string[]>(props.initIssues || [''])
     const {lang} = useContext(LangContext)
     const [showStartsAt, setShowStartsAt] = useState(false)
@@ -31,12 +37,55 @@ function IssueTypeSelectorNftPass(props: IssueTypeSelectorNftPassProps) {
     // 默认过期时间是今天后7天
     const [expiresAt, setExpiresAt] = useState([new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000)]);
 
-    return (<div className={'issue-type-select-point'}>
-        <div className={'title'}>{lang['Issue_Nft_Title']}</div>
+    // 修改presendAmount,只能是数字
+    const handlePresendAmountChange = (e: any) => {
+        let value = e.target.value.trim()
+        if (!value) {
+            setPresendAmount('0')
+            return
+        }
+
+        if (value.startsWith('0')) {
+            value = value.replace(/^0+/, '')
+        }
+
+        const reg = /^[0-9]*$/
+        if (reg.test(value)) {
+            setPresendAmount(value)
+        }
+    }
+
+    // 修改value,只能是数字
+    const handleValueChange = (e: any) => {
+        let value = e.target.value.trim()
+        if (!value) {
+            setValue('1')
+            return
+        }
+
+        if (value.startsWith('0')) {
+            value = value.replace(/^0+/, '')
+        }
+
+        const reg = /^[0-9]*$/
+        if (reg.test(value)) {
+            setValue(value)
+        }
+    }
+
+    return (<div className={'issue-type-select-gift'}>
+        <div className={'title'}>{lang['Selector_issue_type_gift']}</div>
+        <div className={'item'}>
+            <div className={'item-title'}>{lang['Selector_issue_type_gift_times']}</div>
+            <div className={'item-value'}>
+                <input value={value} onChange={handleValueChange}/>
+            </div>
+        </div>
 
         <div className={'item'}>
             <div className={'item-title'}>{lang['IssueBadge_Address_List_Title']}</div>
         </div>
+
         <IssuesInput
             value={issues}
             onChange={(newIssues) => {
@@ -75,12 +124,15 @@ function IssueTypeSelectorNftPass(props: IssueTypeSelectorNftPassProps) {
             </div>
         </div>
 
+
+
         <div className={'actions'}>
             <AppButton
                 kind={'primary'}
                 onClick={() => {
                     props.onConfirm && props.onConfirm({
                         issues,
+                        value,
                         expires_at: showExpiresAt ? expiresAt[0].toISOString() : null,
                         starts_at: showStartsAt ? startsAt[0].toISOString() : null
                     })
@@ -90,6 +142,7 @@ function IssueTypeSelectorNftPass(props: IssueTypeSelectorNftPassProps) {
                 onClick={e => {
                     props.onCancel && props.onCancel({
                         issues,
+                        value,
                         expires_at: showExpiresAt ? expiresAt[0].toISOString() : null,
                         starts_at: showStartsAt ? startsAt[0].toISOString() : null
                     })
@@ -100,4 +153,4 @@ function IssueTypeSelectorNftPass(props: IssueTypeSelectorNftPassProps) {
     </div>)
 }
 
-export default IssueTypeSelectorNftPass
+export default IssueTypeSelectorGift

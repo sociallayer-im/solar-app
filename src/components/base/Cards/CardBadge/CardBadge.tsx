@@ -2,6 +2,7 @@ import { useStyletron } from 'baseui'
 import { useContext } from 'react'
 import { Badge } from '../../../../service/solas'
 import DialogsContext from '../../../provider/DialogProvider/DialogsContext'
+import UserContext from '../../../provider/UserProvider/UserContext'
 
 const style = {
     wrapper: {
@@ -85,13 +86,35 @@ export interface CardBadgeProps {
 
 function CardBadge (props: CardBadgeProps) {
     const [css] = useStyletron()
-    const { showBadge } = useContext(DialogsContext)
+    const { showBadge, showGift, showNftpass } = useContext(DialogsContext)
+    const {user} = useContext(UserContext)
 
-    return (<div data-testid='CardBadge' className={ css(style.wrapper) } onClick={() => { showBadge(props.badge) }}>
-                <div className={ css(style.coverBg) }>
-                    <img className={ css(style.img) } src={ props.badge.image_url } alt=""/>
-                </div>
-                <div className={ css(style.name) }>{ props.badge.name }</div>
+    const showDialog = () => {
+        if (props.badge.badge_type === 'nftpass') {
+            showNftpass(props.badge)
+        } else if (props.badge.badge_type === 'gift') {
+            showGift(props.badge)
+        } else {
+            showBadge(props.badge)
+        }
+    }
+
+    return (<div data-testid='CardBadge' className={ css(style.wrapper) } onClick={() => { showDialog() }}>
+        {
+            (props.badge.badge_type === 'private' && props.badge.sender.id !== user.id) ?
+                <>
+                    <div className={ css(style.coverBg) }>
+                        <img className={ css(style.img) } src={ '/images/badge_private.png'} alt=""/>
+                    </div>
+                    <div className={ css(style.name) }>🔒</div>
+                </>
+               : <>
+                    <div className={ css(style.coverBg) }>
+                        <img className={ css(style.img) } src={ props.badge.image_url } alt=""/>
+                    </div>
+                    <div className={ css(style.name) }>{ props.badge.name }</div>
+                </>
+        }
             </div>)
 }
 

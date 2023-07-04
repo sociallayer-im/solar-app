@@ -1,7 +1,7 @@
-import { useStyletron } from 'baseui'
-import { Badgelet } from '../../../../service/solas'
+import {useStyletron} from 'baseui'
+import {Badgelet} from '../../../../service/solas'
 import DialogsContext from '../../../provider/DialogProvider/DialogsContext'
-import { useContext } from 'react'
+import {useContext} from 'react'
 import UserContext from '../../../provider/UserProvider/UserContext'
 
 const style = {
@@ -20,14 +20,14 @@ const style = {
         marginBottom: '10px',
         boxSizing: 'border-box' as const,
         transition: 'all 0.12s linear',
-        ':hover' : {
+        ':hover': {
             transform: 'translateY(-8px)'
         },
-        ':active' : {
+        ':active': {
             boxShadow: '0px 1.9878px 3px rgba(0, 0, 0, 0.1)'
         }
     },
-    img:  {
+    img: {
         width: '90px',
         height: '90px',
         borderRadius: '50%',
@@ -85,21 +85,44 @@ export interface CardBadgeletProps {
     badgelet: Badgelet
 }
 
-function CardBadgelet (props: CardBadgeletProps) {
+function CardBadgelet(props: CardBadgeletProps) {
     const [css] = useStyletron()
-    const { showBadgelet } = useContext(DialogsContext)
-    const { user } = useContext(UserContext)
+    const {showBadgelet, showGiftItem} = useContext(DialogsContext)
+    const {user} = useContext(UserContext)
 
     const isOwner = user.id === props.badgelet.receiver.id
 
-    return (<div data-testid='CardBadgelet' className={ css(style.wrapper) } onClick={ () => { showBadgelet(props.badgelet) }}>
-                <div className={css(style.coverBg)}>
-                    <img className={ css(style.img) } src={ props.badgelet.badge.image_url } alt=""/>
-                </div>
-                { props.badgelet.hide && <div className={css(style.hideMark)}><i className='icon-lock'></i></div> }
-                <div className={ css(style.name) }>{ props.badgelet.badge.name }</div>
-                { isOwner && props.badgelet.status === 'pending' && <div className={ css(style.pendingMark) }>Pending</div> }
-            </div>)
+    const showDialog = () => {
+        if (props.badgelet.badge.badge_type === 'gift') {
+            showGiftItem(props.badgelet)
+        } else {
+            showBadgelet(props.badgelet)
+        }
+    }
+
+    return (<div data-testid='CardBadgelet' className={css(style.wrapper)} onClick={() => {
+        showDialog()
+    }}>
+        {
+            (props.badgelet.badge.badge_type === 'private' && !isOwner) ?
+                <>
+                    <div className={css(style.coverBg)}>
+                        <img className={css(style.img)} src={'/images/badge_private.png'} alt=""/>
+                    </div>
+                    {props.badgelet.hide && <div className={css(style.hideMark)}><i className='icon-lock'></i></div>}
+                    <div className={css(style.name)}>🔒</div>
+                </>
+                : <>
+                    <div className={css(style.coverBg)}>
+                        <img className={css(style.img)} src={props.badgelet.badge.image_url} alt=""/>
+                    </div>
+                    {props.badgelet.hide && <div className={css(style.hideMark)}><i className='icon-lock'></i></div>}
+                    <div className={css(style.name)}>{props.badgelet.badge.name}</div>
+                    {isOwner && props.badgelet.status === 'pending' &&
+                        <div className={css(style.pendingMark)}>Pending</div>}
+                </>
+        }
+    </div>)
 }
 
 export default CardBadgelet

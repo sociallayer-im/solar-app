@@ -1,7 +1,7 @@
 import React, {useContext, useEffect} from 'react'
-import './ListUserRecognition.less'
+import './ListUserGift.less'
 import ListUserAssets, {ListUserAssetsMethods} from "../../base/ListUserAssets/ListUserAssets";
-import solas, {Profile} from "../../../service/solas";
+import solas, {Profile, QueryBadgeProps} from "../../../service/solas";
 import CardBadge from "../../base/Cards/CardBadge/CardBadge";
 import UserContext from "../../provider/UserProvider/UserContext";
 import CardBadgelet from "../../base/Cards/CardBadgelet/CardBadgelet";
@@ -12,42 +12,29 @@ interface ListUserRecognitionProps {
     profile: Profile
 }
 
-function ListUserRecognition(props: ListUserRecognitionProps) {
+function ListUserGift(props: ListUserRecognitionProps) {
     const {user} = useContext(UserContext)
     const {lang} = useContext(LangContext)
 
     const getBadge = async (page: number) => {
-        const queryProps = props.profile.is_group
-            ? {group_id: props.profile.id, page}
-            : {sender_id: props.profile.id, page}
+        const queryProps: QueryBadgeProps = props.profile.is_group
+            ? {group_id: props.profile.id, badge_type: 'gift', page}
+            : {sender_id: props.profile.id, badge_type: 'gift', page}
 
-        const publicBadge =  await solas.queryBadge(queryProps)
-        const privateBadge =  await solas.queryPrivateBadge(queryProps)
-
-        return [...publicBadge, ...privateBadge].sort((a, b) => {
-            return b.id - a.id
-        })
+        return await solas.queryBadge(queryProps)
     }
 
     const getBadgelet = async (page: number) => {
-        const publicBadgelet =  await solas.queryBadgelet({
+        return await solas.queryBadgelet({
             show_hidden: user.id === props.profile.id ? 1 : undefined,
             receiver_id: props.profile.id,
+            badge_type: 'gift',
             page
-        })
-
-        const privateBadgelet =  await solas.queryPrivacyBadgelet({
-            show_hidden: user.id === props.profile.id ? 1 : undefined,
-            receiver_id: props.profile.id,
-            page
-        })
-
-        return [...publicBadgelet, ...privateBadgelet].sort((a, b) => {
-            return b.id - a.id
         })
     }
 
-    const [needUpdate, _] = useEvent(EVENT.badgeletListUpdate)
+    const [needUpdate, _] = useEvent(EVENT.giftItemUpdate)
+
     const listWrapperRefBadge = React.createRef<ListUserAssetsMethods>()
     const listWrapperRefBadgeLet = React.createRef<ListUserAssetsMethods>()
 
@@ -71,4 +58,4 @@ function ListUserRecognition(props: ListUserRecognitionProps) {
     </div>)
 }
 
-export default ListUserRecognition
+export default ListUserGift

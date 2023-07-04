@@ -1,7 +1,7 @@
 import LangContext from '../../provider/LangProvider/LangContext'
 import UserContext from '../../provider/UserProvider/UserContext'
 import DialogsContext from '../../provider/DialogProvider/DialogsContext'
-import {useContext, useState} from 'react'
+import {useContext, useEffect, useState} from 'react'
 import DetailWrapper from './atoms/DetailWrapper/DetailWrapper'
 import usePicture from '../../../hooks/pictrue'
 import DetailHeader from './atoms/DetailHeader'
@@ -12,7 +12,7 @@ import DetailDes from './atoms/DetailDes/DetailDes'
 import DetailArea from './atoms/DetailArea'
 import AppButton, {BTN_KIND} from '../../base/AppButton/AppButton'
 import BtnGroup from '../../base/BtnGroup/BtnGroup'
-import solas, {NftPasslet} from '../../../service/solas'
+import solas, {CheckIn, NftPasslet, queryCheckInList} from '../../../service/solas'
 import useEvent, {EVENT} from '../../../hooks/globalEvent'
 import ReasonText from '../../base/ReasonText/ReasonText'
 import DetailScrollBox from './atoms/DetailScrollBox/DetailScrollBox'
@@ -21,7 +21,7 @@ import useTime from '../../../hooks/formatTime'
 import {useNavigate} from 'react-router-dom'
 import QRcode from "../../base/QRcode";
 import {useStyletron} from "baseui";
-
+import CheckInRecords from "../../base/CheckInRecords/CheckInRecords";
 
 export interface DetailNftpassletProps {
     nftpasslet: NftPasslet,
@@ -30,6 +30,7 @@ export interface DetailNftpassletProps {
 
 const NftpassQrcode = (props: { nftpasslet: NftPasslet }) => {
     const [css] = useStyletron()
+    const {user} = useContext(UserContext)
 
     const wrapper = {
         width: '220px',
@@ -59,7 +60,7 @@ const NftpassQrcode = (props: { nftpasslet: NftPasslet }) => {
         background: '#fff'
     }
 
-    const text = window.location.host + '/nftpasslet/' + props.nftpasslet.id + ''
+    const text = user.authToken + '##' + props.nftpasslet.id + ''
 
     return <div className={css(wrapper as any)}>
         <div className={css(title as any)}>Scan the QR Code</div>
@@ -74,12 +75,26 @@ function DetailNftpasslet(props: DetailNftpassletProps) {
     const {user} = useContext(UserContext)
     const {openConnectWalletDialog, showLoading, showToast} = useContext(DialogsContext)
     const {defaultAvatar} = usePicture()
-    const [_, emitUpdate] = useEvent(EVENT.nftpassItemUpdate)
+    const [_, emitUpdate] = useEvent(EVENT.giftItemUpdate)
     const [nftpasslet, setNftpasslet] = useState(props.nftpasslet)
     const isOwner = user.id === props.nftpasslet.receiver.id
     const formatTime = useTime()
     const navigate = useNavigate()
     const [showQrcode, setShowQrcode] = useState(false)
+    const [showRecord, setShowRecord] = useState(false)
+    const [records, setRecords] = useState<CheckIn[]>([])
+
+    const getRecords = async () => {
+        const list =  await queryCheckInList({
+            badgelet_id: nftpasslet.id,
+            profile_id: nftpasslet.receiver.id,
+        })
+        setRecords(list)
+    }
+
+    useEffect(() => {
+        getRecords()
+    },[])
 
     const handleAccept = async () => {
         const unload = showLoading()
@@ -185,12 +200,38 @@ function DetailNftpasslet(props: DetailNftpassletProps) {
                                   profile={nftpasslet.badge.group || nftpasslet.sender}/>
             }
 
-            {
-                !showQrcode ? <>
+            { showQrcode && <>
+                <NftpassQrcode nftpasslet={props.nftpasslet}/>
+                <BtnGroup>
+                    <AppButton
+                        kind={'secondary'}
+                        onClick={() => {
+                            setShowQrcode(false)
+                        }}>
+                        {'Close'}
+                    </AppButton>
+                </BtnGroup>
+            </> }
+
+            { showRecord &&  <>
+                <CheckInRecords data={records} title={lang['NFT_Detail_checkin_title']}/>
+                <BtnGroup>
+                    <AppButton
+                        kind={'secondary'}
+                        onClick={() => {
+                            setShowRecord(false)
+                        }}>
+                        {'Close'}
+                    </AppButton>
+                </BtnGroup>
+            </>
+            }
+
+            { !showQrcode && !showRecord && <>
                         <DetailScrollBox style={{maxHeight: swiperMaxHeight - 60 + 'px', marginLeft: 0}}>
                             {
                                 !!nftpasslet.content &&
-                                <DetailDes title={lang['NFT_Detail_title']}>
+                                <DetailDes title={lang['NFT_Detail_Des']}>
                                     <ReasonText text={nftpasslet.content}></ReasonText>
                                 </DetailDes>
                             }
@@ -218,7 +259,7 @@ function DetailNftpasslet(props: DetailNftpassletProps) {
 
                             <DetailArea
                                 title={lang['NFT_Detail_Expiration']}
-                                content={formatExpiration(nftpasslet.created_at, nftpasslet.starts_at, nftpasslet.expires_at)}/>
+                                content={formatExpiration(nftpasslet.created_at, nftpasslet.starts_at || null, nftpasslet.expires_at || null)}/>
 
                         </DetailScrollBox>
                         <BtnGroup>
@@ -233,34 +274,33 @@ function DetailNftpasslet(props: DetailNftpassletProps) {
                                 && user.id === nftpasslet.receiver.id
                                 && nftpasslet.status === 'accepted'
                                 && (
-                                    checkAvailable() ? <AppButton
-                                            special
-                                            kind={BTN_KIND.primary}
+                                    <>
+                                        {
+                                            checkAvailable() ? <AppButton
+                                                    special
+                                                    kind={BTN_KIND.primary}
+                                                    onClick={() => {
+                                                        setShowQrcode(true)
+                                                    }}>
+                                                    {lang['NFT_Detail_use']}
+                                                </AppButton>
+                                                : <AppButton kind={BTN_KIND.secondary} disabled={true}>
+                                                    {lang['NFT_Detail_Unavailable']}
+                                                </AppButton>
+                                        }
+                                        { checkAvailable() && <AppButton
+                                            kind={'secondary'}
                                             onClick={() => {
-                                                setShowQrcode(true)
+                                                setShowRecord(true)
                                             }}>
-                                            {lang['NFT_Detail_use']}
+                                            {lang['NFT_Detail_show_record_btn']}
                                         </AppButton>
-                                        : <AppButton kind={BTN_KIND.secondary} disabled={true}>
-                                            {lang['NFT_Detail_Unavailable']}
-                                        </AppButton>
+                                        }
+                                    </>
                                 )
                             }
                         </BtnGroup>
-                    </>
-                    : <>
-                        <NftpassQrcode nftpasslet={props.nftpasslet}/>
-                        <BtnGroup>
-                            <AppButton
-                                kind={'secondary'}
-                                onClick={() => {
-                                    setShowQrcode(false)
-                                }}>
-                                {'Close'}
-                            </AppButton>
-                        </BtnGroup>
-                    </>
-            }
+                    </> }
         </DetailWrapper>
     )
 }

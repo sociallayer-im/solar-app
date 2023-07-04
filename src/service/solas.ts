@@ -1,9 +1,10 @@
 import {signInWithEthereum} from './SIWE'
 import fetch from '../utils/fetch'
+import {s} from "msw/lib/glossary-de6278a9";
 
 const api = import.meta.env.VITE_SOLAS_API
 
-export type BadgeType = 'badge' | 'nftpass' | 'nft' | 'private'
+export type BadgeType = 'badge' | 'nftpass' | 'nft' | 'private' | 'gift'
 
 interface AuthProp {
     auth_token: string
@@ -116,9 +117,10 @@ export async function regist(props: SolasRegistProps): Promise<Profile> {
     return res.data.profile as Profile
 }
 
-interface QueryBadgeProps {
+export interface QueryBadgeProps {
     sender_id?: number,
     group_id?: number,
+    badge_type?: BadgeType,
     page: number
 }
 
@@ -134,20 +136,34 @@ export interface Badge {
     group?: Group | null,
     content: string,
     counter: number,
+    badge_type: BadgeType,
 }
 
 export type NftPass = Badge
 export type NftPassWithBadgelets = BadgeWithBadgelets
 export interface NftPasslet extends Badgelet {
-    starts_at: null | string,
-    expires_at: null | string,
+
 }
 
-
 export async function queryBadge(props: QueryBadgeProps): Promise<Badge[]> {
+    props.badge_type = props.badge_type || 'badge'
+
     const res = await fetch.get({
         url: `${api}/badge/list`,
-        data: {...props, badge_type: 'badge'},
+        data: props,
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+
+    return res.data.badges as Badge[]
+}
+
+export async function queryPrivateBadge(props: QueryBadgeProps): Promise<Badge[]> {
+    const res = await fetch.get({
+        url: `${api}/badge/list`,
+        data: {...props, badge_type: 'private'},
     })
 
     if (res.data.result === 'error') {
@@ -261,7 +277,8 @@ export interface QueryBadgeletProps {
     receiver_id?: number,
     page: number,
     show_hidden?: number,
-    badge_id?:number
+    badge_id?:number,
+    badge_type?: BadgeType,
 }
 
 export interface Badgelet {
@@ -279,13 +296,55 @@ export interface Badgelet {
     badge: Badge,
     chain_data: string | null
     group: Group | null
-    created_at: string
+    created_at: string,
+    starts_at?: null | string,
+    expires_at?: null | string,
+    value?: null | number,
+    last_consumed_at: null | string,
 }
 
-export async function queryBadgelet(props: QueryBadgeletProps): Promise<Badgelet[]> {
+export async function queryAllTypeBadgelet(props: QueryBadgeletProps): Promise<Badgelet[]> {
+
     const res = await fetch.get({
         url: `${api}/badgelet/list`,
-        data: {...props, badge_type: 'badge'}
+        data: {...props, badge_type: undefined}
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+
+    const list: Badgelet[] = res.data.badgelets
+
+    return list.filter(item => {
+        return item.status !== 'rejected'
+    })
+}
+
+
+export async function queryBadgelet(props: QueryBadgeletProps): Promise<Badgelet[]> {
+    props.badge_type = props.badge_type || 'badge'
+
+    const res = await fetch.get({
+        url: `${api}/badgelet/list`,
+        data: props
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+
+    const list: Badgelet[] = res.data.badgelets
+
+    return list.filter(item => {
+        return item.status !== 'rejected'
+    })
+}
+
+export async function queryPrivacyBadgelet(props: QueryBadgeletProps): Promise<Badgelet[]> {
+    const res = await fetch.get({
+        url: `${api}/badgelet/list`,
+        data: {...props, badge_type: 'private'}
     })
 
     if (res.data.result === 'error') {
@@ -559,12 +618,14 @@ export interface CreateBadgeProps {
     auth_token: string,
     content?: string,
     group_id?: number,
-    badge_type?: string
-
+    badge_type?: string,
+    value?: number,
 }
 
 export async function createBadge(props: CreateBadgeProps): Promise<Badge> {
     checkAuth(props)
+    props.badge_type = props.badge_type ||'badge'
+
     const res = await fetch.post({
         url: `${api}/badge/create`,
         data: props
@@ -580,7 +641,7 @@ export async function createBadge(props: CreateBadgeProps): Promise<Badge> {
 export interface CreatePresendProps {
     badge_id: number,
     message: string,
-    counter: number | string,
+    counter: number | string | null,
     auth_token: string
 }
 
@@ -653,6 +714,7 @@ export interface IssueBatchProps {
     badgeId: number,
     starts_at?: string,
     expires_at?: string,
+    value?: number | null
 }
 
 export async function issueBatch(props: IssueBatchProps): Promise<Badgelet[]> {
@@ -745,7 +807,8 @@ export async function issueBatch(props: IssueBatchProps): Promise<Badgelet[]> {
             subject_url: subjectUrl,
             auth_token: props.auth_token,
             starts_at: props.starts_at || null,
-            expires_at: props.expires_at || null
+            expires_at: props.expires_at || null,
+            value: props.value
         }
     })
 
@@ -1324,6 +1387,79 @@ export async function rejectPoint (props: AcceptPointProp) {
     return res.data.point_item as PointItem
 }
 
+export interface CheckInProps {
+    badgelet_id: number
+    auth_token: string
+}
+
+export interface CheckInSimple {
+    id: number,
+    badgelet_id: number,
+    profile_id: number,
+    created_at: string,
+    memo: null | string
+}
+
+export async function checkIn (props: CheckInProps): Promise<CheckInSimple> {
+    checkAuth(props)
+
+    const res: any = await fetch.post({
+        url: `${api}/badgelet/checkin`,
+        data: props
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message || 'Check in fail')
+    }
+
+    return res.data.checkin as CheckInSimple
+}
+
+export async function consume (props: CheckInProps): Promise<Badgelet> {
+    checkAuth(props)
+
+    const res: any = await fetch.post({
+        url: `${api}/badgelet/consume`,
+        data: {...props, delta: 1}
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message || 'Check in fail')
+    }
+
+    return res.data.badgelet as Badgelet
+}
+
+export interface QueryCheckInListProps {
+    profile_id?: number,
+    badgelet_id?:number,
+    badge_id?:number
+}
+
+export interface CheckIn {
+    id: number,
+    badgelet: Badgelet,
+    badge: Badge,
+    created_at: string,
+    memo: null | string,
+    profile: ProfileSimple
+}
+
+export async function queryCheckInList (props: QueryCheckInListProps): Promise<CheckIn[]> {
+    const res: any = await fetch.get({
+        url: `${api}/badgelet/checkin_list`,
+        data: props
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message || 'Check in fail')
+    }
+
+    return res.data.checkins.sort((a: any, b: any) => {
+        return b.id - a.id
+    }) as CheckIn[]
+}
+
 
 export default {
     login,
@@ -1379,4 +1515,9 @@ export default {
     queryNftPasslet,
     queryNftpass,
     queryNftPassDetail,
+    queryPrivacyBadgelet,
+    queryPrivateBadge,
+    checkIn,
+    queryCheckInList,
+    queryAllTypeBadgelet
 }

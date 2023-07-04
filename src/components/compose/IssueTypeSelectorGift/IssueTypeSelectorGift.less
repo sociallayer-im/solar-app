@@ -1,4 +1,4 @@
-.issue-type-select {
+.issue-type-select-gift {
   padding: 16px;
   background: rgba(245, 245, 245, 0.6);
   border: 1px solid #FFFFFF;
@@ -61,6 +61,28 @@
           background: #fff;
         }
       }
+
+      .date-select {
+        min-width: 100px;
+        div[data-baseweb="input"] {
+          background: none;
+          border: 0;
+
+          div[data-baseweb="base-input"] {
+            background: none;
+            border: 0;
+            width: 100%;
+
+            input {
+              background: none;
+              border: 0;
+              font-size: 12px;
+              min-width: 100%;
+              font-weight: 600;
+            }
+          }
+        }
+      }
     }
   }
 
@@ -76,9 +98,9 @@
       }
     }
 
-   div:last-child {
-     background-color: #ECF2EE;
-   }
+    div:last-child {
+      background-color: #ECF2EE;
+    }
   }
 
   .issue-input-add-btn {

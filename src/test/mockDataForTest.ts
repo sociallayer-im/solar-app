@@ -97,7 +97,8 @@ export const badges: Badge[] = [
         sender: profiles[0],
         group: null,
         content: '',
-        counter: 5
+        counter: 5,
+        badge_type: 'badge'
     },
     {
         id: 1,
@@ -110,7 +111,8 @@ export const badges: Badge[] = [
         sender: profiles[0],
         group: null,
         content: 'ttttasd',
-        counter: 10
+        counter: 10,
+        badge_type: 'badge'
     }
 ]
 
@@ -161,7 +163,8 @@ export const badgelets: Badgelet[] = [
                 image_url: 'https://ik.imagekit.io/soladata/tr:n-ik_ml_thumbnail/xewls18v_qXrB2mr8q'
             } as any,
             content: 'zfd test issue',
-            counter: 2
+            counter: 2,
+            badge_type: 'badge'
         },
         chain_data: null,
         group: null,

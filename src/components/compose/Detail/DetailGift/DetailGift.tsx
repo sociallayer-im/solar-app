@@ -1,5 +1,6 @@
 import LangContext from '../../../provider/LangProvider/LangContext'
 import UserContext from '../../../provider/UserProvider/UserContext'
+import DialogsContext from "../../../provider/DialogProvider/DialogsContext";
 import {useContext, useEffect, useRef, useState} from 'react'
 import DetailWrapper from '../atoms/DetailWrapper/DetailWrapper'
 import usePicture from '../../../../hooks/pictrue'
@@ -16,7 +17,7 @@ import useTime from '../../../../hooks/formatTime'
 import DetailCreator from '../atoms/DetailCreator/DetailCreator'
 import ReasonText from '../../../base/ReasonText/ReasonText'
 import DetailDes from '../atoms/DetailDes/DetailDes'
-import './DetailBadge.less'
+import './DetailGift.less'
 import SwiperPagination from '../../../base/SwiperPagination/SwiperPagination'
 
 //HorizontalList deps
@@ -30,9 +31,10 @@ export interface DetailBadgeProps {
     handleClose: () => void
 }
 
-function DetailBadge(props: DetailBadgeProps) {
+function DetailGift(props: DetailBadgeProps) {
     const {lang} = useContext(LangContext)
     const {user} = useContext(UserContext)
+    const {showGiftCheckIn} = useContext(DialogsContext)
     const {defaultAvatar} = usePicture()
     const navigate = useNavigate()
     const [badgelets, setBadgelets] = useState<Badgelet[]>([])
@@ -57,22 +59,32 @@ function DetailBadge(props: DetailBadgeProps) {
     }, [])
 
     const handleIssue = async () => {
-        if (props.badge.badge_type === 'private') {
-            navigate(`/create-private?private=${props.badge.id}`)
-        } else if (props.badge.badge_type === 'gift') {
-            navigate(`/create-gift?gift=${props.badge.id}`)
-        } else {
-            navigate(`/create-badge?badge=${props.badge.id}`)
+        navigate(`/create-gift?gift=${props.badge.id}`)
+        props.handleClose()
+    }
+
+    const formatExpiration = (crateTime: string, start: null | string, end: null | string) => {
+        let res = 'Unlimited'
+        if (start && end) {
+            res = `${formatTime(start)} - ${formatTime(end)}`
         }
 
-        props.handleClose()
+        if (!start && end) {
+            res = `${formatTime(crateTime)} -- ${formatTime(end)}`
+        }
+
+        if (start && !end) {
+            res = `Available after ${formatTime(start)}`
+        }
+
+        return res
     }
 
     const loginUserIsSender = user.id === props.badge.sender.id
     const swiperMaxHeight = window.innerHeight - 320
     return (
         <DetailWrapper>
-            <DetailHeader title={lang['BadgeletDialog_title']} onClose={props.handleClose}/>
+            <DetailHeader title={lang['BadgeletDialog_gift_title']} onClose={props.handleClose}/>
 
 
             {(props.badge.badge_type === 'private' && !loginUserIsSender) ?
@@ -133,15 +145,18 @@ function DetailBadge(props: DetailBadgeProps) {
                                                         title={lang['BadgeDialog_Label_Token']}
                                                         content={props.badge.domain}/>
 
+
+                                                    <DetailArea
+                                                        title={lang['NFT_Detail_Expiration']}
+                                                        content={formatExpiration(badgelet.created_at, badgelet.starts_at || null, badgelet.expires_at || null)}/>
+
                                                     <DetailArea
                                                         title={lang['BadgeDialog_Label_Creat_Time']}
                                                         content={formatTime(badgelet.created_at)}/>
 
-                                                    {badgelet.badge.badge_type === 'private' &&
-                                                        <DetailArea
-                                                            title={lang['BadgeDialog_Label_Private']}
-                                                            content={lang['BadgeDialog_Label_Private_text']}/>
-                                                    }
+                                                    <DetailArea
+                                                        title={lang['BadgeDialog_Label_Private']}
+                                                        content={lang['BadgeDialog_Label_gift_text']}/>
                                                 </DetailScrollBox>
                                             </SwiperSlide>
                                         )
@@ -164,6 +179,10 @@ function DetailBadge(props: DetailBadgeProps) {
                                     title={lang['BadgeDialog_Label_Creat_Time']}
                                     content={formatTime(props.badge.created_at)}/>
 
+                                <DetailArea
+                                    title={lang['BadgeDialog_Label_Private']}
+                                    content={lang['BadgeDialog_Label_gift_text']}/>
+
                             </DetailScrollBox>
                     }
                 </>
@@ -171,15 +190,22 @@ function DetailBadge(props: DetailBadgeProps) {
 
             <BtnGroup>
                 {loginUserIsSender &&
-                    <AppButton size={BTN_SIZE.compact} onClick={() => {
-                        handleIssue()
-                    }} kind={BTN_KIND.primary}>
-                        {lang['BadgeDialog_Btn_Issue']}
-                    </AppButton>
+                    <>
+                        <AppButton size={BTN_SIZE.compact} onClick={() => {
+                            showGiftCheckIn(props.badge.id)
+                        }} kind={BTN_KIND.primary} special>
+                            {lang['Gift_detail_check_btn']}
+                        </AppButton>
+                        <AppButton size={BTN_SIZE.compact} onClick={() => {
+                            handleIssue()
+                        }} kind={'secondary'}>
+                            {lang['BadgeDialog_Btn_Issue']}
+                        </AppButton>
+                    </>
                 }
             </BtnGroup>
         </DetailWrapper>
     )
 }
 
-export default DetailBadge
+export default DetailGift

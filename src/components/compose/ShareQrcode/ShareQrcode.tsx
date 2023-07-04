@@ -12,7 +12,9 @@ export interface ShareQrcodeProp {
     link: string,
     limit?: number,
     expires?: string
+    start?: string
     points?: number
+    title?: string
 
 }
 
@@ -29,8 +31,8 @@ function ShareQrcode(props: ShareQrcodeProp) {
                         <img src={props.cover} alt=""/>
                     </div>
                     <div className='sender-info'>
-                        <div className='badge-name'>{lang['Presend_Qrcode_Badge']} {props.name}</div>
-                        <div className='des'>{lang['Presend_Qrcode_Des']([props.sender.domain?.split('.')[0]])}</div>
+                        <div className='badge-name'>{props.title || lang['Presend_Qrcode_Badge']} : {props.name}</div>
+                        <div className='des'>{lang['Presend_Qrcode_Des']([props.sender.domain?.split('.')[0], props.title || lang['Presend_Qrcode_Badge']])}</div>
                     </div>
                 </div>
                 <div className='card-title'> {lang['Presend_Qrcode_Scan']} </div>
@@ -48,6 +50,12 @@ function ShareQrcode(props: ShareQrcodeProp) {
                     <div className='limit'>
                         <i className='icon-profile'></i>
                         <span>{lang['Presend_Qrcode_Limit']([props.limit])}</span>
+                    </div>
+                }
+                {!!props.start &&
+                    <div className='time'>
+                        <i className='icon-clock'></i>
+                        <span>{lang['Presend_Qrcode_Time_2']([formatTime(props.start)])}</span>
                     </div>
                 }
                 {!!props.expires &&

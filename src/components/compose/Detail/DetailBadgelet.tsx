@@ -127,41 +127,77 @@ function DetailBadgelet(props: DetailBadgeletProps) {
                 }
                 onClose={props.handleClose}/>
 
-            <DetailCover src={badgelet.badge.image_url}></DetailCover>
-            <DetailName> {badgelet.badge.name} </DetailName>
-            <DetailCreator isGroup={!!badgelet.badge.group} profile={badgelet.badge.group || badgelet.sender}/>
+            {(badgelet.badge.badge_type === 'private' && !isBadgeletOwner) ?
+                <>
+                    <DetailCover src={'/images/badge_private.png'} />
+                    <DetailName> 🔒 </DetailName>
+                    <DetailCreator isGroup={!!badgelet.badge.group} profile={badgelet.badge.group || badgelet.sender}/>
+                    <DetailScrollBox style={{maxHeight: swiperMaxHeight - 60 + 'px', marginLeft: 0}}>
+                        <DetailArea
+                            onClose={props.handleClose}
+                            title={lang['BadgeDialog_Label_Issuees']}
+                            content={badgelet.receiver.domain
+                                ? badgelet.receiver.domain.split('.')[0]
+                                : ''
+                            }
+                            navigate={badgelet.receiver.domain
+                                ? `/profile/${badgelet.receiver.domain?.split('.')[0]}`
+                                : '#'}
+                            image={badgelet.receiver.image_url || defaultAvatar(badgelet.receiver.id)}/>
 
+                        <DetailArea
+                            title={lang['BadgeDialog_Label_Creat_Time']}
+                            content={formatTime(badgelet.created_at)}/>
 
-            <DetailScrollBox style={{maxHeight: swiperMaxHeight - 60 + 'px', marginLeft: 0}}>
-                {
-                    !!badgelet.content &&
-                    <DetailDes>
-                        <ReasonText text={badgelet.content}></ReasonText>
-                    </DetailDes>
-                }
+                        {badgelet.badge.badge_type === 'private' &&
+                            <DetailArea
+                                title={lang['BadgeDialog_Label_Private']}
+                                content={lang['BadgeDialog_Label_Private_text']}/>
+                        }
+                    </DetailScrollBox>
+                </>
+                : <>
+                    <DetailCover src={badgelet.badge.image_url}></DetailCover>
+                    <DetailName> {badgelet.badge.name} </DetailName>
+                    <DetailCreator isGroup={!!badgelet.badge.group} profile={badgelet.badge.group || badgelet.sender}/>
+                    <DetailScrollBox style={{maxHeight: swiperMaxHeight - 60 + 'px', marginLeft: 0}}>
+                        {
+                            !!badgelet.content &&
+                            <DetailDes>
+                                <ReasonText text={badgelet.content}></ReasonText>
+                            </DetailDes>
+                        }
 
-                <DetailArea
-                    onClose={props.handleClose}
-                    title={lang['BadgeDialog_Label_Issuees']}
-                    content={badgelet.receiver.domain
-                        ? badgelet.receiver.domain.split('.')[0]
-                        : ''
-                    }
-                    navigate={badgelet.receiver.domain
-                        ? `/profile/${badgelet.receiver.domain?.split('.')[0]}`
-                        : '#'}
-                    image={badgelet.receiver.image_url || defaultAvatar(badgelet.receiver.id)}/>
+                        <DetailArea
+                            onClose={props.handleClose}
+                            title={lang['BadgeDialog_Label_Issuees']}
+                            content={badgelet.receiver.domain
+                                ? badgelet.receiver.domain.split('.')[0]
+                                : ''
+                            }
+                            navigate={badgelet.receiver.domain
+                                ? `/profile/${badgelet.receiver.domain?.split('.')[0]}`
+                                : '#'}
+                            image={badgelet.receiver.image_url || defaultAvatar(badgelet.receiver.id)}/>
 
-                <DetailArea
-                    title={lang['BadgeDialog_Label_Token']}
-                    content={badgelet.domain}
-                    link={badgelet.chain_data ? `https://moonscan.io/tx/${badgelet.chain_data}` : undefined}/>
+                        <DetailArea
+                            title={lang['BadgeDialog_Label_Token']}
+                            content={badgelet.domain}
+                            link={badgelet.chain_data ? `https://moonscan.io/tx/${badgelet.chain_data}` : undefined}/>
 
-                <DetailArea
-                    title={lang['BadgeDialog_Label_Creat_Time']}
-                    content={formatTime(badgelet.created_at)}/>
+                        <DetailArea
+                            title={lang['BadgeDialog_Label_Creat_Time']}
+                            content={formatTime(badgelet.created_at)}/>
 
-            </DetailScrollBox>
+                        {badgelet.badge.badge_type === 'private' &&
+                            <DetailArea
+                                title={lang['BadgeDialog_Label_Private']}
+                                content={lang['BadgeDialog_Label_Private_text']}/>
+                        }
+
+                    </DetailScrollBox>
+                </>
+            }
 
             <BtnGroup>
                 {!user.domain && LoginBtn}

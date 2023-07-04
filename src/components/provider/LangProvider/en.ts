@@ -74,10 +74,14 @@ const langEN = {
   BadgeDialog_Label_action_untop: 'UnSet to Top',
   BadgeDialog_Label_hide_tip: 'Only visible to yourself',
   BadgeDialog_Label_Creat_Time: 'Create time',
+  BadgeDialog_Label_Private: 'Badge Type',
+  BadgeDialog_Label_Private_text: 'Private',
+  BadgeDialog_Label_gift_text: 'Gift card',
 
   BadgeletDialog_title: 'Badge Details',
   BadgeletDialog_presend_title: 'Sending Details',
   BadgeletDialog_invite_title: 'Invite Details',
+  BadgeletDialog_gift_title: 'Gift card Details',
   BadgeletDialog_Reason: 'Reason',
 
   MintBadge_Title: 'Send a badge',
@@ -292,8 +296,12 @@ const langEN = {
   Badgebook_Dialog_Recognition_Des: 'Basic badge, evaluation of others',
   Badgebook_Dialog_Points: 'Points',
   Badgebook_Dialog_Points_Des: 'Create points systems in groups',
+  Badgebook_Dialog_Privacy: 'Privacy Badge',
+  Badgebook_Dialog_Privacy_Des: 'Only receivers can see the badge',
   Badgebook_Dialog_NFT_Pass: 'NFT Pass',
   Badgebook_Dialog_NFT_Pass_Des: 'Given by the groups to the person',
+  Badgebook_Dialog_Gift: 'Gift Card',
+  Badgebook_Dialog_Gift_Des: 'Send badge with benefits',
 
   Dialog_Public_Image_Title: 'Choose a image for badge',
   Dialog_Public_Image_UploadBtn: 'Upload a image',
@@ -303,12 +311,13 @@ const langEN = {
   Cropper_Dialog_Title: 'Edit image',
   Cropper_Dialog_Btn: 'Apply',
 
-  Presend_Qrcode_Badge: 'badge:',
-  Presend_Qrcode_Des: slotLang('{1} sent you a badge.'),
+  Presend_Qrcode_Badge: 'badge',
+  Presend_Qrcode_Des: slotLang('{1} sent you a {2}.'),
   Presend_Qrcode_Recommended : 'Recommended',
   Presend_Qrcode_Scan: 'Scan the QR Code',
   Presend_Qrcode_Limit: slotLang('Limited to {1} person'),
   Presend_Qrcode_Time: slotLang('Expiry time : {1}'),
+  Presend_Qrcode_Time_2: slotLang('Starts time : {1}'),
   Presend_Qrcode_Expired: 'The badge is no longer valid',
   Presend_Qrcode_Regen: 'Regenerate the QR code',
 
@@ -371,9 +380,11 @@ const langEN = {
   Issue_Nft_End: 'Expiry date',
 
   NFT_Detail_title: 'Nft Pass Details',
+  NFT_Detail_checkin_title: 'Check In Records',
   NFT_Detail_Des: 'Description',
   NFT_Detail_Check: 'Check In',
   NFT_Detail_use: 'Use the NFT Pass',
+  NFT_Detail_show_record_btn: 'View Records',
   NFT_Detail_Expiration: 'Expiration Date',
   NFT_Detail_Unavailable: 'Not in the validity period',
 
@@ -384,7 +395,37 @@ const langEN = {
   Issue_Point_Title: 'Send Points',
   Issue_Point_Point: 'Points',
 
-  Dialog_Check_In_Title: 'Check In'
+  Dialog_Check_In_Title: 'Check In',
+
+  Create_Privacy_Title: 'Create a privacy badge',
+  Create_Privacy_Tips: 'Only you and the owner can view the badge, others can only see the creator and owner of the badge.',
+
+  Create_Gift_Title: 'Create a Gift card',
+  Create_Gift_Benefits: 'Benefits',
+
+  Selector_issue_type_gift: 'Send the Gift card',
+  Selector_issue_type_gift_times: 'Amount of benefits',
+  Create_gift_success: 'Create Successfully',
+  Create_gift_success_des: 'Your Gift card have been created',
+
+  Gift_detail_check_btn: 'Check',
+  Gift_Detail_use: 'Use',
+  Gift_Detail_amount: 'Times Remaining',
+  Gift_Detail_check_remain: slotLang('Checked! Remaining {1} Times'),
+
+  Gift_Checked_Title: 'Checked Successfully',
+  Gift_Checked_Des: 'Your benefits have been used.',
+  Gift_Checked_Btn: slotLang('Use again (Remaining {1} times)'),
+  Gift_Checked_show_remain: slotLang('Remaining {1} times'),
+  Gift_Checked_show_receiver: 'receiver',
+  Gift_Checked_show_last_consume: 'last consume: ',
+
+  Create_Badge_Success_Title: 'Create Successfully',
+  Create_Badge_Success_Des: 'Your badge have been created',
+
+  Selector_issue_type_badge: 'Send the badge',
+  Selector_issue_type_amount: 'Badge amount',
+
 }
 
 export type LangConfig = typeof langEN

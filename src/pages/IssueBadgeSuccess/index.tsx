@@ -1,6 +1,6 @@
-import { useSearchParams } from 'react-router-dom'
-import { useState, useContext, useEffect } from 'react'
-import solas, {Group, Profile, ProfileSimple, queryPointItemDetail} from '../../service/solas'
+import {useSearchParams} from 'react-router-dom'
+import {useContext, useEffect, useState} from 'react'
+import solas, {ProfileSimple} from '../../service/solas'
 import Layout from '../../components/Layout/Layout'
 import LangContext from '../../components/provider/LangProvider/LangContext'
 import './IssueBadgeSuccess.less'
@@ -8,19 +8,18 @@ import UserContext from '../../components/provider/UserProvider/UserContext'
 import copy from '../../utils/copy'
 import PageBack from '../../components/base/PageBack'
 import usePicture from '../../hooks/pictrue'
-import AppButton, { BTN_SIZE } from '../../components/base/AppButton/AppButton'
 import usePageHeight from '../../hooks/pageHeight'
 import DialogsContext from "../../components/provider/DialogProvider/DialogsContext";
-import ShareQrcode, { ShareQrcodeProp } from "../../components/compose/ShareQrcode/ShareQrcode";
+import ShareQrcode, {ShareQrcodeProp} from "../../components/compose/ShareQrcode/ShareQrcode";
 
-function IssueSuccessPage () {
+function IssueSuccessPage() {
     const [searchParams, _] = useSearchParams()
     const [info, setInfo] = useState<ShareQrcodeProp | null>(null)
-    const { lang } =  useContext(LangContext)
-    const { user } =  useContext(UserContext)
-    const { defaultAvatar } =  usePicture()
-    const { heightWithoutNav } = usePageHeight()
-    const { showToast } = useContext(DialogsContext)
+    const {lang} = useContext(LangContext)
+    const {user} = useContext(UserContext)
+    const {defaultAvatar} = usePicture()
+    const {heightWithoutNav} = usePageHeight()
+    const {showToast} = useContext(DialogsContext)
     const [linkContent, setLinkContent] = useState('')
 
     // presend成功传参
@@ -36,15 +35,18 @@ function IssueSuccessPage () {
     // nftpass 颁发成功传参
     const nftpassletId = searchParams.get('nftpasslet')
 
-   // presend成功传参
-   const pointId = searchParams.get('point')
-   const pointitemId = searchParams.get('pointitem')
+    // presend成功传参
+    const pointId = searchParams.get('point')
+    const pointitemId = searchParams.get('pointitem')
+
+    // gift成功传参
+    const giftItemId = searchParams.get('giftitem')
 
 
     useEffect(() => {
-        async function fetchInfo () {
+        async function fetchInfo() {
             if (badgeletId) {
-                const badgeletDetail = await solas.queryBadgeletDetail({ id: Number(badgeletId) })
+                const badgeletDetail = await solas.queryBadgeletDetail({id: Number(badgeletId)})
 
                 setInfo({
                     sender: badgeletDetail.sender,
@@ -68,7 +70,10 @@ function IssueSuccessPage () {
             }
 
             if (inviteId && groupId) {
-                const inviteDetail = await solas.queryInviteDetail({ invite_id: Number(inviteId), group_id: Number(groupId)})
+                const inviteDetail = await solas.queryInviteDetail({
+                    invite_id: Number(inviteId),
+                    group_id: Number(groupId)
+                })
                 if (!inviteDetail) return
 
                 const receiver = await solas.getProfile({id: inviteDetail?.receiver_id})
@@ -80,32 +85,50 @@ function IssueSuccessPage () {
                 setInfo({
                     sender: group as any,
                     name: group.username,
-                    cover: group.image_url || defaultAvatar(group.id) ,
+                    cover: group.image_url || defaultAvatar(group.id),
                     link: genShareLink(),
                 })
             }
 
             if (nftpassletId) {
-                const badgeletDetail = await solas.queryBadgeletDetail({ id: Number(nftpassletId) })
+                const badgeletDetail = await solas.queryBadgeletDetail({id: Number(nftpassletId)})
 
                 setInfo({
                     sender: badgeletDetail.sender,
                     name: badgeletDetail.badge.name,
                     cover: badgeletDetail.badge.image_url,
-                    link: genShareLink()
+                    link: genShareLink(),
+                    start: badgeletDetail.starts_at || undefined,
+                    expires: badgeletDetail.expires_at || undefined,
+                    title: lang['Badgebook_Dialog_NFT_Pass']
                 })
             }
 
             if (pointId && pointitemId) {
-                const point = await solas.queryPointDetail({ id: Number(pointId) })
-                const pointItem = await solas.queryPointItemDetail({ id: Number(pointitemId) })
+                const point = await solas.queryPointDetail({id: Number(pointId)})
+                const pointItem = await solas.queryPointItemDetail({id: Number(pointitemId)})
 
                 setInfo({
                     sender: point.sender,
                     name: point.title,
                     cover: point.image_url,
                     link: genShareLink(),
-                    points: pointItem.value
+                    points: pointItem.value,
+                    title: lang['Badgebook_Dialog_Points']
+                })
+            }
+
+            if (giftItemId) {
+                const badgeletDetail = await solas.queryBadgeletDetail({id: Number(giftItemId)})
+
+                setInfo({
+                    sender: badgeletDetail.sender,
+                    name: badgeletDetail.badge.name,
+                    cover: badgeletDetail.badge.image_url,
+                    link: genShareLink(),
+                    start: badgeletDetail.starts_at || undefined,
+                    expires: badgeletDetail.expires_at || undefined,
+                    title: lang['Badgebook_Dialog_Gift'],
                 })
             }
         }
@@ -113,7 +136,7 @@ function IssueSuccessPage () {
         fetchInfo()
     }, [user.authToken])
 
-    const genShareLink = (presendCode?:string) => {
+    const genShareLink = (presendCode?: string) => {
         const base = `${window.location.protocol}//${window.location.host}`
         let path = ''
 
@@ -140,13 +163,17 @@ function IssueSuccessPage () {
             path = `${base}/pointitem/${pointitemId}`
         }
 
+        if (giftItemId) {
+            path = `${base}/giftitem/${giftItemId}`
+        }
+
         return path
     }
 
     useEffect(() => {
         const shareUrl = info?.link || ''
         const text = lang['IssueFinish_share']
-            .replace('#1',  user.domain!)
+            .replace('#1', user.domain!)
             .replace('#2', info?.name || '')
             .replace('#3', shareUrl)
         setLinkContent(text)
@@ -162,9 +189,9 @@ function IssueSuccessPage () {
         <Layout>
             <div className='send-badge-success' style={{minHeight: `${heightWithoutNav}px`}}>
                 <div className='center-box header'>
-                    <PageBack backBtnLabel={ lang['Page_Back_Done'] }
-                              title={ lang['IssueFinish_Title'] }
-                              to={user.userName ? `/profile/${user.userName}` : '/'} />
+                    <PageBack backBtnLabel={lang['Page_Back_Done']}
+                              title={lang['IssueFinish_Title']}
+                              to={user.userName ? `/profile/${user.userName}` : '/'}/>
                 </div>
                 <div className='background'>
                     <div className='ball1'></div>
@@ -173,16 +200,16 @@ function IssueSuccessPage () {
                 </div>
                 <div className='cards'>
                     <div className={'title'}>{lang['IssueFinish_Share_By_Qrcode']}</div>
-                    {!!info && <ShareQrcode {...info}/> }
+                    {!!info && <ShareQrcode {...info}/>}
                 </div>
                 <div className='cards'>
                     <div className={'title'}>{lang['IssueFinish_Share_By_Link']}</div>
-                    { !!info && <div className={'link-content'}>
-                        { linkContent }
-                       <div className={'copy-link-btn'} onClick={handleCopy}>
-                           <i className='icon-copy'></i>
-                           <span>{ lang['IssueFinish_CopyLink'] }</span>
-                       </div>
+                    {!!info && <div className={'link-content'}>
+                        {linkContent}
+                        <div className={'copy-link-btn'} onClick={handleCopy}>
+                            <i className='icon-copy'></i>
+                            <span>{lang['IssueFinish_CopyLink']}</span>
+                        </div>
                     </div>}
                 </div>
             </div>
