@@ -168,7 +168,8 @@ export const badgelets: Badgelet[] = [
         },
         chain_data: null,
         group: null,
-        created_at: '2023-04-14T10:20:01.997Z'
+        created_at: '2023-04-14T10:20:01.997Z',
+        last_consumed_at: '2023-04-14T10:20:01.997Z',
     }
 ]
 
