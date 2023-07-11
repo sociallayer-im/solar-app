@@ -146,9 +146,9 @@ function GroupPage() {
                                     <Tab title={lang['Profile_Tab_Basic']}>
                                         <ListUserRecognition profile={profile}/>
                                     </Tab>
-                                    <Tab title={lang['Profile_Tab_NFTPASS']}>
-                                        <ListUserNftpass profile={profile}/>
-                                    </Tab>
+                                    {/*<Tab title={lang['Profile_Tab_NFTPASS']}>*/}
+                                    {/*    <ListUserNftpass profile={profile}/>*/}
+                                    {/*</Tab>*/}
                                     {profile.group_owner_id === user.id ?
                                         <Tab title={lang['Group_detail_tabs_Invite']}>
                                             <ListGroupInvite group={profile}/>

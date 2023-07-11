@@ -106,7 +106,8 @@ function DialogIssuePrefill(props: DialogIssuePrefillProps) {
                     </div>
                 }
                 <div className='create-badge-btn' onClick={event => {
-                    setShowCreateOption(true)
+                   // setShowCreateOption(true)
+                    gotoCreateBadge('badge')
                 }}>
                     <img src="/images/create_badge_icon.png" alt=""/>
                     <span>{lang['Badgebook_Dialog_Cetate_Badge']}</span>
