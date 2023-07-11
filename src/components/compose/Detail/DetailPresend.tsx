@@ -64,7 +64,7 @@ function DetailPresend (props: DetailPresendProps ) {
 
             setClaimed(claimed)
             setReceivers(receiver)
-            setAcceptableAmount(Math.min(20, receiver.length + props.presend.counter))
+            setAcceptableAmount(Math.min(20, receiver.length + (props.presend.counter || 0)))
         }
 
         getOwnerProfile()
@@ -72,7 +72,7 @@ function DetailPresend (props: DetailPresendProps ) {
     },[])
 
     const loginUserIsSender = user.id === sender?.id
-    const canClaim = props.presend.counter > 0
+    const canClaim = props.presend.counter > 0 || props.presend.counter === null
 
     const handleAccept= async () => {
         const unload = showLoading()
@@ -139,11 +139,16 @@ function DetailPresend (props: DetailPresendProps ) {
                 </DetailDes>
             }
 
-            <DetailReceivers
-                length={ acceptableAmount }
-                placeholder={ true }
-                receivers={ receivers }
-                title={ lang['BadgeDialog_Label_Issuees']} />
+
+            {
+                !!acceptableAmount &&
+                <DetailReceivers
+                    length={ acceptableAmount }
+                    placeholder={ true }
+                    receivers={ receivers }
+                    title={ lang['BadgeDialog_Label_Issuees']} />
+            }
+
 
             <DetailArea
                 title={ lang['BadgeDialog_Label_Token'] }
