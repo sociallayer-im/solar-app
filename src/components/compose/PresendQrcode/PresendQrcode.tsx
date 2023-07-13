@@ -75,7 +75,7 @@ function PresendQrcode(props: PresendQrcodeProp) {
                             <img src={ badge.image_url } alt=""/>
                             <div className='sender-info'>
                                 <div className='badge-name'>{ lang['Presend_Qrcode_Badge'] } { badge.name }</div>
-                                <div className='des'>{ lang['Presend_Qrcode_Des']([sender.username]) }</div>
+                                <div className='des'>{ lang['Presend_Qrcode_Des']([sender.username, lang['Presend_Qrcode_Badge']]) }</div>
                             </div>
                         </div>
                         <div className='card-title'> { lang['Presend_Qrcode_Scan'] } </div>

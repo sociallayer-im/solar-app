@@ -32,7 +32,7 @@ function CreateBadgeWithPrefill(props: CreateBadgeWithPrefillProp) {
            try {
                const badge = await solas.queryBadgeDetail({ id: props.nftPassId })
                setPreFillBadge(badge)
-               setReason(badge.content)
+               setReason(badge.content || '')
            } finally {
                unload()
            }

@@ -134,7 +134,7 @@ export interface Badge {
     image_url: string,
     sender: Profile,
     group?: Group | null,
-    content: string,
+    content: string | null,
     counter: number,
     badge_type: BadgeType,
 }

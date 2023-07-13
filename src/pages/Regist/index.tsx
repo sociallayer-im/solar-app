@@ -18,7 +18,7 @@ function ComponentName () {
 
         // 如果用户已经注册过域名，将会跳转到用户的profile页面
         if (user.domain) {
-            navigate(`/profile/${user.domain}`, { replace: true })
+            navigate(`/profile/${user.domain.split('.')[0]}`, { replace: true })
         }
 
         // 离开页面后用户没完成注册将会自动退出登录
