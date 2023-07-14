@@ -153,7 +153,7 @@ function ProfilePanel(props: ProfilePanelProps) {
                     <img onClick={() => { editAvatar() } } src={ profile.image_url || defaultAvatar(profile.id) } alt=""/>
                 </div>
                 <div className='domain-bar'>
-                    <div className='domain'>{ profile.username }</div>
+                    <div className='domain'>{ profile.nickname || profile.username }</div>
                     { profile.address &&
                         <div className='show-wallet' onClick={ () => { showWallet() } }>
                             <i className='icon icon-wallet'></i>
@@ -174,14 +174,14 @@ function ProfilePanel(props: ProfilePanelProps) {
                     <div><b>{ profile.followers }</b> { lang['Follow_detail_followed'] } </div>
                     <div><b>{ profile.following }</b> { lang['Follow_detail_following'] } </div>
                 </div>
-                { false &&
+                { !!props.profile.location &&
                     <div className='profile-position'>
                         <i className='icon-Outline' />
-                        <span>Beijing</span>
+                        <span>{props.profile.location}</span>
                     </div>
                 }
-                { false &&
-                    <ProfileBio text={ JSON.stringify(props.profile) }/>
+                { !!props.profile.about &&
+                    <ProfileBio text={ props.profile.about }/>
                 }
                 <ProfileSocialMediaList profile={ props.profile }/>
             </div>

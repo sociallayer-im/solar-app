@@ -44,37 +44,30 @@ function ProfileEdit() {
     }, [])
 
     const saveProfile = async () => {
-        console.log(form.current?.profile)
-        const avatar = form.current?.profile.image_url
+        console.log('form.current?.profile)', form.current?.profile)
         let twitter = form.current?.profile.twitter
-        if (twitter) {
-            twitter = twitter.replace('https://twitter.com/', '')
-        }
-
         const unload = showLoading()
+
         try {
-            console.log('profile?.image_url', profile?.image_url)
-            console.log('avatar', avatar)
-            if (avatar && avatar !== profile?.image_url) {
-                const updateAvatar = await solas.updateProfile({
-                    data: {image_url: avatar},
-                    auth_token: user.authToken || ''
-                })
-            }
+            console.log('new Profile', form.current?.profile)
+            //
+            // if (twitter && twitter !== profile?.twitter) {
+            //     const updateTwitter = await solas.verifyTwitter({
+            //         twitter_handle: twitter.replace('https://twitter.com/', '') || '',
+            //         tweet_url: '',
+            //         auth_token: user.authToken || ''
+            //     })
+            // }
 
-            if (twitter && twitter !== profile?.twitter) {
-                const updateTwitter = await solas.verifyTwitter({
-                    twitter_handle: twitter || '',
-                    tweet_url: '',
-                    auth_token: user.authToken || ''
-                })
-            }
-
+            const update = await solas.updateProfile({
+                data: form.current!.profile,
+                auth_token: user.authToken || ''
+            })
 
             showToast('Save Successfully')
             setUser({
-                avatar: avatar,
-                twitter: twitter,
+                avatar: update.image_url,
+                twitter: update.twitter,
             })
             navigate(`/profile/${user.userName}`)
         } catch (e) {

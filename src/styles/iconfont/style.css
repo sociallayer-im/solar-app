@@ -141,5 +141,8 @@
 .icon-web2:before {
   content: "\e924";
 }
+.icon-lens:before {
+  content: "\e925";
+}
 
 

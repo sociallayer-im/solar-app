@@ -26,14 +26,26 @@ export interface Profile {
     group_owner_id: number | null,
     id: number,
     image_url: string | null,
-    twitter: string | null,
     email: string | null,
+
+    twitter: string | null,
+    telegram: string | null,
+    github: string | null,
+    discord: string | null,
+    ens: string | null,
+    lens: string | null,
+    website: string | null,
+    nostr: string | null,
+    location: string | null,
+    about: string | null,
+    nickname: string | null,
+
     username: string | null,
     followers: number,
     following: number,
     is_group: boolean | null,
     badge_count: number,
-    status: 'active' | 'freezed'
+    status: 'active' | 'freezed',
 }
 
 export interface ProfileSimple {

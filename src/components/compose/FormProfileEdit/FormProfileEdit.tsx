@@ -28,7 +28,7 @@ function FormProfileEdit(props: ProfileEditFormProps) {
     const {lang} = useContext(LangContext)
 
     useEffect(() => {
-
+        console.log('newProfile', newProfile)
     }, [])
 
     useImperativeHandle(props.onRef, () => {
@@ -41,6 +41,7 @@ function FormProfileEdit(props: ProfileEditFormProps) {
         console.log(value)
         const profile: any = {...newProfile}
         profile[key] = value
+        console.log('edit', profile)
         setNewProfile(profile)
     }
 
@@ -54,30 +55,29 @@ function FormProfileEdit(props: ProfileEditFormProps) {
                 }}/>
         </div>
 
-        {/*<div className='input-area'>*/}
-        {/*    <div className='input-area-title'>{lang['Profile_Edit_Ncikname']}</div>*/}
-        {/*    <AppInput value={newProfile.username || ''} onChange={(e) => {*/}
-        {/*        update('username', e.target.value)*/}
-        {/*    }}/>*/}
-        {/*</div>*/}
+        <div className='input-area'>
+            <div className='input-area-title'>{lang['Profile_Edit_Ncikname']}</div>
+            <AppInput value={newProfile.nickname || ''} onChange={(e) => {
+                update('nickname', e.target.value.trim())
+            }}/>
+        </div>
 
-        {/*<div className='input-area'>*/}
-        {/*    <div className='input-area-title'>{lang['Profile_Edit_Location']}</div>*/}
-        {/*    <AppInput value={newProfile.username || ''} onChange={(e) => {*/}
-        {/*        update('username', e.target.value)*/}
-        {/*    }}/>*/}
-        {/*</div>*/}
+        <div className='input-area'>
+            <div className='input-area-title'>{lang['Profile_Edit_Location']}</div>
+            <AppInput value={newProfile.location || ''} onChange={(e) => {
+                update('location', e.target.value.trim())
+            }}/>
+        </div>
 
-        {/*<div className='input-area'>*/}
-        {/*    <div className='input-area-title'>{lang['Profile_Edit_Bio']}</div>*/}
-        {/*    <AppTextArea*/}
-        {/*        maxLength={200}*/}
-        {/*        value={newProfile.username || ''}*/}
-        {/*        onChange={(e) => {*/}
-        {/*            update('username', e.target.value)*/}
-        {/*        }}/>*/}
-        {/*</div>*/}
-
+        <div className='input-area'>
+            <div className='input-area-title'>{lang['Profile_Edit_Bio']}</div>
+            <AppTextArea
+                maxLength={200}
+                value={newProfile.about || ''}
+                onChange={(e) => {
+                    update('about', e.target.value.trim())
+                }}/>
+        </div>
         { !props.profile.group_owner_id &&
             <div className='input-area'>
                 <div className='input-area-title'>{lang['Profile_Edit_Social_Media']}</div>
@@ -85,50 +85,74 @@ function FormProfileEdit(props: ProfileEditFormProps) {
                     title={'Twitter'}
                     icon={'icon-twitter'}
                     value={newProfile.twitter || ''}
+                    type={'twitter'}
                     onChange={(value) => {
                         update('twitter', value)
                     }}
                 />
-                {/*<EditSocialMedia*/}
-                {/*    title={'Telegram'}*/}
-                {/*    icon={'icon-tg'}*/}
-                {/*    value={newProfile.twitter || ''}*/}
-                {/*    onChange={(value) => {*/}
-                {/*        update('twitter', value)*/}
-                {/*    }}*/}
-                {/*/>*/}
-                {/*<EditSocialMedia*/}
-                {/*    title={'Github'}*/}
-                {/*    icon={'icon-github'}*/}
-                {/*    value={newProfile.twitter || ''}*/}
-                {/*    onChange={(value) => {*/}
-                {/*        update('twitter', value)*/}
-                {/*    }}*/}
-                {/*/>*/}
-                {/*<EditSocialMedia*/}
-                {/*    title={'Link'}*/}
-                {/*    icon={'icon-web2'}*/}
-                {/*    value={newProfile.twitter || ''}*/}
-                {/*    onChange={(value) => {*/}
-                {/*        update('twitter', value)*/}
-                {/*    }}*/}
-                {/*/>*/}
-                {/*<EditSocialMedia*/}
-                {/*    title={'ENS'}*/}
-                {/*    icon={'icon-ens'}*/}
-                {/*    value={newProfile.twitter || ''}*/}
-                {/*    onChange={(value) => {*/}
-                {/*        update('twitter', value)*/}
-                {/*    }}*/}
-                {/*/>*/}
-                {/*<EditSocialMedia*/}
-                {/*    title={'Discord'}*/}
-                {/*    icon={'icon-discord'}*/}
-                {/*    value={newProfile.twitter || ''}*/}
-                {/*    onChange={(value) => {*/}
-                {/*        update('twitter', value)*/}
-                {/*    }}*/}
-                {/*/>*/}
+                <EditSocialMedia
+                    title={'Telegram'}
+                    icon={'icon-tg'}
+                    value={newProfile.telegram || ''}
+                    type={'telegram'}
+                    onChange={(value) => {
+                        update('telegram', value)
+                    }}
+                />
+                <EditSocialMedia
+                    title={'Github'}
+                    icon={'icon-github'}
+                    type={'github'}
+                    value={newProfile.github || ''}
+                    onChange={(value) => {
+                        update('github', value)
+                    }}
+                />
+                <EditSocialMedia
+                    title={'Discord'}
+                    icon={'icon-discord'}
+                    type={'discord'}
+                    value={newProfile.discord || ''}
+                    onChange={(value) => {
+                        update('discord', value)
+                    }}
+                />
+                <EditSocialMedia
+                    title={'ENS'}
+                    type={'ens'}
+                    icon={'icon-ens'}
+                    value={newProfile.ens || ''}
+                    onChange={(value) => {
+                        update('ens', value)
+                    }}
+                />
+                <EditSocialMedia
+                    title={'Web'}
+                    type={'web'}
+                    icon={'icon-web2'}
+                    value={newProfile.website || ''}
+                    onChange={(value) => {
+                        update('website', value)
+                    }}
+                />
+                <EditSocialMedia
+                    title={'Nostr'}
+                    type={'nostr'}
+                    icon={'icon-web2'}
+                    value={newProfile.nostr || ''}
+                    onChange={(value) => {
+                        update('nostr', value)
+                    }}
+                />
+                <EditSocialMedia
+                    title={'Lens'}
+                    type={'lens'}
+                    icon={'icon-lens'}
+                    value={newProfile.lens || ''}
+                    onChange={(value) => {
+                        update('lens', value)
+                    }}
+                />
             </div>
         }
     </div>)

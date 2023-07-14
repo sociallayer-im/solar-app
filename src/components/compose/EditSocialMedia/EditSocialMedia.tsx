@@ -5,11 +5,13 @@ import DialogsContext from '../../provider/DialogProvider/DialogsContext'
 import {OpenDialogProps} from '../../provider/DialogProvider/DialogProvider'
 import { Delete } from 'baseui/icon'
 import AppButton, {BTN_KIND, BTN_SIZE} from '../../base/AppButton/AppButton'
+import useSocialMedia from "../../../hooks/socialMedia";
 
 export interface EditSocialMediaProps {
     value: string,
     onChange?: (value: string) => any
     preEnhancer?: () => ReactNode | string
+    type?: string
     title: string
     icon: string
 }
@@ -63,6 +65,7 @@ function EditDialog(props: EditDialogProps) {
 function EditSocialMedia(props: EditSocialMediaProps) {
     const {lang} = useContext(langContext)
     const {openDialog} = useContext(DialogsContext)
+    const {url2Id} = useSocialMedia()
 
     useEffect(() => {
 
@@ -90,7 +93,7 @@ function EditSocialMedia(props: EditSocialMediaProps) {
             <MediaTitle title={props.title} icon={props.icon} />
         </div>
         {props.value
-            ? <div className='media-value'>{props.value}</div>
+            ? <div className='media-value'>{url2Id(props.value, props.type || '')}</div>
             : <div className='media-edit-btn'>{lang['Profile_Edit_Social_Media_Edit']}</div>
         }
     </div>)
