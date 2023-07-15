@@ -18,6 +18,7 @@ export interface User {
     wallet: string | null,
     twitter: string | null,
     authToken: string | null,
+    nickname: string | null,
 }
 
 export interface UserContext {
@@ -38,7 +39,8 @@ const emptyUser: User = {
     email: null,
     wallet: null,
     twitter: null,
-    authToken: null
+    authToken: null,
+    nickname: null
 }
 
 function UserProvider (props: UserProviderProps) {
@@ -68,7 +70,8 @@ function UserProvider (props: UserProviderProps) {
                 userName: profileInfo?.domain ? profileInfo?.domain.split('.')[0]: null,
                 email:  profileInfo?.email || null,
                 avatar: profileInfo?.image_url || null,
-                authToken: props.authToken
+                authToken: props.authToken,
+                nickname: profileInfo?.nickname || null
             })
 
             if (!profileInfo || !profileInfo.domain) {

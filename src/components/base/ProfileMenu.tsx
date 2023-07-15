@@ -66,7 +66,7 @@ function ProfileMenu () {
             autoFocus>
             <div className={ css(style.wrapper) }>
                 <img className={ css(style.img) } src={ user.avatar || defaultAvatar(user.id) } alt="" />
-                { user.userName || shortAddress(user.wallet)|| user.email }
+                { user.nickname || user.userName || shortAddress(user.wallet)|| user.email }
             </div>
         </StatefulPopover>
     )

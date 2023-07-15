@@ -131,7 +131,7 @@ function ProfilePage() {
                                 <span className='icon-sendfasong'></span>
                                 {user.id === profile.id
                                     ? lang['Profile_User_MindBadge']
-                                    : lang['Profile_User_IssueBadge'] + profile.username
+                                    : lang['Profile_User_IssueBadge'] + (profile.nickname || profile.username)
                                 }
                             </AppButton>
                         </div>

@@ -397,7 +397,8 @@ export interface Group {
     twitter: string | null
     twitter_proof_url: string | null
     username: string
-    domain: string
+    domain: string,
+    nickname: string,
 }
 
 export interface QueryUserGroupProps {
