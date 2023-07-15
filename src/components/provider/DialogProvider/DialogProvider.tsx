@@ -33,6 +33,7 @@ import DialogNftCheckIn from "../../base/Dialog/DialogNftCheckIn/DialogNftCheckI
 import DetailGift from "../../compose/Detail/DetailGift/DetailGift";
 import DialogGiftCheckIn from "../../base/Dialog/DialogGiftCheckIn/DialogGiftCheckIn";
 import DetailGiftItem from "../../compose/Detail/DetailGiftItem/DetailGiftItem";
+import {useNavigate, useLocation} from "react-router-dom";
 
 export interface DialogProviderProps {
     children: ReactNode
@@ -41,6 +42,8 @@ export interface DialogProviderProps {
 interface Dialog {
     id: number,
     content: () => ReactNode
+    type?: string
+    itemId?: number
 }
 
 export interface OpenDialogProps {
@@ -55,12 +58,27 @@ function genID () {
 
 function DialogProvider (props: DialogProviderProps) {
     const [dialogsGroup, setDialogsGroup] = useState<{dialogs: Dialog[]}>({ dialogs: [] })
+    const [dialogsCount, setDialogsCount] = useState(0)
+    const navigate = useNavigate()
+    const location = useLocation()
 
     useEffect(() => {
         document.body.style.overflow = dialogsGroup.dialogs[0] ? 'hidden' : 'auto'
+        setDialogsCount(dialogsGroup.dialogs.length)
 
         return () => { document.body.style.overflow = 'auto' }
     }, [dialogsGroup])
+
+    const checkDuplicate = (type: string, itemId: number) => {
+        let duplicate = false
+        dialogsGroup.dialogs.forEach((item) => {
+            if (item.type === type && item.itemId === itemId) {
+                duplicate = true
+            }
+        })
+
+        return duplicate
+    }
 
     const closeDialogByID = (dialogID: number) => {
         if (dialogsGroup.dialogs.length) {
@@ -114,30 +132,36 @@ function DialogProvider (props: DialogProviderProps) {
     }
 
     const openConnectWalletDialog = () => {
-        const id = genID()
-        dialogsGroup.dialogs.push({
-            id,
-            content: () => {
-                const close = () => {
-                    closeDialogByID(id)
-                }
+        window.localStorage.setItem('fallback', window.location.href)
+        return setTimeout(() => {
+            clean('go to login')
+            navigate('/login')
+        }, 500)
 
-                const props = {
-                    key: id.toString(),
-                    size: [320, 450],
-                    handleClose: close,
-                    position: 'bottom' as const
-                }
-
-                return (
-                    <Dialog {...props} >
-                        { (close) => <DialogConnectWallet  handleClose={close} />}
-                    </Dialog>
-                )
-            }
-        })
-
-        setDialogsGroup({...dialogsGroup})
+        // const id = genID()
+        // dialogsGroup.dialogs.push({
+        //     id,
+        //     content: () => {
+        //         const close = () => {
+        //             closeDialogByID(id)
+        //         }
+        //
+        //         const props = {
+        //             key: id.toString(),
+        //             size: [320, 450],
+        //             handleClose: close,
+        //             position: 'bottom' as const
+        //         }
+        //
+        //         return (
+        //             <Dialog {...props} >
+        //                 { (close) => <DialogConnectWallet  handleClose={close} />}
+        //             </Dialog>
+        //         )
+        //     }
+        // })
+        //
+        // setDialogsGroup({...dialogsGroup})
     }
 
     const showLoading = () => {
@@ -195,11 +219,11 @@ function DialogProvider (props: DialogProviderProps) {
 
         setDialogsGroup({...dialogsGroup})
         duration = duration || 3000
-            try {
-                timeOut = setTimeout(() => {
-                    closeToast()
-                }, duration)
-            } catch (e) { }
+        try {
+            timeOut = setTimeout(() => {
+                closeToast()
+            }, duration)
+        } catch (e) { }
     }
 
     const openDomainConfirmDialog = (props: DialogConfirmDomainProps) => {
@@ -220,7 +244,7 @@ function DialogProvider (props: DialogProviderProps) {
                 return (
                     <Dialog { ...dialogProps } >
                         { (close) => <DialogDomainConfirm { ...props }
-                                                    onCancel={ ()=> { close(); props.onCancel &&  props.onCancel()} }/> }
+                                                          onCancel={ ()=> { close(); props.onCancel &&  props.onCancel()} }/> }
                     </Dialog>
                 )
             }
@@ -246,7 +270,7 @@ function DialogProvider (props: DialogProviderProps) {
                 return (
                     <Dialog { ...dialogProps } >
                         { (close) => <DialogConfirm { ...props }
-                                                          onCancel={ ()=> { close(); props.onCancel &&  props.onCancel()} }/> }
+                                                    onCancel={ ()=> { close(); props.onCancel &&  props.onCancel()} }/> }
                     </Dialog>
                 )
             }
@@ -255,9 +279,13 @@ function DialogProvider (props: DialogProviderProps) {
     }
 
     const showBadgelet = (props: Badgelet) => {
+        if (checkDuplicate('badgelet', props.id)) return
+
         const id = genID()
         dialogsGroup.dialogs.push({
             id,
+            itemId: props.id,
+            type: 'badgelet',
             content: () => {
                 const close = () => {
                     closeDialogByID(id)
@@ -281,9 +309,13 @@ function DialogProvider (props: DialogProviderProps) {
     }
 
     const showPointItem = (props: PointItem) => {
+        if (checkDuplicate('pointItem', props.id)) return
+
         const id = genID()
         dialogsGroup.dialogs.push({
             id,
+            itemId: props.id,
+            type: 'pointItem',
             content: () => {
                 const close = () => {
                     closeDialogByID(id)
@@ -307,9 +339,13 @@ function DialogProvider (props: DialogProviderProps) {
     }
 
     const showPoint = (props: Point) => {
+        if (checkDuplicate('point', props.id)) return
+
         const id = genID()
         dialogsGroup.dialogs.push({
             id,
+            itemId: props.id,
+            type: 'point',
             content: () => {
                 const close = () => {
                     closeDialogByID(id)
@@ -333,9 +369,13 @@ function DialogProvider (props: DialogProviderProps) {
     }
 
     const showNftpasslet = (props: NftPasslet) => {
+        if (checkDuplicate('point', props.id)) return
+
         const id = genID()
         dialogsGroup.dialogs.push({
             id,
+            itemId: props.id,
+            type: 'nftpasslet',
             content: () => {
                 const close = () => {
                     closeDialogByID(id)
@@ -359,9 +399,12 @@ function DialogProvider (props: DialogProviderProps) {
     }
 
     const showGiftItem = (props: NftPasslet) => {
+        if (checkDuplicate('point', props.id)) return
         const id = genID()
         dialogsGroup.dialogs.push({
             id,
+            itemId: props.id,
+            type: 'giftItem',
             content: () => {
                 const close = () => {
                     closeDialogByID(id)
@@ -385,9 +428,12 @@ function DialogProvider (props: DialogProviderProps) {
     }
 
     const showInvite = (props: Invite) => {
+        if (checkDuplicate('invite', props.id)) return
         const id = genID()
         dialogsGroup.dialogs.push({
             id,
+            itemId: props.id,
+            type: 'invite',
             content: () => {
                 const close = () => {
                     closeDialogByID(id)
@@ -411,9 +457,13 @@ function DialogProvider (props: DialogProviderProps) {
     }
 
     const showPresend = (props: Presend, code?: string) => {
+        if (checkDuplicate('presend', props.id)) return
+
         const id = genID()
         dialogsGroup.dialogs.push({
             id,
+            itemId: props.id,
+            type: 'presend',
             content: () => {
                 const close = () => {
                     closeDialogByID(id)
@@ -437,9 +487,13 @@ function DialogProvider (props: DialogProviderProps) {
     }
 
     const showBadge = (props: Badge) => {
+        if (checkDuplicate('badge', props.id)) return
+
         const id = genID()
         dialogsGroup.dialogs.push({
             id,
+            itemId: props.id,
+            type: 'badge',
             content: () => {
                 const close = () => {
                     closeDialogByID(id)
@@ -463,9 +517,13 @@ function DialogProvider (props: DialogProviderProps) {
     }
 
     const showGift = (props: Badge) => {
+        if (checkDuplicate('gift', props.id)) return
+
         const id = genID()
         dialogsGroup.dialogs.push({
             id,
+            itemId: props.id,
+            type: 'gift',
             content: () => {
                 const close = () => {
                     closeDialogByID(id)
@@ -489,9 +547,13 @@ function DialogProvider (props: DialogProviderProps) {
     }
 
     const showNftpass = (props: NftPass) => {
+        if (checkDuplicate('nftpass', props.id)) return
+
         const id = genID()
         dialogsGroup.dialogs.push({
             id,
+            itemId: props.id,
+            type: 'nftpass',
             content: () => {
                 const close = () => {
                     closeDialogByID(id)
@@ -518,6 +580,8 @@ function DialogProvider (props: DialogProviderProps) {
         const id = genID()
         dialogsGroup.dialogs.push({
             id,
+            itemId: props.id,
+            type: 'avatar',
             content: () => {
                 const close = () => {
                     closeDialogByID(id)
@@ -643,6 +707,7 @@ function DialogProvider (props: DialogProviderProps) {
     }
 
     const contextValue: DialogsContextType = {
+        dialogsCount,
         openConnectWalletDialog,
         showLoading,
         showToast,
@@ -664,7 +729,7 @@ function DialogProvider (props: DialogProviderProps) {
         showNftCheckIn,
         showGift,
         showGiftCheckIn,
-        showGiftItem
+        showGiftItem,
     }
 
     return (

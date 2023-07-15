@@ -29,8 +29,9 @@ function Login () {
             const fallBack = window.localStorage.getItem('fallback')
 
             if (fallBack) {
+                const path = fallBack.replace(window.location.origin, '')
                 window.localStorage.removeItem('fallback')
-                window.location.href = fallBack
+                navigate(path)
             } else {
                 navigate(`/profile/${user.userName}`)
             }
