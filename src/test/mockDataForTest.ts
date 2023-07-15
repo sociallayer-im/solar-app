@@ -11,7 +11,8 @@ export const groups: Group[] = [
         twitter: null,
         twitter_proof_url:null,
         username: 'testgroup1',
-        domain: 'testgroup1.sociallayer.im'
+        domain: 'testgroup1.sociallayer.im',
+        nickname: 'testgroup1',
     }, {
         id: 568,
         group_owner_id: 1,
@@ -22,7 +23,8 @@ export const groups: Group[] = [
         twitter: null,
         twitter_proof_url:null,
         username: 'testgroup2',
-        domain: 'testgroup2.sociallayer.im'
+        domain: 'testgroup2.sociallayer.im',
+        nickname: 'testgroup2',
     }, {
         id: 569,
         group_owner_id: 1,
@@ -33,7 +35,8 @@ export const groups: Group[] = [
         twitter: null,
         twitter_proof_url:null,
         username: 'testgroup3',
-        domain: 'testgroup3.sociallayer.im'
+        domain: 'testgroup3.sociallayer.im',
+        nickname: 'testgroup3',
     }
 ]
 
