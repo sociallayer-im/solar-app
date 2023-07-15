@@ -10,6 +10,7 @@ const emptyUser: User = {
     wallet: null,
     twitter: null,
     authToken: null,
+    nickname: null
 }
 
 const UserContext  = createContext<UserContextType>({
