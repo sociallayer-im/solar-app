@@ -132,36 +132,30 @@ function DialogProvider (props: DialogProviderProps) {
     }
 
     const openConnectWalletDialog = () => {
-        window.localStorage.setItem('fallback', window.location.href)
-        return setTimeout(() => {
-            clean('go to login')
-            navigate('/login')
-        }, 500)
+        const id = genID()
+        dialogsGroup.dialogs.push({
+            id,
+            content: () => {
+                const close = () => {
+                    closeDialogByID(id)
+                }
 
-        // const id = genID()
-        // dialogsGroup.dialogs.push({
-        //     id,
-        //     content: () => {
-        //         const close = () => {
-        //             closeDialogByID(id)
-        //         }
-        //
-        //         const props = {
-        //             key: id.toString(),
-        //             size: [320, 450],
-        //             handleClose: close,
-        //             position: 'bottom' as const
-        //         }
-        //
-        //         return (
-        //             <Dialog {...props} >
-        //                 { (close) => <DialogConnectWallet  handleClose={close} />}
-        //             </Dialog>
-        //         )
-        //     }
-        // })
-        //
-        // setDialogsGroup({...dialogsGroup})
+                const props = {
+                    key: id.toString(),
+                    size: [320, 450],
+                    handleClose: close,
+                    position: 'bottom' as const
+                }
+
+                return (
+                    <Dialog {...props} >
+                        { (close) => <DialogConnectWallet  handleClose={close} />}
+                    </Dialog>
+                )
+            }
+        })
+
+        setDialogsGroup({...dialogsGroup})
     }
 
     const showLoading = () => {
