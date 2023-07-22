@@ -184,7 +184,12 @@ function UserProvider (props: UserProviderProps) {
     // update avatar
     useEffect(() => {
         if (newProfile && newProfile.id === userInfo.id) {
-            setUser({...userInfo, avatar: newProfile.image_url })
+            setUser({...userInfo,
+                domain: newProfile.domain,
+                userName: newProfile.domain ? newProfile.domain.split('.')[0]: null,
+                nickname: newProfile.nickname,
+                avatar: newProfile.image_url
+            })
         }
     }, [newProfile])
 
