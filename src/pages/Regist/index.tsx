@@ -17,16 +17,16 @@ function ComponentName () {
     const location = useLocation()
 
     useEffect(() => {
-
         // 如果用户已经注册过域名，将会跳转到用户的profile页面
-        const fallBack = window.localStorage.getItem('fallback')
-
-        if (user.domain && fallBack) {
-            const path = fallBack.replace(window.location.origin, '')
-            window.localStorage.removeItem('fallback')
-            navigate(path)
-        } else if (user.domain) {
-            navigate(`/profile/${user.userName}`)
+        if (user.domain) {
+            const fallBack = window.localStorage.getItem('fallback')
+            if (fallBack) {
+                const path = fallBack.replace(window.location.origin, '')
+                window.localStorage.removeItem('fallback')
+                navigate(path)
+            } else {
+                navigate(`/profile/${user.userName}`)
+            }
         }
 
     }, [user.domain])
