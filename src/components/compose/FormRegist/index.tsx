@@ -9,8 +9,6 @@ import useVerify from '../../../hooks/verify'
 import DialogsContext from '../../provider/DialogProvider/DialogsContext'
 import UserContext from '../../provider/UserProvider/UserContext'
 import './RegistForm.less'
-import { useNavigate } from 'react-router-dom'
-import useEvent, { EVENT } from '../../../hooks/globalEvent'
 
 export interface RegistFormProps {
     onConfirm: (domain: string) => any
@@ -25,9 +23,7 @@ function RegistForm (props: RegistFormProps) {
     const domainEndEnhancer = import.meta.env.VITE_SOLAS_DOMAIN
     const { verifyDomain } = useVerify()
     const { openDomainConfirmDialog, showLoading, showToast } = useContext(DialogsContext)
-    const { user } = useContext(UserContext)
-    const navigate = useNavigate()
-    const [_, emitUpdate] = useEvent(EVENT.profileUpdate)
+    const { user, setUser } = useContext(UserContext)
 
     const showConfirm = () => {
         if (!domain) return
@@ -35,7 +31,7 @@ function RegistForm (props: RegistFormProps) {
             title: lang['Regist_Dialog_Title'],
             confirmLabel: lang['Regist_Dialog_Create'],
             cancelLabel: lang['Regist_Dialog_ModifyIt'],
-            onConfirm: (close: any) => { close(); createProfile() },
+            onConfirm: async (close: any) => { close(); await createProfile() },
             content: () => <div className='confirm-domain'><span>{domain}{domainEndEnhancer}</span></div>
         }
 
@@ -47,7 +43,7 @@ function RegistForm (props: RegistFormProps) {
         const unload = showLoading()
         setLoading(true)
         try {
-            const newProfile = await solas.regist({
+            const create = await solas.regist({
                 domain: domain + domainEndEnhancer,
                 username: domain,
                 email: user.email || undefined,
@@ -55,20 +51,20 @@ function RegistForm (props: RegistFormProps) {
                 auth_token: user.authToken
             })
 
+            const newProfile = await solas.getProfile({
+                username: domain,
+            })
+
             unload()
-            emitUpdate(newProfile)
+            setUser({
+                domain: newProfile!.domain,
+                userName: newProfile!.username,
+            })
+
+            console.log('------------create profile ------------')
+            console.log('create', create)
             setLoading(false)
             showToast('Create Success')
-
-            const fallBack = window.localStorage.getItem('fallback')
-
-            if (fallBack) {
-                const path = fallBack.replace(window.location.origin, '')
-                window.localStorage.removeItem('fallback')
-                navigate(path)
-            } else {
-                navigate(`/profile/${domain}`)
-            }
         } catch (e: any) {
             unload()
             console.log('[createProfile]: ', e)
@@ -98,7 +94,7 @@ function RegistForm (props: RegistFormProps) {
             placeholder={ lang['Regist_Input_Placeholder'] } />
         <div className={css({ marginTop: '34px' })}>
             <AppButton
-                onClick={ () => { showConfirm() } }
+                onClick={ async () => { await showConfirm() } }
                 kind={ KIND.primary }
                 isLoading={ loading }>
                 { lang['Regist_Confirm'] }

@@ -181,9 +181,9 @@ function UserProvider (props: UserProviderProps) {
         walletLogin()
     }, [data, address])
 
-    // update avatar
+    // update profile from event
     useEffect(() => {
-        if (newProfile && newProfile.id === userInfo.id) {
+        if (newProfile && (newProfile.id === userInfo.id || (!userInfo.domain && userInfo.id))) {
             setUser({...userInfo,
                 domain: newProfile.domain,
                 userName: newProfile.domain ? newProfile.domain.split('.')[0]: null,

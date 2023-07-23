@@ -7,26 +7,28 @@ import DialogsContext from '../../components/provider/DialogProvider/DialogsCont
 import PageBack from '../../components/base/PageBack'
 import UserContext from "../../components/provider/UserProvider/UserContext";
 import {useNavigate} from "react-router-dom";
+import {useLocation} from "react-router-dom";
 
 function ComponentName () {
     const { lang } = useContext(langContext)
     const { clean } = useContext(DialogsContext)
     const { user, logOut } = useContext(UserContext)
     const navigate = useNavigate()
+    const location = useLocation()
 
     useEffect(() => {
 
         // 如果用户已经注册过域名，将会跳转到用户的profile页面
-        if (user.domain) {
-            navigate(`/profile/${user.domain.split('.')[0]}`, { replace: true })
+        const fallBack = window.localStorage.getItem('fallback')
+
+        if (user.domain && fallBack) {
+            const path = fallBack.replace(window.location.origin, '')
+            window.localStorage.removeItem('fallback')
+            navigate(path)
+        } else if (user.domain) {
+            navigate(`/profile/${user.userName}`)
         }
 
-        // 离开页面后用户没完成注册将会自动退出登录
-        return () => {
-            if (user.authToken && !user.domain) {
-                logOut()
-            }
-        }
     }, [user.domain])
 
     useEffect(() => {
@@ -34,6 +36,13 @@ function ComponentName () {
 
 
     }, [])
+
+    // 如果用户已经登录，离开注册域名页面，将会被强制登出
+    useEffect(() => {
+        if (user.authToken && !user.domain && location.pathname !== '/regist') {
+            logOut()
+        }
+    },[location.pathname])
 
     return (
         <Layout>

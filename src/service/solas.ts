@@ -115,7 +115,7 @@ interface SolasRegistProps {
     username: string
 }
 
-export async function regist(props: SolasRegistProps): Promise<Profile> {
+export async function regist(props: SolasRegistProps): Promise<{ result: 'ok'}> {
     checkAuth(props)
     const res = await fetch.post({
         url: `${api}/profile/create`,
@@ -126,7 +126,7 @@ export async function regist(props: SolasRegistProps): Promise<Profile> {
         throw new Error(res.data.message)
     }
 
-    return res.data.profile as Profile
+    return res.data
 }
 
 export interface QueryBadgeProps {
