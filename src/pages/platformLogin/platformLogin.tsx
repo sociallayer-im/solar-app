@@ -33,7 +33,7 @@ function platformLogin() {
         }
 
         if (fallbackUrl && loginType) {
-            window.location.href = fallbackUrl + `?auth=${auth[1]}&account${auth[0]}&logintype=${loginType}`
+            window.location.href = fallbackUrl + `?auth=${auth[1]}&account=${auth[0]}&logintype=${loginType}`
         }
     }, [])
 
