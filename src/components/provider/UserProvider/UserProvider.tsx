@@ -93,6 +93,12 @@ function UserProvider (props: UserProviderProps) {
             // }
 
             solaExtensionLogin.login(profileInfo.id.toString(), profileInfo.domain,props.authToken, profileInfo.image_url || '')
+            // 平台登录
+            const platformLoginFallback = window.localStorage.getItem('platformLoginFallBack')
+            if (platformLoginFallback) {
+                window.localStorage.removeItem('platformLoginFallBack')
+                window.location.href = platformLoginFallback + `?auth=${userInfo.authToken}&account=${userInfo.wallet || userInfo.email}&logintype=${userInfo.wallet ? 'wallet' : 'email'}`
+            }
         } catch (e: any) {
             console.log('[setProfile]: ', e)
             showToast('Login fail', 3000)
@@ -133,13 +139,6 @@ function UserProvider (props: UserProviderProps) {
         console.log('Storage token: ', authToken)
 
         await setProfile({ email, authToken })
-
-        // 平台登录
-        const platformLoginFallback = window.localStorage.getItem('platformLoginFallBack')
-        if (platformLoginFallback) {
-            window.localStorage.removeItem('platformLoginFallBack')
-            window.location.href = platformLoginFallback + `?auth=${authToken}&account=${email}&logintype=email`
-        }
     }
 
     const walletLogin = async () => {
@@ -176,13 +175,6 @@ function UserProvider (props: UserProviderProps) {
 
         console.log('Storage token: ', authToken)
         await setProfile({ address: address, authToken: authToken })
-
-        // 平台登录
-        const platformLoginFallback = window.localStorage.getItem('platformLoginFallBack')
-        if (platformLoginFallback) {
-            window.localStorage.removeItem('platformLoginFallBack')
-            window.location.href = platformLoginFallback + `?auth=${authToken}&account=${address}&logintype=wallet`
-        }
     }
 
     useEffect(() => {
