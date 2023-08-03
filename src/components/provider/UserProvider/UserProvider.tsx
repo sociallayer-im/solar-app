@@ -97,6 +97,7 @@ function UserProvider (props: UserProviderProps) {
 
             // 平台登录
             const platformLoginFallback = getPlantLoginFallBack()
+            alert(platformLoginFallback)
             if (platformLoginFallback) {
                 window.localStorage.removeItem('platformLoginFallBack')
                 window.location.href = platformLoginFallback + `?auth=${props.authToken}&account=${props.address || props.email}&logintype=${props.address ? 'wallet' : 'email'}`
