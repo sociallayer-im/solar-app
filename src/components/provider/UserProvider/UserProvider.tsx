@@ -138,7 +138,7 @@ function UserProvider (props: UserProviderProps) {
         const platformLoginFallback = window.localStorage.getItem('platformLoginFallBack')
         if (platformLoginFallback) {
             window.localStorage.removeItem('platformLoginFallBack')
-            window.location.href = platformLoginFallback + `?auth=${authToken}&account=${email}&logintype='email'`
+            window.location.href = platformLoginFallback + `?auth=${authToken}&account=${email}&logintype=email`
         }
     }
 
@@ -181,7 +181,7 @@ function UserProvider (props: UserProviderProps) {
         const platformLoginFallback = window.localStorage.getItem('platformLoginFallBack')
         if (platformLoginFallback) {
             window.localStorage.removeItem('platformLoginFallBack')
-            window.location.href = platformLoginFallback + `?auth=${authToken}&account=${address}&logintype='wallet'`
+            window.location.href = platformLoginFallback + `?auth=${authToken}&account=${address}&logintype=wallet`
         }
     }
 
