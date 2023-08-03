@@ -37,6 +37,20 @@ export function getAuth (key: string) {
   }
 }
 
+export function getLatestAuth () : null| [string, string] {
+  const authStorage = window.localStorage.getItem('wa') || ''
+  if (!authStorage) {
+    return null
+  }
+
+  try {
+    const jsonStorage: [string, string][] = JSON.parse(authStorage)
+    return jsonStorage[0] || null
+  } catch (e) {
+    return null
+  }
+}
+
 export function getEmailAuth (): {email: string, authToken: string} | null {
   const authStorage = window.localStorage.getItem('wa') || ''
   if (!authStorage) {
@@ -87,3 +101,8 @@ export function getLastLoginType (): LoginType {
   const type = window.localStorage.getItem('lastLoginType')
   return (type || null) as LoginType
 }
+
+export function setPlantLoginFallBack (value: string) {
+  window.localStorage.setItem('platformLoginFallBack', value)
+}
+

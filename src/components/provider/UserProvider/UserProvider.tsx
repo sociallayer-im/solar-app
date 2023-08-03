@@ -51,6 +51,7 @@ function UserProvider (props: UserProviderProps) {
     const { showToast, clean, showLoading } = useContext(DialogsContext)
     const navigate = useNavigate()
     const [newProfile, _] = useEvent(EVENT.profileUpdate)
+    const [, shareLogin] = useEvent(EVENT.solarLogin)
 
     const setUser = (data: Partial<Record<keyof User, any>>) => {
         const copyUserInfo = { ...userInfo , ...data }
@@ -92,7 +93,6 @@ function UserProvider (props: UserProviderProps) {
             //     navigate(`/profile/${profileInfo.username}`)
             // }
 
-            // Float Extension Login
             solaExtensionLogin.login(profileInfo.id.toString(), profileInfo.domain,props.authToken, profileInfo.image_url || '')
         } catch (e: any) {
             console.log('[setProfile]: ', e)
@@ -132,7 +132,16 @@ function UserProvider (props: UserProviderProps) {
         const email = emailAuthInfo.email
         console.log('Login email: ', email)
         console.log('Storage token: ', authToken)
+
         await setProfile({ email, authToken })
+
+        // 平台登录
+        const platformLoginFallback = window.localStorage.getItem('platformLoginFallBack')
+        if (platformLoginFallback) {
+            window.localStorage.removeItem('platformLoginFallBack')
+            window.location.href = platformLoginFallback + `?auth=${authToken}&account${email}&logintype='email'`
+        }
+
     }
 
     const walletLogin = async () => {
@@ -168,8 +177,14 @@ function UserProvider (props: UserProviderProps) {
         }
 
         console.log('Storage token: ', authToken)
-
         await setProfile({ address: address, authToken: authToken })
+
+        // 平台登录
+        const platformLoginFallback = window.localStorage.getItem('platformLoginFallBack')
+        if (platformLoginFallback) {
+            window.localStorage.removeItem('platformLoginFallBack')
+            window.location.href = platformLoginFallback + `?auth=${authToken}&account${address}&logintype='wallet'`
+        }
     }
 
     useEffect(() => {

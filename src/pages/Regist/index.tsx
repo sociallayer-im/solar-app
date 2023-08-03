@@ -20,7 +20,12 @@ function ComponentName () {
         // 如果用户已经注册过域名，将会跳转到用户的profile页面
         if (user.domain) {
             const fallBack = window.localStorage.getItem('fallback')
-            if (fallBack) {
+            const platformLoginFallback = window.localStorage.getItem('platformLoginFallBack')
+            const lastLoginType = window.localStorage.getItem('lastLoginType')
+            if (platformLoginFallback) {
+                window.localStorage.removeItem('platformLoginFallBack')
+                window.location.href = platformLoginFallback + `?auth=${user.authToken}&account${user.wallet || user.email}&logintype=${lastLoginType}`
+            } else if (fallBack) {
                 const path = fallBack.replace(window.location.origin, '')
                 window.localStorage.removeItem('fallback')
                 navigate(path)
