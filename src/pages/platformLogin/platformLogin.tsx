@@ -21,20 +21,19 @@ function platformLogin() {
             return
         }
 
+        setPlantLoginFallBack(fallbackUrl)
         const auth = getLatestAuth()
         const loginType = getLastLoginType()
 
         if (!auth || !loginType) {
-            if (fallbackUrl) {
-                setPlantLoginFallBack(fallbackUrl)
-            }
             openConnectWalletDialog()
             return
         }
 
-        if (fallbackUrl && loginType) {
-            window.location.href = fallbackUrl + `?auth=${auth[1]}&account=${auth[0]}&logintype=${loginType}`
-        }
+        // if (fallbackUrl && loginType) {
+        //     alert('ok')
+        //     window.location.href = fallbackUrl + `?auth=${auth[1]}&account=${auth[0]}&logintype=${loginType}`
+        // }
     }, [])
 
     return (<div className={'platform-login-page'}>

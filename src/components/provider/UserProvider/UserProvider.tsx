@@ -6,6 +6,7 @@ import * as AuthStorage from '../../../utils/authStorage'
 import solas from '../../../service/solas'
 import { useNavigate } from 'react-router-dom'
 import useEvent, {EVENT} from '../../../hooks/globalEvent'
+import {getPlantLoginFallBack} from "../../../utils/authStorage";
 
 import solaExtensionLogin from '../../../service/ExtensionLogin'
 
@@ -74,7 +75,7 @@ function UserProvider (props: UserProviderProps) {
                 nickname: profileInfo?.nickname || null
             })
 
-            if (!profileInfo || !profileInfo.domain) {
+            if (!profileInfo!.domain) {
                 // 如果当前页面是’/login‘说明是邮箱登录，fallback已经在点击邮箱登录按钮的时候设置了:
                 // src/components/dialogs/ConnectWalletDialog/ConnectWalletDialog.tsx  42行
 
@@ -92,12 +93,13 @@ function UserProvider (props: UserProviderProps) {
             //     navigate(`/profile/${profileInfo.username}`)
             // }
 
-            solaExtensionLogin.login(profileInfo.id.toString(), profileInfo.domain,props.authToken, profileInfo.image_url || '')
+            solaExtensionLogin.login(profileInfo!.id.toString(), profileInfo!.domain,props.authToken, profileInfo!.image_url || '')
+
             // 平台登录
-            const platformLoginFallback = window.localStorage.getItem('platformLoginFallBack')
+            const platformLoginFallback = getPlantLoginFallBack()
             if (platformLoginFallback) {
                 window.localStorage.removeItem('platformLoginFallBack')
-                window.location.href = platformLoginFallback + `?auth=${userInfo.authToken}&account=${userInfo.wallet || userInfo.email}&logintype=${userInfo.wallet ? 'wallet' : 'email'}`
+                window.location.href = platformLoginFallback + `?auth=${props.authToken}&account=${props.address || props.email}&logintype=${props.address ? 'wallet' : 'email'}`
             }
         } catch (e: any) {
             console.log('[setProfile]: ', e)
