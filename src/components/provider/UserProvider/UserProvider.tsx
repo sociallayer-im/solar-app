@@ -51,7 +51,6 @@ function UserProvider (props: UserProviderProps) {
     const { showToast, clean, showLoading } = useContext(DialogsContext)
     const navigate = useNavigate()
     const [newProfile, _] = useEvent(EVENT.profileUpdate)
-    const [, shareLogin] = useEvent(EVENT.solarLogin)
 
     const setUser = (data: Partial<Record<keyof User, any>>) => {
         const copyUserInfo = { ...userInfo , ...data }
