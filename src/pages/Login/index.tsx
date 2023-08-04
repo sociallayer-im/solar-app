@@ -42,7 +42,7 @@ function Login () {
         <div className='login-page'>
             <div className='login-page-bg'></div>
             <div className='login-page-wrapper' style={{height: `${heightWithoutNav}px`}}>
-                { !loginEmail ?
+                { loginEmail ?
                     <div className='login-page-content' >
                         <div className='title'>{ lang['Login_Title'] }</div>
                         <div className='des'>{ lang['Login_alert'] }</div>
