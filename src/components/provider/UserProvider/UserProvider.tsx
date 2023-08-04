@@ -6,7 +6,7 @@ import * as AuthStorage from '../../../utils/authStorage'
 import solas from '../../../service/solas'
 import { useNavigate } from 'react-router-dom'
 import useEvent, {EVENT} from '../../../hooks/globalEvent'
-import {getPlantLoginFallBack} from "../../../utils/authStorage";
+import {getPlantLoginFallBack, deleteFallback} from "../../../utils/authStorage";
 
 import solaExtensionLogin from '../../../service/ExtensionLogin'
 
@@ -98,7 +98,7 @@ function UserProvider (props: UserProviderProps) {
             // 平台登录
             const platformLoginFallback = getPlantLoginFallBack()
             if (platformLoginFallback) {
-                window.localStorage.removeItem('platformLoginFallBack')
+                deleteFallback()
                 window.location.href = platformLoginFallback + `?auth=${props.authToken}&account=${props.address || props.email}&logintype=${props.address ? 'wallet' : 'email'}`
             }
         } catch (e: any) {

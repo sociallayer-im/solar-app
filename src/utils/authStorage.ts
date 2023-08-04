@@ -110,6 +110,10 @@ export function getPlantLoginFallBack () {
   return getCookie('platformLoginFallBack')
 }
 
+export function deleteFallback() {
+  document.cookie = 'platformLoginFallBack' + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+}
+
 function getCookie(key: string) {
   const name = key + "=";
   const decodedCookie = decodeURIComponent(document.cookie);

@@ -9,7 +9,7 @@ import useVerify from '../../../hooks/verify'
 import DialogsContext from '../../provider/DialogProvider/DialogsContext'
 import UserContext from '../../provider/UserProvider/UserContext'
 import './RegistForm.less'
-import {getPlantLoginFallBack} from "../../../utils/authStorage";
+import {deleteFallback, getPlantLoginFallBack} from "../../../utils/authStorage";
 
 export interface RegistFormProps {
     onConfirm: (domain: string) => any
@@ -69,7 +69,7 @@ function RegistForm (props: RegistFormProps) {
 
             const platformLoginFallback = getPlantLoginFallBack()
             if (platformLoginFallback) {
-                window.localStorage.removeItem('platformLoginFallBack')
+                deleteFallback()
                 window.location.href = platformLoginFallback + `?auth=${user.authToken}&account=${user.email || user.wallet}&logintype=${user.wallet ? 'wallet' : 'email'}`
             }
         } catch (e: any) {
