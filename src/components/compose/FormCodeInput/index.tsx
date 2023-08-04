@@ -37,7 +37,14 @@ const style = {
         position: 'absolute' as const,
         left: '0',
         top: '0',
-        opacity: 0
+        opacity: '0',
+        background: 'none',
+        outline: 'none',
+        border: '0',
+        caretColor:'rgba(0,0,0,0)',
+        color:'rgba(0,0,0,0)',
+        touchCallout: 'none',
+        '-webkit-touch-callout': 'none'
     }
 }
 
@@ -53,14 +60,31 @@ function CodeInputForm (props: CodeInputFormProps) {
 
     const showCode = (value: string) => {
         if (loading) return
-        if (value.length > codeLength.length) return
-        if (value !== '' && !/^[a-zA-Z0-9]+$/.test(value)) return
+        if (value.length > codeLength.length) {
+            setCode(code)
+            return
+        }
+
+        if (value !== '' && !/^[a-zA-Z0-9]+$/.test(value)) {
+            setCode('')
+            return
+        }
+
         setCode(value.toUpperCase())
     }
 
     useEffect(() => {
-        if (inputRef.current) {
-            inputRef.current.focus()
+        const isIos = () => {
+            const userAgent = navigator.userAgent.toLowerCase()
+            return /iphone|ipad|ipod/.test(userAgent)
+        }
+
+
+        // 如果是iso, 监听软键盘弹出事件，若软键盘弹出，则将页面向上移动
+        if (!isIos()) {
+            if (inputRef.current) {
+                inputRef.current.focus()
+            }
         }
     }, [])
 
@@ -84,6 +108,9 @@ function CodeInputForm (props: CodeInputFormProps) {
                 } finally {
                     setLoading(false)
                     unload()
+                    if (inputRef.current) {
+                        inputRef.current.focus()
+                    }
                 }
             }
         }
@@ -93,18 +120,27 @@ function CodeInputForm (props: CodeInputFormProps) {
     return <>
         <div className={css(style.wrapper)}>
             <input
+                pattern="[0-9]*"
+                onFocus={e => {
+                   setTimeout(() => {
+                       e.target.selectionStart = 100; // Set cursor to the end of the input text
+                       e.target.selectionEnd = 100; // Set cursor to the end of the input text
+                       window.scrollTo(0, 90)
+                   },300)
+                }}
                 ref={ inputRef }
                 value={code}
                 className={css(style.input)}
                 onChange={(e) => { showCode(e.target.value) } }
-                type="text" />
+                type="number" />
             {
                 codeLength.map((item, index) => {
                     return <input
                         readOnly
                         value={ code[index] || '' }
                         key={ index.toString() }
-                        className={css(code.length === index ? {...style.codeInput, borderColor: '#00b879' } : style.codeInput)} />
+                        className={css((code.length === index  || (code.length===5 && index ===4))?
+                            {...style.codeInput, borderColor: '#00b879', borderWidth: '2px' } : style.codeInput)} />
                 })
             }
         </div>

@@ -42,14 +42,14 @@ function Login () {
         <div className='login-page'>
             <div className='login-page-bg'></div>
             <div className='login-page-wrapper' style={{height: `${heightWithoutNav}px`}}>
-                { !loginEmail ?
+                { loginEmail ?
                     <div className='login-page-content' >
                         <div className='title'>{ lang['Login_Title'] }</div>
                         <div className='des'>{ lang['Login_alert'] }</div>
                         <EmailLoginForm onConfirm={(email) => { setLoginEmail(email)} } />
                     </div>
                     :
-                    <div className='login-page-content' >
+                    <div className='login-page-content code' >
                         <div className='title'>{ lang['Login_input_Code_title'] }</div>
                         <div className='des'>{ lang['Login_input_Code_des']([loginEmail]) }</div>
                         <CodeInputForm loginEmail={ loginEmail } onConfirm={(loginRes) => { setEmailAuth(loginRes) } } />
