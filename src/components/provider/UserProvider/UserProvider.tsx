@@ -102,7 +102,7 @@ function UserProvider (props: UserProviderProps) {
                 window.location.href = platformLoginFallback + `?auth=${props.authToken}&account=${props.address || props.email}&logintype=${props.address ? 'wallet' : 'email'}`
             }
         } catch (e: any) {
-            console.log('[setProfile]: ', e)
+            console.error('[setProfile]: ', e)
             showToast('Login fail', 3000)
             logOut()
         }
@@ -166,7 +166,7 @@ function UserProvider (props: UserProviderProps) {
                 authToken = await solas.login(data)
                 console.log('New token: ', authToken)
             } catch (e) {
-                console.log(e)
+                console.error(e)
                 showToast('Login fail', 3000)
                 logOut()
                 return
