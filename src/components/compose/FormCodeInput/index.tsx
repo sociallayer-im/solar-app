@@ -123,8 +123,10 @@ function CodeInputForm (props: CodeInputFormProps) {
                 pattern="[0-9]*"
                 onFocus={e => {
                    setTimeout(() => {
-                       e.target.selectionStart = 100; // Set cursor to the end of the input text
-                       e.target.selectionEnd = 100; // Set cursor to the end of the input text
+                       try {
+                           e.target.selectionStart = 100; // Set cursor to the end of the input text
+                           e.target.selectionEnd = 100; // Set cursor to the end of the input text
+                       } catch (e) {return 0}
                        window.scrollTo(0, 90)
                    },300)
                 }}
