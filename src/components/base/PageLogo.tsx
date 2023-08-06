@@ -37,7 +37,7 @@ function PageLogo () {
     return (<Logo>
         <Link to={'/'}><img className={css(imgStyle)} src="/images/logo.svg" alt=""/></Link>
         <div className={css(splitStyle)}></div>
-        <a href="https://app.sola.day" style={{height: '20px'}}>
+        <a href="https://event.sola.day" style={{height: '20px'}}>
             <svg width="47" height="20" viewBox="0 0 47 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <mask id="path-1-inside-1_1400_23700" fill="white">
                     <path fillRule="evenodd" clipRule="evenodd" d="M17 17.1414C15.1963 18.9097 12.7255 20 10 20C4.47715 20 0 15.5228 0 10C0 4.47715 4.47715 0 10 0C12.7255 0 15.1963 1.09032 17 2.85857C18.8038 1.09032 21.2745 0 24 0C26.4815 0 28.752 0.903899 30.5 2.40041C32.248 0.903899 34.5185 0 37 0C42.5228 0 47 4.47715 47 10C47 15.5228 42.5228 20 37 20C34.5185 20 32.248 19.0961 30.5 17.5996C28.752 19.0961 26.4815 20 24 20C21.2745 20 18.8038 18.9097 17 17.1414Z"/>
