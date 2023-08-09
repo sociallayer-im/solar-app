@@ -33,7 +33,7 @@ export default function usePicture () {
 
     const selectImage = async (confirm: (imageUrl: string) => any) => {
         try {
-            const file = await chooseFile({ accepts: ['image/png', 'image/jpeg']})
+            const file = await chooseFile({ accepts: ['image/png', 'image/jpeg', 'image/webp', 'image/svg+xml']})
             const reader = new FileReader()
             reader.readAsDataURL(file[0])
             reader.onload = async (file)=> {
