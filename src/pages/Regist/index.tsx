@@ -45,17 +45,19 @@ function ComponentName () {
 
     // 如果用户已经登录，离开注册域名页面，将会被强制登出
     useEffect(() => {
-        if (user.authToken && !user.domain && location.pathname !== '/regist') {
-            logOut()
-        }
-    },[location.pathname])
+       return () => {
+           if (user.authToken && !user.domain) {
+               logOut()
+           }
+       }
+    },[])
 
     return (
         <Layout>
             <div className='regist-page'>
                 <div className='regist-page-bg'></div>
                 <div className='regist-page-wrapper'>
-                    <div className='regist-page-back'><PageBack /></div>
+                    <div className='regist-page-back'></div>
                     <div className='regist-page-content' >
                         <div className='title'>{ lang['Regist_Title'] }</div>
                         <div className='des' dangerouslySetInnerHTML={ { __html: lang['Domain_Rule'] } }></div>
