@@ -26,7 +26,7 @@ function ComponentName () {
             if (platformLoginFallback) {
                 deleteFallback()
                 window.location.href = platformLoginFallback + `?auth=${user.authToken}&account${user.wallet || user.email}&logintype=${lastLoginType}`
-            } else if (fallBack) {
+            } else if (fallBack && fallBack !== window.location.href) {
                 const path = fallBack.replace(window.location.origin, '')
                 window.localStorage.removeItem('fallback')
                 navigate(path)
@@ -44,13 +44,13 @@ function ComponentName () {
     }, [])
 
     // 如果用户已经登录，离开注册域名页面，将会被强制登出
-    useEffect(() => {
-       return () => {
-           if (user.authToken && !user.domain) {
-               logOut()
-           }
-       }
-    },[])
+    // useEffect(() => {
+    //     return () => {
+    //         if (user.authToken && !user.domain) {
+    //             logOut()
+    //         }
+    //     }
+    // },[location.pathname, user])
 
     return (
         <Layout>
