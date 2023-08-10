@@ -66,13 +66,14 @@ function PageBack(props: PageBackProp) {
     // 如果history长度为1，且history[0]包含当前页面的path，就隐藏返回按钮
     useEffect(() => {
         const path = location.pathname
-        const ifHidden = !history.length
+        const ifHidden = (
+            !history.length
             || (history.length === 2
                 && history[0] === '/'
                 && history[1].includes('/profile/')
-            || (history.length === 1
-                && history[0].includes(path))
-        )
+                || (history.length === 1
+                    && history[0].includes(path)))
+        ) && !props.onClose
         setHideBackBtn(ifHidden)
     }, [history.length])
 

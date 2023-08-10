@@ -9,6 +9,7 @@ import UserContext from '../../components/provider/UserProvider/UserContext'
 import { setAuth } from '../../utils/authStorage'
 import { useNavigate } from 'react-router-dom'
 import usePageHeight from '../../hooks/pageHeight'
+import PageBack from "../../components/base/PageBack";
 
 function Login () {
     const { lang } = useContext(LangContext)
@@ -40,6 +41,7 @@ function Login () {
 
     return <Layout>
         <div className='login-page'>
+            <div className={'login-page-back'}><PageBack onClose={() => {navigate('/')}} /></div>
             <div className='login-page-bg'></div>
             <div className='login-page-wrapper' style={{height: `${heightWithoutNav}px`}}>
                 { !loginEmail ?

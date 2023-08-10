@@ -57,7 +57,7 @@ function ComponentName () {
             <div className='regist-page'>
                 <div className='regist-page-bg'></div>
                 <div className='regist-page-wrapper'>
-                    <div className='regist-page-back'></div>
+                    <div className='regist-page-back'><PageBack onClose={() => { logOut();navigate('/')}} /></div>
                     <div className='regist-page-content' >
                         <div className='title'>{ lang['Regist_Title'] }</div>
                         <div className='des' dangerouslySetInnerHTML={ { __html: lang['Domain_Rule'] } }></div>
