@@ -68,6 +68,7 @@ function ProfileEdit() {
             setUser({
                 avatar: update.image_url,
                 twitter: update.twitter,
+                nickname: update.nickname,
             })
             navigate(`/profile/${user.userName}`)
         } catch (e) {
