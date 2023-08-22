@@ -100,6 +100,8 @@ function CardBadgelet(props: CardBadgeletProps) {
         }
     }
 
+    const metadata = props.badgelet.metadata ? JSON.parse(props.badgelet.metadata) : null
+
     return (<div data-testid='CardBadgelet' className={css(style.wrapper)} onClick={() => {
         showDialog()
     }}>
@@ -114,10 +116,10 @@ function CardBadgelet(props: CardBadgeletProps) {
                 </>
                 : <>
                     <div className={css(style.coverBg)}>
-                        <img className={css(style.img)} src={props.badgelet.badge.image_url} alt=""/>
+                        <img className={css(style.img)} src={metadata?.image || props.badgelet.badge.image_url} alt=""/>
                     </div>
                     {props.badgelet.hide && <div className={css(style.hideMark)}><i className='icon-lock'></i></div>}
-                    <div className={css(style.name)}>{props.badgelet.badge.name}</div>
+                    <div className={css(style.name)}>{metadata?.name || props.badgelet.badge.name}</div>
                     {isOwner && props.badgelet.status === 'pending' &&
                         <div className={css(style.pendingMark)}>Pending</div>}
                 </>
