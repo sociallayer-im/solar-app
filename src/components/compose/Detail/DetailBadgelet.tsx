@@ -115,6 +115,9 @@ function DetailBadgelet(props: DetailBadgeletProps) {
     </>
 
     const swiperMaxHeight = window.innerHeight - 320
+
+    const metadata = badgelet.metadata ? JSON.parse(badgelet.metadata) : null
+
     return (
         <DetailWrapper>
             <DetailHeader
@@ -157,8 +160,8 @@ function DetailBadgelet(props: DetailBadgeletProps) {
                     </DetailScrollBox>
                 </>
                 : <>
-                    <DetailCover src={badgelet.badge.image_url}></DetailCover>
-                    <DetailName> {badgelet.badge.name} </DetailName>
+                    <DetailCover src={metadata?.image || badgelet.badge.image_url}></DetailCover>
+                    <DetailName> {metadata?.name || badgelet.badge.name} </DetailName>
                     <DetailCreator isGroup={!!badgelet.badge.group} profile={badgelet.badge.group || badgelet.sender}/>
                     <DetailScrollBox style={{maxHeight: swiperMaxHeight - 60 + 'px', marginLeft: 0}}>
                         {
