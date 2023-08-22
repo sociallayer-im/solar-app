@@ -46,6 +46,7 @@ export interface Profile {
     is_group: boolean | null,
     badge_count: number,
     status: 'active' | 'freezed',
+    permissions: string[],
 }
 
 export interface ProfileSimple {

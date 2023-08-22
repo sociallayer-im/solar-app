@@ -44,7 +44,7 @@ const langCN: LangConfig = {
   Profile_User_IssueBadge: '发送徽章給 ',
   Profile_User_Qrcode_download: '保存到相册',
   Profile_Tab_Received: '徽章',
-  Profile_Tab_Point: '点数',
+  Profile_Tab_Point: '积分',
   Profile_Tab_NFTPASS: 'NFT Pass',
   Profile_Tab_Basic: '基础徽章',
   Profile_Tab_Minted: '已创建',
@@ -294,7 +294,7 @@ const langCN: LangConfig = {
   Badgebook_Dialog_Cetate_Badge: '创建新的徽章',
   Badgebook_Dialog_Recognition_Badge: '基础徽章',
   Badgebook_Dialog_Recognition_Des: '基础徽章, 用于对他人的评价',
-  Badgebook_Dialog_Points: '点数',
+  Badgebook_Dialog_Points: '积分',
   Badgebook_Dialog_Points_Des: '创建组织积分系统',
   Badgebook_Dialog_Privacy: '私密徽章',
   Badgebook_Dialog_Privacy_Des: '私密徽章，只有接收者自己可见',
@@ -358,7 +358,7 @@ const langCN: LangConfig = {
   Group_Member_Manage_Dialog_Confirm_Dialog_Confirm: '移除',
   Group_Member_Manage_Dialog_Confirm_Dialog_Cancel: '取消',
 
-  Create_Point_Title: '创建点数',
+  Create_Point_Title: '创建积分',
   Create_Point_Symbol: '符号',
   Create_Point_Image: '图片',
   Create_Point_Name: '名称',
@@ -388,12 +388,12 @@ const langCN: LangConfig = {
   NFT_Detail_Expiration: '有效期',
   NFT_Detail_Unavailable: '不在有效期内',
 
-  Point_Detail_Title: '点数详情',
+  Point_Detail_Title: '积分详情',
 
   Create_Point_success: '创建成功',
-  Create_Point_success_des: '你的点数已经创建',
-  Issue_Point_Title: '发送点数',
-  Issue_Point_Point: '点数',
+  Create_Point_success_des: '你的积分已经创建',
+  Issue_Point_Title: '发送积分',
+  Issue_Point_Point: '积分',
 
   Dialog_Check_In_Title: '签到',
 

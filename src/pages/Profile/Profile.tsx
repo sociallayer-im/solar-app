@@ -157,12 +157,18 @@ function ProfilePage() {
                                     <Tab title={lang['Profile_Tab_Basic']}>
                                         <ListUserRecognition profile={profile}/>
                                     </Tab>
-                                    {/*<Tab title={lang['Profile_Tab_NFTPASS']}>*/}
-                                    {/*    <ListUserNftpass profile={profile}/>*/}
-                                    {/*</Tab>*/}
-                                    {/*<Tab title={lang['Badgebook_Dialog_Gift']}>*/}
-                                    {/*    <ListUserGift profile={profile}/>*/}
-                                    {/*</Tab>*/}
+                                    {
+                                        !!profile?.permissions.includes('nftpass') ?
+                                        <Tab title={lang['Profile_Tab_NFTPASS']}>
+                                            <ListUserNftpass profile={profile}/>
+                                        </Tab> : <></>
+                                    }
+                                    {
+                                        !!profile?.permissions.includes('gift') ?
+                                            <Tab title={lang['Badgebook_Dialog_Gift']}>
+                                                <ListUserGift profile={profile}/>
+                                            </Tab> : <></>
+                                    }
                                 </AppSubTabs>
                             </Tab>
                             {user.id === profile.id ?
@@ -174,9 +180,13 @@ function ProfilePage() {
                             <Tab title={lang['Profile_Tab_Groups']}>
                                 <ListUserGroup profile={profile}/>
                             </Tab>
-                            {/*<Tab title={lang['Profile_Tab_Point']}>*/}
-                            {/*    <ListUserPoint profile={profile}/>*/}
-                            {/*</Tab>*/}
+                            {
+                                !!profile?.permissions.includes('gift') ?
+                                    <Tab title={lang['Profile_Tab_Point']}>
+                                        <ListUserPoint profile={profile}/>
+                                    </Tab> : <></>
+                            }
+
                         </Tabs>
                     </div>
                     <div className='profile-user-name' style={{display: 'none'}}>{profile.username}</div>

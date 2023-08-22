@@ -20,6 +20,8 @@ import ListUserPresend from "../../components/compose/ListUserPresend";
 import ListUserNftpass from "../../components/compose/ListUserNftpass/ListUserNftpass";
 import AppSubTabs from "../../components/base/AppSubTabs";
 import ListGroupInvite from "../../components/compose/ListGroupInvite";
+import ListUserGift from "../../components/compose/ListUserGift/ListUserGift";
+import ListUserPoint from "../../components/compose/ListUserPoint/ListUserPoint";
 
 
 function GroupPage() {
@@ -146,9 +148,18 @@ function GroupPage() {
                                     <Tab title={lang['Profile_Tab_Basic']}>
                                         <ListUserRecognition profile={profile}/>
                                     </Tab>
-                                    {/*<Tab title={lang['Profile_Tab_NFTPASS']}>*/}
-                                    {/*    <ListUserNftpass profile={profile}/>*/}
-                                    {/*</Tab>*/}
+                                    {
+                                        !!profile?.permissions.includes('nftpass') ?
+                                            <Tab title={lang['Profile_Tab_NFTPASS']}>
+                                                <ListUserNftpass profile={profile}/>
+                                            </Tab> : <></>
+                                    }
+                                    {
+                                        !!profile?.permissions.includes('gift') ?
+                                            <Tab title={lang['Badgebook_Dialog_Gift']}>
+                                                <ListUserGift profile={profile}/>
+                                            </Tab> : <></>
+                                    }
                                     {profile.group_owner_id === user.id ?
                                         <Tab title={lang['Group_detail_tabs_Invite']}>
                                             <ListGroupInvite group={profile}/>
@@ -162,6 +173,12 @@ function GroupPage() {
                                     <ListUserPresend profile={profile}/>
                                 </Tab>
                                 : <></>
+                            }
+                            {
+                                !!profile?.permissions.includes('gift') ?
+                                    <Tab title={lang['Profile_Tab_Point']}>
+                                        <ListUserPoint profile={profile}/>
+                                    </Tab> : <></>
                             }
                             <Tab title={lang['Group_detail_tabs_member']}>
                                 <ListGroupMember group={profile}/>
