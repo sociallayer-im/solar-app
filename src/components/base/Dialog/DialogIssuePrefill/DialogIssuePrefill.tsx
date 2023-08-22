@@ -4,6 +4,7 @@ import AppSwiper from '../../AppSwiper/AppSwiper'
 import {Delete} from 'baseui/icon'
 import LangContext from '../../../provider/LangProvider/LangContext'
 import {Badge} from '../../../../service/solas'
+import userContext from "../../../provider/UserProvider/UserContext";
 
 export type CreateType = 'badge' | 'point' | 'nftpass' | 'private' | 'gift'
 
@@ -24,6 +25,7 @@ interface DialogIssuePrefillProps {
 function DialogIssuePrefill(props: DialogIssuePrefillProps) {
     const [showCreateOption, setShowCreateOption] = useState(false)
     const {lang} = useContext(LangContext)
+    const {user} = useContext(userContext)
 
     const gotoCreateBadge = (type: CreateType) => {
         !!props.onSelect && props.onSelect({type})
@@ -59,42 +61,55 @@ function DialogIssuePrefill(props: DialogIssuePrefillProps) {
                         <div className={'des'}>{lang['Badgebook_Dialog_Recognition_Des']}</div>
                     </div>
                 </div>
-                <div className='create-badge-btn' onClick={e => {
-                    gotoCreateBadge('nftpass')
-                }}>
-                    <img src="/images/badge_type/nftpass.png" alt=""/>
-                    <div>
-                        <div>{lang['Badgebook_Dialog_NFT_Pass']} <span className={'new-mark'}>NEW</span></div>
-                        <div className={'des'}>{lang['Badgebook_Dialog_NFT_Pass_Des']}</div>
+                {
+                    !!user?.id && user?.permissions.includes('nftpass') &&
+                    <div className='create-badge-btn' onClick={e => {
+                        gotoCreateBadge('nftpass')
+                    }}>
+                        <img src="/images/badge_type/nftpass.png" alt=""/>
+                        <div>
+                            <div>{lang['Badgebook_Dialog_NFT_Pass']} <span className={'new-mark'}>NEW</span></div>
+                            <div className={'des'}>{lang['Badgebook_Dialog_NFT_Pass_Des']}</div>
+                        </div>
                     </div>
-                </div>
-                <div className='create-badge-btn' onClick={e => {
-                    gotoCreateBadge('point')
-                }}>
-                    <img src="/images/badge_type/point.png" alt=""/>
-                    <div>
-                        <div>{lang['Badgebook_Dialog_Points']} <span className={'new-mark'}>NEW</span></div>
-                        <div className={'des'}>{lang['Badgebook_Dialog_Points_Des']}</div>
+                }
+                {
+                    !!user?.id && user?.permissions.includes('point') &&
+                    <div className='create-badge-btn' onClick={e => {
+                        gotoCreateBadge('point')
+                    }}>
+                        <img src="/images/badge_type/point.png" alt=""/>
+                        <div>
+                            <div>{lang['Badgebook_Dialog_Points']} <span className={'new-mark'}>NEW</span></div>
+                            <div className={'des'}>{lang['Badgebook_Dialog_Points_Des']}</div>
+                        </div>
                     </div>
-                </div>
-                <div className='create-badge-btn' onClick={e => {
-                    gotoCreateBadge('private')
-                }}>
-                    <img src="/images/badge_type/private.png" alt=""/>
-                    <div>
-                        <div>{lang['Badgebook_Dialog_Privacy']} <span className={'new-mark'}>NEW</span></div>
-                        <div className={'des'}>{lang['Badgebook_Dialog_Privacy_Des']}</div>
+                }
+                {
+                    !!user?.id && user?.permissions.includes('private') &&
+                    <div className='create-badge-btn' onClick={e => {
+                        gotoCreateBadge('private')
+                    }}>
+                        <img src="/images/badge_type/private.png" alt=""/>
+                        <div>
+                            <div>{lang['Badgebook_Dialog_Privacy']} <span className={'new-mark'}>NEW</span></div>
+                            <div className={'des'}>{lang['Badgebook_Dialog_Privacy_Des']}</div>
+                        </div>
                     </div>
-                </div>
-                <div className='create-badge-btn' onClick={e => {
-                    gotoCreateBadge('gift')
-                }}>
-                    <img src="/images/badge_type/gift.png" alt=""/>
-                    <div>
-                        <div>{lang['Badgebook_Dialog_Gift']} <span className={'new-mark'}>NEW</span></div>
-                        <div className={'des'}>{lang['Badgebook_Dialog_Gift_Des']}</div>
+                }
+
+                {
+                    !!user?.id && user?.permissions.includes('gift') &&
+                    <div className='create-badge-btn' onClick={e => {
+                        gotoCreateBadge('gift')
+                    }}>
+                        <img src="/images/badge_type/gift.png" alt=""/>
+                        <div>
+                            <div>{lang['Badgebook_Dialog_Gift']} <span className={'new-mark'}>NEW</span></div>
+                            <div className={'des'}>{lang['Badgebook_Dialog_Gift_Des']}</div>
+                        </div>
                     </div>
-                </div>
+                }
             </>
             : <>
                 { props.badges.length > 0 &&
@@ -106,8 +121,11 @@ function DialogIssuePrefill(props: DialogIssuePrefillProps) {
                     </div>
                 }
                 <div className='create-badge-btn' onClick={event => {
-                   // setShowCreateOption(true)
-                    gotoCreateBadge('badge')
+                    if (user.id && user.permissions.length > 0) {
+                        setShowCreateOption(true)
+                    } else {
+                        gotoCreateBadge('badge')
+                    }
                 }}>
                     <img src="/images/create_badge_icon.png" alt=""/>
                     <span>{lang['Badgebook_Dialog_Cetate_Badge']}</span>

@@ -20,6 +20,7 @@ export interface User {
     twitter: string | null,
     authToken: string | null,
     nickname: string | null,
+    permissions: string[],
 }
 
 export interface UserContext {
@@ -41,7 +42,8 @@ const emptyUser: User = {
     wallet: null,
     twitter: null,
     authToken: null,
-    nickname: null
+    nickname: null,
+    permissions: [],
 }
 
 function UserProvider (props: UserProviderProps) {
@@ -72,7 +74,8 @@ function UserProvider (props: UserProviderProps) {
                 email:  profileInfo?.email || null,
                 avatar: profileInfo?.image_url || null,
                 authToken: props.authToken,
-                nickname: profileInfo?.nickname || null
+                nickname: profileInfo?.nickname || null,
+                permissions: profileInfo?.permissions || [],
             })
 
             if (!profileInfo!.domain) {
