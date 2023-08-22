@@ -149,7 +149,7 @@ export interface Badge {
     content: string | null,
     counter: number,
     badge_type: BadgeType,
-    unlocking: null | string
+    unlocking?: null | string
 }
 
 export type NftPass = Badge
@@ -314,7 +314,7 @@ export interface Badgelet {
     expires_at?: null | string,
     value?: null | number,
     last_consumed_at: null | string,
-    metadata: string | null
+    metadata?: string | null
 }
 
 export async function queryAllTypeBadgelet(props: QueryBadgeletProps): Promise<Badgelet[]> {
