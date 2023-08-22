@@ -179,6 +179,8 @@ function DetailNftpasslet(props: DetailNftpassletProps) {
 
     const checkAvailable = () => {
         const now = new Date().getTime()
+        if (!nftpasslet.starts_at && !nftpasslet.expires_at) return true
+
         const start = nftpasslet.starts_at ? new Date(nftpasslet.starts_at).getTime() : null
         const end = nftpasslet.expires_at ? new Date(nftpasslet.expires_at).getTime() : null
         return !start || now >= start && (!end || now <= end)

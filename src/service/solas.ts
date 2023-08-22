@@ -305,7 +305,7 @@ export interface Badgelet {
     owner: ProfileSimple,
     receiver: ProfileSimple,
     sender: ProfileSimple,
-    status: 'accepted' | 'pending' | 'new' | 'rejected',
+    status: 'accepted' | 'pending' | 'new' | 'rejected' | 'burnt',
     token_id: string | null,
     badge: Badge,
     chain_data: string | null
@@ -386,7 +386,7 @@ export async function queryNftPasslet(props: QueryBadgeletProps): Promise<NftPas
     const list: NftPasslet[] = res.data.badgelets
 
     return list.filter(item => {
-        return item.status !== 'rejected'
+        return item.status !== 'rejected' && item.status !== 'burnt'
     })
 }
 
