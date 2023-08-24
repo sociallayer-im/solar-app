@@ -75,10 +75,10 @@ function FormProfileEdit(props: ProfileEditFormProps) {
                 maxLength={200}
                 value={newProfile.about || ''}
                 onChange={(e) => {
-                    update('about', e.target.value.trim())
+                    update('about', e.target.value)
                 }}/>
         </div>
-        { !props.profile.group_owner_id &&
+        { true &&
             <div className='input-area'>
                 <div className='input-area-title'>{lang['Profile_Edit_Social_Media']}</div>
                 <EditSocialMedia

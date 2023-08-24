@@ -1083,11 +1083,11 @@ export interface UpdateGroupProps {
     auth_token: string
 }
 
-export async function updateGroup(props: UpdateGroupProps) {
+export async function updateGroup(props: { data: Partial<Profile>, auth_token: string }) {
     checkAuth(props)
     const res = await fetch.post({
         url: `${api}/group/update`,
-        data: props
+        data: {...props.data, auth_token: props.auth_token}
     })
 
     if (res.data.result === 'error') {

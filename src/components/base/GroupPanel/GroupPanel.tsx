@@ -136,7 +136,7 @@ function GroupPanel(props: GroupPanelProps) {
                     <img src={ group.image_url || defaultAvatar(group.id) } alt=""/>
                 </div>
                 <div className='domain-bar'>
-                    <div className='domain'>{ group.username }</div>
+                    <div className='domain'>{ group.nickname || group.username }</div>
                     <img src="/images/group_label.png" alt=""/>
                     {
                         <div className='qrcode-btn' onClick={showProfileQRcode}>
@@ -148,8 +148,10 @@ function GroupPanel(props: GroupPanelProps) {
                     <div><b>{ group.followers }</b> { lang['Follow_detail_followed'] } </div>
                     {/*<div> { lang['Group_detail_Join_Time'] } <b>{ group.following }</b></div>*/}
                 </div>
-                { false && <ProfileBio text={ JSON.stringify(props.group) } />}
-                { false && <ProfileSocialMediaList profile={props.group}/> }
+                { !!group.about &&
+                    <ProfileBio text={ group.about }/>
+                }
+                <ProfileSocialMediaList profile={ group }/>
             </div>
             <div className='right-size'>
                 {

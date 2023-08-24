@@ -45,34 +45,18 @@ function GroupEdit() {
 
     const saveProfile = async () => {
         console.log(form.current?.profile)
-        const avatar = form.current?.profile.image_url
-        let twitter = form.current?.profile.twitter
-        if (twitter) {
-            twitter = twitter.replace('https://twitter.com/', '')
-        }
-
         const unload = showLoading()
         try {
-            if (avatar && avatar !== profile?.image_url) {
-                const updateAvatar = await solas.updateGroup({
-                    image_url: avatar,
-                    id: profile?.id!,
-                    auth_token: user.authToken || ''
-                })
-            }
-
-            if (twitter && twitter !== profile?.twitter) {
-                const updateTwitter = await solas.verifyTwitter({
-                    twitter_handle: twitter || '',
-                    tweet_url: '',
-                    auth_token: user.authToken || ''
-                })
-            }
+            const update = await solas.updateGroup({
+                data: form.current!.profile,
+                auth_token: user.authToken || ''
+            })
 
 
             showToast('Save Successfully')
             navigate(`/group/${profile?.username}`)
         } catch (e) {
+            showToast('Save Failed')
             console.error('[saveProfile]: ', e)
         } finally {
             unload()
