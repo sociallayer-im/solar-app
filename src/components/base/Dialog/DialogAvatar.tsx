@@ -1,6 +1,6 @@
 import {useStyletron} from 'baseui'
 import {useContext, useState} from 'react'
-import solas, {Profile, updateGroup} from '../../../service/solas'
+import solas, {Profile} from '../../../service/solas'
 import usePicture from '../../../hooks/pictrue'
 import {Delete} from 'baseui/icon'
 import langContext from '../../provider/LangProvider/LangContext'
@@ -60,12 +60,12 @@ export interface DialogAvatarProps {
     handleClose: () => void
 }
 
-function DialogAvatar (props: DialogAvatarProps) {
+function DialogAvatar(props: DialogAvatarProps) {
     const [css] = useStyletron()
-    const { defaultAvatar } = usePicture()
-    const { lang } = useContext(langContext)
-    const { user } = useContext(UserContext)
-    const { showCropper, showLoading, showToast, clean } = useContext(DialogsContext)
+    const {defaultAvatar} = usePicture()
+    const {lang} = useContext(langContext)
+    const {user} = useContext(UserContext)
+    const {showCropper, showLoading, showToast, clean} = useContext(DialogsContext)
     const [_1, emitProfileUpdate] = useEvent(EVENT.profileUpdate)
     const [_2, emitGroupUpdate] = useEvent(EVENT.groupUpdate)
     const [currProfile, setCurrProfile] = useState(props.profile)
@@ -75,8 +75,8 @@ function DialogAvatar (props: DialogAvatarProps) {
             accepts: ['image/png', 'image/jpeg'],
             validator: (file) => {
                 if (file.type !== 'image/jpeg' && file.type !== 'image/png') {
-                        showToast('Invalid file type')
-                        throw new Error('invalid file')
+                    showToast('Invalid file type')
+                    throw new Error('invalid file')
                 }
             }
         })
@@ -114,8 +114,10 @@ function DialogAvatar (props: DialogAvatarProps) {
                             let newProfile: Profile
                             if (props.profile.is_group) {
                                 newProfile = await solas.updateGroup({
-                                    id: props.profile.id,
-                                    image_url: newImage,
+                                    data: {
+                                        id: props.profile.id,
+                                        image_url: newImage,
+                                    },
                                     auth_token: user.authToken || ''
                                 })
                                 emitGroupUpdate(newProfile)
@@ -141,13 +143,16 @@ function DialogAvatar (props: DialogAvatarProps) {
     }
 
 
-
     return (<div className={css(style.wrapper)}>
         <img className={css(style.img)}
-            src={ currProfile.image_url || defaultAvatar(props.profile.id)} alt=""/>
-        <div className={css(style.close)} onClick={ () => { props.handleClose() } }><Delete size={25}/></div>
-        <div className={css(style.showUpload)} onClick={ () => { selectFile() } }>
-            { lang['Avatar_Upload_Button'] }
+             src={currProfile.image_url || defaultAvatar(props.profile.id)} alt=""/>
+        <div className={css(style.close)} onClick={() => {
+            props.handleClose()
+        }}><Delete size={25}/></div>
+        <div className={css(style.showUpload)} onClick={() => {
+            selectFile()
+        }}>
+            {lang['Avatar_Upload_Button']}
         </div>
     </div>)
 }
