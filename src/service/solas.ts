@@ -1476,8 +1476,28 @@ export async function queryCheckInList (props: QueryCheckInListProps): Promise<C
     }) as CheckIn[]
 }
 
+export interface SetEmailProps {
+    auth_token: string,
+    code: string,
+    email: string
+}
+
+export async function setEmail (props: SetEmailProps) {
+    checkAuth(props)
+
+    const res: any = await fetch.post({
+        url: `${api}/profile/set_verified_email`,
+        data: props
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message || 'bind fail')
+    }
+}
+
 
 export default {
+    setEmail,
     login,
     getProfile,
     requestEmailCode,

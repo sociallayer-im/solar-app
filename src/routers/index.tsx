@@ -24,6 +24,7 @@ import CreatePrivacy from "../pages/CreatePrivacy";
 import CreateGift from "../pages/CreateGift";
 import IssueGift from "../pages/IssueGift";
 import PlatformLogin from "../pages/platformLogin/platformLogin";
+import BindEmail from "../pages/BindEmail";
 
 
 // lazy load
@@ -81,6 +82,8 @@ function AppRouter () {
 
                 <Route path="/search/:keyword" element={<Search />} />
                 <Route path="/event/:tag" element={<Event />} />
+
+                <Route path="/bind-email" element={<BindEmail />} />
 
                 <Route path="/platform/login" element={<PlatformLogin />} />
                 <Route path="*" element={<Error />} />

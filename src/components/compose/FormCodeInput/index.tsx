@@ -1,15 +1,18 @@
-import {useContext, useState, useRef, useEffect} from 'react'
-import { useStyletron } from 'baseui'
-import solas, { EmailLoginRes } from '../../../service/solas'
+import {useContext, useEffect, useRef, useState} from 'react'
+import {useStyletron} from 'baseui'
+import solas, {EmailLoginRes, setEmail} from '../../../service/solas'
+import userContext from "../../provider/UserProvider/UserContext";
 import DialogsContext from '../../provider/DialogProvider/DialogsContext'
+import {useNavigate} from "react-router-dom";
 
 export interface CodeInputFormProps {
-    onConfirm: (loginRes: EmailLoginRes) => any
-    loginEmail: string
+    onConfirm?: (loginRes: EmailLoginRes) => any
+    loginEmail: string,
+    type?: 'login' | 'binding'
 }
 
 const style = {
-    wrapper : {
+    wrapper: {
         width: '280px',
         marginLeft: 'auto',
         marginRight: 'auto',
@@ -41,19 +44,21 @@ const style = {
         background: 'none',
         outline: 'none',
         border: '0',
-        caretColor:'rgba(0,0,0,0)',
-        color:'rgba(0,0,0,0)',
+        caretColor: 'rgba(0,0,0,0)',
+        color: 'rgba(0,0,0,0)',
         touchCallout: 'none',
         '-webkit-touch-callout': 'none'
     }
 }
 
-function CodeInputForm (props: CodeInputFormProps) {
+function CodeInputForm(props: CodeInputFormProps) {
     const [code, setCode] = useState('')
-    const [codeLength, ] = useState(new Array(5).fill(''))
-    const [ loading, setLoading ] = useState(false)
+    const [codeLength,] = useState(new Array(5).fill(''))
+    const [loading, setLoading] = useState(false)
     const [css] = useStyletron()
-    const { showLoading, showToast } = useContext(DialogsContext)
+    const {showLoading, showToast} = useContext(DialogsContext)
+    const {user} = useContext(userContext)
+    const navigate = useNavigate()
 
     const inputRef = useRef<HTMLInputElement | null>(null)
 
@@ -89,7 +94,7 @@ function CodeInputForm (props: CodeInputFormProps) {
     }, [])
 
     useEffect(() => {
-        async function login () {
+        async function login() {
             if (code.length === codeLength.length) {
                 setLoading(true)
                 const unload = showLoading()
@@ -101,7 +106,7 @@ function CodeInputForm (props: CodeInputFormProps) {
 
                 try {
                     const loginRes = await solas.emailLogin(props.loginEmail, code)
-                    props.onConfirm(loginRes)
+                    !!props.onConfirm && props.onConfirm(loginRes)
                 } catch (e: any) {
                     console.log(e)
                     showToast('Invalid code')
@@ -114,7 +119,31 @@ function CodeInputForm (props: CodeInputFormProps) {
                 }
             }
         }
-        login()
+
+        async function binding() {
+            if (code.length !== codeLength.length) return
+            const unload = showLoading()
+            try {
+                const bind = await setEmail({
+                    email: props.loginEmail,
+                    code,
+                    auth_token: user.authToken || ''
+                })
+                unload()
+                showToast('Binding success')
+                navigate('/')
+            } catch (e: any) {
+                unload()
+                console.error(e)
+                showToast(e.message)
+            }
+        }
+
+        if (props.type === 'binding') {
+            binding()
+        } else {
+            login()
+        }
     }, [code])
 
     return <>
@@ -122,27 +151,31 @@ function CodeInputForm (props: CodeInputFormProps) {
             <input
                 pattern="[0-9]*"
                 onFocus={e => {
-                   setTimeout(() => {
-                       try {
-                           e.target.selectionStart = 100; // Set cursor to the end of the input text
-                           e.target.selectionEnd = 100; // Set cursor to the end of the input text
-                       } catch (e) {return 0}
-                       window.scrollTo(0, 90)
-                   },300)
+                    setTimeout(() => {
+                        try {
+                            e.target.selectionStart = 100; // Set cursor to the end of the input text
+                            e.target.selectionEnd = 100; // Set cursor to the end of the input text
+                        } catch (e) {
+                            return 0
+                        }
+                        window.scrollTo(0, 90)
+                    }, 300)
                 }}
-                ref={ inputRef }
+                ref={inputRef}
                 value={code}
                 className={css(style.input)}
-                onChange={(e) => { showCode(e.target.value) } }
-                type="number" />
+                onChange={(e) => {
+                    showCode(e.target.value)
+                }}
+                type="number"/>
             {
                 codeLength.map((item, index) => {
                     return <input
                         readOnly
-                        value={ code[index] || '' }
-                        key={ index.toString() }
-                        className={css((code.length === index  || (code.length===5 && index ===4))?
-                            {...style.codeInput, borderColor: '#00b879', borderWidth: '2px' } : style.codeInput)} />
+                        value={code[index] || ''}
+                        key={index.toString()}
+                        className={css((code.length === index || (code.length === 5 && index === 4)) ?
+                            {...style.codeInput, borderColor: '#00b879', borderWidth: '2px'} : style.codeInput)}/>
                 })
             }
         </div>

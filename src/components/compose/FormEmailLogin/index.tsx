@@ -8,7 +8,8 @@ import solas from '../../../service/solas'
 import DialogsContext from '../../provider/DialogProvider/DialogsContext'
 
 export interface EmailLoginFormProps {
-    onConfirm: (email: string) => any
+    onConfirm: (email: string) => any,
+    type?: 'login' | 'binding'
 }
 
 function EmailLoginForm (props: EmailLoginFormProps) {
@@ -26,6 +27,16 @@ function EmailLoginForm (props: EmailLoginFormProps) {
     const sendEmail  = async () => {
         const unload = showLoading()
         try {
+            setError('')
+            if (props.type === 'binding') {
+                const checkProfile = await solas.getProfile({email})
+                if (checkProfile) {
+                    unload()
+                    setError('Email has been bound, Please use another email')
+                    return
+                }
+            }
+
             const requestEmailLoginCode = await solas.requestEmailCode(email)
             props.onConfirm(email)
             unload()

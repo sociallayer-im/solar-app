@@ -21,7 +21,11 @@ const langCN: LangConfig = {
   Wallet_Intro_WalletConnect: '连接你的 WalletConnect 钱包',
 
   UserAction_MyProfile: '查看主页',
+  UserAction_Bind_Email: '绑定邮箱',
   UserAction_Disconnect: '登出',
+
+  Bind_Email_Title: '绑定邮箱',
+  Bind_Email_Des: '请输入你的邮箱，以便你可以通过邮箱登录以及接收重要通知。',
 
   Regist_Title: '设定一个独一无二的 Social layer 域名身份吧！',
   Domain_Rule: '只能包含字母数字连字符，并且连字符不能在开头和结尾，不能有空格，6个字符以上。',
@@ -164,7 +168,7 @@ const langCN: LangConfig = {
   Login_Placeholder: '您的邮箱',
   Login_option: '其他方式',
   Login_input_Code_title: '邮箱验证码',
-  Login_input_Code_des: slotLang('输入你的邮箱 {email} 接收到的验证码完成登录操作'),
+  Login_input_Code_des: slotLang('输入你的邮箱 {email} 接收到的验证码完成登录/绑定操作'),
 
   Page_Back: '返回',
   Page_Back_Done: '完成',
