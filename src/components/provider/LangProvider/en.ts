@@ -26,6 +26,7 @@ const langEN = {
 
   Bind_Email_Title: 'Bind Email',
   Bind_Email_Des: 'Please enter your email address so that you can log in and receive important notifications via email.',
+  Bind_Email_Skip: 'Skip',
 
   Regist_Title: 'Set a unique Social Layer domain identity',
   Domain_Rule: 'Domains can contain the English-language letters a-z, and the digits 0-9. Hyphens can also be used but it can not be used at the beginning and at the end of a domain name. It should be longer than 6 characters.',

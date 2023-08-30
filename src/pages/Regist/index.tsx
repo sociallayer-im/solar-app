@@ -18,8 +18,11 @@ function ComponentName () {
     const location = useLocation()
 
     useEffect(() => {
-        // 如果用户已经注册过域名，将会跳转到用户的profile页面
-        if (user.domain) {
+        if (user.domain && !user.email) {
+            // 钱包登录, 提示绑定邮箱
+            navigate(`/bind-email?new=true`)
+        } else if (user.domain) {
+            // 返回之前的页面
             const fallBack = window.localStorage.getItem('fallback')
             const platformLoginFallback = getPlantLoginFallBack()
             const lastLoginType = window.localStorage.getItem('lastLoginType')
@@ -35,12 +38,10 @@ function ComponentName () {
             }
         }
 
-    }, [user.domain])
+    }, [user.domain, user.email])
 
     useEffect(() => {
         clean('regist')
-
-
     }, [])
 
     // 如果用户已经登录，离开注册域名页面，将会被强制登出

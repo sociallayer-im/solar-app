@@ -3,12 +3,14 @@ import {useStyletron} from 'baseui'
 import solas, {EmailLoginRes, setEmail} from '../../../service/solas'
 import userContext from "../../provider/UserProvider/UserContext";
 import DialogsContext from '../../provider/DialogProvider/DialogsContext'
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
+import {deleteFallback, getPlantLoginFallBack} from "../../../utils/authStorage";
 
 export interface CodeInputFormProps {
     onConfirm?: (loginRes: EmailLoginRes) => any
     loginEmail: string,
-    type?: 'login' | 'binding'
+    type?: 'login' | 'binding',
+    fallback?: () => any
 }
 
 const style = {
@@ -130,8 +132,13 @@ function CodeInputForm(props: CodeInputFormProps) {
                     auth_token: user.authToken || ''
                 })
                 unload()
-                showToast('Binding success')
-                navigate('/')
+                showToast('Bind success')
+
+                if (props.fallback) {
+                    props.fallback()
+                } else {
+                    navigate(`/profile/${user.userName}`)
+                }
             } catch (e: any) {
                 unload()
                 console.error(e)

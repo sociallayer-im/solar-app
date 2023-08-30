@@ -26,6 +26,7 @@ const langCN: LangConfig = {
 
   Bind_Email_Title: '绑定邮箱',
   Bind_Email_Des: '请输入你的邮箱，以便你可以通过邮箱登录以及接收重要通知。',
+  Bind_Email_Skip: '跳过',
 
   Regist_Title: '设定一个独一无二的 Social layer 域名身份吧！',
   Domain_Rule: '只能包含字母数字连字符，并且连字符不能在开头和结尾，不能有空格，6个字符以上。',
