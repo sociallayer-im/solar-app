@@ -30,7 +30,9 @@ function ProfileMenu () {
         {   !!user.domain &&
             <>
                 <MenuItem onClick={ () => { toProfile(); close() } }>{ lang['UserAction_MyProfile'] }</MenuItem>
-                <MenuItem onClick={ () => { toBind(); close() } }>{ lang['UserAction_Bind_Email'] }</MenuItem>
+                { !user.email &&
+                    <MenuItem onClick={ () => { toBind(); close() } }>{ lang['UserAction_Bind_Email'] }</MenuItem>
+                }
             </>
         }
         <MenuItem onClick={ () => { handleLogOut(); close() } }>{ lang['UserAction_Disconnect'] }</MenuItem>

@@ -21,12 +21,7 @@ function BindEmail() {
     const fallback = async () => {
         // 返回之前的页面
         const fallBack = window.localStorage.getItem('fallback')
-        const platformLoginFallback = getPlantLoginFallBack()
-        const lastLoginType = window.localStorage.getItem('lastLoginType')
-        if (platformLoginFallback) {
-            deleteFallback()
-            window.location.href = platformLoginFallback + `?auth=${user.authToken}&account${user.wallet || user.email}&logintype=${lastLoginType}`
-        } else if (fallBack && fallBack !== window.location.href) {
+        if (fallBack && fallBack !== window.location.href && !fallBack.includes('login') && !fallBack.includes('regist')) {
             const path = fallBack.replace(window.location.origin, '')
             window.localStorage.removeItem('fallback')
             navigate(path)
