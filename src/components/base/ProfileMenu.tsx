@@ -27,7 +27,7 @@ function ProfileMenu () {
     }
 
     const menuContent = (close: any) => <>
-        {   !!user.domain &&
+        { !!user.domain &&
             <>
                 <MenuItem onClick={ () => { toProfile(); close() } }>{ lang['UserAction_MyProfile'] }</MenuItem>
                 { !user.email &&
