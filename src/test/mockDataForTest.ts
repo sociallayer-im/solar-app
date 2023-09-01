@@ -65,7 +65,8 @@ export const profiles: Profile[] = [
         telegram: 'zfd',
         lens: 'zfd',
         location: 'zfd',
-        permissions:[]
+        permissions:[],
+        group_event_visibility: 'public'
     },
     {
         address: '0x7682Ba569E3823Ca1B7317017F5769F8Aa8842D4',
@@ -91,7 +92,8 @@ export const profiles: Profile[] = [
         telegram: 'zfd',
         lens: 'zfd',
         location: 'zfd',
-        permissions:[]
+        permissions:[],
+        group_event_visibility: 'public'
     },
     {
         address: 'null',
@@ -117,7 +119,8 @@ export const profiles: Profile[] = [
         telegram: 'zfd',
         lens: 'zfd',
         location: 'zfd',
-        permissions:[]
+        permissions:[],
+        group_event_visibility: 'public'
     }
 ]
 
