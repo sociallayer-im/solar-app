@@ -47,6 +47,7 @@ export interface Profile {
     badge_count: number,
     status: 'active' | 'freezed',
     permissions: string[],
+    group_event_visibility: 'public' | 'private' | 'protected',
 }
 
 export interface ProfileSimple {
@@ -1494,6 +1495,20 @@ export async function setEmail (props: SetEmailProps) {
         throw new Error(res.data.message || 'bind fail')
     }
 }
+
+export async function getEventGroup () {
+    const res = await fetch.get({
+        url: `${api}/event/group_list`,
+        data: {}
+    })
+
+    if (res.data.result === 'error') {
+        throw new Error(res.data.message)
+    }
+
+    return res.data.groups as Group[]
+}
+
 
 
 export default {
