@@ -50,8 +50,8 @@ function HomePageSwitcher() {
             const eventGroup: any = await getEventGroup()
 
             if (leadingEvent) {
-                const leading = eventGroup.find(g => g.id === leadingEvent.id)
-                const listWithoutLeading = eventGroup.filter(g => g.id !== leadingEvent.id)
+                const leading = eventGroup.find((g: any) => g.id === leadingEvent.id)
+                const listWithoutLeading = eventGroup.filter((g: any) => g.id !== leadingEvent.id)
                 const toTop = [leading, ...listWithoutLeading]
                 setGroupList(toTop as Profile[])
             } else {
