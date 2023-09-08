@@ -19,7 +19,7 @@ export function setAuth (key: string, authToken: string) {
   }
 }
 
-export function getAuth (key: string) {
+export function getAuth (account? : string) {
   const authStorage = window.localStorage.getItem('wa') || ''
   if (!authStorage) {
     return null
@@ -27,11 +27,16 @@ export function getAuth (key: string) {
 
   try {
     const jsonStorage: [string, string][] = JSON.parse(authStorage)
-    const target = jsonStorage.find((item) => {
-      return key === item[0]
-    })
+    let target
+    if (account) {
+      target = jsonStorage.find((item) => {
+        return account === item[0]
+      })
+    } else {
+      target = jsonStorage[0]
+    }
 
-    return target? target[1] : null
+    return target? { account: target[0], authToken: target[1] } : null
   } catch (e) {
     return null
   }
@@ -51,7 +56,7 @@ export function getLatestAuth () : null| [string, string] {
   }
 }
 
-export function getEmailAuth (): {email: string, authToken: string} | null {
+export function getEmailAuth (account? : string): {email: string, authToken: string} | null {
   const authStorage = window.localStorage.getItem('wa') || ''
   if (!authStorage) {
     return null
@@ -59,7 +64,16 @@ export function getEmailAuth (): {email: string, authToken: string} | null {
 
   try {
     const jsonStorage: [string, string][] = JSON.parse(authStorage)
-    return  jsonStorage[0] ? { email: jsonStorage[0][0], authToken: jsonStorage[0][1] } : null
+    let target
+    if (account) {
+      target = jsonStorage.find((item) => {
+        return account === item[0]
+      })
+    } else {
+      target = jsonStorage[0]
+    }
+
+    return target? { email: target[0], authToken: target[1] } : null
   } catch (e) {
     return null
   }

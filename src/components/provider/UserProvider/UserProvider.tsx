@@ -6,7 +6,7 @@ import * as AuthStorage from '../../../utils/authStorage'
 import solas from '../../../service/solas'
 import { useNavigate } from 'react-router-dom'
 import useEvent, {EVENT} from '../../../hooks/globalEvent'
-import {getPlantLoginFallBack, deleteFallback} from "../../../utils/authStorage";
+import {getPlantLoginFallBack, deleteFallback, setAuth} from "../../../utils/authStorage";
 
 import solaExtensionLogin from '../../../service/ExtensionLogin'
 
@@ -142,8 +142,8 @@ function UserProvider (props: UserProviderProps) {
         const email = emailAuthInfo.email
         console.log('Login email: ', email)
         console.log('Storage token: ', authToken)
-
         await setProfile({ email, authToken })
+        setAuth(email, authToken)
     }
 
     const walletLogin = async () => {
@@ -162,7 +162,7 @@ function UserProvider (props: UserProviderProps) {
         console.log('Login type: ', loginType)
         console.log('Login wallet: ', address)
 
-        let authToken = AuthStorage.getAuth(address)
+        let authToken = AuthStorage.getAuth(address)?.authToken
         if (!authToken) {
             const unloading = showLoading()
             try {
@@ -180,6 +180,7 @@ function UserProvider (props: UserProviderProps) {
 
         console.log('Storage token: ', authToken)
         await setProfile({ address: address, authToken: authToken })
+        setAuth(address, authToken)
     }
 
     useEffect(() => {
@@ -189,7 +190,7 @@ function UserProvider (props: UserProviderProps) {
 
     useEffect(() => {
         walletLogin()
-    }, [data, address])
+    }, [data])
 
     // update profile from event
     useEffect(() => {
