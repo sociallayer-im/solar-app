@@ -7,8 +7,14 @@ import userContext from "../../provider/UserProvider/UserContext";
 import DialogsContext from "../../provider/DialogProvider/DialogsContext";
 import {useLocation, useNavigate, useParams} from "react-router-dom";
 
+const leadingEvent = {
+    id: 1572,
+    username: 'muchiangmai',
+    logo: 'https://ik.imagekit.io/soladata/iosjmr58_gFa04c32n'
+}
+
 function HomePageSwitcher() {
-    const {lang} = useContext(langContext)
+    const {lang, langType} = useContext(langContext)
     const [showList, setShowList] = useState(false)
     const {user} = useContext(userContext)
     const {showToast, showLoading} = useContext(DialogsContext)
@@ -42,7 +48,15 @@ function HomePageSwitcher() {
     useEffect(() => {
         const getEventGroupList = async () => {
             const eventGroup: any = await getEventGroup()
-            setGroupList(eventGroup)
+
+            if (leadingEvent) {
+                const leading = eventGroup.find(g => g.id === leadingEvent.id)
+                const listWithoutLeading = eventGroup.filter(g => g.id !== leadingEvent.id)
+                const toTop = [leading, ...listWithoutLeading]
+                setGroupList(toTop as Profile[])
+            } else {
+                setGroupList(eventGroup as Profile[])
+            }
         }
         getEventGroupList()
     }, [])
@@ -79,7 +93,9 @@ function HomePageSwitcher() {
                                             setSelect(group)
                                             switchList()
                                         }}>
-                                {group.nickname || group.username}
+                                { leadingEvent?.id === group.id ?
+                                    <img src={leadingEvent.logo} alt={''} />
+                                    :  (group.nickname || group.username)}
                             </div>
                         })
                     }
