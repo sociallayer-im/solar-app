@@ -14,6 +14,7 @@ import AppButton, { BTN_KIND, BTN_SIZE } from '../AppButton/AppButton'
 import MenuItem from '../MenuItem'
 import ProfileBio from '../ProfileBio/ProfileBio'
 import ProfileSocialMediaList from '../ProfileSocialMediaList/ProfileSocialMediaList'
+import useCopy from "../../../hooks/copy";
 
 interface ProfilePanelProps {
     profile: Profile
@@ -28,6 +29,7 @@ function ProfilePanel(props: ProfilePanelProps) {
     const [profile, setProfile] = useState(props.profile)
     const [showFollowBtn, setShowFollowBtn] = useState(false)
     const [showUnFollowBtn, setShowUnFollowBtn] = useState(false)
+    const { copyWithDialog } = useCopy()
 
     useEffect(() => {
         if (newProfile && newProfile.id === profile.id) {
@@ -73,7 +75,7 @@ function ProfilePanel(props: ProfilePanelProps) {
             title: lang['Profile_Show_Wallet'],
             confirmLabel: lang['Profile_Show_Copy'],
             cancelLabel: lang['Profile_Show_Close'],
-            onConfirm: (close: any) => { close(); },
+            onConfirm: (close: any) => { copyWithDialog(profile.address!);close(); },
             content: () => <DialogContent>{ profile.address }</DialogContent>
         })
     }
@@ -83,7 +85,7 @@ function ProfilePanel(props: ProfilePanelProps) {
             title: lang['Profile_Show_Email'],
             confirmLabel: lang['Profile_Show_Copy'],
             cancelLabel: lang['Profile_Show_Close'],
-            onConfirm: (close: any) => { close(); },
+            onConfirm: (close: any) => { copyWithDialog(profile.email!);close(); },
             content: () => <DialogContent>{ profile.email }</DialogContent>
         })
     }
