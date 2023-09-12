@@ -20,16 +20,21 @@ function EmailLoginForm (props: EmailLoginFormProps) {
     const [css] = useStyletron()
 
     const verifyAndSetEmail = (value: string) => {
+        const valid = value.trim().match(/^\w+\.*\w+@+\w+\.\w+$/i)
         setError(value && value.match(/^\w+\.*\w+@+\w+\.\w+$/i) ? '' : 'Invalid email address')
-        setEmail(value)
+        return valid
     }
 
     const sendEmail  = async () => {
+        if (!email) return
+
+        const isValid = verifyAndSetEmail(email)
+        if (!isValid) return
+
         const unload = showLoading()
         try {
-            setError('')
             if (props.type === 'binding') {
-                const checkProfile = await solas.getProfile({email})
+                const checkProfile = await solas.getProfile({email: email.trim()})
                 if (checkProfile) {
                     unload()
                     setError('Email has been bound, Please use another email')
@@ -37,7 +42,7 @@ function EmailLoginForm (props: EmailLoginFormProps) {
                 }
             }
 
-            const requestEmailLoginCode = await solas.requestEmailCode(email)
+            const requestEmailLoginCode = await solas.requestEmailCode(email.trim())
             props.onConfirm(email)
             unload()
         } catch (e: any) {
@@ -52,7 +57,7 @@ function EmailLoginForm (props: EmailLoginFormProps) {
             clearable={ true }
             errorMsg={ error }
             value={email}
-            onChange={ (e) => { verifyAndSetEmail(e.target.value) } }
+            onChange={ (e) => { setError('');setEmail(e.target.value) } }
             placeholder={ lang['Login_Placeholder'] }></AppInput>
         <div className={css({ marginTop: '34px' })}>
             <AppButton
