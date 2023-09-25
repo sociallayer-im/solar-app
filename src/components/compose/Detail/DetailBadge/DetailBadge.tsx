@@ -18,6 +18,9 @@ import ReasonText from '../../../base/ReasonText/ReasonText'
 import DetailDes from '../atoms/DetailDes/DetailDes'
 import './DetailBadge.less'
 import SwiperPagination from '../../../base/SwiperPagination/SwiperPagination'
+import DetailRow from "../atoms/DetailRow";
+import DetailBadgeMenu from "../atoms/DetalBadgeMenu";
+import useEvent, {EVENT} from "../../../../hooks/globalEvent";
 
 //HorizontalList deps
 import {Swiper, SwiperSlide} from 'swiper/react'
@@ -39,6 +42,9 @@ function DetailBadge(props: DetailBadgeProps) {
     const swiper = useRef<any>(null)
     const formatTime = useTime()
     const swiperIndex = useRef(0)
+    const [needUpdate, _] = useEvent(EVENT.badgeDetailUpdate)
+    const [isGroupManager, setIsGroupManager] = useState(false)
+    const loginUserIsSender = user.id === props.badge.sender.id || user.id === props.badge.group?.id
 
     useEffect(() => {
         async function getBadgelet() {
@@ -54,7 +60,21 @@ function DetailBadge(props: DetailBadgeProps) {
         }
 
         getBadgelet()
-    }, [])
+    }, [needUpdate, user.id])
+
+    useEffect(() => {
+        async function checkManager() {
+            if (props.badge.group && user.id) {
+                const isManager = await solas.checkIsManager({
+                    group_id: props.badge.group.id,
+                    profile_id: user.id
+                })
+                setIsGroupManager(isManager)
+            }
+        }
+
+        checkManager()
+    }, [user.id])
 
     const handleIssue = async () => {
         if (props.badge.badge_type === 'private') {
@@ -68,19 +88,24 @@ function DetailBadge(props: DetailBadgeProps) {
         props.handleClose()
     }
 
-    const loginUserIsSender = user.id === props.badge.sender.id
     const swiperMaxHeight = window.innerHeight - 320
+
     return (
         <DetailWrapper>
-            <DetailHeader title={lang['BadgeletDialog_title']} onClose={props.handleClose}/>
+            <DetailHeader
+                slotRight={<DetailBadgeMenu isGroupManager={isGroupManager} badge={props.badge}/>}
+                title={lang['BadgeletDialog_title']}
+                onClose={props.handleClose}/>
 
 
             {(props.badge.badge_type === 'private' && !loginUserIsSender) ?
                 <>
                     <DetailCover src={'/images/badge_private.png'}></DetailCover>
                     <DetailName> 🔒 </DetailName>
-                    <DetailCreator isGroup={!!props.badge.group}
-                                   profile={props.badge.group || props.badge.sender}/>
+                    <DetailRow>
+                        <DetailCreator isGroup={!!props.badge.group}
+                                       profile={props.badge.group || props.badge.sender}/>
+                    </DetailRow>
                     <DetailScrollBox style={{maxHeight: swiperMaxHeight - 40 + 'px'}}>
                         <DetailArea
                             title={lang['BadgeDialog_Label_Creat_Time']}
@@ -94,9 +119,10 @@ function DetailBadge(props: DetailBadgeProps) {
                     <DetailCover src={props.badge.image_url}></DetailCover>
 
                     <DetailName> {props.badge.name} </DetailName>
-                    <DetailCreator isGroup={!!props.badge.group}
-                                   profile={props.badge.group || props.badge.sender}/>
-
+                    <DetailRow>
+                        <DetailCreator isGroup={!!props.badge.group}
+                                       profile={props.badge.group || props.badge.sender}/>
+                    </DetailRow>
                     {
                         badgelets.length > 0 ?
                             <div style={{width: '100%', overflow: 'hidden', maxHeight: swiperMaxHeight + 'px'}}>
@@ -170,7 +196,7 @@ function DetailBadge(props: DetailBadgeProps) {
             }
 
             <BtnGroup>
-                {loginUserIsSender &&
+                {(loginUserIsSender || isGroupManager) &&
                     <AppButton size={BTN_SIZE.compact} onClick={() => {
                         handleIssue()
                     }} kind={BTN_KIND.primary}>

@@ -1,7 +1,7 @@
 import { useStyletron } from 'baseui'
-import {Badgelet, NftPasslet} from '../../../../service/solas'
+import {Badgelet, checkIsManager, getProfile, NftPasslet} from '../../../../service/solas'
 import DialogsContext from '../../../provider/DialogProvider/DialogsContext'
-import { useContext } from 'react'
+import {useContext, useEffect, useState} from 'react'
 import UserContext from '../../../provider/UserProvider/UserContext'
 
 const style = {
@@ -89,8 +89,27 @@ function CardNftpasslet (props: CardBadgeletProps) {
     const [css] = useStyletron()
     const { showNftpasslet } = useContext(DialogsContext)
     const { user } = useContext(UserContext)
+    const [isGroupManager, setIsGroupManager] = useState(false)
 
     const isOwner = user.id === props.nftpasslet.receiver.id
+
+    useEffect(() => {
+        async function checkManager() {
+            if(user.id && props.nftpasslet.status === 'pending') {
+                const receiverDetail = await getProfile({id:props.nftpasslet.owner.id})
+
+                if (receiverDetail?.is_group) {
+                    const res = await checkIsManager({
+                        group_id: props.nftpasslet.owner.id,
+                        profile_id: user.id
+                    })
+                    setIsGroupManager(res)
+                }
+            }
+        }
+
+        checkManager()
+    }, [user.id])
 
     return (<div data-testid='CardBadgelet' className={ css(style.wrapper) } onClick={ () => { showNftpasslet(props.nftpasslet) }}>
                 <div className={css(style.coverBg)}>
@@ -98,7 +117,7 @@ function CardNftpasslet (props: CardBadgeletProps) {
                 </div>
                 { props.nftpasslet.hide && <div className={css(style.hideMark)}><i className='icon-lock'></i></div> }
                 <div className={ css(style.name) }>{ props.nftpasslet.badge.name }</div>
-                { isOwner && props.nftpasslet.status === 'pending' && <div className={ css(style.pendingMark) }>Pending</div> }
+                { (isOwner || isGroupManager) && props.nftpasslet.status === 'pending' && <div className={ css(style.pendingMark) }>Pending</div> }
             </div>)
 }
 

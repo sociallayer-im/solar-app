@@ -4,6 +4,7 @@ export enum EVENT {
     badgeletListUpdate = 'badgeletListUpdate',
     badgeListUpdate = 'badgeListUpdate',
     presendListUpdate = 'presendListUpdate',
+    VoteListUpdate = 'voteListUpdate',
     groupListUpdate = 'groupListUpdate',
     profileUpdate = 'profileUpdate',
     groupUpdate = 'groupUpdate',
@@ -12,6 +13,8 @@ export enum EVENT {
     badgeletDetailUpdate = 'badgeletDetailUpdate',
     nftpassItemUpdate = 'nftpassItemUpdate',
     giftItemUpdate = 'giftItemUpdate',
+    badgeDetailUpdate = 'badgeDetailUpdate',
+    managerListUpdate = 'managerListUpdate',
 }
 
 export default function useEvent (eventName: EVENT) {
@@ -27,7 +30,7 @@ export default function useEvent (eventName: EVENT) {
         const handle = (event: MessageEvent<any>) => {
             if (event.source !== window) return
             if (event.data.event !== eventName) return
-            setData(event.data.data)
+            setData({...event.data.data})
         }
         window.addEventListener('message', handle)
 

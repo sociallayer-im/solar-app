@@ -148,10 +148,16 @@ function GroupPanel(props: GroupPanelProps) {
                     <div><b>{ group.followers }</b> { lang['Follow_detail_followed'] } </div>
                     {/*<div> { lang['Group_detail_Join_Time'] } <b>{ group.following }</b></div>*/}
                 </div>
+                { !!group.location &&
+                    <div className='profile-position'>
+                        <i className='icon-Outline' />
+                        <span>{group.location}</span>
+                    </div>
+                }
                 { !!group.about &&
                     <ProfileBio text={ group.about }/>
                 }
-                <ProfileSocialMediaList profile={ group }/>
+                <ProfileSocialMediaList profile={props.group}/>
             </div>
             <div className='right-size'>
                 {

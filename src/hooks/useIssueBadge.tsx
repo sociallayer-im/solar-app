@@ -57,6 +57,7 @@ function useIssueBadge (useIssueBadgeProps?: UseIssueBadgeProp) {
             content: (close: any) => <DialogIssuePrefill
                 badges={ props.badges }
                 profileId={ user.id! }
+                groupName={useIssueBadgeProps?.groupName}
                 onSelect= { (res) => { toIssuePage(res, props.to) } }
                 handleClose={ close } />,
             position: 'bottom',

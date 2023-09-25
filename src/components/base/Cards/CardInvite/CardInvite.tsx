@@ -1,7 +1,7 @@
 import { useStyletron } from 'baseui'
-import { Invite } from '../../../../service/solas'
+import {checkIsManager, getProfile, Invite} from '../../../../service/solas'
 import DialogsContext from '../../../provider/DialogProvider/DialogsContext'
-import { useContext } from 'react'
+import {useContext, useEffect, useState} from 'react'
 import UserContext from '../../../provider/UserProvider/UserContext'
 import usePicture from '../../../../hooks/pictrue'
 import LangContext from '../../../provider/LangProvider/LangContext'
@@ -94,8 +94,27 @@ function CardInvite(props: CardInviteProps) {
     const { defaultAvatar } = usePicture()
     const { user } = useContext(UserContext)
     const { lang } = useContext(LangContext)
+    const [isGroupManager, setIsGroupManager] = useState(false)
 
     const isOwner = user.id === props.invite.receiver_id
+
+    useEffect(() => {
+        async function checkManager() {
+            if(user.id && props.invite.status === 'new') {
+                const receiverDetail = await getProfile({id:props.invite.group_id})
+
+                if (receiverDetail?.is_group) {
+                    const res = await checkIsManager({
+                        group_id: props.invite.group_id,
+                        profile_id: user.id
+                    })
+                    setIsGroupManager(res)
+                }
+            }
+        }
+
+        checkManager()
+    }, [user.id])
 
     return (<div data-testid='CardInvite' className={ css(style.wrapper) } onClick={ () => { showInvite(props.invite) }}>
                 <div className={ css(style.coverBg) }>

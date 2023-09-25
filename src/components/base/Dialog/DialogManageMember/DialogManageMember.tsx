@@ -124,7 +124,7 @@ function DialogManageMember(props: AddressListProps) {
            <div className='content'>
                <div className='center'>
                    { groupsMemberEmpty && <Empty text={'no data'} /> }
-                   <AddressList selected={ selected.length ?  [ selected[0].domain || '' ]: [] } data= { groupsMember } onClick={(domain) => { addAddress(domain)} } />
+                   <AddressList selected={ selected.length ?  [ selected[0].domain || '' ]: [] } data= { groupsMember } onClick={(profile) => { addAddress(profile.domain!)} } />
                </div>
            </div>
            <div className='dialog-bottom'>

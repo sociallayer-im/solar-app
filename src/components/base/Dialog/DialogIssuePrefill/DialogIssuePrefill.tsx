@@ -1,10 +1,10 @@
-import {ReactNode, useContext, useState} from 'react'
+import {ReactNode, useContext, useEffect, useState} from 'react'
 import './DialogIssuePrefill.less'
 import AppSwiper from '../../AppSwiper/AppSwiper'
 import {Delete} from 'baseui/icon'
 import LangContext from '../../../provider/LangProvider/LangContext'
 import {Badge} from '../../../../service/solas'
-import userContext from "../../../provider/UserProvider/UserContext";
+import {getProfile, Profile} from "../../../../service/solas";
 
 export type CreateType = 'badge' | 'point' | 'nftpass' | 'private' | 'gift'
 
@@ -12,12 +12,14 @@ export interface BadgeBookDialogRes {
     badgeId?: number
     badgebookId?: number
     type: CreateType
+    badge?: Badge
 }
 
 interface DialogIssuePrefillProps {
     badges: Badge[]
     handleClose: () => any
     profileId: number
+    groupName?: string
     onSelect?: (res: BadgeBookDialogRes) => any
 }
 
@@ -25,16 +27,26 @@ interface DialogIssuePrefillProps {
 function DialogIssuePrefill(props: DialogIssuePrefillProps) {
     const [showCreateOption, setShowCreateOption] = useState(false)
     const {lang} = useContext(LangContext)
-    const {user} = useContext(userContext)
+    const [user, setUser] = useState<Profile | null>(null)
+
 
     const gotoCreateBadge = (type: CreateType) => {
         !!props.onSelect && props.onSelect({type})
         props.handleClose()
     }
 
+    const getProfileDetail = async () => {
+        const profile = await getProfile(props.groupName ? {username: props.groupName} : {id: props.profileId})
+        setUser(profile)
+    }
+
+    useEffect(() => {
+        getProfileDetail()
+    }, [])
+
     const badgeItems = (badges: Badge[]) => {
         const handleClick = (item: Badge) => {
-            !!props.onSelect && props.onSelect({badgeId: item.id, type: 'badge'})
+            !!props.onSelect && props.onSelect({badgeId: item.id, type: 'badge', badge: item})
             props.handleClose()
         }
 
@@ -121,7 +133,7 @@ function DialogIssuePrefill(props: DialogIssuePrefillProps) {
                     </div>
                 }
                 <div className='create-badge-btn' onClick={event => {
-                    if (user.id && user.permissions.length > 0) {
+                    if (user?.id && user.permissions.length > 0) {
                         setShowCreateOption(true)
                     } else {
                         gotoCreateBadge('badge')

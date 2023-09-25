@@ -6,6 +6,7 @@ const DetailDes = styled('div', ()=> {
         textAlign: 'center',
         color: '#272928',
         marginTop: '10px',
+        marginBottom: '10px',
         fontWeight: '600'
     }
 })

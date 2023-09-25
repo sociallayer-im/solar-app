@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import useEvent, {EVENT} from '../../../hooks/globalEvent'
 import {getPlantLoginFallBack, deleteFallback, setAuth} from "../../../utils/authStorage";
 
+
 import solaExtensionLogin from '../../../service/ExtensionLogin'
 
 export interface User {
@@ -142,6 +143,7 @@ function UserProvider (props: UserProviderProps) {
         const email = emailAuthInfo.email
         console.log('Login email: ', email)
         console.log('Storage token: ', authToken)
+
         await setProfile({ email, authToken })
         setAuth(email, authToken)
     }

@@ -13,6 +13,8 @@ import solas, { Group, Profile } from '../../service/solas'
 import DialogsContext from '../../components/provider/DialogProvider/DialogsContext'
 import ReasonInput from '../../components/base/ReasonInput/ReasonInput'
 import SelectCreator from '../../components/compose/SelectCreator/SelectCreator'
+import AppTips from "../../components/base/AppTips/AppTips";
+import Toggle from "../../components/base/Toggle/Toggle";
 
 function CreateBadgeNonPrefill() {
     const navigate = useNavigate()
@@ -22,6 +24,7 @@ function CreateBadgeNonPrefill() {
     const [badgeName, setBadgeName] = useState('')
     const [reason, setReason] = useState('')
     const [creator, setCreator] = useState<Group | Profile | null>(null)
+    const [transferable, setTransferable] = useState(true)
     const [badgeNameError, setBadgeNameError] = useState('')
     const enhancer = import.meta.env.VITE_SOLAS_DOMAIN
     const { user } = useContext(UserContext)
@@ -144,6 +147,16 @@ function CreateBadgeNonPrefill() {
                         <div className='input-area'>
                             <div className='input-area-title'>{ lang['Create_Gift_Benefits'] }</div>
                             <ReasonInput value={reason}  onChange={ (value) => { setReason(value) }} />
+                        </div>
+
+                        <div className='input-area'>
+                            <div className={'toggle-item'}>
+                                <div className={'label'}>
+                                    <span> {lang['Create_Point_Transferable']}</span>
+                                    <AppTips text={lang['Create_Point_Transferable_Tips']} />
+                                </div>
+                                <Toggle checked={transferable} onChange={(e) => {setTransferable(!transferable)}}/>
+                            </div>
                         </div>
 
                         <div className='input-area'>

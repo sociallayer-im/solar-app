@@ -18,6 +18,7 @@ import DetailScrollBox from './atoms/DetailScrollBox/DetailScrollBox'
 import DetailCreator from './atoms/DetailCreator/DetailCreator'
 import useTime from '../../../hooks/formatTime'
 import { useNavigate } from 'react-router-dom'
+import DetailRow from "./atoms/DetailRow";
 
 
 export interface DetailInviteProps {
@@ -60,7 +61,7 @@ function DetailInvite(props: DetailInviteProps ) {
             unload()
             props.handleClose()
             showToast('Accept success')
-            navigate(`/group/${group?.username}`)
+            // navigate(`/group/${group?.username}`)
         } catch (e: any) {
             unload()
             console.log('[handleAccept]: ', e)
@@ -112,9 +113,11 @@ function DetailInvite(props: DetailInviteProps ) {
 
             <DetailCover src={ group?.image_url || defaultAvatar(props.invite.group_id)}></DetailCover>
             <DetailName> { group?.username } </DetailName>
-            {
-                !!group && <DetailCreator isGroup profile={ group }></DetailCreator>
-            }
+            <DetailRow>
+                {
+                    !!group && <DetailCreator isGroup profile={ group }></DetailCreator>
+                }
+            </DetailRow>
 
 
             <DetailScrollBox style={{maxHeight: swiperMaxHeight - 60 + 'px', marginLeft: 0}}>

@@ -20,6 +20,8 @@ import './DetailNftpass.less'
 import SwiperPagination from '../../../base/SwiperPagination/SwiperPagination'
 import DialogsContext from "../../../provider/DialogProvider/DialogsContext";
 import useEvent, {EVENT} from "../../../../hooks/globalEvent";
+import DetailRow from "../atoms/DetailRow";
+import DetailBadgeMenu from "../atoms/DetalBadgeMenu";
 
 //HorizontalList deps
 import {Swiper, SwiperSlide} from 'swiper/react'
@@ -42,6 +44,9 @@ function DetailNftpass(props: DetailBadgeProps) {
     const swiper = useRef<any>(null)
     const formatTime = useTime()
     const swiperIndex = useRef(0)
+    const [needUpdate, _] = useEvent(EVENT.badgeDetailUpdate)
+    const [isGroupManager, setIsGroupManager] = useState(false)
+    const loginUserIsSender = user.id === props.nftpass.sender.id || user.id === props.nftpass.group?.id
 
 
     useEffect(() => {
@@ -55,24 +60,40 @@ function DetailNftpass(props: DetailBadgeProps) {
         }
 
         getItems()
-    }, [])
+    }, [needUpdate])
+
+    useEffect(() => {
+        async function checkManager() {
+            if (props.nftpass.group && user.id) {
+                const isManager = await solas.checkIsManager({
+                    group_id: props.nftpass.group.id,
+                    profile_id: user.id
+                })
+                setIsGroupManager(isManager)
+            }
+        }
+
+        checkManager()
+    }, [user.id])
 
     const handleIssue = async () => {
         navigate(`/create-nftpass?nftpass=${props.nftpass.id}`)
         props.handleClose()
     }
 
-    const loginUserIsSender = user.id === props.nftpass.sender.id
     const swiperMaxHeight = window.innerHeight - 320
     return (
         <DetailWrapper>
-            <DetailHeader title={lang['NFT_Detail_title']} onClose={props.handleClose}/>
+            <DetailHeader
+                slotRight={<DetailBadgeMenu isGroupManager={isGroupManager} badge={props.nftpass} />}
+                title={lang['NFT_Detail_title']} onClose={props.handleClose}/>
             <DetailCover src={props.nftpass.image_url}></DetailCover>
             <DetailName> {props.nftpass.name} </DetailName>
 
-            <DetailCreator isGroup={!!props.nftpass.group}
-                           profile={props.nftpass.group || props.nftpass.sender}></DetailCreator>
-
+            <DetailRow>
+               <DetailCreator isGroup={!!props.nftpass.group}
+                              profile={props.nftpass.group || props.nftpass.sender}></DetailCreator>
+            </DetailRow>
             {nftPasslets.length > 0 ?
                 <div style={{width: '100%', overflow: 'hidden', maxHeight: swiperMaxHeight + 'px'}}>
                     <Swiper
@@ -94,7 +115,7 @@ function DetailNftpass(props: DetailBadgeProps) {
                                         }
                                         <DetailArea
                                             onClose={props.handleClose}
-                                            title={lang['BadgeDialog_Label_Issuees']}
+                                            title={lang['BadgeDialog_Label_Owner']}
                                             content={nft.owner.domain
                                                 ? nft.owner.domain.split('.')[0]
                                                 : ''
@@ -137,7 +158,7 @@ function DetailNftpass(props: DetailBadgeProps) {
             }
 
             <BtnGroup>
-                {loginUserIsSender &&
+                {(loginUserIsSender || isGroupManager) &&
                     <>
                         <AppButton size={BTN_SIZE.compact} onClick={() => {
                             showNftCheckIn(props.nftpass.id)

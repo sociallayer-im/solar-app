@@ -22,6 +22,8 @@ export interface DialogsContextType {
     showGroupSetting: (...rest: any[]) => any,
     showNftCheckIn: (...rest: any[]) => any,
     showGiftCheckIn: (...rest: any[]) => any,
+    showRevoke: (...rest: any[]) => any,
+    showTransferAccept: (...rest: any[]) => any,
     clean: (msg?: string) => any
     dialogsCount: number
 }
@@ -48,6 +50,8 @@ const DialogsContext  = createContext<DialogsContextType>({
     showGroupSetting: () => {},
     showNftCheckIn: () => {},
     showGiftCheckIn: () => {},
+    showRevoke: () => {},
+    showTransferAccept: () => {},
     clean: (msg?: string) => {},
     dialogsCount: 0
 })

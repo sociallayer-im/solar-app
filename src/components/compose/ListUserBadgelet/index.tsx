@@ -21,12 +21,12 @@ function ListUserBadgelet (props: ListUserBadgeletProps) {
     const getBadgelet = async (page: number) => {
         const publicBadgelets = await solas.queryBadgelet({
             show_hidden: user.id === props.profile.id ? 1: undefined,
-            receiver_id: props.profile.id,
+            owner_id: props.profile.id,
             page })
 
         const privateBadgelets = await solas.queryPrivacyBadgelet({
             show_hidden: user.id === props.profile.id ? 1: undefined,
-            receiver_id: props.profile.id,
+            owner_id: props.profile.id,
             page })
 
         return [...publicBadgelets, ...privateBadgelets].sort((a, b) => {

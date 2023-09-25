@@ -107,6 +107,7 @@ export default function AppInput(props: AppInputProps) {
                 startEnhancer={ props.startEnhancer }
                 endEnhancer={ props.endEnhancer }
                 autoFocus={ props.autoFocus || false }
+                size={'compact'}
             />
             {   props.errorMsg ?
                 <div className={css(errorStyle)}>{ props.errorMsg }</div>

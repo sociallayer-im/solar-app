@@ -9,6 +9,7 @@ export interface DialogConfirmDomainProps {
     content?: string | ((...props: any[]) => ReactNode)
     onConfirm?: (close: () => any ) => any
     onCancel?: (...props: any[]) => any
+    red?: boolean
 }
 
 function DialogConfirmDomain (props: DialogConfirmDomainProps) {
@@ -26,6 +27,7 @@ function DialogConfirmDomain (props: DialogConfirmDomainProps) {
                     { props.cancelLabel || 'Cancel' }
                 </AppButton>
                 <AppButton
+                    style={{backgroundColor: props.red ? '#FF4D4F' : undefined}}
                     onClick={ () => { props.onConfirm && props.onConfirm( props.onCancel! ) } }
                     kind={ BTN_KIND.primary }>
                     { props.confirmLabel || 'Confirm' }

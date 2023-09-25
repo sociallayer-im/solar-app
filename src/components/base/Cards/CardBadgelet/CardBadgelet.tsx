@@ -1,8 +1,9 @@
 import {useStyletron} from 'baseui'
 import {Badgelet} from '../../../../service/solas'
 import DialogsContext from '../../../provider/DialogProvider/DialogsContext'
-import {useContext} from 'react'
+import {useContext, useEffect, useState} from 'react'
 import UserContext from '../../../provider/UserProvider/UserContext'
+import {checkIsManager, getProfile} from "../../../../service/solas";
 
 const style = {
     wrapper: {
@@ -89,6 +90,7 @@ function CardBadgelet(props: CardBadgeletProps) {
     const [css] = useStyletron()
     const {showBadgelet, showGiftItem} = useContext(DialogsContext)
     const {user} = useContext(UserContext)
+    const [isGroupManager, setIsGroupManager] = useState(false)
 
     const isOwner = user.id === props.badgelet.receiver.id
 
@@ -99,6 +101,24 @@ function CardBadgelet(props: CardBadgeletProps) {
             showBadgelet(props.badgelet)
         }
     }
+
+    useEffect(() => {
+        async function checkManager() {
+            if(user.id && props.badgelet.status === 'pending') {
+                const receiverDetail = await getProfile({id:props.badgelet.owner.id})
+
+                if (receiverDetail?.is_group) {
+                    const res = await checkIsManager({
+                        group_id: props.badgelet.owner.id,
+                        profile_id: user.id
+                    })
+                    setIsGroupManager(res)
+                }
+            }
+        }
+
+        checkManager()
+    }, [user.id])
 
     const metadata = props.badgelet.metadata ? JSON.parse(props.badgelet.metadata) : null
 
@@ -120,8 +140,10 @@ function CardBadgelet(props: CardBadgeletProps) {
                     </div>
                     {props.badgelet.hide && <div className={css(style.hideMark)}><i className='icon-lock'></i></div>}
                     <div className={css(style.name)}>{metadata?.name || props.badgelet.badge.name}</div>
-                    {isOwner && props.badgelet.status === 'pending' &&
-                        <div className={css(style.pendingMark)}>Pending</div>}
+
+                    {(isOwner || isGroupManager) && props.badgelet.status === 'pending' &&
+                        <div className={css(style.pendingMark)}>Pending</div>
+                    }
                 </>
         }
     </div>)

@@ -20,9 +20,9 @@ function ListUserPresend ({ userType = 'user',  ...props }: ListUserPresendProps
     const [newPresend, _] = useEvent(EVENT.presendListUpdate)
 
     const getPresend = async (page: number) => {
-        const queryProps = userType === 'user'
-            ? { sender_id: props.profile.id, page, auth_token: user.authToken || undefined }
-            : { group_id: props.profile.id, page, auth_token: user.authToken || undefined }
+        const queryProps = props.profile.is_group
+            ? { group_id: props.profile.id, page, auth_token: user.authToken || undefined }
+            : { sender_id: props.profile.id, page, auth_token: user.authToken || undefined }
 
         return await solas.queryPresend(queryProps)
     }

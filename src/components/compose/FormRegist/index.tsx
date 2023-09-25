@@ -9,8 +9,6 @@ import useVerify from '../../../hooks/verify'
 import DialogsContext from '../../provider/DialogProvider/DialogsContext'
 import UserContext from '../../provider/UserProvider/UserContext'
 import './RegistForm.less'
-import {deleteFallback, getPlantLoginFallBack} from "../../../utils/authStorage";
-import {useNavigate} from "react-router-dom";
 
 export interface RegistFormProps {
     onConfirm: (domain: string) => any
@@ -26,7 +24,7 @@ function RegistForm (props: RegistFormProps) {
     const { verifyDomain } = useVerify()
     const { openDomainConfirmDialog, showLoading, showToast } = useContext(DialogsContext)
     const { user, setUser } = useContext(UserContext)
-    const navigate = useNavigate()
+
 
     const showConfirm = () => {
         if (!domain) return

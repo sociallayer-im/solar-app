@@ -21,6 +21,7 @@ import DetailCreator from './atoms/DetailCreator/DetailCreator'
 import useTime from '../../../hooks/formatTime'
 import DetailFace2FaceQrcode from './DetailFace2FaceQrcode'
 import { useNavigate } from 'react-router-dom'
+import DetailRow from './atoms/DetailRow'
 
 export interface DetailPresendProps {
     presend: Presend,
@@ -40,6 +41,7 @@ function DetailPresend (props: DetailPresendProps ) {
     const [claimed, setClaimed] = useState(true)
     const [acceptableAmount, setAcceptableAmount] = useState<number>(0)
     const formatTime = useTime()
+    const [detail, setDetail] = useState(props.presend)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -53,6 +55,8 @@ function DetailPresend (props: DetailPresendProps ) {
                 id: props.presend.id,
                 auth_token: user.authToken || ''
             })
+
+            setDetail(presendWithBadgelets)
 
             const receiver = presendWithBadgelets.badgelets.map(item => {
                 return item.receiver
@@ -87,7 +91,7 @@ function DetailPresend (props: DetailPresendProps ) {
             emitPresendListUpdate(props.presend)
             showToast('Accept success')
             props.handleClose()
-            navigate(`/profile/${user.userName}`)
+            // navigate(`/profile/${user.userName}`)
         } catch (e: any) {
             unload()
             console.log('[handleAccept]: ', e)
@@ -130,7 +134,10 @@ function DetailPresend (props: DetailPresendProps ) {
         <DetailCover src={ props.presend.badge.image_url }></DetailCover>
         <DetailName> { props.presend.badge.name } </DetailName>
         { sender &&
-            <DetailCreator isGroup={!!props.presend.badge.group } profile={ props.presend.badge.group || sender } />
+            <DetailRow>
+                <DetailCreator isGroup={!!detail.badge.group } profile={ detail.badge.group || sender } />
+            </DetailRow>
+
         }
         <DetailScrollBox style={{maxHeight: swiperMaxHeight - 60 + 'px', marginLeft: 0}}>
             { !!props.presend.message &&

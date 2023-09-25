@@ -13,6 +13,8 @@ import solas, { Group, Profile } from '../../service/solas'
 import DialogsContext from '../../components/provider/DialogProvider/DialogsContext'
 import ReasonInput from '../../components/base/ReasonInput/ReasonInput'
 import SelectCreator from '../../components/compose/SelectCreator/SelectCreator'
+import Toggle from "../../components/base/Toggle/Toggle"
+import AppTips from "../../components/base/AppTips/AppTips";
 
 function CreateBadgeNonPrefill() {
     const navigate = useNavigate()

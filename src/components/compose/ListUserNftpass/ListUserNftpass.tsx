@@ -28,7 +28,7 @@ function ListUserNftpass(props: ListUserNftpassProps) {
     const getNftpasslet = async (page: number) => {
         return await queryNftPasslet({
             show_hidden: user.id === props.profile.id ? 1 : undefined,
-            receiver_id: props.profile.id,
+            owner_id: props.profile.id,
             page
         })
     }

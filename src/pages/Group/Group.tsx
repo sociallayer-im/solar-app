@@ -20,9 +20,9 @@ import ListUserPresend from "../../components/compose/ListUserPresend";
 import ListUserNftpass from "../../components/compose/ListUserNftpass/ListUserNftpass";
 import AppSubTabs from "../../components/base/AppSubTabs";
 import ListGroupInvite from "../../components/compose/ListGroupInvite";
-import ListUserGift from "../../components/compose/ListUserGift/ListUserGift";
 import ListUserPoint from "../../components/compose/ListUserPoint/ListUserPoint";
-
+import ListUserGift from "../../components/compose/ListUserGift/ListUserGift";
+import ListUserVote from "../../components/compose/ListUserVote";
 
 function GroupPage() {
     const {groupname} = useParams()
@@ -33,9 +33,12 @@ function GroupPage() {
     const [searchParams, setURLSearchParams] = useSearchParams()
     const [selectedTab, setSelectedTab] = useState(searchParams.get('tab') || '0')
     const [selectedSubtab, setSelectedSubtab] = useState(searchParams.get('subtab') || '0')
+    const [isGroupManager, setIsGroupManager] = useState(false)
     const startIssue = useIssueBadge({groupName: groupname})
     const {copyWithDialog} = useCopy()
     const navigate = useNavigate()
+
+    const isGroupOwner = user.id === profile?.group_owner_id
 
     // 为了实现切换tab时，url也跟着变化，而且浏览器的前进后退按钮也能切换tab
     useEffect(() => {
@@ -68,6 +71,21 @@ function GroupPage() {
         getProfile()
     }, [groupname])
 
+
+    useEffect(() => {
+        const check = async () => {
+            if (profile && user.id) {
+                const isGroupManager = await solas.checkIsManager({
+                        group_id: profile.id!,
+                        profile_id: user.id
+                    }
+                )
+                setIsGroupManager(isGroupManager)
+            }
+        }
+        check()
+    }, [user.id, profile])
+
     const handleMintOrIssue = async () => {
         // 处理用户登录后但是未注册域名的情况，即有authToken和钱包地址,但是没有domain和username的情况
         if (user.wallet && user.authToken && !user.domain) {
@@ -76,7 +94,11 @@ function GroupPage() {
         }
 
         const unload = showLoading()
-        const badges = await solas.queryBadge({group_id: profile!.id!, page: 1})
+        const badgeProps = isGroupOwner ?
+            {group_id: profile?.id || undefined, page: 1} :
+            {sender_id: user?.id || undefined, page: 1}
+
+        const badges = await solas.queryBadge(badgeProps)
         unload()
 
         user.id === profile?.group_owner_id
@@ -98,7 +120,7 @@ function GroupPage() {
         <ShowDomain onClick={() => {
             copyWithDialog(profile?.domain || '', lang['Dialog_Copy_Message'])
         }}>{profile?.domain}</ShowDomain>
-        {user.id === profile?.group_owner_id &&
+        {(isGroupOwner || isGroupManager) &&
             <div className='profile-setting-btn' onClick={() => {
                 goToEditGroup()
             }}><i className='icon-setting'></i></div>
@@ -160,7 +182,8 @@ function GroupPage() {
                                                 <ListUserGift profile={profile}/>
                                             </Tab> : <></>
                                     }
-                                    {profile.group_owner_id === user.id ?
+
+                                    {isGroupOwner || isGroupManager ?
                                         <Tab title={lang['Group_detail_tabs_Invite']}>
                                             <ListGroupInvite group={profile}/>
                                         </Tab>
@@ -168,7 +191,7 @@ function GroupPage() {
                                     }
                                 </AppSubTabs>
                             </Tab>
-                            {user.id === profile.group_owner_id ?
+                            {isGroupOwner || isGroupManager ?
                                 <Tab title={lang['Profile_Tab_Presend']}>
                                     <ListUserPresend profile={profile}/>
                                 </Tab>
@@ -180,8 +203,14 @@ function GroupPage() {
                                         <ListUserPoint profile={profile}/>
                                     </Tab> : <></>
                             }
-                            <Tab title={lang['Group_detail_tabs_member']}>
-                                <ListGroupMember group={profile}/>
+
+                            <Tab title={lang['Group_detail_tabs_Group']}>
+                                <div className={'list-vote'}>
+                                    <ListUserVote profile={profile}/>
+                                </div>
+                               <div>
+                                   <ListGroupMember group={profile}/>
+                               </div>
                             </Tab>
                         </Tabs>
                     </div>

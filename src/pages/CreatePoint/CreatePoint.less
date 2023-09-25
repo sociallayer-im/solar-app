@@ -44,6 +44,19 @@
       margin-bottom: 10px;
       margin-left: 10px;
     }
+
+    .toggle-item {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      align-items: center;
+
+      .label {
+        .input-area-title;
+        display: flex;
+        align-items: center;
+      }
+    }
   }
 
   .prefill-preview {
@@ -55,19 +68,6 @@
     align-items: center;
     justify-content: center;
     margin-top: 26px;
-    position: relative;
-
-    .value {
-      position: absolute;
-      width: 190px;
-      font-weight: 600;
-      font-size: 14.2857px;
-      line-height: 14px;
-      text-align: center;
-      color: #FFFFFF;
-      top: 52px;
-      white-space: nowrap;
-    }
 
     .avatar {
       height: 84px;

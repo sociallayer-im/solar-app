@@ -15,12 +15,14 @@ export interface DialogConfirmProps {
 }
 
 function DialogConfirm(props: DialogConfirmProps) {
-    let override: any = {}
+    let override: any = {
+        ':hover':{'opacity': '0.8'}
+    }
     if (props.confirmTextColor) {
-        override.color = props.confirmTextColor
+        override.color = props.confirmTextColor + '!important'
     }
     if (props.confirmBtnColor) {
-        override.background = props.confirmBtnColor
+        override.background = props.confirmBtnColor + '!important'
     }
 
     return (

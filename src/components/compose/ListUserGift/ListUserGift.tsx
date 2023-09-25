@@ -27,7 +27,7 @@ function ListUserGift(props: ListUserRecognitionProps) {
     const getBadgelet = async (page: number) => {
         return await solas.queryBadgelet({
             show_hidden: user.id === props.profile.id ? 1 : undefined,
-            receiver_id: props.profile.id,
+            owner_id: props.profile.id,
             badge_type: 'gift',
             page
         })

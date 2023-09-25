@@ -1,7 +1,7 @@
 import {useContext, useEffect, useRef} from 'react'
 import UserContext from '../provider/UserProvider/UserContext'
 import DialogsContext from '../provider/DialogProvider/DialogsContext'
-import solas from '../../service/solas'
+import solas, {queryUserActivity} from '../../service/solas'
 
 const Pusher = (window as any).Pusher
 let pusher: any = null
@@ -39,7 +39,7 @@ function Subscriber() {
         if (!user.id || !user.domain) return
 
         async function showPendingBadgelets() {
-            const badgelets = await solas.queryAllTypeBadgelet({receiver_id: user.id!, page: 1})
+            const badgelets = await solas.queryAllTypeBadgelet({owner_id: user.id!, page: 1})
             const pendingBadgelets = badgelets.filter((item) => item.status === 'pending')
             pendingBadgelets.forEach((item) => {
                 if (!item.badge.badge_type || item.badge.badge_type === 'badge') {
@@ -62,7 +62,6 @@ function Subscriber() {
 
         showPendingBadgelets()
 
-
         async function showPendingInvite() {
             const invites = await solas.queryPendingInvite(user.id!)
             invites.forEach((item) => {
@@ -70,6 +69,7 @@ function Subscriber() {
             })
         }
 
+        solas.queryUserActivity({target_id: user.id})
         showPendingInvite()
     }, [user.id, user.domain])
 

@@ -13,6 +13,8 @@ import AppButton, {BTN_KIND} from "../../components/base/AppButton/AppButton";
 import SelectPointCover, {covers} from "../../components/compose/SelectPointCover/SelectPointCover";
 import './CreatePoint.less'
 import useVerify from "../../hooks/verify";
+import AppTips from "../../components/base/AppTips/AppTips";
+import Toggle from "../../components/base/Toggle/Toggle";
 
 function CreateBadge() {
     const navigate = useNavigate()
@@ -21,6 +23,7 @@ function CreateBadge() {
     const [domain, setDomain] = useState('')
     const [nameError, setNameError] = useState('')
     const [domainError, setDomainError] = useState('')
+    const [transferable, setTransferable] = useState(true)
     const [symbol, setSymbol] = useState('')
     const [symbolError, setSymbolError] = useState('')
     const [reason, setReason] = useState('')
@@ -148,6 +151,16 @@ function CreateBadge() {
                             <ReasonInput value={reason} onChange={(value) => {
                                 setReason(value)
                             }}/>
+                        </div>
+
+                        <div className='input-area'>
+                            <div className={'toggle-item'}>
+                                <div className={'label'}>
+                                    <span> {lang['Create_Point_Transferable']}</span>
+                                    <AppTips text={lang['Create_Point_Transferable_Tips']} />
+                                </div>
+                                <Toggle checked={transferable} onChange={(e) => {setTransferable(!transferable)}}/>
+                            </div>
                         </div>
 
                         <div className='input-area'>

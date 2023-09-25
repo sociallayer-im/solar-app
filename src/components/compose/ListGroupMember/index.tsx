@@ -63,8 +63,10 @@ function ListGroupMember (props: ListGroupMemberProps) {
         const members = await solas.getGroupMembers({
             group_id: props.group.id
         })
-        setMembers(members)
-        return members
+
+        const deleteOwner = members.filter((member) => member.id !== props.group.group_owner_id)
+        setMembers(deleteOwner)
+        return deleteOwner
     }
 
     const leaveGroup = async () => {
@@ -123,7 +125,7 @@ function ListGroupMember (props: ListGroupMemberProps) {
         <div className='member-list-joined-label'>Joined</div>
     </StatefulPopover>
 
-    const OwnerAction = <div className='member-list-joined-label' onClick={ showMemberManageDialog }><Overflow size={20}/></div>
+    const OwnerAction = <div className='member-list-joined-label' onClick={ showMemberManageDialog }><Overflow size={20} title={'Member Manage'} /></div>
 
     const Action = props.group.group_owner_id === user.id
         ? OwnerAction
@@ -132,8 +134,11 @@ function ListGroupMember (props: ListGroupMemberProps) {
             : <div></div>
 
     return <div className='list-group-member'>
-        <div className={'actions'}>
-            {Action}
+        <div className={'title-member'}>
+            <div>{lang['Group_detail_tabs_member']}</div>
+            <div className={'action'}>
+                {Action}
+            </div>
         </div>
         <ListUserAssets
             child={(data, key) => <CardMember profile={data} key={key} /> }

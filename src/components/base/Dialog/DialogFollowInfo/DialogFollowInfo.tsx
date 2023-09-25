@@ -80,13 +80,13 @@ function DialogFollowInfo(props: DialogFollowInfoProps) {
                <Tab key='follower' title={lang['Follow_detail_followed']}>
                    <div className='center scroll-box'>
                        { followersEmpty && <Empty text={'no data'} /> }
-                       <AddressList selected={ [] } data= { followers }  onClick={(domain) => { toProfile(domain) }}/>
+                       <AddressList selected={ [] } data= { followers }  onClick={(profile) => { toProfile(profile.domain!) }}/>
                    </div>
                </Tab>
                <Tab key='following' title={lang['Follow_detail_following']}>
                    <div className='center scroll-box'>
                        { followingsEmpty && <Empty text={'no data'} /> }
-                       <AddressList selected={ [] } data= { followings } onClick={(domain) => { toProfile(domain) }} />
+                       <AddressList selected={ [] } data= { followings } onClick={(profile) => { toProfile(profile.domain!) }} />
                    </div>
                </Tab>
            </AppTabs>

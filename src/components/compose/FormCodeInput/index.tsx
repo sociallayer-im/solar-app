@@ -158,31 +158,27 @@ function CodeInputForm(props: CodeInputFormProps) {
             <input
                 pattern="[0-9]*"
                 onFocus={e => {
-                    setTimeout(() => {
-                        try {
-                            e.target.selectionStart = 100; // Set cursor to the end of the input text
-                            e.target.selectionEnd = 100; // Set cursor to the end of the input text
-                        } catch (e) {
-                            return 0
-                        }
-                        window.scrollTo(0, 90)
-                    }, 300)
+                   setTimeout(() => {
+                       try {
+                           e.target.selectionStart = 100; // Set cursor to the end of the input text
+                           e.target.selectionEnd = 100; // Set cursor to the end of the input text
+                       } catch (e) {return 0}
+                       window.scrollTo(0, 90)
+                   },300)
                 }}
-                ref={inputRef}
+                ref={ inputRef }
                 value={code}
                 className={css(style.input)}
-                onChange={(e) => {
-                    showCode(e.target.value)
-                }}
-                type="number"/>
+                onChange={(e) => { showCode(e.target.value) } }
+                type="number" />
             {
                 codeLength.map((item, index) => {
                     return <input
                         readOnly
-                        value={code[index] || ''}
-                        key={index.toString()}
-                        className={css((code.length === index || (code.length === 5 && index === 4)) ?
-                            {...style.codeInput, borderColor: '#00b879', borderWidth: '2px'} : style.codeInput)}/>
+                        value={ code[index] || '' }
+                        key={ index.toString() }
+                        className={css((code.length === index  || (code.length===5 && index ===4))?
+                            {...style.codeInput, borderColor: '#00b879', borderWidth: '2px' } : style.codeInput)} />
                 })
             }
         </div>

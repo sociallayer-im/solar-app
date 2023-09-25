@@ -22,6 +22,7 @@ import AppSubTabs from "../../components/base/AppSubTabs";
 import ListUserNftpass from "../../components/compose/ListUserNftpass/ListUserNftpass";
 import ListUserPoint from "../../components/compose/ListUserPoint/ListUserPoint";
 import ListUserGift from "../../components/compose/ListUserGift/ListUserGift";
+import LensList from "../../components/compose/Lens/LensList/LensList";
 
 function ProfilePage() {
     const {username} = useParams()
@@ -177,16 +178,24 @@ function ProfilePage() {
                                 </Tab>
                                 : <></>
                             }
+                            {
+                                !!profile?.permissions.includes('point') ?
+                                    <Tab title={lang['Profile_Tab_Point']}>
+                                        <ListUserPoint profile={profile}/>
+                                    </Tab>
+                                    : <></>
+                            }
+
                             <Tab title={lang['Profile_Tab_Groups']}>
                                 <ListUserGroup profile={profile}/>
                             </Tab>
-                            {
-                                !!profile?.permissions.includes('gift') ?
-                                    <Tab title={lang['Profile_Tab_Point']}>
-                                        <ListUserPoint profile={profile}/>
-                                    </Tab> : <></>
-                            }
 
+                            {/*{ profile.address ?*/}
+                            {/*    <Tab title={lang['Profile_Tab_Lens']}>*/}
+                            {/*        <LensList profile={profile} />*/}
+                            {/*    </Tab>*/}
+                            {/*    : <></>*/}
+                            {/*}*/}
                         </Tabs>
                     </div>
                     <div className='profile-user-name' style={{display: 'none'}}>{profile.username}</div>

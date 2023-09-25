@@ -19,6 +19,9 @@ import ReasonText from '../../../base/ReasonText/ReasonText'
 import DetailDes from '../atoms/DetailDes/DetailDes'
 import './DetailGift.less'
 import SwiperPagination from '../../../base/SwiperPagination/SwiperPagination'
+import DetailRow from "../atoms/DetailRow";
+import DetailBadgeMenu from "../atoms/DetalBadgeMenu";
+import useEvent, {EVENT} from "../../../../hooks/globalEvent";
 
 //HorizontalList deps
 import {Swiper, SwiperSlide} from 'swiper/react'
@@ -41,6 +44,9 @@ function DetailGift(props: DetailBadgeProps) {
     const swiper = useRef<any>(null)
     const formatTime = useTime()
     const swiperIndex = useRef(0)
+    const [needUpdate, _] = useEvent(EVENT.badgeDetailUpdate)
+    const [isGroupManager, setIsGroupManager] = useState(false)
+    const loginUserIsSender = user.id === props.badge.sender.id || user.id === props.badge.group?.id
 
     useEffect(() => {
         async function getBadgelet() {
@@ -56,7 +62,21 @@ function DetailGift(props: DetailBadgeProps) {
         }
 
         getBadgelet()
-    }, [])
+    }, [needUpdate])
+
+    useEffect(() => {
+        async function checkManager() {
+            if (props.badge.group && user.id) {
+                const isManager = await solas.checkIsManager({
+                    group_id: props.badge.group.id,
+                    profile_id: user.id
+                })
+                setIsGroupManager(isManager)
+            }
+        }
+
+        checkManager()
+    }, [user.id])
 
     const handleIssue = async () => {
         navigate(`/create-gift?gift=${props.badge.id}`)
@@ -80,116 +100,99 @@ function DetailGift(props: DetailBadgeProps) {
         return res
     }
 
-    const loginUserIsSender = user.id === props.badge.sender.id
     const swiperMaxHeight = window.innerHeight - 320
     return (
         <DetailWrapper>
-            <DetailHeader title={lang['BadgeletDialog_gift_title']} onClose={props.handleClose}/>
+            <DetailHeader
+                slotRight={<DetailBadgeMenu isGroupManager={isGroupManager} badge={props.badge}/>}
+                title={lang['BadgeletDialog_gift_title']}
+                onClose={props.handleClose}/>
+            <DetailCover src={props.badge.image_url}></DetailCover>
+            <DetailName> {props.badge.name} </DetailName>
+            <DetailRow>
+                <DetailCreator isGroup={!!props.badge.group}
+                               profile={props.badge.group || props.badge.sender}/>
+            </DetailRow>
+
+            {
+                badgelets.length > 0 ?
+                    <div style={{width: '100%', overflow: 'hidden', maxHeight: swiperMaxHeight + 'px'}}>
+                        <Swiper
+                            ref={swiper}
+                            modules={[Pagination]}
+                            spaceBetween={12}
+                            className='badge-detail-swiper'
+                            onSlideChange={(swiper) => swiperIndex.current = swiper.activeIndex}
+                            slidesPerView={'auto'}>
+                            <SwiperPagination total={badgelets.length} showNumber={3}/>
+                            {
+                                badgelets.map((badgelet, index) =>
+                                    <SwiperSlide className='badge-detail-swiper-slide' key={badgelet.id}>
+                                        <DetailScrollBox style={{maxHeight: swiperMaxHeight - 40 + 'px'}}>
+                                            {!!badgelet.content &&
+                                                <DetailDes>
+                                                    <ReasonText text={badgelet.content}/>
+                                                </DetailDes>
+                                            }
+                                            <DetailArea
+                                                onClose={props.handleClose}
+                                                title={lang['BadgeDialog_Label_Owner']}
+                                                content={badgelet.owner.domain
+                                                    ? badgelet.owner.domain.split('.')[0]
+                                                    : ''
+                                                }
+                                                navigate={badgelet.owner.domain
+                                                    ? `/profile/${badgelet.owner.domain?.split('.')[0]}`
+                                                    : '#'}
+                                                image={badgelet.owner.image_url || defaultAvatar(badgelet.owner.id)}/>
+
+                                            <DetailArea
+                                                title={lang['BadgeDialog_Label_Token']}
+                                                content={props.badge.domain}/>
 
 
-            {(props.badge.badge_type === 'private' && !loginUserIsSender) ?
-                <>
-                    <DetailCover src={'/images/badge_private.png'}></DetailCover>
-                    <DetailName> 🔒 </DetailName>
-                    <DetailCreator isGroup={!!props.badge.group}
-                                   profile={props.badge.group || props.badge.sender}/>
-                    <DetailScrollBox style={{maxHeight: swiperMaxHeight - 40 + 'px'}}>
+                                            <DetailArea
+                                                title={lang['NFT_Detail_Expiration']}
+                                                content={formatExpiration(badgelet.created_at, badgelet.starts_at || null, badgelet.expires_at || null)}/>
+
+                                            <DetailArea
+                                                title={lang['BadgeDialog_Label_Creat_Time']}
+                                                content={formatTime(badgelet.created_at)}/>
+
+                                            <DetailArea
+                                                title={lang['BadgeDialog_Label_Private']}
+                                                content={lang['BadgeDialog_Label_gift_text']}/>
+                                        </DetailScrollBox>
+                                    </SwiperSlide>
+                                )
+                            }
+                        </Swiper>
+                    </div>
+
+                    : <DetailScrollBox style={{maxHeight: swiperMaxHeight - 60 + 'px', marginLeft: 0}}>
+                        {!!props.badge.content &&
+                            <DetailDes>
+                                <ReasonText text={props.badge.content}/>
+                            </DetailDes>
+                        }
+
+                        <DetailArea
+                            title={lang['BadgeDialog_Label_Token']}
+                            content={props.badge.domain}/>
+
                         <DetailArea
                             title={lang['BadgeDialog_Label_Creat_Time']}
                             content={formatTime(props.badge.created_at)}/>
+
                         <DetailArea
                             title={lang['BadgeDialog_Label_Private']}
-                            content={lang['BadgeDialog_Label_Private_text']}/>
+                            content={lang['BadgeDialog_Label_gift_text']}/>
+
                     </DetailScrollBox>
-                </>
-                : <>
-                    <DetailCover src={props.badge.image_url}></DetailCover>
-
-                    <DetailName> {props.badge.name} </DetailName>
-                    <DetailCreator isGroup={!!props.badge.group}
-                                   profile={props.badge.group || props.badge.sender}/>
-
-                    {
-                        badgelets.length > 0 ?
-                            <div style={{width: '100%', overflow: 'hidden', maxHeight: swiperMaxHeight + 'px'}}>
-                                <Swiper
-                                    ref={swiper}
-                                    modules={[Pagination]}
-                                    spaceBetween={12}
-                                    className='badge-detail-swiper'
-                                    onSlideChange={(swiper) => swiperIndex.current = swiper.activeIndex}
-                                    slidesPerView={'auto'}>
-                                    <SwiperPagination total={badgelets.length} showNumber={3}/>
-                                    {
-                                        badgelets.map((badgelet, index) =>
-                                            <SwiperSlide className='badge-detail-swiper-slide' key={badgelet.id}>
-                                                <DetailScrollBox style={{maxHeight: swiperMaxHeight - 40 + 'px'}}>
-                                                    {!!badgelet.content &&
-                                                        <DetailDes>
-                                                            <ReasonText text={badgelet.content}/>
-                                                        </DetailDes>
-                                                    }
-                                                    <DetailArea
-                                                        onClose={props.handleClose}
-                                                        title={lang['BadgeDialog_Label_Issuees']}
-                                                        content={badgelet.receiver.domain
-                                                            ? badgelet.receiver.domain.split('.')[0]
-                                                            : ''
-                                                        }
-                                                        navigate={badgelet.receiver.domain
-                                                            ? `/profile/${badgelet.receiver.domain?.split('.')[0]}`
-                                                            : '#'}
-                                                        image={badgelet.receiver.image_url || defaultAvatar(badgelet.receiver.id)}/>
-
-                                                    <DetailArea
-                                                        title={lang['BadgeDialog_Label_Token']}
-                                                        content={props.badge.domain}/>
-
-
-                                                    <DetailArea
-                                                        title={lang['NFT_Detail_Expiration']}
-                                                        content={formatExpiration(badgelet.created_at, badgelet.starts_at || null, badgelet.expires_at || null)}/>
-
-                                                    <DetailArea
-                                                        title={lang['BadgeDialog_Label_Creat_Time']}
-                                                        content={formatTime(badgelet.created_at)}/>
-
-                                                    <DetailArea
-                                                        title={lang['BadgeDialog_Label_Private']}
-                                                        content={lang['BadgeDialog_Label_gift_text']}/>
-                                                </DetailScrollBox>
-                                            </SwiperSlide>
-                                        )
-                                    }
-                                </Swiper>
-                            </div>
-
-                            : <DetailScrollBox style={{maxHeight: swiperMaxHeight - 60 + 'px', marginLeft: 0}}>
-                                {!!props.badge.content &&
-                                    <DetailDes>
-                                        <ReasonText text={props.badge.content}/>
-                                    </DetailDes>
-                                }
-
-                                <DetailArea
-                                    title={lang['BadgeDialog_Label_Token']}
-                                    content={props.badge.domain}/>
-
-                                <DetailArea
-                                    title={lang['BadgeDialog_Label_Creat_Time']}
-                                    content={formatTime(props.badge.created_at)}/>
-
-                                <DetailArea
-                                    title={lang['BadgeDialog_Label_Private']}
-                                    content={lang['BadgeDialog_Label_gift_text']}/>
-
-                            </DetailScrollBox>
-                    }
-                </>
             }
 
             <BtnGroup>
-                {loginUserIsSender &&
+                {(loginUserIsSender || isGroupManager) &&
                     <>
                         <AppButton size={BTN_SIZE.compact} onClick={() => {
                             showGiftCheckIn(props.badge.id)

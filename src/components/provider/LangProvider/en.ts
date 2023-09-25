@@ -56,6 +56,7 @@ const langEN = {
   Profile_Tab_Minted: 'Created',
   Profile_Tab_Point: 'Point',
   Profile_Tab_Groups: 'Groups',
+  Profile_Tab_Lens: 'Lens',
   Profile_Tab_Presend: 'Sending',
   Profile_Show_Wallet: 'Your address is',
   Profile_Show_Email: 'Your email is',
@@ -75,9 +76,13 @@ const langEN = {
   BadgeDialog_Label_Creator: 'Creator',
   BadgeDialog_Label_Token: 'Badge domain',
   BadgeDialog_Label_Issuees: 'Receiver(s)',
+  BadgeDialog_Label_Owner: 'Owner',
+  BadgeDialog_Label_Sender: 'Sender',
   BadgeDialog_Label_action_hide: 'Set as private',
+  BadgeDialog_Label_action_Burn: 'Burn',
   BadgeDialog_Label_action_public: 'Set as public',
   BadgeDialog_Label_action_top: 'Set to Top',
+  BadgeDialog_Label_action_Revoke: 'Revoke',
   BadgeDialog_Label_action_untop: 'UnSet to Top',
   BadgeDialog_Label_hide_tip: 'Only visible to yourself',
   BadgeDialog_Label_Creat_Time: 'Create time',
@@ -166,7 +171,7 @@ const langEN = {
   WhatsApp_Share: slotLang('{domain} send you an NFT badge: {badge}. Go get it! {url}'),
 
   Login_Title: 'Login with Email',
-  Login_alert: 'Badges sent/received will not be minted',
+  Login_alert: 'Please enter a email address',
   Login_continue: 'Continue',
   Login_Placeholder: 'Your Email',
   Login_option: 'Or more option',
@@ -269,10 +274,13 @@ const langEN = {
 
   Follow_detail_followed: 'Followers',
   Follow_detail_following: 'Following',
+  Follow_detail_Recently: 'Recently',
   Follow_detail_groups: 'Groups',
   Follow_detail_btn_mint: 'Send A badge For Your Group',
 
   Group_detail_tabs_member: 'Members',
+  Group_detail_tabs_Vote: 'Votes',
+  Group_detail_tabs_Group: 'Board',
   Group_detail_tabs_Event: 'Events',
   Group_detail_tabs_Invite: 'Invited',
   Group_detail_Join_Time: 'Joined',
@@ -319,6 +327,7 @@ const langEN = {
   Cropper_Dialog_Btn: 'Apply',
 
   Presend_Qrcode_Badge: 'badge',
+  Presend_Qrcode_isGroup: 'Group ',
   Presend_Qrcode_Des: slotLang('{1} sent you a {2}.'),
   Presend_Qrcode_Recommended : 'Recommended',
   Presend_Qrcode_Scan: 'Scan the QR Code',
@@ -361,7 +370,7 @@ const langEN = {
 
   Group_Member_Manage_Dialog_Title: 'Member Management',
   Group_Member_Manage_Dialog_Confirm_Btn: 'Remove from the group',
-  Group_Member_Manage_Dialog_Confirm_Dialog_des: slotLang('Are you sure to remove ${1} from the group？'),
+  Group_Member_Manage_Dialog_Confirm_Dialog_des: slotLang('Are you sure to remove {1} from the group？'),
   Group_Member_Manage_Dialog_Confirm_Dialog_Confirm: 'Remove',
   Group_Member_Manage_Dialog_Confirm_Dialog_Cancel: 'Cancel',
 
@@ -372,6 +381,8 @@ const langEN = {
   Create_Point_Name_Placeholder: 'Fill in the name, eg. Knowledge Points',
   Create_Point_Symbol_Placeholder: 'Fill in the symbol, eg. PT',
   Create_Point_Des: 'Description (Optional)',
+  Create_Point_Transferable: 'Transferable',
+  Create_Point_Transferable_Tips: 'Allows the owner to transfer the badge and its benefits to others.',
 
   Create_NFT_Title: 'Create a NFT Pass',
   Create_NFT_Image: 'Image',
@@ -432,6 +443,64 @@ const langEN = {
 
   Selector_issue_type_badge: 'Send the badge',
   Selector_issue_type_amount: 'Badge amount',
+
+
+  Dialog_Transfer_Title: 'Transfer to',
+  Dialog_Transfer_Confirm: 'Transfer',
+
+  Detail_Transfer_Accept_Title_Gift: 'You received an Gift Card',
+  Detail_Transfer_Accept_Title_Nft: 'You received an Nft Pass',
+  Detail_Transfer_Accept_Title_Point: 'You received an Nft Point',
+  Detail_Transfer_Accept_Confirm: 'Ok',
+  Detail_Transfer_Accept_From: 'From',
+
+
+  Dialog_Revoke_Title: 'Select owners',
+  Dialog_Revoke_Confirm_Title: 'Are you sure you to burn the badge?',
+  Dialog_Revoke_Des: 'Once revoked, the badge and benefits will be invalid, but the record can be found on the chain.',
+  Dialog_Revoke_Confirm: 'Revoke',
+
+
+  Dialog_burn_Title: 'Are you sure you to burn this badge?',
+  Dialog_burn_Confirm_des: 'Once burned, the badge and benefits will be invalid, but the record can be found on the chain.',
+
+  Vote_Create_Page_Title: 'Create vote',
+  Vote_Create_Title: 'Vote name',
+  Vote_Create_Title_Placeholder: 'Fill in title',
+  Vote_Create_Des: 'Description (Optional)',
+  Vote_Create_Content_Placeholder: 'Fill in description (Optional)',
+  Vote_Create_Option_Input_Title: 'Option',
+  Vote_Create_Multiple_Choice: 'Multiple choice',
+  Vote_Create_Show_Voter: 'Show voters',
+  Vote_Create_Auth: 'Voting authority',
+  Vote_Create_Auth_Member: 'All members in this group',
+  Vote_Create_Auth_Badge: 'Badge owners',
+  Vote_Create_Auth_Badge_count: 'Used number of badges as a weight',
+  Vote_Create_Has_Expire: 'Closing time for voting',
+  Vote_Create_Has_Start: 'Starting time for voting',
+  Vote_Create_Create_Btn: 'Create',
+  Vote_Create_Voters: 'Voters',
+
+  Vote_Confirm_Dialog_Title: slotLang('Are you sure vote 「{1}」?'),
+  Vote_Confirm_Dialog_Confirm: 'Vote it',
+  Vote_Confirm_Dialog_Cancel: 'Later',
+  Vote_Confirm_Dialog_Des: 'You can\'t change it after you vote it',
+  Vote_Confirm_Dialog_Selected: 'Selected：',
+
+  Vote_Already_Voted: 'You have already voted',
+  Vote_Close_Time: 'Voting will close at ',
+  Vote_Close_Once: 'You only can select one option',
+
+  Vote_Eligibility_Member: 'Only members in this group can vote',
+  Vote_Eligibility_Badge: slotLang('Group member who have the badge 「{1}」can vote'),
+
+  Vote_detail_edit: 'Edit',
+  Vote_detail_Title: 'Vote',
+  Vote_detail_Cancel: 'Delete',
+  Vote_detail_hoster: 'Voting initiator : ',
+
+  Vote_Delete_Vote_title: 'Are you sure you to delete the vote？',
+  Vote_Delete_Vote_Des: 'Voting data cannot be recovered after deletion.',
 
 }
 

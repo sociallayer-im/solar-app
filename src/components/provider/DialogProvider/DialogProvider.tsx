@@ -33,6 +33,8 @@ import DialogNftCheckIn from "../../base/Dialog/DialogNftCheckIn/DialogNftCheckI
 import DetailGift from "../../compose/Detail/DetailGift/DetailGift";
 import DialogGiftCheckIn from "../../base/Dialog/DialogGiftCheckIn/DialogGiftCheckIn";
 import DetailGiftItem from "../../compose/Detail/DetailGiftItem/DetailGiftItem";
+import DialogTransferAccept, {DialogTransferAcceptProps} from "../../base/Dialog/DialogTransferAccept/DialogTransferAccept";
+import DialogRevoke from "../../base/Dialog/DialogBurn/DialogBurn";
 import {useNavigate, useLocation} from "react-router-dom";
 
 export interface DialogProviderProps {
@@ -98,9 +100,14 @@ function DialogProvider (props: DialogProviderProps) {
 
     const clean = (message?: string) => {
         console.log('clean:', message)
-        const copy = { ...dialogsGroup}
-        copy.dialogs = []
-        setTimeout(() => {
+        return setTimeout(() => {
+            const copy = { ...dialogsGroup }
+            copy.dialogs = []
+            setDialogsGroup(copy)
+            setDialogsGroup(copy)
+            setDialogsGroup(copy)
+            setDialogsGroup(copy)
+            setDialogsGroup(copy)
             setDialogsGroup(copy)
         }, 200)
     }
@@ -246,7 +253,7 @@ function DialogProvider (props: DialogProviderProps) {
         setDialogsGroup({ ...dialogsGroup })
     }
 
-    const openConfirmDialog = (props: DialogConfirmDomainProps) => {
+    const openConfirmDialog = (props: DialogConfirmProps) => {
         const id = genID()
         dialogsGroup.dialogs.push({
             id,
@@ -700,7 +707,62 @@ function DialogProvider (props: DialogProviderProps) {
         setDialogsGroup({ ...dialogsGroup })
     }
 
+
+
+    const showTransferAccept = (props: {badgelet?: Badgelet, PointItem: PointItem}) => {
+        const id = genID()
+        dialogsGroup.dialogs.push({
+            id,
+            content: () => {
+                const close = () => {
+                    closeDialogByID(id)
+                }
+
+                const dialogProps = {
+                    key: id.toString(),
+                    size: [300, 'auto'],
+                    handleClose: close
+                }
+
+                return (
+                    <Dialog { ...dialogProps } >
+                        { (close) => <DialogTransferAccept
+                            {...props}
+                            handleClose={close} /> }
+                    </Dialog>
+                )
+            }
+        })
+        setDialogsGroup({ ...dialogsGroup })
+    }
+
+    const showRevoke = async (props: {badge: Badge}) => {
+        const id = genID()
+        dialogsGroup.dialogs.push({
+            id,
+            content: () => {
+                const close = () => {
+                    closeDialogByID(id)
+                }
+                const dialogProps = {
+                    key: id.toString(),
+                    size: ['100%', '100%'],
+                    handleClose: close
+                }
+                return (
+                    <Dialog { ...dialogProps } >
+                        { (close) => <DialogRevoke
+                            {...props}
+                            handleClose={close} /> }
+                    </Dialog>
+                )
+            }
+        })
+        setDialogsGroup({ ...dialogsGroup })
+    }
+
     const contextValue: DialogsContextType = {
+        showRevoke,
         dialogsCount,
         openConnectWalletDialog,
         showLoading,
@@ -724,6 +786,7 @@ function DialogProvider (props: DialogProviderProps) {
         showGift,
         showGiftCheckIn,
         showGiftItem,
+        showTransferAccept
     }
 
     return (

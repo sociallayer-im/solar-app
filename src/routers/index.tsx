@@ -25,6 +25,8 @@ import CreateGift from "../pages/CreateGift";
 import IssueGift from "../pages/IssueGift";
 import PlatformLogin from "../pages/platformLogin/platformLogin";
 import BindEmail from "../pages/BindEmail";
+import VoteDetail from "../pages/VoteDetail/VoteDetail";
+
 
 
 // lazy load
@@ -41,6 +43,7 @@ const Error = lazy(() => import('../pages/Error'))
 // const Issue = lazy(() => import('../pages/Issue'))
 // const Invite = lazy(() => import('../pages/Invite'))
 // const IssueSuccess = lazy(() => import('../pages/IssueSuccess'))
+const CreateVote = lazy(() => import('../pages/CreateVote/CreateVote'))
 
 
 function AppRouter () {
@@ -83,7 +86,13 @@ function AppRouter () {
                 <Route path="/search/:keyword" element={<Search />} />
                 <Route path="/event/:tag" element={<Event />} />
 
+
                 <Route path="/bind-email" element={<BindEmail />} />
+
+                <Route path="/create-vote" element={<CreateVote />} />
+                <Route path="/vote/:voteid" element={<VoteDetail />} />
+                <Route path="/edit-vote/:vote" element={<CreateVote />} />
+
 
                 <Route path="/platform/login" element={<PlatformLogin />} />
                 <Route path="*" element={<Error />} />

@@ -1,7 +1,7 @@
 import {useNavigate} from 'react-router-dom'
 import {useStyletron} from 'baseui'
-import {useContext, useEffect, useImperativeHandle, useState} from 'react'
-import {Profile} from '../../../service/solas'
+import React, {useContext, useEffect, useImperativeHandle, useState} from 'react'
+import {getGroupMembers, Profile} from '../../../service/solas'
 import UploadAvatar from '../UploadAvatar/UploadAvatar'
 import usePicture from '../../../hooks/pictrue'
 import './FormProfileEdit.less'
@@ -9,13 +9,20 @@ import AppInput from '../../base/AppInput'
 import LangContext from '../../provider/LangProvider/LangContext'
 import AppTextArea from '../../base/AppTextArea/AppTextArea'
 import EditSocialMedia from '../EditSocialMedia/EditSocialMedia'
+import {ArrowRight} from "baseui/icon";
+import DialogsContext from "../../provider/DialogProvider/DialogsContext";
+import DialogManageMember from "../../base/Dialog/DialogManageMember/DialogManageMember";
+import DialogGroupManagerEdit from "../../base/Dialog/DialogGroupManagerEdit/DialogGroupManagerEdit";
+import useEvent, {EVENT} from "../../../hooks/globalEvent";
 
 export interface ProfileEditFormProps {
     profile: Profile
     onRef?: any
+    isGroup?: boolean,
+    isGroupManager?: boolean
 }
 
-export interface ProfileEditFormData{
+export interface ProfileEditFormData {
     profile: Profile
 }
 
@@ -26,14 +33,51 @@ function FormProfileEdit(props: ProfileEditFormProps) {
     const {defaultAvatar} = usePicture()
     const [newProfile, setNewProfile] = useState<Profile>(props.profile)
     const {lang} = useContext(LangContext)
+    const {openDialog} = useContext(DialogsContext)
+    const [members, setMembers] = useState<Profile[]>([])
+    const [manager, setManager] = useState<Profile[]>([])
+    const [needUpdate] = useEvent(EVENT.managerListUpdate)
+    const isGroupOwner = props.profile.group_owner_id === props.profile.id
+
+    const getMember = async () => {
+        const res = await getGroupMembers({group_id: props.profile.id})
+        setMembers(res)
+
+        const res2 = await getGroupMembers({group_id: props.profile.id, role: 'group_manager'})
+        setManager(res2)
+    }
+
+    const showMemberManageDialog = () => {
+        const dialog = openDialog({
+            content: (close: any) => <DialogManageMember
+                groupId={props.profile.id}
+                handleClose={close}/>,
+            size: ['100%', '100%']
+        })
+    }
+
+    const showManagerDialog = () => {
+        const dialog = openDialog({
+            content: (close: any) => <DialogGroupManagerEdit
+                group={props.profile as any}
+                members={members}
+                managers={manager}
+                handleClose={close}/>,
+            size: ['100%', '100%']
+        })
+    }
+
 
     useEffect(() => {
+        if (props.profile.group_owner_id) {
+            getMember()
+        }
         console.log('newProfile', newProfile)
-    }, [])
+    }, [needUpdate])
 
     useImperativeHandle(props.onRef, () => {
         // 需要将暴露的接口返回出去
-        const a: ProfileEditFormData = { profile: newProfile }
+        const a: ProfileEditFormData = {profile: newProfile}
         return a
     })
 
@@ -153,6 +197,33 @@ function FormProfileEdit(props: ProfileEditFormProps) {
                 }}
             />
         </div>
+        {
+            props.isGroup &&
+            <div className={'input-area'}>
+                <div className='input-area-title'>{'Group member Setting'}</div>
+                { props.isGroupManager &&
+                    <div className={'input-area-btn'} role={'button'} onClick={event => {
+                        showManagerDialog()
+                    }}>
+                        <div className={'btn-label'}>{'Managers'}</div>
+                        <div className={'btn-extra'}>
+                            <span>{manager.length}</span>
+                            <ArrowRight size={24}/>
+                        </div>
+                    </div>
+                }
+
+                <div className={'input-area-btn'} role={'button'} onClick={e => {
+                    showMemberManageDialog()
+                }}>
+                    <div className={'btn-label'}>{'Members'}</div>
+                    <div className={'btn-extra'}>
+                        <span>{members.length}</span>
+                        <ArrowRight size={24}/>
+                    </div>
+                </div>
+            </div>
+        }
     </div>)
 }
 

@@ -2,25 +2,26 @@ import usePicture from '../../../hooks/pictrue'
 import './AddressList.less'
 import { Group, Profile } from "../../../service/solas";
 
-interface AddressListProp {
+interface AddressListProp<T> {
     data: Array<Group | Profile>,
-    selected?: Array<string>
-    onClick?: (domain: string) => any
+    selected?: Array<T>
+    onClick?: (target: Group | Profile, index: number) => any
 }
-function AddressList({ selected = [], ...props }: AddressListProp) {
+function AddressList<T>({ selected = [], ...props }: AddressListProp<T>) {
     const { defaultAvatar } = usePicture()
-
     return (<div className='address-list' data-testid='AddressList'>
         {
             props.data.map((item,index) => {
+                const isSelected = selected.includes(item.id as T) || selected.includes(item.domain! as T)
+
                 return <div className='list-item'
                             key={ index }
-                            onClick={() => { !!props.onClick && props.onClick(item.domain!)} }>
+                            onClick={() => { !!props.onClick && props.onClick(item, index)} }>
                     <div className='left'>
                         <img src={item.image_url || defaultAvatar(item.id)} alt=""/>
-                        <span>{item.nickname || item.username}</span>
+                        <span>{item.nickname || item.username || item.domain?.split('.')[0]}</span>
                     </div>
-                    { (selected?.indexOf(item.domain!)) != -1 ? <i className='icon icon-selected' title='selected'></i> : false }
+                    { isSelected ? <i className='icon icon-selected' title='selected'></i> : false }
                 </div>
             })
         }

@@ -22,6 +22,10 @@ import {useNavigate} from 'react-router-dom'
 import QRcode from "../../base/QRcode";
 import {useStyletron} from "baseui";
 import CheckInRecords from "../../base/CheckInRecords/CheckInRecords";
+import DetailRow from "./atoms/DetailRow";
+import DetailTransferable from "./atoms/DetailTransferable/DetailTransferable";
+import useTransferOrRevoke from "../../../hooks/transferOrRevoke";
+import DetailBadgeletMenu from "./atoms/DetalBadgeletMenu";
 
 export interface DetailNftpassletProps {
     nftpasslet: NftPasslet,
@@ -75,26 +79,49 @@ function DetailNftpasslet(props: DetailNftpassletProps) {
     const {user} = useContext(UserContext)
     const {openConnectWalletDialog, showLoading, showToast} = useContext(DialogsContext)
     const {defaultAvatar} = usePicture()
-    const [_, emitUpdate] = useEvent(EVENT.giftItemUpdate)
+    const [_, emitUpdate] = useEvent(EVENT.nftpassItemUpdate)
     const [nftpasslet, setNftpasslet] = useState(props.nftpasslet)
-    const isOwner = user.id === props.nftpasslet.receiver.id
     const formatTime = useTime()
     const navigate = useNavigate()
     const [showQrcode, setShowQrcode] = useState(false)
     const [showRecord, setShowRecord] = useState(false)
     const [records, setRecords] = useState<CheckIn[]>([])
+    const {transfer} = useTransferOrRevoke()
+
+    const [isGroupManager, setIsGroupManager] = useState(false)
+    const isOwner = user.id === props.nftpasslet.owner.id
 
     const getRecords = async () => {
-        const list =  await queryCheckInList({
+        const list = await queryCheckInList({
             badgelet_id: nftpasslet.id,
-            profile_id: nftpasslet.receiver.id,
+            profile_id: nftpasslet.owner.id,
         })
         setRecords(list)
     }
 
     useEffect(() => {
         getRecords()
-    },[])
+    }, [])
+
+    useEffect(() => {
+        async function checkGroupManager() {
+            if (user.id && !isOwner) {
+                const ownerDetail = await solas.getProfile({
+                    id: props.nftpasslet.owner.id
+                })
+
+                if (ownerDetail?.is_group) {
+                    const isManager = await solas.checkIsManager({
+                        group_id: props.nftpasslet.owner.id,
+                        profile_id: user.id
+                    })
+                    setIsGroupManager(isManager)
+                }
+            }
+        }
+
+        checkGroupManager()
+    }, [user.id])
 
     const handleAccept = async () => {
         const unload = showLoading()
@@ -108,7 +135,7 @@ function DetailNftpasslet(props: DetailNftpassletProps) {
             emitUpdate(nftpasslet)
             props.handleClose()
             showToast('Accept success')
-            navigate(`/profile/${user.userName}`)
+            // navigate(`/profile/${user.userName}`)
         } catch (e: any) {
             unload()
             console.log('[handleAccept]: ', e)
@@ -191,18 +218,29 @@ function DetailNftpasslet(props: DetailNftpassletProps) {
         <DetailWrapper>
             <DetailHeader
                 title={lang['NFT_Detail_title']}
+                slotRight={
+                    nftpasslet.status !== 'pending' &&
+                    isOwner &&
+                    <DetailBadgeletMenu badgelet={nftpasslet} closeFc={props.handleClose}/>
+                }
                 slotLeft={nftpasslet.hide && <DetailBadgeletPrivateMark/>}
                 onClose={props.handleClose}/>
 
             <DetailCover src={nftpasslet.badge.image_url}></DetailCover>
             <DetailName> {nftpasslet.badge.name} </DetailName>
 
-            {!showQrcode
-                && <DetailCreator isGroup={!!nftpasslet.badge.group}
-                                  profile={nftpasslet.badge.group || nftpasslet.sender}/>
-            }
+            <DetailRow>
+                {!showQrcode
+                    && <DetailCreator isGroup={!!nftpasslet.badge.group}
+                                      profile={nftpasslet.badge.group || nftpasslet.sender}/>
+                }
+                <DetailTransferable onClick={(e) => {
+                    transfer({badgelet: props.nftpasslet})
+                }
+                }/>
+            </DetailRow>
 
-            { showQrcode && <>
+            {showQrcode && <>
                 <NftpassQrcode nftpasslet={props.nftpasslet}/>
                 <BtnGroup>
                     <AppButton
@@ -213,9 +251,9 @@ function DetailNftpasslet(props: DetailNftpassletProps) {
                         {'Close'}
                     </AppButton>
                 </BtnGroup>
-            </> }
+            </>}
 
-            { showRecord &&  <>
+            {showRecord && <>
                 <CheckInRecords data={records} title={lang['NFT_Detail_checkin_title']}/>
                 <BtnGroup>
                     <AppButton
@@ -229,80 +267,92 @@ function DetailNftpasslet(props: DetailNftpassletProps) {
             </>
             }
 
-            { !showQrcode && !showRecord && <>
-                        <DetailScrollBox style={{maxHeight: swiperMaxHeight - 60 + 'px', marginLeft: 0}}>
-                            {
-                                !!nftpasslet.content &&
-                                <DetailDes title={lang['NFT_Detail_Des']}>
-                                    <ReasonText text={nftpasslet.content}></ReasonText>
-                                </DetailDes>
-                            }
+            {!showQrcode && !showRecord && <>
+                <DetailScrollBox style={{maxHeight: swiperMaxHeight - 60 + 'px', marginLeft: 0}}>
+                    {
+                        !!nftpasslet.content &&
+                        <DetailDes title={lang['NFT_Detail_Des']}>
+                            <ReasonText text={nftpasslet.content}></ReasonText>
+                        </DetailDes>
+                    }
 
-                            <DetailArea
-                                onClose={props.handleClose}
-                                title={lang['BadgeDialog_Label_Issuees']}
-                                content={nftpasslet.receiver.domain
-                                    ? nftpasslet.receiver.domain.split('.')[0]
-                                    : ''
-                                }
-                                navigate={nftpasslet.receiver.domain
-                                    ? `/profile/${nftpasslet.receiver.domain?.split('.')[0]}`
-                                    : '#'}
-                                image={nftpasslet.receiver.image_url || defaultAvatar(nftpasslet.receiver.id)}/>
+                    <DetailArea
+                        onClose={props.handleClose}
+                        title={lang['BadgeDialog_Label_Owner']}
+                        content={nftpasslet.owner.domain
+                            ? nftpasslet.owner.domain.split('.')[0]
+                            : ''
+                        }
+                        navigate={nftpasslet.owner.domain
+                            ? `/profile/${nftpasslet.owner.domain?.split('.')[0]}`
+                            : '#'}
+                        image={nftpasslet.owner.image_url || defaultAvatar(nftpasslet.owner.id)}/>
 
-                            <DetailArea
-                                title={lang['BadgeDialog_Label_Token']}
-                                content={nftpasslet.domain}
-                                link={nftpasslet.chain_data ? `https://moonscan.io/tx/${nftpasslet.chain_data}` : undefined}/>
+                    <DetailArea
+                        onClose={props.handleClose}
+                        title={lang['BadgeDialog_Label_Sender']}
+                        content={nftpasslet.sender.domain
+                            ? nftpasslet.sender.domain.split('.')[0]
+                            : ''
+                        }
+                        navigate={nftpasslet.sender.domain
+                            ? `/profile/${nftpasslet.sender.domain?.split('.')[0]}`
+                            : '#'}
+                        image={nftpasslet.sender.image_url || defaultAvatar(nftpasslet.sender.id)}/>
 
-                            <DetailArea
-                                title={lang['BadgeDialog_Label_Creat_Time']}
-                                content={formatTime(nftpasslet.created_at)}/>
+                    <DetailArea
+                        title={lang['BadgeDialog_Label_Token']}
+                        content={nftpasslet.domain}
+                        link={nftpasslet.chain_data ? `https://moonscan.io/tx/${nftpasslet.chain_data}` : undefined}/>
 
-                            <DetailArea
-                                title={lang['NFT_Detail_Expiration']}
-                                content={formatExpiration(nftpasslet.created_at, nftpasslet.starts_at || null, nftpasslet.expires_at || null)}/>
+                    <DetailArea
+                        title={lang['BadgeDialog_Label_Creat_Time']}
+                        content={formatTime(nftpasslet.created_at)}/>
 
-                        </DetailScrollBox>
-                        <BtnGroup>
-                            {!user.domain && LoginBtn}
+                    <DetailArea
+                        title={lang['NFT_Detail_Expiration']}
+                        content={formatExpiration(nftpasslet.created_at, nftpasslet.starts_at || null, nftpasslet.expires_at || null)}/>
 
-                            {!!user.domain
-                                && user.id === nftpasslet.receiver.id
-                                && nftpasslet.status === 'pending'
-                                && ActionBtns}
+                </DetailScrollBox>
+                <BtnGroup>
+                    {!user.domain && LoginBtn}
 
-                            {!!user.domain
-                                && user.id === nftpasslet.receiver.id
-                                && nftpasslet.status === 'accepted'
-                                && (
-                                    <>
-                                        {
-                                            checkAvailable() ? <AppButton
-                                                    special
-                                                    kind={BTN_KIND.primary}
-                                                    onClick={() => {
-                                                        setShowQrcode(true)
-                                                    }}>
-                                                    {lang['NFT_Detail_use']}
-                                                </AppButton>
-                                                : <AppButton kind={BTN_KIND.secondary} disabled={true}>
-                                                    {lang['NFT_Detail_Unavailable']}
-                                                </AppButton>
-                                        }
-                                        { checkAvailable() && <AppButton
-                                            kind={'secondary'}
+                    {!!user.domain
+                        && (isOwner || isGroupManager)
+                        && nftpasslet.status === 'pending'
+                        && ActionBtns}
+
+                    {!!user.domain
+                        && user.id === nftpasslet.receiver.id
+                        && nftpasslet.status === 'accepted'
+                        && (
+                            <>
+                                {
+                                    checkAvailable() ? <AppButton
+                                            special
+                                            kind={BTN_KIND.primary}
                                             onClick={() => {
-                                                setShowRecord(true)
+                                                setShowQrcode(true)
                                             }}>
-                                            {lang['NFT_Detail_show_record_btn']}
+                                            {lang['NFT_Detail_use']}
                                         </AppButton>
-                                        }
-                                    </>
-                                )
-                            }
-                        </BtnGroup>
-                    </> }
+                                        : <AppButton kind={BTN_KIND.secondary} disabled={true}>
+                                            {lang['NFT_Detail_Unavailable']}
+                                        </AppButton>
+                                }
+                                {checkAvailable() && <AppButton
+                                    kind={'secondary'}
+                                    onClick={() => {
+                                        setShowRecord(true)
+                                    }}>
+                                    {lang['NFT_Detail_show_record_btn']}
+                                </AppButton>
+                                }
+                            </>
+                        )
+                    }
+                </BtnGroup>
+            </>}
         </DetailWrapper>
     )
 }

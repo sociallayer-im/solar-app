@@ -6,7 +6,7 @@ import UserContext from '../../../provider/UserProvider/UserContext'
 import {useContext, useEffect} from 'react'
 import { profiles } from '../../../../test/mockDataForTest'
 
-const TestDialogAddressList = (props: AddressListProps) => {
+const TestDialogAddressList = (props: AddressListProps<string>) => {
     const { setUser } = useContext(UserContext)
 
     useEffect(() => {

@@ -1,7 +1,7 @@
 import {useStyletron} from 'baseui'
-import {PointItem} from '../../../../service/solas'
+import {checkIsManager, getProfile, PointItem} from '../../../../service/solas'
 import DialogsContext from '../../../provider/DialogProvider/DialogsContext'
-import {useContext} from 'react'
+import {useContext, useEffect, useState} from 'react'
 import UserContext from '../../../provider/UserProvider/UserContext'
 
 const style = {
@@ -90,8 +90,27 @@ function CardPointItem(props: CardBadgeletProps) {
     const [css] = useStyletron()
     const {showPointItem} = useContext(DialogsContext)
     const {user} = useContext(UserContext)
+    const [isGroupManager, setIsGroupManager] = useState(false)
 
     const isOwner = user.id === props.pointitem.owner.id
+
+    useEffect(() => {
+        async function checkManager() {
+            if(user.id && props.pointitem.status === 'sending') {
+                const receiverDetail = await getProfile({id:props.pointitem.owner.id})
+
+                if (receiverDetail?.is_group) {
+                    const res = await checkIsManager({
+                        group_id: props.pointitem.owner.id,
+                        profile_id: user.id
+                    })
+                    setIsGroupManager(res)
+                }
+            }
+        }
+
+        checkManager()
+    }, [user.id])
 
     return (<div className={css(style.wrapper)} onClick={() => {showPointItem(props.pointitem)}}>
         <div className={css(style.coverBg)}>
@@ -99,7 +118,7 @@ function CardPointItem(props: CardBadgeletProps) {
         </div>
         <div className={css(style.value)}>{props.pointitem.value}</div>
         <div className={css(style.name)}>{props.pointitem.point.title}</div>
-        {isOwner && props.pointitem.status === 'sending' && <div className={css(style.pendingMark)}>Pending</div>}
+        {(isGroupManager || isOwner) && props.pointitem.status === 'sending' && <div className={css(style.pendingMark)}>Pending</div>}
     </div>)
 }
 

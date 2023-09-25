@@ -7,9 +7,11 @@ import LangContext from '../../../provider/LangProvider/LangContext'
 import UserContext from '../../../provider/UserProvider/UserContext'
 import DialogsContext from '../../../provider/DialogProvider/DialogsContext'
 import useEvent, { EVENT } from '../../../../hooks/globalEvent'
+import useTransferOrRevoke from "../../../../hooks/transferOrRevoke";
 
 export interface DetalBadgeletMenuProps {
-    badgelet: Badgelet
+    badgelet: Badgelet,
+    closeFc?: () => any
 }
 
 function DetailBadgeletMenu (props: DetalBadgeletMenuProps) {
@@ -18,6 +20,7 @@ function DetailBadgeletMenu (props: DetalBadgeletMenuProps) {
     const { showLoading, showToast } = useContext(DialogsContext)
     const [_1, emitListUpdate] = useEvent(EVENT.badgeletListUpdate)
     const [_2, emitDetailUpdate] = useEvent(EVENT.badgeletDetailUpdate)
+    const {transfer, burn} = useTransferOrRevoke()
 
     const setStatus = async (type: SetBadgeletStatusType, handleClose: () => any) => {
         handleClose()
@@ -58,6 +61,15 @@ function DetailBadgeletMenu (props: DetalBadgeletMenuProps) {
                     { lang['BadgeDialog_Label_action_top'] }
                   </MenuItem>
         }
+        { (props.badgelet.badge.badge_type === 'nftpass' || props.badgelet.badge.badge_type === 'gift') &&
+            <MenuItem onClick={ () => { transfer({badgelet: props.badgelet}) } }>
+                { lang['Dialog_Transfer_Confirm'] }
+            </MenuItem>
+        }
+
+        <MenuItem onClick={ () => { burn({badgelet: props.badgelet, closeFc: props.closeFc}) } }>
+            { lang['BadgeDialog_Label_action_Burn'] }
+        </MenuItem>
     </>
 
     const overridesStyle = {

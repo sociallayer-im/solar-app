@@ -79,7 +79,7 @@ function DialogConnectWallet (props: DialogConnectWalletProps) {
             <div className='connect-item' onClick={ handleConnectEmail }>
                 <img src="/images/email.svg" alt="email"/>
                 <div className='connect-name'>Email</div>
-                <div className='connect-des'>{ lang['Login_alert'] }</div>
+                <div className='connect-des'>{ lang['Login_Title'] }</div>
             </div>
         </div>
     )

@@ -1,5 +1,5 @@
 import {useContext} from 'react'
-import {Profile, ProfileSimple} from '../../../service/solas'
+import {Group, Profile, ProfileSimple} from '../../../service/solas'
 import langContext from '../../provider/LangProvider/LangContext'
 import './ShareQrcode.less'
 import QRcode from '../../base/QRcode'
@@ -15,7 +15,7 @@ export interface ShareQrcodeProp {
     start?: string
     points?: number
     title?: string
-
+    isGroup?: Group
 }
 
 function ShareQrcode(props: ShareQrcodeProp) {
@@ -32,7 +32,9 @@ function ShareQrcode(props: ShareQrcodeProp) {
                     </div>
                     <div className='sender-info'>
                         <div className='badge-name'>{props.title || lang['Presend_Qrcode_Badge']} : {props.name}</div>
-                        <div className='des'>{lang['Presend_Qrcode_Des']([props.sender.domain?.split('.')[0], props.title || lang['Presend_Qrcode_Badge']])}</div>
+                        <div className='des'>
+                            {props.isGroup ? lang['Presend_Qrcode_isGroup'] : ''}
+                            {lang['Presend_Qrcode_Des']([props.isGroup?.username || props.sender.domain?.split('.')[0], props.title || lang['Presend_Qrcode_Badge']])}</div>
                     </div>
                 </div>
                 <div className='card-title'> {lang['Presend_Qrcode_Scan']} </div>

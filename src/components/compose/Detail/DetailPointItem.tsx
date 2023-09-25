@@ -18,6 +18,7 @@ import DetailCreator from './atoms/DetailCreator/DetailCreator'
 import useTime from '../../../hooks/formatTime'
 import {useNavigate} from 'react-router-dom'
 import PointCover from "./atoms/PointCover";
+import DetailRow from "./atoms/DetailRow";
 
 //HorizontalList deps
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react'
@@ -41,11 +42,13 @@ function DetailPointItem(props: DetailBadgeletProps) {
     const [needUpdate, _2] = useEvent(EVENT.pointItemListUpdate)
     const [pointItem, setPointItem] = useState(props.pointItem)
     const [pointItemList, setPointItemList] = useState<PointItem[]>([])
-    const isOwner = user.id === props.pointItem.owner.id
     const formatTime = useTime()
     const navigate = useNavigate()
     const swiper = useRef<any>(null)
     const swiperIndex = useRef(0)
+
+    const [isGroupManager, setIsGroupManager] = useState(false)
+    const isOwner = user.id === props.pointItem.owner.id
 
 
     const upDateBadgelet = async () => {
@@ -68,6 +71,26 @@ function DetailPointItem(props: DetailBadgeletProps) {
         getItemsOfSamePoint()
     },[])
 
+    useEffect(() => {
+        async function checkGroupManager() {
+            if (user.id && !isOwner) {
+                const ownerDetail = await solas.getProfile({
+                    id: props.pointItem.owner.id
+                })
+
+                if (ownerDetail?.is_group) {
+                    const isManager = await solas.checkIsManager({
+                        group_id: props.pointItem.owner.id,
+                        profile_id: user.id
+                    })
+                    setIsGroupManager(isManager)
+                }
+            }
+        }
+
+        checkGroupManager()
+    }, [user.id])
+
     const handleAccept = async () => {
         const unload = showLoading()
         try {
@@ -80,7 +103,7 @@ function DetailPointItem(props: DetailBadgeletProps) {
             emitUpdate(accept)
             props.handleClose()
             showToast('Accept success')
-            navigate(`/profile/${user.userName}`)
+            // navigate(`/profile/${user.userName}`)
         } catch (e: any) {
             unload()
             console.log('[handleAccept]: ', e)
@@ -142,8 +165,10 @@ function DetailPointItem(props: DetailBadgeletProps) {
 
             <PointCover value={pointItem.value} src={pointItem.point.image_url}/>
             <DetailName> {pointItem.point.title} </DetailName>
-            <DetailCreator isGroup={!!pointItem.point.group}
-                           profile={pointItem.point.group || pointItem.sender}/>
+            <DetailRow>
+                <DetailCreator isGroup={!!pointItem.point.group}
+                               profile={pointItem.point.group || pointItem.sender}/>
+            </DetailRow>
 
             <div style={{width: '100%', overflow: 'hidden', maxHeight: swiperMaxHeight + 'px'}}>
                 <Swiper
@@ -201,7 +226,7 @@ function DetailPointItem(props: DetailBadgeletProps) {
                 {!user.domain && LoginBtn}
 
                 {!!user.domain
-                    && isOwner
+                    && (isOwner || isGroupManager)
                     && props.pointItem.status === 'sending'
                     && ActionBtns}
             </BtnGroup>

@@ -1,7 +1,7 @@
 import LangContext from '../../../provider/LangProvider/LangContext'
 import UserContext from '../../../provider/UserProvider/UserContext'
 import DialogsContext from '../../../provider/DialogProvider/DialogsContext'
-import {useContext, useEffect, useState, useRef} from 'react'
+import {useContext, useEffect, useRef, useState} from 'react'
 import DetailWrapper from '../atoms/DetailWrapper/DetailWrapper'
 import usePicture from '../../../../hooks/pictrue'
 import DetailHeader from '../atoms/DetailHeader'
@@ -12,7 +12,7 @@ import DetailDes from '../atoms/DetailDes/DetailDes'
 import DetailArea from '../atoms/DetailArea'
 import AppButton, {BTN_KIND} from '../../../base/AppButton/AppButton'
 import BtnGroup from '../../../base/BtnGroup/BtnGroup'
-import solas, {Badgelet, CheckIn, NftPasslet, queryCheckInList, queryBadgeletDetail} from '../../../../service/solas'
+import solas, {Badgelet, NftPasslet, queryBadgeletDetail} from '../../../../service/solas'
 import useEvent, {EVENT} from '../../../../hooks/globalEvent'
 import ReasonText from '../../../base/ReasonText/ReasonText'
 import DetailScrollBox from '../atoms/DetailScrollBox/DetailScrollBox'
@@ -22,43 +22,47 @@ import {useNavigate} from 'react-router-dom'
 import QRcode from "../../../base/QRcode";
 import {useStyletron} from "baseui";
 import './DetailGiftItem.less'
+import DetailRow from "../atoms/DetailRow";
+import DetailTransferable from "../atoms/DetailTransferable/DetailTransferable";
+import useTransferOrRevoke from "../../../../hooks/transferOrRevoke";
+import DetailBadgeletMenu from "../atoms/DetalBadgeletMenu";
 
 export interface DetailNftpassletProps {
     giftItem: Badgelet,
     handleClose: () => void
 }
 
+const wrapper = {
+    width: '220px',
+    height: '238px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: '62px auto 62px auto',
+}
+const title = {
+    fontWeight: 600,
+    fontSize: '20px',
+    lineHeight: '28px',
+    textAlign: 'center',
+    color: '#272928',
+    marginBottom: '8px',
+}
+
+const qrcodeWrapper = {
+    width: '192px',
+    height: '192px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    background: '#fff'
+}
+
 const NftpassQrcode = (props: { nftpasslet: NftPasslet }) => {
     const [css] = useStyletron()
     const {user} = useContext(UserContext)
-
-    const wrapper = {
-        width: '220px',
-        height: '238px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        margin: '62px auto 62px auto',
-    }
-    const title = {
-        fontWeight: 600,
-        fontSize: '20px',
-        lineHeight: '28px',
-        textAlign: 'center',
-        color: '#272928',
-        marginBottom: '8px',
-    }
-
-    const qrcodeWrapper = {
-        width: '192px',
-        height: '192px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: '#fff'
-    }
 
     const text = user.authToken + '##' + props.nftpasslet.id + ''
 
@@ -77,12 +81,15 @@ function DetailGiftItem(props: DetailNftpassletProps) {
     const {defaultAvatar} = usePicture()
     const [_, emitUpdate] = useEvent(EVENT.giftItemUpdate)
     const [nftpasslet, setNftpasslet] = useState(props.giftItem)
-    const isOwner = user.id === props.giftItem.receiver.id
     const formatTime = useTime()
     const navigate = useNavigate()
     const [showQrcode, setShowQrcode] = useState(false)
     const [showChecked, setShowChecked] = useState(false)
     const interval = useRef<any>(null)
+    const {transfer} = useTransferOrRevoke()
+
+    const [isGroupManager, setIsGroupManager] = useState(false)
+    const isOwner = user.id === props.giftItem.owner.id
 
     useEffect(() => {
         if (interval.current) {
@@ -110,6 +117,26 @@ function DetailGiftItem(props: DetailNftpassletProps) {
         }
     }, [showQrcode, nftpasslet])
 
+    useEffect(() => {
+        async function checkGroupManager() {
+            if (user.id && !isOwner) {
+                const ownerDetail = await solas.getProfile({
+                    id: props.giftItem.owner.id
+                })
+
+                if (ownerDetail?.is_group) {
+                    const isManager = await solas.checkIsManager({
+                        group_id: props.giftItem.owner.id,
+                        profile_id: user.id
+                    })
+                    setIsGroupManager(isManager)
+                }
+            }
+        }
+
+        checkGroupManager()
+    }, [user.id])
+
     const handleAccept = async () => {
         const unload = showLoading()
         try {
@@ -122,7 +149,7 @@ function DetailGiftItem(props: DetailNftpassletProps) {
             emitUpdate(nftpasslet)
             props.handleClose()
             showToast('Accept success')
-            navigate(`/profile/${user.userName}`)
+            // navigate(`/profile/${user.userName}`)
         } catch (e: any) {
             unload()
             console.log('[handleAccept]: ', e)
@@ -204,6 +231,11 @@ function DetailGiftItem(props: DetailNftpassletProps) {
             <DetailHeader
                 title={lang['BadgeletDialog_gift_title']}
                 slotLeft={nftpasslet.hide && <DetailBadgeletPrivateMark/>}
+                slotRight={
+                    nftpasslet.status !== 'pending' &&
+                    isOwner &&
+                    <DetailBadgeletMenu badgelet={nftpasslet} closeFc={props.handleClose}/>
+                }
                 onClose={() => {
                     if (showQrcode) {
                         setShowQrcode(false)
@@ -218,20 +250,26 @@ function DetailGiftItem(props: DetailNftpassletProps) {
             </>
             }
 
-            {!showQrcode && !showChecked
-                && <DetailCreator isGroup={!!nftpasslet.badge.group}
-                                  profile={nftpasslet.badge.group || nftpasslet.sender}/>
-            }
+            <DetailRow>
+                {!showQrcode && !showChecked
+                    && <DetailCreator isGroup={!!nftpasslet.badge.group}
+                                      profile={nftpasslet.badge.group || nftpasslet.sender}/>
+                }
+                <DetailTransferable onClick={() => {
+                    transfer({badgelet: nftpasslet})
+                }}/>
+            </DetailRow>
 
             {showQrcode && !showChecked && <div className={'use-gift'}>
                 <NftpassQrcode nftpasslet={props.giftItem}/>
-                <div className={'owner'}>{lang['Gift_Checked_show_receiver']}: {props.giftItem.receiver.domain?.split('.')[0]}</div>
+                <div
+                    className={'owner'}>{lang['Gift_Checked_show_receiver']}: {props.giftItem.receiver.domain?.split('.')[0]}</div>
                 <div className={'profit'}>{props.giftItem.content}</div>
                 <div className='time'>
                     <i className='icon-clock'></i>
                     <span>{lang['Gift_Checked_show_remain']([props.giftItem.value])}</span>
                 </div>
-                { !!props.giftItem.last_consumed_at &&
+                {!!props.giftItem.last_consumed_at &&
                     <div className='time'>
                         <span>{lang['Gift_Checked_show_last_consume']}{formatTime(props.giftItem.last_consumed_at)}</span>
                     </div>
@@ -249,15 +287,27 @@ function DetailGiftItem(props: DetailNftpassletProps) {
 
                     <DetailArea
                         onClose={props.handleClose}
-                        title={lang['BadgeDialog_Label_Issuees']}
-                        content={nftpasslet.receiver.domain
-                            ? nftpasslet.receiver.domain.split('.')[0]
+                        title={lang['BadgeDialog_Label_Owner']}
+                        content={nftpasslet.owner.domain
+                            ? nftpasslet.owner.domain.split('.')[0]
                             : ''
                         }
-                        navigate={nftpasslet.receiver.domain
-                            ? `/profile/${nftpasslet.receiver.domain?.split('.')[0]}`
+                        navigate={nftpasslet.owner.domain
+                            ? `/profile/${nftpasslet.owner.domain?.split('.')[0]}`
                             : '#'}
-                        image={nftpasslet.receiver.image_url || defaultAvatar(nftpasslet.receiver.id)}/>
+                        image={nftpasslet.owner.image_url || defaultAvatar(nftpasslet.owner.id)}/>
+
+                    <DetailArea
+                        onClose={props.handleClose}
+                        title={lang['BadgeDialog_Label_Sender']}
+                        content={nftpasslet.sender.domain
+                            ? nftpasslet.sender.domain.split('.')[0]
+                            : ''
+                        }
+                        navigate={nftpasslet.sender.domain
+                            ? `/profile/${nftpasslet.sender.domain?.split('.')[0]}`
+                            : '#'}
+                        image={nftpasslet.sender.image_url || defaultAvatar(nftpasslet.sender.id)}/>
 
                     <DetailArea
                         title={lang['BadgeDialog_Label_Token']}
@@ -281,12 +331,12 @@ function DetailGiftItem(props: DetailNftpassletProps) {
                     {!user.domain && LoginBtn}
 
                     {!!user.domain
-                        && user.id === nftpasslet.receiver.id
+                        && (isOwner || isGroupManager)
                         && nftpasslet.status === 'pending'
                         && ActionBtns}
 
                     {!!user.domain
-                        && user.id === nftpasslet.receiver.id
+                        && (isOwner || isGroupManager)
                         && nftpasslet.status === 'accepted'
                         && (
                             <>

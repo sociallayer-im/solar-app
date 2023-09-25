@@ -15,8 +15,8 @@ describe('Input', async () => {
 
     it('通过列表项，回调函数输出选中值', () => {
         let select: string | null = null
-        const handleSelect = (domain: string) => {
-            select = domain
+        const handleSelect = (profile: any) => {
+            select = profile.domain
         }
         render(<AddressList data={groups} onClick={ handleSelect }/>)
 

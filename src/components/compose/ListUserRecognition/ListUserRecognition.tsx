@@ -32,13 +32,13 @@ function ListUserRecognition(props: ListUserRecognitionProps) {
     const getBadgelet = async (page: number) => {
         const publicBadgelet =  await solas.queryBadgelet({
             show_hidden: user.id === props.profile.id ? 1 : undefined,
-            receiver_id: props.profile.id,
+            owner_id: props.profile.id,
             page
         })
 
         const privateBadgelet =  await solas.queryPrivacyBadgelet({
             show_hidden: user.id === props.profile.id ? 1 : undefined,
-            receiver_id: props.profile.id,
+            owner_id: props.profile.id,
             page
         })
 

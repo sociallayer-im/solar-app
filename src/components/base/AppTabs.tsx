@@ -15,7 +15,7 @@ function AppTabs (props:AppTabsProps) {
         const defaultStyle = {
             color: $active ? '#272928' : '#7b7c7b',
             fontWeight: $active ? 600 : 'normal',
-            fontSize: '16px',
+            fontSize: '14px',
             paddingTop: '0',
             paddingBottom: '0',
             borderBottom: '0',

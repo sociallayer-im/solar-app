@@ -20,6 +20,7 @@ import DetailScrollBox from './atoms/DetailScrollBox/DetailScrollBox'
 import DetailCreator from './atoms/DetailCreator/DetailCreator'
 import useTime from '../../../hooks/formatTime'
 import {useNavigate} from 'react-router-dom'
+import DetailRow from "./atoms/DetailRow";
 
 
 export interface DetailBadgeletProps {
@@ -39,6 +40,9 @@ function DetailBadgelet(props: DetailBadgeletProps) {
     const formatTime = useTime()
     const navigate = useNavigate()
 
+    const [isGroupManager, setIsGroupManager] = useState(false)
+    const isOwner = user.id === props.badgelet.owner.id
+
     const upDateBadgelet = async () => {
         const newBadgelet = await solas.queryBadgeletDetail({id: props.badgelet.id})
         setBadgelet(newBadgelet)
@@ -49,6 +53,26 @@ function DetailBadgelet(props: DetailBadgeletProps) {
             upDateBadgelet()
         }
     }, [needUpdate])
+
+    useEffect(() => {
+        async function checkGroupManager() {
+            if (user.id && !isOwner) {
+                const ownerDetail = await solas.getProfile({
+                    id: props.badgelet.owner.id
+                })
+
+                if (ownerDetail?.is_group) {
+                    const isManager = await solas.checkIsManager({
+                        group_id: props.badgelet.owner.id,
+                        profile_id: user.id
+                    })
+                    setIsGroupManager(isManager)
+                }
+            }
+        }
+
+        checkGroupManager()
+    }, [user.id])
 
     const handleAccept = async () => {
         const unload = showLoading()
@@ -62,7 +86,7 @@ function DetailBadgelet(props: DetailBadgeletProps) {
             emitUpdate(badgelet)
             props.handleClose()
             showToast('Accept success')
-            navigate(`/profile/${user.userName}`)
+            // navigate(`/profile/${user.userName}`)
         } catch (e: any) {
             unload()
             console.log('[handleAccept]: ', e)
@@ -126,7 +150,7 @@ function DetailBadgelet(props: DetailBadgeletProps) {
                 slotRight={
                     badgelet.status !== 'pending' &&
                     isBadgeletOwner &&
-                    <DetailBadgeletMenu badgelet={badgelet}/>
+                    <DetailBadgeletMenu badgelet={badgelet} closeFc={props.handleClose}/>
                 }
                 onClose={props.handleClose}/>
 
@@ -134,7 +158,9 @@ function DetailBadgelet(props: DetailBadgeletProps) {
                 <>
                     <DetailCover src={'/images/badge_private.png'} />
                     <DetailName> 🔒 </DetailName>
-                    <DetailCreator isGroup={!!badgelet.badge.group} profile={badgelet.badge.group || badgelet.sender}/>
+                    <DetailRow>
+                        <DetailCreator isGroup={!!badgelet.badge.group} profile={badgelet.badge.group || badgelet.sender}/>
+                    </DetailRow>
                     <DetailScrollBox style={{maxHeight: swiperMaxHeight - 60 + 'px', marginLeft: 0}}>
                         <DetailArea
                             onClose={props.handleClose}
@@ -162,7 +188,9 @@ function DetailBadgelet(props: DetailBadgeletProps) {
                 : <>
                     <DetailCover src={metadata?.image || badgelet.badge.image_url}></DetailCover>
                     <DetailName> {metadata?.name || badgelet.badge.name} </DetailName>
-                    <DetailCreator isGroup={!!badgelet.badge.group} profile={badgelet.badge.group || badgelet.sender}/>
+                    <DetailRow>
+                        <DetailCreator isGroup={!!badgelet.badge.group} profile={badgelet.badge.group || badgelet.sender}/>
+                    </DetailRow>
                     <DetailScrollBox style={{maxHeight: swiperMaxHeight - 60 + 'px', marginLeft: 0}}>
                         {
                             !!badgelet.content &&
@@ -206,7 +234,7 @@ function DetailBadgelet(props: DetailBadgeletProps) {
                 {!user.domain && LoginBtn}
 
                 {!!user.domain
-                    && user.id === badgelet.receiver.id
+                    && (isGroupManager || isBadgeletOwner)
                     && badgelet.status === 'pending'
                     && ActionBtns}
             </BtnGroup>

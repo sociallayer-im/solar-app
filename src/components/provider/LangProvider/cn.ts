@@ -56,6 +56,7 @@ const langCN: LangConfig = {
   Profile_Tab_Basic: '基础徽章',
   Profile_Tab_Minted: '已创建',
   Profile_Tab_Groups: '群组',
+  Profile_Tab_Lens: 'Lens',
   Profile_Tab_Presend: '发送中',
   Profile_Show_Wallet: '你的钱包地址',
   Profile_Show_Email: '你的邮箱',
@@ -75,9 +76,13 @@ const langCN: LangConfig = {
   BadgeDialog_Label_Creator: '颁发者',
   BadgeDialog_Label_Token: 'Token 域名',
   BadgeDialog_Label_Issuees: '接收者',
+  BadgeDialog_Label_Owner: '拥有者',
+  BadgeDialog_Label_Sender: '发送者',
   BadgeDialog_Label_action_hide: '设为隐藏',
+  BadgeDialog_Label_action_Burn: '销毁',
   BadgeDialog_Label_action_public: '设为公开',
   BadgeDialog_Label_action_top: '设为置顶',
+  BadgeDialog_Label_action_Revoke: '撤销',
   BadgeDialog_Label_action_untop: '取消置顶',
   BadgeDialog_Label_hide_tip: '仅本人可见',
   BadgeDialog_Label_Creat_Time: '创建时间',
@@ -166,7 +171,7 @@ const langCN: LangConfig = {
   WhatsApp_Share: slotLang('{domain} 给你颁发了一枚 NFT 徽章：{badge}. 快去领取吧！{url}'),
 
   Login_Title: '使用邮箱登录',
-  Login_alert: '徽章的接收/颁发不会被铸造',
+  Login_alert: '输入邮箱地址以登录',
   Login_continue: '下一步',
   Login_Placeholder: '您的邮箱',
   Login_option: '其他方式',
@@ -269,10 +274,13 @@ const langCN: LangConfig = {
 
   Follow_detail_followed: '被关注',
   Follow_detail_following: '关注',
+  Follow_detail_Recently: '最近',
   Follow_detail_groups: '群组',
   Follow_detail_btn_mint: '为群组颁发徽章',
 
   Group_detail_tabs_member: '成员',
+  Group_detail_tabs_Vote: '投票',
+  Group_detail_tabs_Group: '白板',
   Group_detail_tabs_Event: '活动',
   Group_detail_tabs_Invite: '邀请',
   Group_detail_Join_Time: '加入时间',
@@ -319,6 +327,7 @@ const langCN: LangConfig = {
   Cropper_Dialog_Btn: '应用',
 
   Presend_Qrcode_Badge: '徽章',
+  Presend_Qrcode_isGroup: '组织 ',
   Presend_Qrcode_Des: slotLang('{1} 给你发送{2}。'),
   Presend_Qrcode_Recommended: '推荐使用',
   Presend_Qrcode_Scan: '扫描二维码',
@@ -372,6 +381,8 @@ const langCN: LangConfig = {
   Create_Point_Name_Placeholder: '输入名称，例如：Knowledge Points',
   Create_Point_Symbol_Placeholder: '输入符号，例如：PT',
   Create_Point_Des: '描述(可选)',
+  Create_Point_Transferable: '可转移',
+  Create_Point_Transferable_Tips: '允许持有者转移徽章和相关权益给他人。',
 
   Create_NFT_Title: '创建 NFT Pass',
   Create_NFT_Image: '图片',
@@ -432,6 +443,64 @@ const langCN: LangConfig = {
 
   Selector_issue_type_badge: '发送徽章',
   Selector_issue_type_amount: '徽章数量',
+
+  Dialog_Transfer_Title: '转移徽章',
+  Dialog_Transfer_Confirm: '转移',
+
+  Detail_Transfer_Accept_Title_Gift: '你收到了一张礼物卡',
+  Detail_Transfer_Accept_Title_Nft: '你收到了一张 Nft Pass',
+  Detail_Transfer_Accept_Title_Point: '你收到了一些积分',
+  Detail_Transfer_Accept_Confirm: '确认',
+  Detail_Transfer_Accept_From: '来自',
+
+  Dialog_Revoke_Title: '选择拥有者',
+  Dialog_Revoke_Confirm_Title: '确定要销毁这些徽章吗？',
+  Dialog_Revoke_Des: '撤销后，徽章和权益将会无效。 但是可以在区块链找到记录。',
+  Dialog_Revoke_Confirm: '撤销',
+
+
+  Dialog_burn_Title: '确定要销毁这个徽章吗？',
+  Dialog_burn_Confirm_des: '一旦销毁，徽章和权益将会无效。但是可以在区块链找到记录。',
+
+  Vote_Create_Page_Title: '创建投票',
+  Vote_Create_Title: '标题',
+  Vote_Create_Title_Placeholder: '输入标题',
+  Vote_Create_Des: '描述（选填）',
+  Vote_Create_Content_Placeholder: '输入描述',
+  Vote_Create_Option_Input_Title: '选项',
+  Vote_Create_Multiple_Choice: '多选',
+  Vote_Create_Show_Voter: '显示投票人',
+  Vote_Create_Auth: '投票权限',
+  Vote_Create_Auth_Member: '群组成员',
+  Vote_Create_Auth_Badge: '徽章持有者',
+  Vote_Create_Auth_Badge_count: '徽章数量作为权重',
+  Vote_Create_Has_Expire: '设置截止时间',
+  Vote_Create_Has_Start: '设置开始时间',
+  Vote_Create_Create_Btn: '创建',
+  Vote_Create_Voters: '投票人',
+
+  Vote_Confirm_Dialog_Title: slotLang('确认投票 「{1}」?'),
+  Vote_Confirm_Dialog_Confirm: '投票',
+  Vote_Confirm_Dialog_Cancel: '取消',
+  Vote_Confirm_Dialog_Des: '投票后将不能更改。',
+  Vote_Confirm_Dialog_Selected: '当前选中：',
+
+  Vote_Already_Voted: '你已经投过票了',
+  Vote_Close_Time: '投票关闭时间：',
+  Vote_Close_Once: '只能选择一个选项',
+
+  Vote_Eligibility_Member: '群组成员才能投票',
+  Vote_Eligibility_Badge: slotLang('群众成员且徽章「{1}」持有者才能投票'),
+
+  Vote_detail_edit: '编辑',
+  Vote_detail_Title: '投票',
+  Vote_detail_Cancel: '删除',
+  Vote_detail_hoster: '发起人：',
+
+  Vote_Delete_Vote_title: '确定要删除投票吗？',
+  Vote_Delete_Vote_Des: '删除后投票数据不能恢复',
+
+
 }
 
 export default langCN

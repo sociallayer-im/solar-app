@@ -1,15 +1,15 @@
 import {useNavigate, useParams} from 'react-router-dom'
 import {useStyletron} from 'baseui'
-import {useContext, useEffect, useState, createRef} from 'react'
+import {createRef, useContext, useEffect, useState} from 'react'
 import Layout from '../../components/Layout/Layout'
-import solas, {Profile, updateGroup, verifyTwitter} from '../../service/solas'
+import solas, {Profile} from '../../service/solas'
 import DialogsContext from '../../components/provider/DialogProvider/DialogsContext'
 import PageBack from '../../components/base/PageBack'
 import './GroupEdit.less'
 import AppButton, {BTN_KIND, BTN_SIZE} from '../../components/base/AppButton/AppButton'
-import FormProfileEdit, { ProfileEditFormData } from '../../components/compose/FormProfileEdit/FormProfileEdit'
+import FormProfileEdit, {ProfileEditFormData} from '../../components/compose/FormProfileEdit/FormProfileEdit'
 import LangContext from '../../components/provider/LangProvider/LangContext'
-import { DialogConfirmProps } from '../../components/base/Dialog/DialogConfirm/DialogConfirm'
+import {DialogConfirmProps} from '../../components/base/Dialog/DialogConfirm/DialogConfirm'
 import UserContext from "../../components/provider/UserProvider/UserContext";
 
 
@@ -18,11 +18,12 @@ function GroupEdit() {
     const navigate = useNavigate()
     const [profile, setProfile] = useState<Profile | null>(null)
     const [newProfile, setNewProfile] = useState<Profile | null>(null)
-    const { groupname } = useParams()
-    const { showLoading, showToast, openConfirmDialog } = useContext(DialogsContext)
-    const { lang } = useContext(LangContext)
+    const {groupname} = useParams()
+    const {showLoading, showToast, openConfirmDialog} = useContext(DialogsContext)
+    const {lang} = useContext(LangContext)
     const form = createRef<ProfileEditFormData>()
-    const { user, setUser } = useContext(UserContext)
+    const {user, setUser} = useContext(UserContext)
+    const [isGroupManager, setIsGroupManager] = useState(false)
 
     useEffect(() => {
         const getProfile = async () => {
@@ -35,23 +36,33 @@ function GroupEdit() {
 
                 setNewProfile(profile)
                 setProfile(profile)
+
+                if (user.id) {
+                    const isManager = await solas.checkIsManager({
+                        group_id: profile!.id,
+                        profile_id: user.id
+                    })
+
+                    setIsGroupManager(isManager || profile!.group_owner_id === user.id)
+                }
+
                 unload()
             } catch (e: any) {
                 console.error('[getProfile]: ', e)
             }
         }
         getProfile()
-    }, [])
+    }, [user.id])
 
     const saveProfile = async () => {
         console.log(form.current?.profile)
         const unload = showLoading()
+
         try {
             const update = await solas.updateGroup({
                 data: form.current!.profile,
                 auth_token: user.authToken || ''
             })
-
 
             showToast('Save Successfully')
             navigate(`/group/${profile?.username}`)
@@ -65,10 +76,10 @@ function GroupEdit() {
 
     const SaveBtn = function () {
         return <AppButton
-            onClick={ saveProfile }
+            onClick={saveProfile}
             style={{width: '60px'}} inline kind={BTN_KIND.primary}
             special
-            size={BTN_SIZE.mini} >
+            size={BTN_SIZE.mini}>
             {lang['Profile_Edit_Save']}
         </AppButton>
     }
@@ -77,7 +88,7 @@ function GroupEdit() {
         const editedAvatar = form.current?.profile.image_url !== profile?.image_url
         const editTwitter = form.current?.profile.twitter !== profile?.twitter
 
-        if ( editedAvatar || editTwitter) {
+        if (editedAvatar || editTwitter) {
             const props: DialogConfirmProps = {
                 confirmLabel: lang['Profile_Edit_Leave'],
                 cancelLabel: lang['Profile_Edit_Cancel'],
@@ -127,11 +138,12 @@ function GroupEdit() {
             {!!newProfile &&
                 <div className='edit-profile-page-wrapper'>
                     <PageBack
-                        onClose={ handleBack }
+                        onClose={handleBack}
                         title={lang['Profile_Edit_Title']}
-                        menu={ SaveBtn }/>
-                    <FormProfileEdit profile={ newProfile } onRef={ form }/>
-                    <AppButton style={{color: '#F64F4F'}} onClick={ handleFreeze }>{ lang['Group_setting_dissolve'] }</AppButton>
+                        menu={SaveBtn}/>
+                    <FormProfileEdit isGroup={true} isGroupManager={isGroupManager} profile={newProfile} onRef={form}/>
+                    <AppButton style={{color: '#F64F4F'}}
+                               onClick={handleFreeze}>{lang['Group_setting_dissolve']}</AppButton>
                 </div>
             }
         </div>

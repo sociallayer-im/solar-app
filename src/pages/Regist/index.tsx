@@ -22,7 +22,6 @@ function ComponentName () {
             // 钱包登录, 提示绑定邮箱
             navigate(`/bind-email?new=true`)
         } else if (user.domain) {
-            // 返回之前的页面
             const fallBack = window.localStorage.getItem('fallback')
             const platformLoginFallback = getPlantLoginFallBack()
             const lastLoginType = window.localStorage.getItem('lastLoginType')
@@ -37,8 +36,8 @@ function ComponentName () {
                 navigate(`/profile/${user.userName}`)
             }
         }
-
     }, [user.domain, user.email])
+
 
     useEffect(() => {
         clean('regist')

@@ -4,6 +4,7 @@ import {useNavigate} from "react-router-dom";
 import HomePageSwitcher from "../compose/HomePageSwitcher/HomePageSwitcher";
 
 const Logo = styled('div', ({ $theme }) => ({
+    width: '102px',
     height: '32px',
     display: 'inline-flex',
     alignItems: 'center',

@@ -46,7 +46,7 @@ function PageBack(props: PageBackProp) {
     const navigate = useNavigate()
     const {lang} = useContext(LangContext)
     const {back, cleanCurrentHistory, history} = useContext(PageBackContext)
-    const [hideBackBtn, setHideBackBtn] = useState(true)
+    const [hideBackBtn, setHideBackBtn] = useState(false)
     const location = useLocation()
 
     const handleBack = () => {
@@ -57,25 +57,13 @@ function PageBack(props: PageBackProp) {
         } else if (props.onClose) {
             props.onClose()
         } else {
-            back()
+            if (document.referrer && (document.referrer.includes('sola') || document.referrer.includes('localhost'))) {
+                navigate(-1)
+            } else {
+                navigate('/')
+            }
         }
     }
-
-    // 如果history长度为0，就隐藏返回按钮
-    // 如果history长度为2，且history[0]为'/'，history[1]包含'/profile/'，就隐藏返回按钮
-    // 如果history长度为1，且history[0]包含当前页面的path，就隐藏返回按钮
-    useEffect(() => {
-        const path = location.pathname
-        const ifHidden = (
-            !history.length
-            || (history.length === 2
-                && history[0] === '/'
-                && history[1].includes('/profile/')
-                || (history.length === 1
-                    && history[0].includes(path)))
-        ) && !props.onClose
-        setHideBackBtn(ifHidden)
-    }, [history.length])
 
     return (
         <Wrapper>

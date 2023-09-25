@@ -38,7 +38,7 @@ function ListUserPoint(props: ListUserPointProps) {
 
         if (!res.length) return []
 
-        // 合并相同Point的点数
+        // 合并相同Point的积分
         res.map(item => {
             if (item.status === 'sending') {
                 list.push(item)

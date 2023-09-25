@@ -80,8 +80,6 @@ function ProfileSocialMediaList(props: ProfileSocialMediaListProps) {
                 && !!props.profile.ens
             )
         setActive(isOnlyOne)
-        setActive(false)
-
     }, [props.profile])
 
     return (<div className={ active ? 'profile-social-media-list active': 'profile-social-media-list' } onClick={() => { setActive(true)}}>

@@ -1,6 +1,6 @@
 import {useSearchParams} from 'react-router-dom'
 import {useContext, useEffect, useState} from 'react'
-import solas, {ProfileSimple} from '../../service/solas'
+import solas, {ProfileSimple, Group} from '../../service/solas'
 import Layout from '../../components/Layout/Layout'
 import LangContext from '../../components/provider/LangProvider/LangContext'
 import './IssueBadgeSuccess.less'
@@ -21,6 +21,7 @@ function IssueSuccessPage() {
     const {heightWithoutNav} = usePageHeight()
     const {showToast} = useContext(DialogsContext)
     const [linkContent, setLinkContent] = useState('')
+    const [group, setGroup] = useState<Group | null>(null)
 
     // presend成功传参
     const presendId = searchParams.get('presend')
@@ -54,6 +55,8 @@ function IssueSuccessPage() {
                     cover: badgeletDetail.badge.image_url,
                     link: genShareLink()
                 })
+
+                setGroup(badgeletDetail.badge.group || null)
             }
 
             if (presendId) {
@@ -67,6 +70,8 @@ function IssueSuccessPage() {
                     link: genShareLink(presendDetail.code || undefined),
                     sender: sender as ProfileSimple
                 })
+
+                setGroup(presendDetail.group)
             }
 
             if (inviteId && groupId) {
@@ -88,6 +93,8 @@ function IssueSuccessPage() {
                     cover: group.image_url || defaultAvatar(group.id),
                     link: genShareLink(),
                 })
+
+                setGroup(group)
             }
 
             if (nftpassletId) {
@@ -102,6 +109,8 @@ function IssueSuccessPage() {
                     expires: badgeletDetail.expires_at || undefined,
                     title: lang['Badgebook_Dialog_NFT_Pass']
                 })
+
+                setGroup(badgeletDetail.group)
             }
 
             if (pointId && pointitemId) {
@@ -116,6 +125,8 @@ function IssueSuccessPage() {
                     points: pointItem.value,
                     title: lang['Badgebook_Dialog_Points']
                 })
+
+                setGroup(point.group)
             }
 
             if (giftItemId) {
@@ -130,6 +141,8 @@ function IssueSuccessPage() {
                     expires: badgeletDetail.expires_at || undefined,
                     title: lang['Badgebook_Dialog_Gift'],
                 })
+
+                setGroup(badgeletDetail.badge.group || null)
             }
         }
 
@@ -172,12 +185,16 @@ function IssueSuccessPage() {
 
     useEffect(() => {
         const shareUrl = info?.link || ''
-        const text = lang['IssueFinish_share']
+        let text = lang['IssueFinish_share']
             .replace('#1', user.domain!)
             .replace('#2', info?.name || '')
             .replace('#3', shareUrl)
+
+        if (group) {
+            text = lang['Presend_Qrcode_isGroup'] + text
+        }
         setLinkContent(text)
-    }, [info?.link])
+    }, [info?.link, group])
 
     const handleCopy = () => {
         copy(linkContent)
@@ -200,7 +217,7 @@ function IssueSuccessPage() {
                 </div>
                 <div className='cards'>
                     <div className={'title'}>{lang['IssueFinish_Share_By_Qrcode']}</div>
-                    {!!info && <ShareQrcode {...info}/>}
+                    {!!info && <ShareQrcode {...info} isGroup={group || undefined} />}
                 </div>
                 <div className='cards'>
                     <div className={'title'}>{lang['IssueFinish_Share_By_Link']}</div>
