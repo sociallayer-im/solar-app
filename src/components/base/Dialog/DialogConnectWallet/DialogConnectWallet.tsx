@@ -45,6 +45,15 @@ function DialogConnectWallet (props: DialogConnectWalletProps) {
     }, [isLoading])
 
     const handleConnectWallet = (connector: Connector) => {
+        // test code to trace the error
+        if (isLoading) {
+            console.error('Connector is loading')
+        }
+        if (pendingConnector) {
+            console.error('pendingConnector: ' + pendingConnector?.id)
+            console.error('connector id: ' + connector.id)
+        }
+
         if (isLoading && pendingConnector?.id === connector.id) return
 
         if (!isDisconnected) {
