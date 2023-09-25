@@ -5,7 +5,7 @@ import TriangleDown from "baseui/icon/triangle-down";
 import {getEventGroup, Profile, queryUserGroup} from "../../../service/solas";
 import userContext from "../../provider/UserProvider/UserContext";
 import DialogsContext from "../../provider/DialogProvider/DialogsContext";
-import {useLocation, useNavigate, useParams} from "react-router-dom";
+import {useLocation, useNavigate, useParams, Link} from "react-router-dom";
 
 const leadingEvent = {
     id: 1572,
@@ -76,7 +76,7 @@ function HomePageSwitcher() {
     }
 
     return (<div className={'home-page-switcher'}>
-        <a href={'/'} className={'badge-page'}>{lang['Nav_Badge_Page']}</a>
+        <Link to={'/'} className={'badge-page'}>{lang['Nav_Badge_Page']}</Link>
         <div className={ 'group-page' } onClick={switchList}>
             <div>{lang['Nav_Event_Page']}</div>
             <TriangleDown/>
