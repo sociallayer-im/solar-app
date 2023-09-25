@@ -51,7 +51,13 @@ function ProfileMenu () {
             height: '16px',
             borderRadius: ' 50%',
             marginRight: '6px'
-        }
+        },
+        showName: {
+            maxWidth: '40px',
+            overflow: 'hidden',
+            'text-overflow': 'ellipsis',
+            whitespace: 'nowrap',
+        },
     }
 
     const overridesStyle = {
@@ -75,7 +81,7 @@ function ProfileMenu () {
             autoFocus>
             <div className={ css(style.wrapper) }>
                 <img className={ css(style.img) } src={ user.avatar || defaultAvatar(user.id) } alt="" />
-                { user.nickname || user.userName || shortAddress(user.wallet)|| user.email }
+                <div className={css(style.showName)}> {user.nickname || user.userName || shortAddress(user.wallet) || user.email}</div>
             </div>
         </StatefulPopover>
     )
