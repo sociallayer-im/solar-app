@@ -20,14 +20,12 @@ function EmailLoginForm (props: EmailLoginFormProps) {
     const [css] = useStyletron()
 
     const verifyAndSetEmail = (value: string) => {
-        const valid = value.trim().match(/^\w+\.*\w+@+\w+\.\w+$/i)
-        setError(value && value.match(/^\w+\.*\w+@+\w+\.\w+$/i) ? '' : 'Invalid email address')
+        const valid = value && value.includes('@') && value.includes('.')
+        setError(valid ? '' : 'Invalid email address')
         return valid
     }
 
     const sendEmail  = async () => {
-        if (!email) return
-
         const isValid = verifyAndSetEmail(email)
         if (!isValid) return
 
