@@ -27,7 +27,7 @@ import LensList from "../../components/compose/Lens/LensList/LensList";
 function ProfilePage() {
     const {username} = useParams()
     const [profile, setProfile] = useState<Profile | null>(null)
-    const {showLoading} = useContext(DialogsContext)
+    const {showLoading, openConnectWalletDialog} = useContext(DialogsContext)
     const {lang} = useContext(LangContext)
     const {user} = useContext(UserContext)
     const [searchParams,] = useSearchParams()
@@ -76,6 +76,11 @@ function ProfilePage() {
     }, [username])
 
     const handleMintOrIssue = async () => {
+        if (!user.id) {
+            openConnectWalletDialog()
+            return
+        }
+
         // 处理用户登录后但是未注册域名的情况，即有authToken和钱包地址,但是没有domain和username的情况
         if (user.wallet && user.authToken && !user.domain) {
             navigate('/regist')
